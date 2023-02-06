@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Stafford-Rose-s-workspace-a7gacv.us-west-2.xata.sh/db/out-routes",
+  "codegen": {
+    "output": "xata.ts"
+  }
+}
