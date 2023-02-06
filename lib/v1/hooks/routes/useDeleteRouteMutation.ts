@@ -42,7 +42,7 @@ export const useDeleteRouteMutation = ({
       // refetch auth user's routes
       queryClient.invalidateQueries(['routes', username]);
 
-      router.push(`/${username}/routes`);
+      router.push(`/routes`);
     },
   });
 

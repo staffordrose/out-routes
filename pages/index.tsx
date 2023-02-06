@@ -123,7 +123,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
             })}
           </List>
           {routes.length === QUERY_SIZE && (
-            <ButtonLink size='xs' href={`/${authUsername}/routes`}>
+            <ButtonLink size='xs' href='/routes'>
               View All
             </ButtonLink>
           )}

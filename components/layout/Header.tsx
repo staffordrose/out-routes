@@ -329,7 +329,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => {
-              router.push(`/${user.username}/routes`);
+              router.push(`/routes`);
             }}
           >
             Your routes
