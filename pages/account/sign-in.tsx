@@ -63,7 +63,7 @@ const SignIn: NextPage<SignInProps> = ({ providers, csrfToken }) => {
                     key={provider.id}
                     variant='solid'
                     size='md'
-                    onClick={() => signIn(provider.id)}
+                    onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                   >
                     <ProviderIcon provider={provider.id} />
                     <span>
