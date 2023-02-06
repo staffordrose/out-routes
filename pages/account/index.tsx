@@ -79,7 +79,7 @@ const Account = () => {
 
   return (
     <>
-      <SEO title='Account' isNoIndex />
+      <SEO isNoIndex title='Your Account' />
       <Toast {...toastProps} />
       <DefaultLayout.Main>{renderResult()}</DefaultLayout.Main>
     </>

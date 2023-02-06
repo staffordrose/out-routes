@@ -192,7 +192,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
 
     return (
       <>
-        <SEO title='Edit Route' description='Route details' />
+        <SEO isNoIndex title={`Edit ${route?.title || `Route`}`} />
         <Toast {...toastProps} />
         <Dialog
           isOpen={isDialogOpen}

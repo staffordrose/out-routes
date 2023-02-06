@@ -21,7 +21,9 @@ export const HeroSection: FC = () => {
       />
       <HeroContent>
         <h1>Route Betas for Technical Adventures</h1>
-        <p>Build routes & share knowledge with other backcountry enthusiasts</p>
+        <p>
+          Build routes & share knowledge with fellow backcountry enthusiasts
+        </p>
         <HeroAction />
       </HeroContent>
     </StyledHeroSection>

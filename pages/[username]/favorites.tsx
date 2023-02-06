@@ -150,8 +150,8 @@ const Favorites = ({ isAuthenticated }: FavoritesProps) => {
     return (
       <>
         <SEO
-          title={`@${username} - ${user.name} Starred Routes`}
-          description={user.bio || `View all ${user.name}'s starred routes`}
+          title={`@${username} - Starred Routes`}
+          description={user.bio || `View all ${user.name}'s starred routes.`}
         />
         <Toast {...toastProps} />
         <DefaultLayout.Main>

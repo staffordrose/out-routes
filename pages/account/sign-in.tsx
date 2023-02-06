@@ -19,6 +19,7 @@ import {
   Separator,
 } from '@/components/atoms';
 import { PageHeading, UnauthenticatedLayout } from '@/components/layout';
+import { SEO } from '@/components/utility';
 
 const providerOrder = ['google', 'github'];
 
@@ -33,67 +34,70 @@ const SignIn: NextPage<SignInProps> = ({ providers, csrfToken }) => {
   const isSignUp = router.query.type === 'create';
 
   return (
-    <UnauthenticatedLayout>
-      <UnauthenticatedLayout.Main>
-        <PageHeading>Sign {isSignUp ? 'Up' : 'In'}</PageHeading>
-        <Flex
-          direction='column'
-          gap='lg'
-          css={{
-            width: '$full',
-            maxWidth: 640,
-            marginX: '$auto',
-            marginY: '$32',
-            padding: '$6',
-            textAlign: 'center',
-            backgroundColor: '$slate-50',
-          }}
-        >
-          <h2>Sign {isSignUp ? 'up' : 'in'} with Google/GitHub</h2>
-          <Center direction='column' gap='md'>
-            {Object.values(providers)
-              .filter((provider) => provider.id !== 'email')
-              .sort(
-                (a, b) =>
-                  providerOrder.indexOf(a.id) - providerOrder.indexOf(b.id)
-              )
-              .map((provider) => {
-                return (
-                  <Button
-                    key={provider.id}
-                    variant='solid'
-                    size='md'
-                    onClick={() => signIn(provider.id, { callbackUrl: '/' })}
-                  >
-                    <ProviderIcon provider={provider.id} />
-                    <span>
-                      Sign {isSignUp ? 'up' : 'in'} with {provider.name}
-                    </span>
-                  </Button>
-                );
-              })}
-          </Center>
-          <Separator width='full' height='sm' marginY='sm' />
-          <h2>or with a Magic Email link</h2>
-          <form method='post' action='/api/auth/signin/email'>
-            <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
-            <Grid columns={5} gap='sm' alignItems='center'>
-              <Input
-                type='email'
-                id='email'
-                name='email'
-                placeholder='johndoe@gmail.com'
-                css={{ width: '$full' }}
-              />
-              <Button size='md' type='submit'>
-                <BiMailSend />
-                <span>Sign {isSignUp ? 'up' : 'in'} with Email</span>
-              </Button>
-            </Grid>
-          </form>
-        </Flex>
-      </UnauthenticatedLayout.Main>
-    </UnauthenticatedLayout>
+    <>
+      <SEO isNoIndex title={isSignUp ? `Join Us` : `Sign In`} />
+      <UnauthenticatedLayout>
+        <UnauthenticatedLayout.Main>
+          <PageHeading>Sign {isSignUp ? 'Up' : 'In'}</PageHeading>
+          <Flex
+            direction='column'
+            gap='lg'
+            css={{
+              width: '$full',
+              maxWidth: 640,
+              marginX: '$auto',
+              marginY: '$32',
+              padding: '$6',
+              textAlign: 'center',
+              backgroundColor: '$slate-50',
+            }}
+          >
+            <h2>Sign {isSignUp ? 'up' : 'in'} with Google/GitHub</h2>
+            <Center direction='column' gap='md'>
+              {Object.values(providers)
+                .filter((provider) => provider.id !== 'email')
+                .sort(
+                  (a, b) =>
+                    providerOrder.indexOf(a.id) - providerOrder.indexOf(b.id)
+                )
+                .map((provider) => {
+                  return (
+                    <Button
+                      key={provider.id}
+                      variant='solid'
+                      size='md'
+                      onClick={() => signIn(provider.id, { callbackUrl: '/' })}
+                    >
+                      <ProviderIcon provider={provider.id} />
+                      <span>
+                        Sign {isSignUp ? 'up' : 'in'} with {provider.name}
+                      </span>
+                    </Button>
+                  );
+                })}
+            </Center>
+            <Separator width='full' height='sm' marginY='sm' />
+            <h2>or with a Magic Email link</h2>
+            <form method='post' action='/api/auth/signin/email'>
+              <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
+              <Grid columns={5} gap='sm' alignItems='center'>
+                <Input
+                  type='email'
+                  id='email'
+                  name='email'
+                  placeholder='johndoe@gmail.com'
+                  css={{ width: '$full' }}
+                />
+                <Button size='md' type='submit'>
+                  <BiMailSend />
+                  <span>Sign {isSignUp ? 'up' : 'in'} with Email</span>
+                </Button>
+              </Grid>
+            </form>
+          </Flex>
+        </UnauthenticatedLayout.Main>
+      </UnauthenticatedLayout>
+    </>
   );
 };
 

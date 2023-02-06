@@ -119,7 +119,7 @@ const AddRoute = () => {
 
   return (
     <>
-      <SEO title='Add Route' isNoIndex />
+      <SEO isNoIndex title='Add a Route' />
       <Toast {...toastProps} />
       <DefaultLayout.Main>{renderResult()}</DefaultLayout.Main>
     </>

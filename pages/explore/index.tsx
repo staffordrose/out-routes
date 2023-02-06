@@ -6,7 +6,10 @@ import { SEO } from '@/components/utility';
 const Explore = () => {
   return (
     <>
-      <SEO title='Explore' description='Your Lists' />
+      <SEO
+        title='Explore Routes'
+        description={`Discover routes near a given destination, or see what's trending.`}
+      />
       <DefaultLayout.Main>
         <PageHeading>Explore</PageHeading>
         <p>

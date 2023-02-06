@@ -147,8 +147,8 @@ const Following = ({ isAuthenticated }: FollowingProps) => {
     return (
       <>
         <SEO
-          title={`@${username} - ${user.name} Following`}
-          description={user.bio || `View all ${user.name}'s following`}
+          title={`@${username} - Following`}
+          description={user.bio || `View all ${user.name}'s following.`}
         />
         <Toast {...toastProps} />
         <DefaultLayout.Main>

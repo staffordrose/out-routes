@@ -173,7 +173,7 @@ const RouteContributors = ({
       <>
         <SEO
           title={`${route.title} - Contributors`}
-          description={`View all @${username}/${slug} contributors`}
+          description={`View all @${username}/${slug} contributors.`}
         />
         <Toast {...toastProps} />
         <DefaultLayout.Main>

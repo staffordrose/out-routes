@@ -129,7 +129,7 @@ const EditProfile = () => {
 
   return (
     <>
-      <SEO title='Edit Profile' isNoIndex />
+      <SEO isNoIndex title='Edit Your Profile' />
       <Toast {...toastProps} />
       <DefaultLayout.Main>{renderResult()}</DefaultLayout.Main>
     </>

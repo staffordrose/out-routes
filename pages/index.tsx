@@ -196,8 +196,8 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
     return (
       <>
         <SEO
-          title='Build and Share Routes for Technical Adventures'
-          description={`Welcome to ${sitename}`}
+          title={`Welcome to ${sitename}`}
+          description='Build routes & share knowledge with fellow backcountry enthusiasts.'
         />
         <MarketingContent routes={routesQuery.data?.records} />
       </>
@@ -209,7 +209,10 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
 
   return (
     <>
-      <SEO title='Recent Activity' description='' />
+      <SEO
+        title={`Welcome to ${sitename}`}
+        description='Build routes & share knowledge with fellow backcountry enthusiasts.'
+      />
       <MultiColumnLayout>
         <MultiColumnLayout.Aside>
           <Flex
@@ -240,7 +243,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               },
             }}
           >
-            <h1>Activity Feed</h1>
+            <h1>Recent Activity</h1>
             {activityQuery.isError && (
               <Feedback size='xs' type='error' title='Something went wrong'>
                 {activityQuery.error instanceof Error

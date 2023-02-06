@@ -11,7 +11,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 const Routes = () => {
   return (
     <>
-      <SEO title='Your Routes' isNoIndex />
+      <SEO isNoIndex title='Your Routes' />
       <DefaultLayout.Main>
         <PageHeading>Your Routes</PageHeading>
         <Link href='/routes/add'>Add a Route</Link>

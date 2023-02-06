@@ -133,7 +133,7 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
       data: { route, layers, features },
     } = routeQuery;
 
-    const { is_private, title, image_banner, stats_favorites } = route;
+    const { owner, is_private, title, image_banner, stats_favorites } = route;
 
     const isFavorited = !!isAuthFavoritingRouteQuery.data;
 
@@ -143,8 +143,8 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
     return (
       <>
         <SEO
-          title={`${title} - Route Detail`}
-          description={`Route details for ${title}.`}
+          title={`${title}${owner?.username ? ` | ${owner.username}` : ``}`}
+          description={`${title} route details and map.`}
         />
         <Toast {...toastProps} />
         <RouteDetailBanner src={image_banner || undefined} alt={title || ''} />

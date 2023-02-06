@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 
 import { Flex } from '@/components/atoms';
 import { UnauthenticatedLayout } from '@/components/layout';
+import { SEO } from '@/components/utility';
 
 enum Errors {
   Configuration = 'Configuration',
@@ -28,30 +29,35 @@ const Error = () => {
   const router = useRouter();
   const { error } = router.query;
 
+  const title = errorLabels[(error as Errors) || Errors.Default];
+
   return (
-    <UnauthenticatedLayout>
-      <UnauthenticatedLayout.Main>
-        <Flex
-          direction='column'
-          gap='md'
-          alignItems='center'
-          css={{
-            width: '$full',
-            maxWidth: 640,
-            marginX: '$auto',
-            marginY: '$48',
-            padding: '$6',
-            borderWidth: '$2',
-            borderStyle: 'dashed',
-            borderColor: '$slate-200',
-            textAlign: 'center',
-          }}
-        >
-          <h1>{errorLabels[(error as Errors) || Errors.Default]}</h1>
-          <p>{errorDescriptions[(error as Errors) || Errors.Default]}</p>
-        </Flex>
-      </UnauthenticatedLayout.Main>
-    </UnauthenticatedLayout>
+    <>
+      <SEO isNoIndex title={title} />
+      <UnauthenticatedLayout>
+        <UnauthenticatedLayout.Main>
+          <Flex
+            direction='column'
+            gap='md'
+            alignItems='center'
+            css={{
+              width: '$full',
+              maxWidth: 640,
+              marginX: '$auto',
+              marginY: '$48',
+              padding: '$6',
+              borderWidth: '$2',
+              borderStyle: 'dashed',
+              borderColor: '$slate-200',
+              textAlign: 'center',
+            }}
+          >
+            <h1>{title}</h1>
+            <p>{errorDescriptions[(error as Errors) || Errors.Default]}</p>
+          </Flex>
+        </UnauthenticatedLayout.Main>
+      </UnauthenticatedLayout>
+    </>
   );
 };
 

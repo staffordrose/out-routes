@@ -152,8 +152,8 @@ const Routes = ({ isAuthenticated }: RoutesProps) => {
     return (
       <>
         <SEO
-          title={`@${username} - ${user.name} Routes`}
-          description={user.bio || `View all ${user.name}'s routes`}
+          title={`@${username} - Routes`}
+          description={user.bio || `View all ${user.name}'s routes.`}
         />
         <Toast {...toastProps} />
         <DefaultLayout.Main>

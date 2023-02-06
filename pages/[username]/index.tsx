@@ -214,8 +214,8 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
     return (
       <>
         <SEO
-          title={`@${username} - ${name}`}
-          description={`View ${name}'s profile and routes`}
+          title={`@${username} - Profile`}
+          description={`View ${name}'s profile and routes.`}
         />
         <Toast {...toastProps} />
         <DefaultLayout.Main>

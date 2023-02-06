@@ -115,7 +115,7 @@ const RouteHistory = ({ isAuthorized }: RouteHistoryProps) => {
       <>
         <SEO
           title={`${route.title} - History`}
-          description={`View history for @${username}/${slug}`}
+          description={`View change history for @${username}/${slug}.`}
         />
         <DefaultLayout.Main>
           <PageHeading

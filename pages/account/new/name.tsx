@@ -101,7 +101,7 @@ const NewUserName = () => {
 
   return (
     <>
-      <SEO title={`Welcome to ${sitename}!`} isNoIndex />
+      <SEO isNoIndex title={`Welcome to ${sitename}!`} />
       <Toast {...toastProps} />
       {renderResult()}
     </>
