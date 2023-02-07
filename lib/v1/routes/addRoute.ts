@@ -12,7 +12,7 @@ import {
   validateSlug,
 } from '@/utils';
 import { getXataClient } from '@/xata';
-import { addActivityRecords } from '../activity';
+import { addActivityRecords } from '../user';
 
 export const addRoute = async (
   authUser: Pick<User, 'id'> & Partial<User>,

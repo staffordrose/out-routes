@@ -5,8 +5,8 @@ import { commitActions, memberRoles, memberStatuses } from '@/data/routes';
 import { Route, RouteFeature, User } from '@/types';
 import { cloneRouteSlug, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { addActivityRecords } from '../activity';
 import { cloneFeatureImage, cloneRouteImage } from '../uploads';
+import { addActivityRecords } from '../user';
 import { getRouteByUsernameSlug } from './getRouteByUsernameSlug';
 
 export const forkRoute = async (

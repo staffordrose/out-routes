@@ -3,7 +3,7 @@ import { databaseSchema } from '@/data/db';
 import { Route, User } from '@/types';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { deleteActivityRecords } from '../activity';
+import { deleteActivityRecords } from './deleteActivityRecords';
 
 export const unfavoriteRoute = async (
   authUser: Pick<User, 'id'> & Partial<User>,

@@ -17,8 +17,8 @@ import {
 } from '@/types';
 import { compareCommits, sanitizeAndEscape, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { addActivityRecords } from '../activity';
 import { deleteFeatureImage } from '../uploads';
+import { addActivityRecords } from '../user';
 import { getRouteByUsernameSlug } from './getRouteByUsernameSlug';
 
 export const updateRoute = async (

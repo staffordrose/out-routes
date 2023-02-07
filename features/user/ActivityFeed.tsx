@@ -5,7 +5,7 @@ import { Link } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
 import { PaginatedActivity } from '@/types';
-import { ActivityCard } from '../activity';
+import { ActivityCard } from '../user';
 
 type ActivityFeedProps = {
   pages?: PaginatedActivity[];

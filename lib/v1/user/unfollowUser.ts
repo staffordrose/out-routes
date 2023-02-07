@@ -3,7 +3,7 @@ import { databaseSchema } from '@/data/db';
 import { User } from '@/types';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { deleteActivityRecords } from '../activity';
+import { deleteActivityRecords } from './deleteActivityRecords';
 
 export const unfollowUser = async (
   authUser: Pick<User, 'id'> & Partial<User>,

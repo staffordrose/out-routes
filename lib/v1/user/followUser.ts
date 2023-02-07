@@ -2,7 +2,7 @@ import { ActivityActions } from '@/data/activity';
 import { User, UserRelationship } from '@/types';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { addActivityRecords } from '../activity';
+import { addActivityRecords } from './addActivityRecords';
 
 export const followUser = async (
   authUser: Pick<User, 'id'> & Partial<User>,

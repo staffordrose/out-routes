@@ -11,8 +11,8 @@ import {
 import { Contributor, Favorite, Route, User } from '@/types';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { deleteActivityRecords } from '../activity';
 import { deleteFeatureImage, deleteRouteImages } from '../uploads';
+import { deleteActivityRecords } from '../user';
 
 export const deleteRoute = async (
   authUser: Pick<User, 'id'> & Partial<User>,

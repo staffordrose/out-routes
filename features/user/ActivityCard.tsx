@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { BiTime } from 'react-icons/bi';
 
 import { Flex, Link, Text } from '@/components/atoms';
 import { ActivityActions } from '@/data/activity';
@@ -7,7 +8,6 @@ import { Activity } from '@/types';
 import { displayRelativeTime, isJsonString } from '@/utils';
 import { RouteCard } from '../routes';
 import { UserCard } from '../users';
-import { BiTime } from 'react-icons/bi';
 
 type ActivityCardProps = {
   activity: Activity;

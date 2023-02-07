@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import { Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { SEO } from '@/components/utility';
-import { AccountDetails } from '@/features/account';
+import { AccountDetails } from '@/features/user';
 import { getUser } from '@/lib/v1/api/user';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
 import { authOptions } from '../api/auth/[...nextauth]';
