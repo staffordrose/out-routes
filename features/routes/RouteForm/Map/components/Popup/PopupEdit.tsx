@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import NextImage from 'next/image';
 import { UseFieldArrayUpdate } from 'react-hook-form';
 import * as yup from 'yup';
+import { nanoid } from 'nanoid';
 import { BiX } from 'react-icons/bi';
 
 import { Button, Flex, IconButton, Text } from '@/components/atoms';
@@ -41,6 +42,10 @@ export const PopupEdit: FC<PopupEditProps> = ({
   closePopup,
 }) => {
   const [status, setStatus] = useState('');
+
+  // key is changed when user removes selection
+  const [colorKey, setColorKey] = useState(nanoid());
+  const [symbolKey, setSymbolKey] = useState(nanoid());
 
   const [values, setValues] = useState<Record<Key, string | undefined>>({
     title: feature.properties.title || '',
@@ -180,11 +185,17 @@ export const PopupEdit: FC<PopupEditProps> = ({
             error={errors.title?.message}
           />
           <SelectField
+            key={colorKey}
             name='color'
             placeholder='Color'
             value={values.color}
             onChange={(value) => {
-              updateValues('color', value);
+              if (value === 'none') {
+                updateValues('color', undefined);
+                setColorKey(nanoid());
+              } else {
+                updateValues('color', value);
+              }
             }}
             onBlur={() => {
               updateTouched('color', true);
@@ -196,13 +207,17 @@ export const PopupEdit: FC<PopupEditProps> = ({
               {
                 id: 'colors',
                 label: 'Colors',
-                options: colorSelectOptions.map(({ value, label }) => ({
+                options: [
+                  { value: 'none', label: <span>No selection</span> },
+                  ...colorSelectOptions,
+                ].map(({ value, label }) => ({
                   value,
                   label: (
                     <ColorLabel>
                       <span
                         style={{
-                          backgroundColor: value,
+                          backgroundColor:
+                            value !== 'none' ? value : 'transparent',
                         }}
                       />
                       <span>{label}</span>
@@ -214,11 +229,17 @@ export const PopupEdit: FC<PopupEditProps> = ({
           />
           {feature.geometry.type === GeometryTypeNames.Point && (
             <SelectField
+              key={symbolKey}
               name='symbol'
               placeholder='Symbol'
               value={values.symbol}
               onChange={(value) => {
-                updateValues('symbol', value);
+                if (value === 'none') {
+                  updateValues('symbol', undefined);
+                  setSymbolKey(nanoid());
+                } else {
+                  updateValues('symbol', value);
+                }
               }}
               onBlur={() => {
                 updateTouched('symbol', true);
@@ -230,16 +251,23 @@ export const PopupEdit: FC<PopupEditProps> = ({
                 {
                   id: 'symbols',
                   label: 'Symbols',
-                  options: symbolSelectOptions.map(({ value, label }) => ({
+                  options: [
+                    { value: 'none', label: <span>No selection</span> },
+                    ...symbolSelectOptions,
+                  ].map(({ value, label }) => ({
                     value,
                     label: (
                       <SymbolLabel>
-                        <NextImage
-                          src={`/symbols/${value}.svg`}
-                          height={16}
-                          width={16}
-                          alt={`${label} Icon`}
-                        />
+                        {value !== 'none' ? (
+                          <NextImage
+                            src={`/symbols/${value}.svg`}
+                            height={16}
+                            width={16}
+                            alt={`${label} Icon`}
+                          />
+                        ) : (
+                          <NoneSymbol />
+                        )}
                         <span>{label}</span>
                       </SymbolLabel>
                     ),
@@ -308,4 +336,10 @@ const SymbolLabel = styled('div', {
   display: 'flex',
   gap: '$1',
   placeItems: 'center',
+});
+
+const NoneSymbol = styled('div', {
+  width: '$4',
+  height: '$4',
+  backgroundColor: 'transparent',
 });
