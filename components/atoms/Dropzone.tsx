@@ -68,17 +68,19 @@ export const Dropzone = forwardRef(
     return (
       <StyledDropzone {...dropzoneProps} {...getRootProps()} ref={ref}>
         <StyledInput {...getInputProps()} disabled={disabled} />
-        <AspectRatio ratio={aspectRatio}>
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <p>
-              Drag &apos;n&apos; drop {multiple ? `some files` : `a file`} here,
-              or click to select
-            </p>
-          )}
-          {!!error && <ErrorMessage>{error}</ErrorMessage>}
-        </AspectRatio>
+        <RadixAspectRatio.Root ratio={aspectRatio}>
+          <Content>
+            {isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <p>
+                Drag &apos;n&apos; drop {multiple ? `some files` : `a file`}{' '}
+                here, or click to select
+              </p>
+            )}
+            {!!error && <ErrorMessage>{error}</ErrorMessage>}
+          </Content>
+        </RadixAspectRatio.Root>
       </StyledDropzone>
     );
   }
@@ -87,7 +89,6 @@ export const Dropzone = forwardRef(
 Dropzone.displayName = 'Dropzone';
 
 const StyledDropzone = styled('div', {
-  padding: '$4',
   borderWidth: '$2',
   borderStyle: 'solid',
   borderColor: '$slate-300',
@@ -130,12 +131,14 @@ const StyledInput = styled('input', {
   boxSizing: 'border-box',
 });
 
-const AspectRatio = styled(RadixAspectRatio.Root, {
+const Content = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$4',
   placeItems: 'center',
   width: '$full',
+  height: '$full',
+  padding: '$4',
 });
 
 const ErrorMessage = styled('p', {

@@ -21,13 +21,13 @@ export const ImageField: FC = () => {
     <StyledImageField>
       {existingImage || !!imageSrc ? (
         <Preview>
-          <AspectRatio ratio={16 / 9}>
+          <AspectRatio ratio={24 / 9}>
             <Image
               priority
               fill
               src={existingImage || imageSrc || ''}
               alt='Image preview'
-              objectFit='contain'
+              objectFit='cover'
             />
           </AspectRatio>
           <IconButton
@@ -66,7 +66,7 @@ export const ImageField: FC = () => {
             }) => (
               <DropzoneField
                 {...field}
-                aspectRatio={32 / 9}
+                aspectRatio={24 / 9}
                 onChange={(files) => {
                   if (Array.isArray(files) && files.length) {
                     onChange(files);
@@ -122,6 +122,9 @@ const Preview = styled('div', {
   position: 'relative',
   overflow: 'hidden',
   width: '$full',
+  borderWidth: '$2',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
   borderRadius: '$md',
   backgroundColor: '$slate-50',
   '& > button': {

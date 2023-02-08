@@ -12,9 +12,9 @@ export type RouteDetailBannerProps = {
 export const RouteDetailBanner: FC<RouteDetailBannerProps> = ({ src, alt }) => {
   return (
     <StyledRouteDetailBanner>
-      <AspectRatio ratio={src ? 16 / 9 : 32 / 9}>
+      <AspectRatio ratio={24 / 9}>
         {src ? (
-          <Image fill priority src={src} alt={alt} />
+          <Image fill priority src={src} alt={alt} objectFit='cover' />
         ) : (
           <BiImageAlt size='3rem' />
         )}
@@ -26,4 +26,9 @@ export const RouteDetailBanner: FC<RouteDetailBannerProps> = ({ src, alt }) => {
 const StyledRouteDetailBanner = styled('div', {
   width: '$full',
   backgroundColor: '$slate-50',
+  '& > div': {
+    width: '$full',
+    maxWidth: '$container_2xl',
+    marginX: '$auto',
+  },
 });
