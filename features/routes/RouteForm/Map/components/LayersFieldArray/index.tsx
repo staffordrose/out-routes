@@ -274,7 +274,7 @@ const LayerFields: FC<LayerFieldsProps> = ({ layerIndex }) => {
                           backgroundColor: value,
                         }}
                       />
-                      <span>{label}</span>
+                      <TruncatedText>{label}</TruncatedText>
                     </ColorLabel>
                   ),
                 })),
@@ -306,7 +306,7 @@ const LayerFields: FC<LayerFieldsProps> = ({ layerIndex }) => {
                         width={16}
                         alt={`${label} Icon`}
                       />
-                      <span>{label}</span>
+                      <TruncatedText>{label}</TruncatedText>
                     </SymbolLabel>
                   ),
                 })),

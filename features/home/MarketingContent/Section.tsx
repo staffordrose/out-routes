@@ -118,7 +118,7 @@ const RowContent = styled('article', {
   paddingX: '$8',
   '& > h2': {
     fontSize: '$2xl',
-    lineHeight: '$sm',
+    lineHeight: '$md',
   },
   '& > p': {
     fontSize: '$sm',

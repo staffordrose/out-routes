@@ -58,7 +58,7 @@ const HeroContent = styled('div', {
     maxWidth: 640,
     fontSize: '$4xl',
     fontWeight: '$bold',
-    lineHeight: '$sm$sm',
+    lineHeight: '$md',
   },
   '& > p': {
     maxWidth: 360,

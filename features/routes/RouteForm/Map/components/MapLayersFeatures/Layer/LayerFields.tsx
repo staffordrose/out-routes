@@ -2,6 +2,7 @@ import { FC } from 'react';
 import NextImage from 'next/image';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { TruncatedText } from '@/components/atoms';
 import { SelectField, TextField } from '@/components/molecules';
 import { colorSelectOptions } from '@/data/general';
 import { symbolSelectOptions } from '@/data/routes';
@@ -51,7 +52,7 @@ export const LayerFields: FC<LayerFieldsProps> = ({ layerIndex }) => {
                           backgroundColor: value,
                         }}
                       />
-                      <span>{label}</span>
+                      <TruncatedText>{label}</TruncatedText>
                     </ColorLabel>
                   ),
                 })),
@@ -83,7 +84,7 @@ export const LayerFields: FC<LayerFieldsProps> = ({ layerIndex }) => {
                         width={16}
                         alt={`${label} Icon`}
                       />
-                      <span>{label}</span>
+                      <TruncatedText>{label}</TruncatedText>
                     </SymbolLabel>
                   ),
                 })),

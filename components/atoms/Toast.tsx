@@ -166,7 +166,7 @@ const ToastDescription = styled(RadixToast.Description, {
   gridArea: 'description',
   margin: 0,
   fontSize: '$sm',
-  lineHeight: '$sm',
+  lineHeight: '$md',
   color: '$slate-700',
 });
 

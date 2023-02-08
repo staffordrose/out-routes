@@ -119,13 +119,15 @@ const fontWeights = {
 
 const lineHeights = {
   xs: 1,
-  sm: 1.25,
-  md: 1.5,
-  lg: 1.625,
-  xl: 1.75,
-  '2xl': 1.875,
-  '3xl': 2,
-  '4xl': 2.25,
+  sm: 1.125,
+  md: 1.25,
+  lg: 1.375,
+  xl: 1.5,
+  '2xl': 1.625,
+  '3xl': 1.75,
+  '4xl': 1.875,
+  '5xl': 2,
+  '6xl': 2.25,
 };
 
 const colors = {

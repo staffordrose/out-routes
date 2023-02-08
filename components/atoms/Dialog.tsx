@@ -88,7 +88,7 @@ const DialogContent = styled(RadixDialog.Content, {
 
 const DialogTitle = styled(RadixDialog.Title, {
   marginBottom: '$4',
-  lineHeight: '$lg',
+  lineHeight: '$2xl',
 });
 
 const DialogDescription = styled(RadixDialog.Description, {

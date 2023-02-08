@@ -98,7 +98,7 @@ const SelectTrigger = styled(RadixSelect.SelectTrigger, {
   borderStyle: 'solid',
   borderColor: '$slate-300',
   borderRadius: '$md',
-  lineHeight: '$xs',
+  lineHeight: '$sm',
   color: '$slate-900',
   backgroundColor: 'transparent',
   '&:hover': {
@@ -197,7 +197,7 @@ const StyledOption = styled(RadixSelect.Item, {
   padding: '0 $2 0 $6_5',
   borderRadius: '$md',
   fontSize: '$sm',
-  lineHeight: '$xs',
+  lineHeight: '$sm',
   color: '$slate-900',
   cursor: 'pointer',
   userSelect: 'none',
@@ -214,7 +214,7 @@ const StyledOption = styled(RadixSelect.Item, {
 const SelectLabel = styled(RadixSelect.Label, {
   padding: '0 $6',
   fontSize: '$xs',
-  lineHeight: '$md',
+  lineHeight: '$xl',
   color: '$slate-700',
 });
 

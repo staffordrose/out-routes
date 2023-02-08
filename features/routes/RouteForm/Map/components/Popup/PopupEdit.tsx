@@ -5,7 +5,13 @@ import * as yup from 'yup';
 import { nanoid } from 'nanoid';
 import { BiX } from 'react-icons/bi';
 
-import { Button, Flex, IconButton, Text } from '@/components/atoms';
+import {
+  Button,
+  Flex,
+  IconButton,
+  Text,
+  TruncatedText,
+} from '@/components/atoms';
 import { SelectField, TextareaField, TextField } from '@/components/molecules';
 import { colorSelectOptions } from '@/data/general';
 import { GeometryTypeNames, symbolSelectOptions } from '@/data/routes';
@@ -220,7 +226,7 @@ export const PopupEdit: FC<PopupEditProps> = ({
                             value !== 'none' ? value : 'transparent',
                         }}
                       />
-                      <span>{label}</span>
+                      <TruncatedText>{label}</TruncatedText>
                     </ColorLabel>
                   ),
                 })),
@@ -268,7 +274,7 @@ export const PopupEdit: FC<PopupEditProps> = ({
                         ) : (
                           <NoneSymbol />
                         )}
-                        <span>{label}</span>
+                        <TruncatedText>{label}</TruncatedText>
                       </SymbolLabel>
                     ),
                   })),

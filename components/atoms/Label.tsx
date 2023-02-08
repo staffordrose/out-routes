@@ -25,6 +25,6 @@ Label.displayName = 'Label';
 const LabelRoot = styled(RadixLabel.Root, {
   fontSize: '$md',
   fontWeight: '$medium',
-  lineHeight: '$4xl',
+  lineHeight: '$6xl',
   userSelect: 'none',
 });

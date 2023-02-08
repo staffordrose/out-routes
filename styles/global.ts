@@ -33,7 +33,7 @@ export const globalStyles = globalCss({
     minWidth: 320,
     fontFamily: '$body',
     fontWeight: '$light',
-    lineHeight: '$md',
+    lineHeight: '$xl',
     WebkitFontSmoothing: 'antialiased',
   },
   'img, picture, video, canvas, svg': {

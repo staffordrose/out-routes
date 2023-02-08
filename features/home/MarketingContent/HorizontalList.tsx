@@ -56,7 +56,7 @@ const StyledHorizontalList = styled('div', {
   },
   '& > h2': {
     fontSize: '$2xl',
-    lineHeight: '$sm',
+    lineHeight: '$md',
   },
   '& > *:not(ul)': {
     marginX: '$8',

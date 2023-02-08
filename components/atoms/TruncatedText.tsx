@@ -15,6 +15,7 @@ export type TruncatedTextProps = ComponentPropsWithoutRef<
   css?: Stitches.CSS;
   fontFamily?: 'heading' | 'body';
   fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  lineHeight?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
   lineClamp?: 1 | 2 | 3 | 4 | 6 | 8;
 };
 
@@ -43,6 +44,16 @@ const StyledTruncatedText = styled('p', {
       lg: { fontSize: '$lg' },
       xl: { fontSize: '$xl' },
       '2xl': { fontSize: '$2xl' },
+    },
+    lineHeight: {
+      xs: { lineHeight: '$xs' },
+      sm: { lineHeight: '$sm' },
+      md: { lineHeight: '$md' },
+      lg: { lineHeight: '$lg' },
+      xl: { lineHeight: '$xl' },
+      '2xl': { lineHeight: '$2xl' },
+      '3xl': { lineHeight: '$3xl' },
+      '4xl': { lineHeight: '$4xl' },
     },
     lineClamp: {
       1: {

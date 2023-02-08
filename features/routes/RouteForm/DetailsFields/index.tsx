@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { TruncatedText } from '@/components/atoms';
 import { SelectField, TextField } from '@/components/molecules';
 import { countrySelectOptions } from '@/data/general';
 import { activityTypeSelectOptions } from '@/data/routes';
@@ -33,11 +34,11 @@ export const DetailsFields: FC = () => {
                   options: [
                     {
                       value: 'private',
-                      label: 'Private',
+                      label: <TruncatedText>Private</TruncatedText>,
                     },
                     {
                       value: 'public',
-                      label: 'Public',
+                      label: <TruncatedText>Public</TruncatedText>,
                     },
                   ],
                 },
@@ -75,7 +76,12 @@ export const DetailsFields: FC = () => {
                 {
                   id: 'activities',
                   label: 'Activities',
-                  options: activityTypeSelectOptions,
+                  options: activityTypeSelectOptions.map(
+                    ({ value, label }) => ({
+                      value,
+                      label: <TruncatedText>{label}</TruncatedText>,
+                    })
+                  ),
                 },
               ]}
             />
@@ -109,7 +115,10 @@ export const DetailsFields: FC = () => {
                 {
                   id: 'countries',
                   label: 'Countries',
-                  options: countrySelectOptions,
+                  options: countrySelectOptions.map(({ value, label }) => ({
+                    value,
+                    label: <TruncatedText>{label}</TruncatedText>,
+                  })),
                 },
               ]}
             />

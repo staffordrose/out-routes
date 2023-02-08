@@ -9,7 +9,7 @@ import {
 } from 'react-hook-form';
 import { BiPlus, BiTrash } from 'react-icons/bi';
 
-import { Button, Flex, IconButton } from '@/components/atoms';
+import { Button, Flex, IconButton, TruncatedText } from '@/components/atoms';
 import {
   Accordion,
   SelectField,
@@ -92,7 +92,7 @@ export const FeaturesFieldArray: FC<FeaturesFieldArrayProps> = ({
                               options: geometryTypeSelectOptions.map(
                                 ({ value, label }) => ({
                                   value,
-                                  label,
+                                  label: <TruncatedText>{label}</TruncatedText>,
                                 })
                               ),
                             },
@@ -128,7 +128,7 @@ export const FeaturesFieldArray: FC<FeaturesFieldArrayProps> = ({
                                           backgroundColor: value,
                                         }}
                                       />
-                                      <span>{label}</span>
+                                      <TruncatedText>{label}</TruncatedText>
                                     </ColorLabel>
                                   ),
                                 })
@@ -280,7 +280,7 @@ const SymbolField: FC<SymbolFieldProps> = ({
                       width={16}
                       alt={`${label} Icon`}
                     />
-                    <span>{label}</span>
+                    <TruncatedText>{label}</TruncatedText>
                   </SymbolLabel>
                 ),
               })),
