@@ -1,30 +1,20 @@
 import { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { ToastContents } from '@/components/atoms';
 import { SelectField, TextField } from '@/components/molecules';
 import { countrySelectOptions } from '@/data/general';
 import { activityTypeSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
-import { Route } from '@/types';
 import { ImageField } from './ImageField';
 import { TitleAltFieldArray } from './TitleAltFieldArray';
 import { RouteFormValues } from '../helpers';
 
-type DetailsFieldsProps = {
-  routeId?: Route['id'];
-  openToast?: (contents: ToastContents) => void;
-};
-
-export const DetailsFields: FC<DetailsFieldsProps> = ({
-  routeId,
-  openToast,
-}) => {
+export const DetailsFields: FC = () => {
   const { control } = useFormContext<RouteFormValues>();
 
   return (
     <>
-      {!!routeId && <ImageField routeId={routeId} openToast={openToast} />}
+      <ImageField />
       <ResponsiveGrid>
         <Controller
           name='route.is_private'

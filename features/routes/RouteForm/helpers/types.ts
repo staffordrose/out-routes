@@ -1,6 +1,6 @@
 import { CountryCodes } from '@/data/general';
 import { ActivityTypes } from '@/data/routes';
-import { MapFeature, RouteLayer, User } from '@/types';
+import { MapFeature, Route, RouteFeature, RouteLayer, User } from '@/types';
 
 export type RouteValues = {
   files: File[];
@@ -66,4 +66,10 @@ export type RouteFormValues = {
   route: RouteValues;
   layers: LayerValues[];
   activeLayerId: RouteLayer['id'] | null;
+};
+
+export type RouteFormResult = {
+  route: Route & { files: File[] };
+  layers: RouteLayer[];
+  features: RouteFeature[];
 };

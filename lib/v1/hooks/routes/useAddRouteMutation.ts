@@ -2,8 +2,10 @@ import { NextRouter } from 'next/router';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
+import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
 import { Route, User } from '@/types';
-import { addRoute } from '../../api/routes';
+import { addRoute, updateRoute } from '../../api/routes';
+import { uploadRouteImage } from '../../api/uploads';
 
 export type UseAddRouteMutationProps = {
   router: NextRouter;
@@ -19,8 +21,50 @@ export const useAddRouteMutation = ({
   openToast,
 }: UseAddRouteMutationProps) => {
   const mutation = useMutation({
-    mutationFn: (values: Pick<Route, 'title'> & Partial<Route>) =>
-      addRoute(values),
+    mutationFn: async (values: RouteFormResult): Promise<Route> => {
+      if (!authUser?.username) {
+        throw new Error(`Your username is required to add the route`);
+      }
+
+      const { layers, features } = values;
+      const { files, ...routeWithoutFiles } = values.route;
+
+      const route = await addRoute(routeWithoutFiles);
+
+      let routeImageIdUrls = {};
+
+      if (Array.isArray(files) && files.length) {
+        routeImageIdUrls = await uploadRouteImage(route.id, files[0]);
+
+        if (route.image_full) {
+          // release object URL that was created in RouteForm
+          URL.revokeObjectURL(route.image_full);
+        }
+      }
+
+      return updateRoute(authUser.username, route.slug, 'Route created', {
+        route: {
+          // properties from newly created route
+          id: route.id,
+          created_at: route.created_at,
+          owner: route.owner,
+          slug: route.slug,
+          // properties from form values
+          is_private: routeWithoutFiles.is_private,
+          title: routeWithoutFiles.title,
+          title_alt: routeWithoutFiles.title_alt,
+          activity_type: routeWithoutFiles.activity_type,
+          region: routeWithoutFiles.region,
+          country: routeWithoutFiles.country,
+          ele_start: routeWithoutFiles.ele_start,
+          ele_end: routeWithoutFiles.ele_end,
+          // properties from the uploaded route image
+          ...routeImageIdUrls,
+        },
+        layers,
+        features,
+      });
+    },
     onError: (error) => {
       openToast({
         title: 'Oops!',

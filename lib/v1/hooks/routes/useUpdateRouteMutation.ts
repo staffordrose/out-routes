@@ -2,8 +2,10 @@ import { NextRouter } from 'next/router';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
-import { PartialRouteLayersFeatures, Route, User } from '@/types';
+import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
+import { Route, User } from '@/types';
 import { updateRoute } from '../../api/routes';
+import { uploadRouteImage } from '../../api/uploads';
 
 export type UseUpdateRouteMutationProps = {
   router: NextRouter;
@@ -21,13 +23,42 @@ export const useUpdateRouteMutation = ({
   openToast,
 }: UseUpdateRouteMutationProps) => {
   const mutation = useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       commitTitle,
       values,
     }: {
       commitTitle: string;
-      values: PartialRouteLayersFeatures;
-    }) => updateRoute(username, slug, commitTitle, values),
+      values: RouteFormResult;
+    }) => {
+      const { route, layers, features } = values;
+      const { files, ...routeWithoutFiles } = route;
+
+      let routeImageIdUrls;
+
+      if (Array.isArray(files) && files.length) {
+        routeImageIdUrls = await uploadRouteImage(route.id, files[0]);
+
+        if (route.image_full) {
+          // release object URL that was created in RouteForm
+          URL.revokeObjectURL(route.image_full);
+        }
+
+        return updateRoute(username, slug, commitTitle, {
+          route: {
+            ...routeWithoutFiles,
+            ...routeImageIdUrls,
+          },
+          layers,
+          features,
+        });
+      } else {
+        return updateRoute(username, slug, commitTitle, {
+          route: routeWithoutFiles,
+          layers,
+          features,
+        });
+      }
+    },
     onError: (error) => {
       openToast({
         title: 'Oops!',

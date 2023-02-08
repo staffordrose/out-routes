@@ -1,17 +1,18 @@
 import { GeometryTypes } from '@/data/routes';
-import { Route, RouteFeature, RouteLayer, RouteLayersFeatures } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types';
 import { createAlphaNumericId } from '@/utils';
-import { RouteFormValues } from './types';
+import { RouteFormResult, RouteFormValues } from './types';
 
 export const mapValuesToRecords = (
   values: RouteFormValues
-): RouteLayersFeatures => {
-  let route: Route;
-  let layers: RouteLayer[] = [];
-  let features: RouteFeature[] = [];
+): RouteFormResult => {
+  let route: RouteFormResult['route'];
+  let layers: RouteFormResult['layers'] = [];
+  let features: RouteFormResult['features'] = [];
 
   {
     const {
+      files,
       id,
       owner,
       is_private,
@@ -33,6 +34,7 @@ export const mapValuesToRecords = (
     } = values.route;
 
     route = {
+      files,
       id: id as Route['id'],
       owner: owner?.id ? (owner as Route['owner']) : undefined,
       is_private: is_private === 'private' ? true : false,

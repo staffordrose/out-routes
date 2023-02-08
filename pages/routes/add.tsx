@@ -15,10 +15,11 @@ import { Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { RouteForm } from '@/features/routes';
+import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
 import { getUser } from '@/lib/v1/api/user';
 import { useAddRouteMutation } from '@/lib/v1/hooks/routes';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
-import { Route, RouteLayersFeatures } from '@/types';
+import { Route } from '@/types';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 const AddRoute = () => {
@@ -44,8 +45,8 @@ const AddRoute = () => {
     openToast,
   });
 
-  const onSubmit = async ({ route }: RouteLayersFeatures) => {
-    addRouteMutation.mutate(route);
+  const onSubmit = async (values: RouteFormResult) => {
+    addRouteMutation.mutate(values);
   };
 
   const renderResult = () => {

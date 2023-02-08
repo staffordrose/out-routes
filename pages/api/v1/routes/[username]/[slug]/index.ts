@@ -13,7 +13,7 @@ import {
   getAuthRouteMemberRoleByUsernameSlug,
 } from '@/lib/v1/user';
 import { MemberRoles, memberRoles } from '@/data/routes';
-import { RouteLayersFeatures } from '@/types';
+import { Route, RouteLayersFeatures } from '@/types';
 import {
   allowApiMethods,
   catchApiResponse,
@@ -23,19 +23,20 @@ import {
 import { authOptions } from '../../../../auth/[...nextauth]';
 
 type GetResponse = NextApiResponse<RouteLayersFeatures> | void;
-type SharedResponse = NextApiResponse<object> | void;
+type PutResponse = NextApiResponse<Route> | void;
+type DeleteResponse = NextApiResponse<object> | void;
 
 const handler: NextApiHandler = async (
   req,
   res
-): Promise<GetResponse | SharedResponse> => {
+): Promise<GetResponse | PutResponse | DeleteResponse> => {
   allowApiMethods(req, res, ['GET', 'PUT', 'DELETE']);
 
   switch (req.method) {
     case 'PUT':
-      return (await updateHandler(req, res)) as SharedResponse;
+      return (await updateHandler(req, res)) as PutResponse;
     case 'DELETE':
-      return (await deleteHandler(req, res)) as SharedResponse;
+      return (await deleteHandler(req, res)) as DeleteResponse;
     case 'GET':
     default:
       return (await getHandler(req, res)) as GetResponse;
@@ -87,7 +88,7 @@ const getHandler: NextApiHandler = async (req, res): Promise<GetResponse> => {
 const updateHandler: NextApiHandler = async (
   req,
   res
-): Promise<SharedResponse> => {
+): Promise<PutResponse> => {
   const username = getQueryParam(req.query, 'username');
   const slug = getQueryParam(req.query, 'slug');
 
@@ -120,9 +121,9 @@ const updateHandler: NextApiHandler = async (
       );
     }
 
-    await updateRoute(authUser, username, slug, reqBody);
+    const route = await updateRoute(authUser, username, slug, reqBody);
 
-    return res.status(200).json({});
+    return res.status(200).json(route);
   } catch (error) {
     return catchApiResponse(
       res,
@@ -136,7 +137,7 @@ const updateHandler: NextApiHandler = async (
 const deleteHandler: NextApiHandler = async (
   req,
   res
-): Promise<SharedResponse> => {
+): Promise<DeleteResponse> => {
   const username = getQueryParam(req.query, 'username');
   const slug = getQueryParam(req.query, 'slug');
 

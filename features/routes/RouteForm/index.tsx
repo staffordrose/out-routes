@@ -2,12 +2,12 @@ import { FC, useCallback, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { ToastContents } from '@/components/atoms';
-import { Route, RouteFeature, RouteLayer, RouteLayersFeatures } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types';
 import { DetailsFields } from './DetailsFields';
 import {
   mapRecordsToValues,
   mapValuesToRecords,
+  RouteFormResult,
   RouteFormValues,
   yupSchema,
 } from './helpers';
@@ -17,11 +17,7 @@ export type RouteFormProps = {
   route: Route;
   layers: RouteLayer[];
   features: RouteFeature[];
-  onSubmit: (
-    values: RouteLayersFeatures,
-    helpers: { reset: () => void }
-  ) => void;
-  openToast?: (contents: ToastContents) => void;
+  onSubmit: (values: RouteFormResult, helpers: { reset: () => void }) => void;
 };
 
 export const RouteForm: FC<RouteFormProps> = ({
@@ -29,7 +25,6 @@ export const RouteForm: FC<RouteFormProps> = ({
   layers,
   features,
   onSubmit: onSubmitHandler,
-  openToast,
 }) => {
   const { onSubmit, ...methods } = useRouteForm({
     route,
@@ -41,7 +36,7 @@ export const RouteForm: FC<RouteFormProps> = ({
   return (
     <FormProvider {...methods}>
       <form id='route-form' onSubmit={onSubmit}>
-        <DetailsFields routeId={route?.id} openToast={openToast} />
+        <DetailsFields />
         {!!route?.id && <Map routeId={route.id} />}
       </form>
     </FormProvider>

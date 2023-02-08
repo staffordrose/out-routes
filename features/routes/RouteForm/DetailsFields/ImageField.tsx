@@ -1,69 +1,21 @@
-import { FC, useMemo } from 'react';
+import { FC, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { BiTrash } from 'react-icons/bi';
 
-import {
-  AspectRatio,
-  Box,
-  IconButton,
-  Image,
-  ToastContents,
-} from '@/components/atoms';
+import { AspectRatio, Box, IconButton, Image } from '@/components/atoms';
 import { DropzoneField } from '@/components/molecules';
-import { useUploadRouteImageMutation } from '@/lib/v1/hooks/uploads';
 import { styled } from '@/styles';
-import { Route } from '@/types';
 import { RouteFormValues } from '../helpers';
 
-type ImageFieldProps = {
-  routeId: Route['id'];
-  openToast?: (contents: ToastContents) => void;
-};
-
-export const ImageField: FC<ImageFieldProps> = ({ routeId, openToast }) => {
+export const ImageField: FC = () => {
   const { control, formState, setValue } = useFormContext<RouteFormValues>();
-
-  const watchFiles = useWatch({
-    control,
-    name: 'route.files',
-  });
 
   const existingImage = useWatch({
     control,
     name: 'route.image_banner',
   });
 
-  const imageSrc = useMemo(
-    () =>
-      Array.isArray(watchFiles) && watchFiles.length > 0
-        ? URL.createObjectURL(watchFiles[0])
-        : undefined,
-    [watchFiles]
-  );
-
-  const uploadRouteImageMutation = useUploadRouteImageMutation({
-    openToast,
-    onSuccess: ({
-      image_id,
-      image_full,
-      image_og,
-      image_banner,
-      image_card_banner,
-      image_thumb_360,
-      image_thumb_240,
-      image_thumb_120,
-    }) => {
-      setValue('route.files', []);
-      setValue('route.image_id', image_id || null);
-      setValue('route.image_full', image_full || null);
-      setValue('route.image_og', image_og || null);
-      setValue('route.image_banner', image_banner || null);
-      setValue('route.image_card_banner', image_card_banner || null);
-      setValue('route.image_thumb_360', image_thumb_360 || null);
-      setValue('route.image_thumb_240', image_thumb_240 || null);
-      setValue('route.image_thumb_120', image_thumb_120 || null);
-    },
-  });
+  const [imageSrc, setImageSrc] = useState<string | undefined>();
 
   return (
     <StyledImageField>
@@ -84,15 +36,20 @@ export const ImageField: FC<ImageFieldProps> = ({ routeId, openToast }) => {
             size='lg'
             disabled={formState.isSubmitting}
             onClick={() => {
+              if (imageSrc) {
+                URL.revokeObjectURL(imageSrc);
+                setImageSrc(undefined);
+              }
+
               setValue('route.files', []);
-              setValue('route.image_id', '');
-              setValue('route.image_full', '');
-              setValue('route.image_og', '');
-              setValue('route.image_banner', '');
-              setValue('route.image_card_banner', '');
-              setValue('route.image_thumb_360', '');
-              setValue('route.image_thumb_240', '');
-              setValue('route.image_thumb_120', '');
+              setValue('route.image_id', null);
+              setValue('route.image_full', null);
+              setValue('route.image_og', null);
+              setValue('route.image_banner', null);
+              setValue('route.image_card_banner', null);
+              setValue('route.image_thumb_360', null);
+              setValue('route.image_thumb_240', null);
+              setValue('route.image_thumb_120', null);
             }}
           >
             <BiTrash />
@@ -111,17 +68,31 @@ export const ImageField: FC<ImageFieldProps> = ({ routeId, openToast }) => {
                 {...field}
                 aspectRatio={32 / 9}
                 onChange={(files) => {
-                  onChange(files);
+                  if (Array.isArray(files) && files.length) {
+                    onChange(files);
 
-                  if (Array.isArray(files)) {
-                    uploadRouteImageMutation.mutate({
-                      id: routeId,
-                      file: files[0],
-                    });
+                    const imageSrc = URL.createObjectURL(files[0]);
+                    setImageSrc(imageSrc);
+
+                    let imageId = imageSrc.split(
+                      process.env.NEXT_PUBLIC_URL || ''
+                    )[1];
+
+                    if (imageId.startsWith('/')) {
+                      imageId = imageId.slice(1);
+                    }
+
+                    setValue('route.image_id', imageId);
+                    setValue('route.image_full', imageSrc);
+                    setValue('route.image_og', imageSrc);
+                    setValue('route.image_banner', imageSrc);
+                    setValue('route.image_card_banner', imageSrc);
+                    setValue('route.image_thumb_360', imageSrc);
+                    setValue('route.image_thumb_240', imageSrc);
+                    setValue('route.image_thumb_120', imageSrc);
                   }
                 }}
                 accept={{ 'image/jpeg': [], 'image/png': [] }}
-                disabled={uploadRouteImageMutation.isLoading}
                 isTouched={isTouched}
                 error={error?.message}
               />

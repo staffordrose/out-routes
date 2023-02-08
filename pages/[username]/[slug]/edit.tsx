@@ -28,6 +28,7 @@ import {
   CommitRouteFormValues,
   RouteForm,
 } from '@/features/routes';
+import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
 import { useQueryParam } from '@/hooks';
 import { getRouteByUsernameSlug } from '@/lib/v1/api/routes';
 import { getUser } from '@/lib/v1/api/user';
@@ -96,7 +97,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
 
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const [values, setValues] = useState<PartialRouteLayersFeatures | null>(null);
+  const [values, setValues] = useState<RouteFormResult | null>(null);
 
   const commitItems = useMemo(() => {
     if (routeQuery.data && values) {
@@ -109,14 +110,17 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
     }
   }, [routeQuery.data, values]);
 
-  const onSubmitRouteForm = (values: RouteLayersFeatures) => {
+  const onSubmitRouteForm = (values: RouteFormResult) => {
     setValues(values);
     setDialogOpen(true);
   };
 
-  const onSubmitCommitRouteForm = ({ title }: CommitRouteFormValues) => {
+  const onSubmitCommitRouteForm = async ({ title }: CommitRouteFormValues) => {
     if (values) {
-      updateRouteMutation.mutate({ commitTitle: title, values });
+      updateRouteMutation.mutate({
+        commitTitle: title,
+        values,
+      });
       setDialogOpen(false);
     }
   };
@@ -309,7 +313,6 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
             layers={layers || []}
             features={features || []}
             onSubmit={onSubmitRouteForm}
-            openToast={openToast}
           />
         </DefaultLayout.Main>
       </>

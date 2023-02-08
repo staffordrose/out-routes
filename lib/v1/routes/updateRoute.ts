@@ -64,7 +64,17 @@ export const updateRoute = async (
 
     // get changes as commit items
     const commitItems = compareCommits(
-      base as PartialRouteLayersFeatures,
+      base.route.updated_at
+        ? base
+        : ({
+            route: {
+              ...base.route,
+              // when adding a new route, prevent `is_private` from being defined in base route
+              is_private: undefined as unknown as Route['is_private'],
+            },
+            layers: base.layers,
+            features: base.features,
+          } as PartialRouteLayersFeatures),
       values as PartialRouteLayersFeatures
     );
 
@@ -342,6 +352,7 @@ export const updateRoute = async (
       }),
     ]);
 
+    // TODO: If route is private, create activity records for route members
     if (!is_private) {
       const routeWithOwner = await xata.db.routes
         .filter('id', route.id)
@@ -350,7 +361,9 @@ export const updateRoute = async (
 
       // create activity records
       addActivityRecords(authUser.id, {
-        action: ActivityActions.UPDATE_ROUTE,
+        action: !base.route.updated_at
+          ? ActivityActions.ADD_ROUTE
+          : ActivityActions.UPDATE_ROUTE,
         payload: routeWithOwner as Route,
       });
     }

@@ -8,7 +8,7 @@ export const updateRoute = async (
   slug: Route['slug'],
   commitTitle: Commit['title'],
   values: PartialRouteLayersFeatures
-): Promise<void> => {
+): Promise<Route> => {
   try {
     const res = await fetch(`/api/v1/routes/${username}/${slug}`, {
       method: 'PUT',
@@ -19,6 +19,8 @@ export const updateRoute = async (
     if (!res.ok) {
       throw new StatusError(res.status, data?.message || fallbackError);
     }
+
+    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw error;
