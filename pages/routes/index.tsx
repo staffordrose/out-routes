@@ -52,56 +52,38 @@ const Routes = ({ authUsername }: RoutesProps) => {
     ],
   });
 
-  if (routesQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading routes' />;
-  }
-  if (routesQuery.isError) {
-    return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
-        {routesQuery.error instanceof Error ? routesQuery.error.message : null}
-      </Feedback>
-    );
-  }
-  if (routesQuery.isSuccess) {
-    const {
-      data: { meta, records: routes },
-      isPreviousData,
-    } = routesQuery;
-
-    if (!Array.isArray(routes) || !routes.length) {
+  const renderResult = () => {
+    if (routesQuery.isLoading) {
+      return <Feedback size='xl' type='loading' title='Loading routes' />;
+    }
+    if (routesQuery.isError) {
       return (
-        <Feedback size='lg' type='empty' icon={BiMap} title='No Routes'>
-          You haven&apos;t created a route.
+        <Feedback size='xl' type='error' title='Something went wrong'>
+          {routesQuery.error instanceof Error
+            ? routesQuery.error.message
+            : null}
         </Feedback>
       );
     }
+    if (routesQuery.isSuccess) {
+      const {
+        data: { meta, records: routes },
+        isPreviousData,
+      } = routesQuery;
 
-    const pageNum = Number(page) || 1;
-    const hasMore = !!meta?.page?.more;
+      if (!Array.isArray(routes) || !routes.length) {
+        return (
+          <Feedback size='lg' type='empty' icon={BiMap} title='No Routes'>
+            You haven&apos;t created a route.
+          </Feedback>
+        );
+      }
 
-    return (
-      <>
-        <SEO isNoIndex title='Your Routes' />
-        <DefaultLayout.Main>
-          <PageHeading
-            actions={[
-              {
-                id: 'add-route',
-                actionType: 'responsive-link',
-                size: 'md',
-                [`aria-label`]: 'Add a new route',
-                href: '/routes/add',
-                children: (
-                  <>
-                    <BiPlus />
-                    <span>Add a Route</span>
-                  </>
-                ),
-              },
-            ]}
-          >
-            Your Routes
-          </PageHeading>
+      const pageNum = Number(page) || 1;
+      const hasMore = !!meta?.page?.more;
+
+      return (
+        <>
           <Grid columns={4} gap='lg' marginBottom='lg'>
             {routes.map(
               ({
@@ -165,11 +147,39 @@ const Routes = ({ authUsername }: RoutesProps) => {
               </Button>
             </Flex>
           )}
-        </DefaultLayout.Main>
-      </>
-    );
-  }
-  return null;
+        </>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <>
+      <SEO isNoIndex title='Your Routes' />
+      <DefaultLayout.Main>
+        <PageHeading
+          actions={[
+            {
+              id: 'add-route',
+              actionType: 'responsive-link',
+              size: 'md',
+              [`aria-label`]: 'Add a new route',
+              href: '/routes/add',
+              children: (
+                <>
+                  <BiPlus />
+                  <span>Add a Route</span>
+                </>
+              ),
+            },
+          ]}
+        >
+          Your Routes
+        </PageHeading>
+        {renderResult()}
+      </DefaultLayout.Main>
+    </>
+  );
 };
 
 Routes.getLayout = (page: ReactNode) => {
