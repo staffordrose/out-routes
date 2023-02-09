@@ -40,7 +40,7 @@ export const deleteRoute = async (
 
     const route = await xata.db.routes
       .filter({ 'owner.username': username, slug })
-      .select(['owner.id', 'fork_id', 'image_id'])
+      .select(['owner.id', 'fork_id', 'image_id', 'stats_favorites'])
       .getFirst();
 
     // route does not exist
@@ -136,6 +136,17 @@ export const deleteRoute = async (
         )
       );
     }
+
+    (route_favorites || []).forEach(({ id, user }) => {
+      if (!user?.id) return;
+
+      // delete favorite_route activity records
+      deleteActivityRecords(user.id, {
+        action: ActivityActions.FAVORITE_ROUTE,
+        resource_id: id,
+        resource_table: databaseSchema.route_favorites,
+      });
+    });
 
     let routeFavoritesUserStats = route_favorites || [];
 
