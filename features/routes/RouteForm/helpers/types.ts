@@ -12,8 +12,6 @@ export type RouteValues = {
   activity_type: ActivityTypes;
   region: string;
   country: CountryCodes;
-  ele_start: number;
-  ele_end: number;
   image_id: string | null;
   image_full: string | null;
   image_og: string | null;

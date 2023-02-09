@@ -82,16 +82,19 @@ export const compareRouteFeatures = (
 
   addRouteFeatureProperty({
     property: 'coordinates',
+    additionalProperties: ['type'],
     action: 'add_feature_coordinates',
   });
 
   updateRouteFeatureProperty({
     property: 'coordinates',
+    additionalProperties: ['type'],
     action: 'update_feature_coordinates',
   });
 
   removeRouteFeatureProperty({
     property: 'coordinates',
+    additionalProperties: ['type'],
     action: 'remove_feature_coordinates',
   });
 

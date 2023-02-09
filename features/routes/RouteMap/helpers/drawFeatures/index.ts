@@ -3,8 +3,18 @@ import { Map } from 'mapbox-gl';
 import type { FeatureCollection } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { MapLayer, PopupState, RouteFeature, RouteLayer } from '@/types';
-import { getFeatureLngLat, mapLayerRecordToMapLayer } from '@/utils';
+import {
+  BoundingBox,
+  MapLayer,
+  PopupState,
+  RouteFeature,
+  RouteLayer,
+} from '@/types';
+import {
+  getFeatureLngLat,
+  mapBoundingBoxToLngLatBounds,
+  mapLayerRecordToMapLayer,
+} from '@/utils';
 import { getMapBounds } from '../getMapBounds';
 import { drawLineString } from './drawLineString';
 import { drawPoint } from './drawPoint';
@@ -15,6 +25,7 @@ type DrawFeatures = {
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
+  mapBoundingBox?: BoundingBox;
 };
 
 export const drawFeatures = ({
@@ -22,6 +33,7 @@ export const drawFeatures = ({
   layers,
   features,
   openPopup,
+  mapBoundingBox,
 }: DrawFeatures) => {
   if (!map.current) return;
 
@@ -83,11 +95,14 @@ export const drawFeatures = ({
       });
     });
 
-    const bounds = getMapBounds(mapLayers);
+    const bounds = mapBoundingBox
+      ? mapBoundingBoxToLngLatBounds(mapBoundingBox)
+      : getMapBounds(mapLayers);
 
     // set bounds
     mapRef.fitBounds(bounds, {
-      padding: 24,
+      padding: 48,
+      duration: 0,
     });
   }
 };

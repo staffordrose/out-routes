@@ -3,16 +3,17 @@ import { createRoot } from 'react-dom/client';
 import { Map, Popup as PopupT } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
+import { PopupState, Route, RouteFeature, RouteLayer } from '@/types';
 import { Popup } from '../components';
 import { useMapState, useSetupMap } from '../hooks';
 
 export type UseMapProps = {
+  route: Route;
   layers: RouteLayer[];
   features: RouteFeature[];
 };
 
-export const useMap = ({ layers, features }: UseMapProps) => {
+export const useMap = ({ route, layers, features }: UseMapProps) => {
   const { state, setPopupFeatureId } = useMapState();
 
   const mapContainerEl = useRef<HTMLDivElement | null>(null);
@@ -60,6 +61,9 @@ export const useMap = ({ layers, features }: UseMapProps) => {
     layers,
     features,
     openPopup,
+    mapBoundingBox: route.map_bounding_box
+      ? JSON.parse(route.map_bounding_box)
+      : undefined,
   });
 
   return {

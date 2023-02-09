@@ -48,6 +48,7 @@ export const forkRoute = async (
 
     const { title, title_alt, activity_type, region, country } = base.route;
 
+    // TODO: Image fields are missing
     // fork the route
     const route = await xata.db.routes.create({
       created_at: new Date(),
@@ -62,8 +63,16 @@ export const forkRoute = async (
       activity_type,
       region,
       country,
-      stats_layers: Number(base.route.stats_layers) || 0,
-      stats_features: Number(base.route.stats_features) || 0,
+      map_bounding_box: base.route.map_bounding_box,
+      map_start_lng: base.route.map_start_lng,
+      map_start_lat: base.route.map_start_lat,
+      map_start_ele: base.route.map_start_ele,
+      map_end_lng: base.route.map_end_lng,
+      map_end_lat: base.route.map_end_lat,
+      map_end_ele: base.route.map_end_ele,
+      map_distance: base.route.map_distance,
+      stats_layers: base.route.stats_layers,
+      stats_features: base.route.stats_features,
       stats_members: 1,
       stats_contributors: 1,
       stats_commits: 1,

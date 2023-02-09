@@ -2,16 +2,17 @@ import { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { styled } from '@/styles';
-import { Route } from '@/types';
+import { BoundingBox, Route } from '@/types';
 import { RouteFormValues } from '../helpers';
 import { MapLayersFeatures } from './components';
 import { useMap } from './hooks';
 
 type MapProps = {
   routeId: Route['id'];
+  routeMapBoundingBox?: BoundingBox;
 };
 
-export const Map: FC<MapProps> = ({ routeId }) => {
+export const Map: FC<MapProps> = ({ routeId, routeMapBoundingBox }) => {
   const { control } = useFormContext<RouteFormValues>();
 
   const { fields, append, remove, update } = useFieldArray({
@@ -20,8 +21,9 @@ export const Map: FC<MapProps> = ({ routeId }) => {
   });
 
   const { mapContainerEl, openPopup } = useMap({
-    routeId,
     update,
+    routeId,
+    routeMapBoundingBox,
   });
 
   return (

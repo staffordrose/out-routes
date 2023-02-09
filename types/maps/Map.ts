@@ -17,3 +17,8 @@ export type PopupState = {
   center: LngLat;
   feature: MapFeature;
 };
+
+export type BoundingBox = {
+  _ne: { lng: number; lat: number };
+  _sw: { lng: number; lat: number };
+};

@@ -1,6 +1,7 @@
 export * from './mapFeatureRecordToFeatureValues';
 export * from './mapFeatureValuesToMapFeature';
 export * from './mapLayerFeaturesRecordsToLayerValues';
+export * from './mapLayerValuesToMapLayer';
 export * from './mapMapFeatureToFeatureValues';
 export * from './mapMapLayerToLayerValues';
 export * from './mapRecordsToValues';

@@ -1,6 +1,12 @@
 import { GeometryTypes } from '@/data/routes';
 import { Route, RouteFeature, RouteLayer } from '@/types';
-import { createAlphaNumericId } from '@/utils';
+import {
+  createAlphaNumericId,
+  getMapEndLngLatEle,
+  getMapStartLngLatEle,
+} from '@/utils';
+import { getMapBounds } from '../../RouteMap/helpers';
+import { mapLayerValuesToMapLayer } from './mapLayerValuesToMapLayer';
 import { RouteFormResult, RouteFormValues } from './types';
 
 export const mapValuesToRecords = (
@@ -21,8 +27,6 @@ export const mapValuesToRecords = (
       activity_type,
       region,
       country,
-      ele_start,
-      ele_end,
       image_id,
       image_full,
       image_og,
@@ -32,6 +36,24 @@ export const mapValuesToRecords = (
       image_thumb_240,
       image_thumb_120,
     } = values.route;
+
+    const mapLayers = values.layers.map((layer, layerIndex) =>
+      mapLayerValuesToMapLayer(layerIndex, layer)
+    );
+
+    const mapBoundingBox = getMapBounds(mapLayers);
+
+    const {
+      lng: mapStartLng,
+      lat: mapStartLat,
+      ele: mapStartEle,
+    } = getMapStartLngLatEle(mapLayers);
+
+    const {
+      lng: mapEndLng,
+      lat: mapEndLat,
+      ele: mapEndEle,
+    } = getMapEndLngLatEle(mapLayers);
 
     route = {
       files,
@@ -45,8 +67,14 @@ export const mapValuesToRecords = (
       activity_type,
       region,
       country,
-      ele_start,
-      ele_end,
+      map_bounding_box: JSON.stringify(mapBoundingBox),
+      map_start_lng: mapStartLng || null,
+      map_start_lat: mapStartLat || null,
+      map_start_ele: Number(mapStartEle) || 0,
+      map_end_lng: mapEndLng || null,
+      map_end_lat: mapEndLat || null,
+      map_end_ele: Number(mapEndEle) || 0,
+      map_distance: 0, // TODO: Add functionality to calculate route distance
       image_id,
       image_full,
       image_og,
