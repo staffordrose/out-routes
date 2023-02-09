@@ -145,46 +145,6 @@ export const compareRoutes = (
     action: 'remove_country',
   });
 
-  // ele_start
-
-  addRouteProperty({
-    property: 'ele_start',
-    type: 'number',
-    action: 'add_ele_start',
-  });
-
-  updateRouteProperty({
-    property: 'ele_start',
-    type: 'number',
-    action: 'update_ele_start',
-  });
-
-  removeRouteProperty({
-    property: 'ele_start',
-    type: 'number',
-    action: 'remove_ele_start',
-  });
-
-  // ele_end
-
-  addRouteProperty({
-    property: 'ele_end',
-    type: 'number',
-    action: 'add_ele_end',
-  });
-
-  updateRouteProperty({
-    property: 'ele_end',
-    type: 'number',
-    action: 'update_ele_end',
-  });
-
-  removeRouteProperty({
-    property: 'ele_end',
-    type: 'number',
-    action: 'remove_ele_end',
-  });
-
   // image_id
 
   addRouteProperty({

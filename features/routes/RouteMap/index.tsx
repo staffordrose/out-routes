@@ -1,17 +1,18 @@
 import { FC } from 'react';
 
 import { styled } from '@/styles';
-import { RouteFeature, RouteLayer } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types';
 import { MapLayersFeatures } from './components';
 import { useMap } from './hooks';
 
 type RouteMapProps = {
+  route: Route;
   layers: RouteLayer[];
   features: RouteFeature[];
 };
 
-export const RouteMap: FC<RouteMapProps> = ({ layers, features }) => {
-  const { mapContainerEl, openPopup } = useMap({ layers, features });
+export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
+  const { mapContainerEl, openPopup } = useMap({ route, layers, features });
 
   return (
     <StyledMap>

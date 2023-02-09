@@ -17,8 +17,6 @@ export const mapRouteRecordToRouteValues = (route: Route): RouteValues => {
     activity_type: (route.activity_type || '') as RouteValues['activity_type'],
     region: route.region || '',
     country: (route.country || '') as RouteValues['country'],
-    ele_start: Number(route.ele_start) || 0,
-    ele_end: Number(route.ele_end) || 0,
     image_id: route.image_id || null,
     image_full: route.image_full || null,
     image_og: route.image_og || null,

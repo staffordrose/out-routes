@@ -37,7 +37,16 @@ export const RouteForm: FC<RouteFormProps> = ({
     <FormProvider {...methods}>
       <form id='route-form' onSubmit={onSubmit}>
         <DetailsFields />
-        {!!route?.id && <Map routeId={route.id} />}
+        {!!route?.id && (
+          <Map
+            routeId={route.id}
+            routeMapBoundingBox={
+              route.map_bounding_box
+                ? JSON.parse(route.map_bounding_box)
+                : undefined
+            }
+          />
+        )}
       </form>
     </FormProvider>
   );

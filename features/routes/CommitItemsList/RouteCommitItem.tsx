@@ -2,14 +2,7 @@ import { FC } from 'react';
 
 import { routeActions } from '@/data/routes';
 import { RouteCommitItem as RouteCommitItemT } from '@/types';
-import {
-  ActivityType,
-  Country,
-  Elevation,
-  Image,
-  Quotes,
-  TitleAlt,
-} from './properties';
+import { ActivityType, Country, Image, Quotes, TitleAlt } from './properties';
 import { CommitItem } from './shared';
 
 // TODO: Move fork_route out of RouteCommitItem and make it into its own this (like settings or administration)
@@ -171,56 +164,6 @@ export const RouteCommitItem: FC<RouteCommitItemT> = ({
           type='remove'
           name='Country'
           prevChildren={<Country country={prev?.country} />}
-        />
-      );
-    case routeActions.add_ele_start:
-      return (
-        <CommitItem
-          type='add'
-          name='Start Elevation'
-          nextChildren={<Elevation ele={next?.ele_start} />}
-        />
-      );
-    case routeActions.update_ele_start:
-      return (
-        <CommitItem
-          type='update'
-          name='Start Elevation'
-          prevChildren={<Elevation ele={prev?.ele_start} />}
-          nextChildren={<Elevation ele={next?.ele_start} />}
-        />
-      );
-    case routeActions.remove_ele_start:
-      return (
-        <CommitItem
-          type='remove'
-          name='Start Elevation'
-          prevChildren={<Elevation ele={prev?.ele_start} />}
-        />
-      );
-    case routeActions.add_ele_end:
-      return (
-        <CommitItem
-          type='add'
-          name='End Elevation'
-          nextChildren={<Elevation ele={next?.ele_end} />}
-        />
-      );
-    case routeActions.update_ele_end:
-      return (
-        <CommitItem
-          type='update'
-          name='End Elevation'
-          prevChildren={<Elevation ele={prev?.ele_end} />}
-          nextChildren={<Elevation ele={next?.ele_end} />}
-        />
-      );
-    case routeActions.remove_ele_end:
-      return (
-        <CommitItem
-          type='remove'
-          name='End Elevation'
-          prevChildren={<Elevation ele={prev?.ele_end} />}
         />
       );
     case routeActions.add_route_image:

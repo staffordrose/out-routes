@@ -3,7 +3,7 @@ import { Map } from 'mapbox-gl';
 
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
+import { BoundingBox, PopupState, RouteFeature, RouteLayer } from '@/types';
 import { drawFeatures } from '../helpers';
 import { MapState } from './useMapState';
 
@@ -14,6 +14,7 @@ type UseSetupMapProps = {
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
+  mapBoundingBox?: BoundingBox;
 };
 
 export const useSetupMap = ({
@@ -23,6 +24,7 @@ export const useSetupMap = ({
   layers,
   features,
   openPopup,
+  mapBoundingBox,
 }: UseSetupMapProps) => {
   useEffect(() => {
     // initialize map only once
@@ -82,6 +84,7 @@ export const useSetupMap = ({
         layers,
         features,
         openPopup,
+        mapBoundingBox,
       });
     });
   });

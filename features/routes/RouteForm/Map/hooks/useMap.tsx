@@ -5,13 +5,10 @@ import { Map, Popup as PopupT } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { mapboxgl } from '@/lib/client';
-import { MapLayer, PopupState, Route } from '@/types';
+import { BoundingBox, MapLayer, PopupState, Route } from '@/types';
 import { RouteFormValues } from '../../helpers';
 import { Popup } from '../components';
-import { updateViewportLocalStorage } from '../helpers';
 import {
-  ActionTypes,
-  MapStateActions,
   useDrawFeatures,
   useMapState,
   useOnDrawCreate,
@@ -23,21 +20,17 @@ import {
 } from '../hooks';
 
 export type UseMapProps = {
-  routeId: Route['id'];
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  routeId: Route['id'];
+  routeMapBoundingBox?: BoundingBox;
 };
 
-export const useMap = ({ routeId, update }: UseMapProps) => {
-  const { state, dispatch, setSelectedFeatureIds, setPopupFeatureId } =
-    useMapState();
-
-  const setViewport: MapStateActions['setViewport'] = useCallback(
-    (payload) => {
-      dispatch({ type: ActionTypes.SET_VIEWPORT, payload });
-      updateViewportLocalStorage(routeId, payload);
-    },
-    [dispatch, routeId]
-  );
+export const useMap = ({
+  update,
+  routeId,
+  routeMapBoundingBox,
+}: UseMapProps) => {
+  const { state, setSelectedFeatureIds, setPopupFeatureId } = useMapState();
 
   const { control, setValue } = useFormContext<RouteFormValues>();
   const layers = useWatch({ control, name: 'layers' });
@@ -59,13 +52,12 @@ export const useMap = ({ routeId, update }: UseMapProps) => {
     mapContainerEl,
     map,
     draw,
-    setViewport,
   });
 
   useSetInitialViewport({
     routeId,
     map,
-    setViewport,
+    routeMapBoundingBox,
   });
 
   useDrawFeatures({

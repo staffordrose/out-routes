@@ -1,18 +1,17 @@
-import { MutableRefObject, useCallback, useEffect } from 'react';
+import { MutableRefObject, useEffect } from 'react';
 import { Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
 import { mapboxDrawStyles } from '../config';
-import { MapState, MapStateActions } from './useMapState';
+import { MapState } from './useMapState';
 
 type UseSetupMapProps = {
   state: MapState;
   mapContainerEl: MutableRefObject<HTMLDivElement | null>;
   map: MutableRefObject<Map | undefined>;
   draw: MutableRefObject<MapboxDraw | undefined>;
-  setViewport: MapStateActions['setViewport'];
 };
 
 export const useSetupMap = ({
@@ -20,7 +19,6 @@ export const useSetupMap = ({
   mapContainerEl,
   map,
   draw,
-  setViewport,
 }: UseSetupMapProps) => {
   useEffect(() => {
     // initialize map only once
@@ -90,17 +88,6 @@ export const useSetupMap = ({
             }
           }
         );
-      });
-    });
-
-    // move end
-    map.current.on('moveend', () => {
-      setViewport({
-        center: [
-          Number(map.current?.getCenter().lng.toFixed(6)),
-          Number(map.current?.getCenter().lat.toFixed(6)),
-        ],
-        zoom: Number(map.current?.getZoom().toFixed(2)),
       });
     });
   });

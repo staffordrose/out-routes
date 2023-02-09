@@ -1,57 +1,33 @@
 import { MutableRefObject, useEffect } from 'react';
 import { Map } from 'mapbox-gl';
 
-import { mapboxgl } from '@/lib/client';
-import { LngLat, Route, Viewport } from '@/types';
-import { MapStateActions } from './useMapState';
+import { BoundingBox, Route } from '@/types';
+import { mapBoundingBoxToLngLatBounds } from '@/utils';
 
 type UseSetInitialViewportProps = {
   routeId?: Route['id'];
   map: MutableRefObject<Map | undefined>;
-  setViewport: MapStateActions['setViewport'];
+  routeMapBoundingBox?: BoundingBox;
 };
 
 export const useSetInitialViewport = ({
   routeId,
   map,
-  setViewport,
+  routeMapBoundingBox,
 }: UseSetInitialViewportProps) => {
   useEffect(() => {
     const mapRef = map.current;
 
     if (!mapRef || !routeId) return;
 
-    let center: LngLat | undefined;
-    const lsCenter = localStorage.getItem(`mapid:${routeId}-center`);
-    if (lsCenter) {
-      center = JSON.parse(lsCenter);
-    }
+    if (routeMapBoundingBox) {
+      const lngLatBounds = mapBoundingBoxToLngLatBounds(routeMapBoundingBox);
 
-    let zoom: number | undefined;
-    const lsZoom = Number(localStorage.getItem(`mapid:${routeId}-zoom`));
-    if (lsZoom) {
-      zoom = lsZoom;
-    }
-
-    if (Array.isArray(center) && typeof zoom === 'number') {
-      setViewport({ center, zoom } as Viewport);
-
-      mapRef.jumpTo({
-        center,
-        offset: [0, 0],
-        zoom,
-      } as mapboxgl.CameraOptions);
-    } else if (center) {
-      setViewport({
-        center,
+      // set bounds
+      mapRef.fitBounds(lngLatBounds, {
+        padding: 48,
+        duration: 0,
       });
-
-      mapRef.jumpTo({
-        center,
-        offset: [0, 0],
-      } as mapboxgl.CameraOptions);
-    } else if (typeof zoom === 'number') {
-      setViewport({ zoom });
     }
-  }, [routeId, map, setViewport]);
+  }, [routeId, map, routeMapBoundingBox]);
 };

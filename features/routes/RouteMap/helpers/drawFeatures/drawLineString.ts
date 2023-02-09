@@ -1,6 +1,5 @@
-import mapboxgl from 'mapbox-gl';
-
 import { ColorCodes } from '@/data/general';
+import { mapboxgl } from '@/lib/client';
 import { MapFeature, MapLayer } from '@/types';
 
 export const drawLineString = (
