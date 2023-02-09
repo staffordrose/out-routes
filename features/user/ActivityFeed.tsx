@@ -6,6 +6,7 @@ import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
 import { PaginatedActivity } from '@/types';
 import { ActivityCard } from '../user';
+import { BiCollection } from 'react-icons/bi';
 
 type ActivityFeedProps = {
   pages?: PaginatedActivity[];
@@ -20,6 +21,28 @@ export const ActivityFeed: FC<ActivityFeedProps> = ({
   hasMore,
   loadMore,
 }) => {
+  if (
+    !Array.isArray(pages) ||
+    !pages.length ||
+    (pages.length === 1 &&
+      (!Array.isArray(pages[0].records) || !pages[0].records.length))
+  ) {
+    return (
+      <Feedback
+        size='xl'
+        type='empty'
+        icon={BiCollection}
+        title='Your feed is empty'
+      >
+        <p>
+          Once you start following other users and starring routes you should
+          begin to see activity. Meanwhile, you can{' '}
+          <Link href='/explore'>explore popular routes</Link>.
+        </p>
+      </Feedback>
+    );
+  }
+
   return (
     <InfiniteScroll
       pageStart={0}
@@ -42,7 +65,7 @@ export const ActivityFeed: FC<ActivityFeedProps> = ({
 };
 
 type PagesProps = {
-  pages?: PaginatedActivity[];
+  pages: PaginatedActivity[];
   isLoading: boolean;
 };
 
@@ -52,17 +75,7 @@ const Pages: FC<PagesProps> = ({ pages, isLoading }) => {
       <Feedback key='loading' size='xl' type='loading' title='Loading feed' />
     );
   }
-  if (!Array.isArray(pages) || !pages.length) {
-    return (
-      <Feedback size='xl' type='empty' title='Your feed is empty'>
-        <p>
-          Once you start following other people and starring routes you should
-          start seeing activity. Meanwhile, you can{' '}
-          <Link href='/explore'>explore public routes</Link>.
-        </p>
-      </Feedback>
-    );
-  }
+
   return (
     <>
       {pages.map((page, index) => {
