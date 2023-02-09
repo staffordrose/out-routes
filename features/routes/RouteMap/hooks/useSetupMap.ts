@@ -1,9 +1,9 @@
 import { MutableRefObject, useEffect } from 'react';
-import { Map } from 'mapbox-gl';
+import { LngLatBounds, Map } from 'mapbox-gl';
 
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
-import { BoundingBox, PopupState, RouteFeature, RouteLayer } from '@/types';
+import { PopupState, RouteFeature, RouteLayer } from '@/types';
 import { drawFeatures } from '../helpers';
 import { MapState } from './useMapState';
 
@@ -14,7 +14,7 @@ type UseSetupMapProps = {
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
-  mapBoundingBox?: BoundingBox;
+  mapBounds?: LngLatBounds | null;
 };
 
 export const useSetupMap = ({
@@ -24,7 +24,7 @@ export const useSetupMap = ({
   layers,
   features,
   openPopup,
-  mapBoundingBox,
+  mapBounds,
 }: UseSetupMapProps) => {
   useEffect(() => {
     // initialize map only once
@@ -84,7 +84,7 @@ export const useSetupMap = ({
         layers,
         features,
         openPopup,
-        mapBoundingBox,
+        mapBounds,
       });
     });
   });

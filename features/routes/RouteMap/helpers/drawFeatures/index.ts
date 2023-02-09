@@ -1,21 +1,10 @@
 import { MutableRefObject } from 'react';
-import { Map } from 'mapbox-gl';
+import { LngLatBounds, Map } from 'mapbox-gl';
 import type { FeatureCollection } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
-import {
-  BoundingBox,
-  MapLayer,
-  PopupState,
-  RouteFeature,
-  RouteLayer,
-} from '@/types';
-import {
-  getFeatureLngLat,
-  mapBoundingBoxToLngLatBounds,
-  mapLayerRecordToMapLayer,
-} from '@/utils';
-import { getMapBounds } from '../getMapBounds';
+import { MapLayer, PopupState, RouteFeature, RouteLayer } from '@/types';
+import { getFeatureLngLat, mapLayerRecordToMapLayer } from '@/utils';
 import { drawLineString } from './drawLineString';
 import { drawPoint } from './drawPoint';
 import { drawPolygon, drawPolygonOutline } from './drawPolygon';
@@ -25,7 +14,7 @@ type DrawFeatures = {
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
-  mapBoundingBox?: BoundingBox;
+  mapBounds?: LngLatBounds | null;
 };
 
 export const drawFeatures = ({
@@ -33,7 +22,7 @@ export const drawFeatures = ({
   layers,
   features,
   openPopup,
-  mapBoundingBox,
+  mapBounds,
 }: DrawFeatures) => {
   if (!map.current) return;
 
@@ -95,14 +84,12 @@ export const drawFeatures = ({
       });
     });
 
-    const bounds = mapBoundingBox
-      ? mapBoundingBoxToLngLatBounds(mapBoundingBox)
-      : getMapBounds(mapLayers);
-
-    // set bounds
-    mapRef.fitBounds(bounds, {
-      padding: 48,
-      duration: 0,
-    });
+    if (mapBounds) {
+      // set bounds
+      mapRef.fitBounds(mapBounds, {
+        padding: 48,
+        duration: 0,
+      });
+    }
   }
 };

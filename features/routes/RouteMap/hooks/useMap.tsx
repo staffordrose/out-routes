@@ -4,6 +4,7 @@ import { Map, Popup as PopupT } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
 import { PopupState, Route, RouteFeature, RouteLayer } from '@/types';
+import { parseMapBounds } from '@/utils';
 import { Popup } from '../components';
 import { useMapState, useSetupMap } from '../hooks';
 
@@ -61,9 +62,7 @@ export const useMap = ({ route, layers, features }: UseMapProps) => {
     layers,
     features,
     openPopup,
-    mapBoundingBox: route.map_bounding_box
-      ? JSON.parse(route.map_bounding_box)
-      : undefined,
+    mapBounds: parseMapBounds(route.map_bounding_box),
   });
 
   return {

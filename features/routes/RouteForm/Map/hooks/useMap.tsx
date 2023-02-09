@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
-import { Map, Popup as PopupT } from 'mapbox-gl';
+import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { mapboxgl } from '@/lib/client';
-import { BoundingBox, MapLayer, PopupState, Route } from '@/types';
+import { MapLayer, PopupState, Route } from '@/types';
 import { RouteFormValues } from '../../helpers';
 import { Popup } from '../components';
 import {
@@ -22,14 +22,10 @@ import {
 export type UseMapProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   routeId: Route['id'];
-  routeMapBoundingBox?: BoundingBox;
+  routeMapBounds?: LngLatBounds | null;
 };
 
-export const useMap = ({
-  update,
-  routeId,
-  routeMapBoundingBox,
-}: UseMapProps) => {
+export const useMap = ({ update, routeId, routeMapBounds }: UseMapProps) => {
   const { state, setSelectedFeatureIds, setPopupFeatureId } = useMapState();
 
   const { control, setValue } = useFormContext<RouteFormValues>();
@@ -57,7 +53,7 @@ export const useMap = ({
   useSetInitialViewport({
     routeId,
     map,
-    routeMapBoundingBox,
+    routeMapBounds,
   });
 
   useDrawFeatures({
