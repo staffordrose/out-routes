@@ -51,9 +51,9 @@ const getHandler: NextApiHandler = async (req, res): Promise<GetResponse> => {
   const slug = getQueryParam(req.query, 'slug');
 
   try {
-    const RouteLayersFeatures = await getRouteByUsernameSlug(username, slug);
+    const routeLayersFeatures = await getRouteByUsernameSlug(username, slug);
 
-    const { route } = RouteLayersFeatures;
+    const { route } = routeLayersFeatures;
 
     // only members can view route
     if (typeof route.is_private !== 'boolean' || route.is_private) {
@@ -74,7 +74,7 @@ const getHandler: NextApiHandler = async (req, res): Promise<GetResponse> => {
       }
     }
 
-    return res.status(200).json(RouteLayersFeatures);
+    return res.status(200).json(routeLayersFeatures);
   } catch (error) {
     return catchApiResponse(
       res,

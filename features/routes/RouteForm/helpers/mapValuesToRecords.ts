@@ -1,10 +1,8 @@
-import isEmpty from 'lodash.isempty';
-
 import { GeometryTypes } from '@/data/routes';
 import { Route, RouteFeature, RouteLayer } from '@/types';
 import {
   createAlphaNumericId,
-  getMapBounds,
+  getMapBoundsFromMapLayers,
   getMapEndLngLatEle,
   getMapStartLngLatEle,
 } from '@/utils';
@@ -43,7 +41,7 @@ export const mapValuesToRecords = (
       mapLayerValuesToMapLayer(layerIndex, layer)
     );
 
-    const mapBoundingBox = getMapBounds(mapLayers);
+    const mapBounds = getMapBoundsFromMapLayers(mapLayers);
 
     const {
       lng: mapStartLng,
@@ -69,9 +67,10 @@ export const mapValuesToRecords = (
       activity_type,
       region,
       country,
-      map_bounding_box: !isEmpty(mapBoundingBox)
-        ? JSON.stringify(mapBoundingBox)
-        : null,
+      map_bounding_box:
+        Array.isArray(mapBounds) && mapBounds.length === 2
+          ? JSON.stringify(mapBounds)
+          : null,
       map_start_lng: mapStartLng || null,
       map_start_lat: mapStartLat || null,
       map_start_ele: Number(mapStartEle) || 0,

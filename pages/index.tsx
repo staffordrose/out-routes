@@ -1,11 +1,11 @@
 import type { GetServerSideProps } from 'next/types';
 import { unstable_getServerSession } from 'next-auth';
 import {
-  QueryClient,
   dehydrate,
+  QueryClient,
+  QueryFunctionContext,
   useInfiniteQuery,
   useQueries,
-  QueryFunctionContext,
 } from '@tanstack/react-query';
 import { BiMap } from 'react-icons/bi';
 

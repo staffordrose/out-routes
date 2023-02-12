@@ -1,20 +1,19 @@
 import { useCallback, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
+import { Map, Popup as PopupT } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
-import { Popup } from '../components';
-import { useMapState, useSetupMap } from '.';
+import { Route } from '@/types';
+import { Popup, PopupState } from '../components';
+import { useDrawFeatures, useMapState, useSetupMap } from '.';
 
 export type UseMapProps = {
-  mapBounds?: LngLatBounds | null;
-  layers: RouteLayer[];
-  features: RouteFeature[];
+  mapBounds?: string | null;
+  routes: Route[];
 };
 
-export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
-  const { state, setPopupFeatureId } = useMapState();
+export const useMap = ({ mapBounds, routes }: UseMapProps) => {
+  const { state, setMapLoaded, setPopupFeatureId } = useMapState();
 
   const mapContainerEl = useRef<HTMLDivElement | null>(null);
   const popupEl = useRef<PopupT | null>(null);
@@ -30,17 +29,17 @@ export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
   }, [setPopupFeatureId]);
 
   const openPopup = useCallback(
-    ({ center, feature }: PopupState) => {
+    ({ center, route }: PopupState) => {
       if (!map.current) return;
 
       closePopup();
 
-      setPopupFeatureId(feature.id);
+      setPopupFeatureId(route.id);
 
       // create popup root
       const popupNode = document.createElement('div');
       const popupRoot = createRoot(popupNode);
-      popupRoot.render(<Popup feature={feature} />);
+      popupRoot.render(<Popup route={route} />);
 
       popupEl.current = new mapboxgl.Popup({
         closeButton: false,
@@ -56,16 +55,20 @@ export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
   // initialize map, set controls & load icons
   useSetupMap({
     state,
+    setMapLoaded,
     mapContainerEl,
     map,
-    layers,
-    features,
-    openPopup,
     mapBounds,
+  });
+
+  useDrawFeatures({
+    isMapLoaded: state.isMapLoaded,
+    map,
+    routes,
+    openPopup,
   });
 
   return {
     mapContainerEl,
-    openPopup,
   };
 };

@@ -113,7 +113,9 @@ Image.displayName = 'Image';
 Card.Image = Image;
 
 // Body
-type BodyProps = Omit<FlexProps, 'direction'>;
+type BodyProps = Omit<FlexProps, 'direction'> & {
+  direction?: FlexProps['direction'];
+};
 
 const Body = forwardRef(
   (props: BodyProps, ref: ForwardedRef<HTMLDivElement>) => {

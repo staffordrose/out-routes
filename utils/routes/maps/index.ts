@@ -1,5 +1,6 @@
 export * from './getFeatureLngLat';
 export * from './getMapBounds';
+export * from './getMapBoundsFromMapLayers';
 export * from './getMapEndLngLatEle';
 export * from './getMapStartLngLatEle';
 export * from './mapFeatureRecordToMapFeature';

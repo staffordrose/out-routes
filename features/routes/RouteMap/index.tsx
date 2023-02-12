@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { styled } from '@/styles';
 import { Route, RouteFeature, RouteLayer } from '@/types';
+import { parseMapBounds } from '@/utils';
 import { MapLayersFeatures } from './components';
 import { useMap } from './hooks';
 
@@ -12,7 +13,13 @@ type RouteMapProps = {
 };
 
 export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
-  const { mapContainerEl, openPopup } = useMap({ route, layers, features });
+  const { mapContainerEl, openPopup } = useMap({
+    mapBounds: route.map_bounding_box
+      ? parseMapBounds(route.map_bounding_box)
+      : null,
+    layers,
+    features,
+  });
 
   return (
     <StyledMap>

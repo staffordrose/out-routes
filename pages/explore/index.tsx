@@ -1,9 +1,41 @@
 import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 
 import { DefaultLayout, PageHeading } from '@/components/layout';
 import { SEO } from '@/components/utility';
+import { ExploreMap } from '@/features/explore';
+import { useQueryParam } from '@/hooks';
+import { getExploreRoutes } from '@/lib/v1/api/explore';
+import { PaginatedRoutes } from '@/types';
+
+const QUERY_SIZE = 20;
+const DEFAULT_BOUNDS = JSON.stringify([
+  [-135.755337, 22.662322],
+  [-59.25607, 50.666255],
+]);
 
 const Explore = () => {
+  const router = useRouter();
+
+  const { query } = router;
+
+  const bounds = useQueryParam(router.query, 'bounds');
+
+  const mapRoutesQuery = useInfiniteQuery({
+    queryKey: ['routes', 'explore-map', query.bounds],
+    queryFn: ({ pageParam }: QueryFunctionContext): Promise<PaginatedRoutes> =>
+      getExploreRoutes(bounds || DEFAULT_BOUNDS, {
+        size: QUERY_SIZE,
+        after: pageParam,
+      }),
+    staleTime: 300_000,
+    getNextPageParam: (lastPage: PaginatedRoutes) =>
+      (lastPage?.meta?.page?.more && lastPage.meta.page.cursor) || undefined,
+    getPreviousPageParam: (firstPage: PaginatedRoutes) =>
+      firstPage?.meta?.page?.cursor,
+  });
+
   return (
     <>
       <SEO
@@ -12,11 +44,13 @@ const Explore = () => {
       />
       <DefaultLayout.Main>
         <PageHeading>Explore</PageHeading>
-        <p>
-          [This page will have a map filled with the starting coordinates for
-          each route]
-        </p>
-        <p>[It will also show trending routes]</p>
+        <ExploreMap
+          querySize={QUERY_SIZE}
+          mapBounds={bounds || DEFAULT_BOUNDS}
+          pages={mapRoutesQuery.data?.pages || []}
+          hasMore={mapRoutesQuery.hasNextPage}
+          loadMore={() => mapRoutesQuery.fetchNextPage()}
+        />
       </DefaultLayout.Main>
     </>
   );

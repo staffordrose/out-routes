@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import type { IconType } from 'react-icons';
 import {
   BiBody,
@@ -119,9 +119,7 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
               {Number(stats_forks) || 0} Fork
               {(Number(stats_forks) || 0) === 1 ? `` : `s`}
             </Detail>
-            <Detail icon={BiCalendarAlt}>
-              {updated_at ? displayDate(updated_at) : null}
-            </Detail>
+            <UpdatedAt updated_at={updated_at} />
           </List>
         </BorderBox>
         <BorderBox>
@@ -130,6 +128,28 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
       </Flex>
     </StyledRouteDetails>
   );
+};
+
+type UpdatedAtProps = {
+  updated_at?: Date | null;
+};
+
+// work-around for server-side rendering issue for timezone date display
+const UpdatedAt: FC<UpdatedAtProps> = ({ updated_at }) => {
+  const [showTime, setShowTime] = useState(false);
+
+  useEffect(() => {
+    setShowTime(true);
+  }, []);
+
+  if (showTime) {
+    return (
+      <Detail icon={BiCalendarAlt}>
+        {updated_at ? displayDate(updated_at) : null}
+      </Detail>
+    );
+  }
+  return <Detail icon={BiCalendarAlt}>{null}</Detail>;
 };
 
 const StyledRouteDetails = styled('div', {
