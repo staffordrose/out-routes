@@ -7,6 +7,7 @@ import {
   useInfiniteQuery,
   useQueries,
 } from '@tanstack/react-query';
+import queryString from 'query-string';
 import { BiMap } from 'react-icons/bi';
 
 import { Box, ButtonLink, Flex, Link, List } from '@/components/atoms';
@@ -286,6 +287,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(req, res, authOptions);
 
   const authUser = await getUserGSSP(session);
+
+  if (authUser?.id && !authUser.username) {
+    return {
+      redirect: {
+        destination: `/account/new/username?${queryString.stringify({
+          callbackUrl: `/`,
+        })}`,
+        permanent: false,
+      },
+    };
+  }
 
   const queryClient = new QueryClient();
 

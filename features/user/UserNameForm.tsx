@@ -3,8 +3,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Button, Flex } from '@/components/atoms';
+import { Button } from '@/components/atoms';
 import { TextField } from '@/components/molecules';
+import { styled } from '@/styles';
 import { User } from '@/types';
 
 export type UserNameFormValues = {
@@ -30,7 +31,7 @@ export const UserNameForm: FC<UserNameFormProps> = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <Flex gap='lg' alignItems='center'>
+      <Container>
         <Controller
           name='name'
           control={control}
@@ -38,6 +39,7 @@ export const UserNameForm: FC<UserNameFormProps> = ({
           render={({ field, fieldState: { isTouched, error } }) => (
             <TextField
               {...field}
+              label='Name'
               placeholder='John Doe'
               isTouched={isTouched}
               error={error?.message}
@@ -47,7 +49,7 @@ export const UserNameForm: FC<UserNameFormProps> = ({
         <Button size='md' type='submit'>
           Submit
         </Button>
-      </Flex>
+      </Container>
     </form>
   );
 };
@@ -89,4 +91,14 @@ const useUserNameForm = ({
 
 const mapPropsToValues = (user: UserNameFormProps['user']) => ({
   name: user.name || '',
+});
+
+const Container = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$4',
+  width: '$full',
+  '& > button': {
+    alignSelf: 'flex-start',
+  },
 });

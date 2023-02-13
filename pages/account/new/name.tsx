@@ -82,17 +82,24 @@ const NewUserName = () => {
               borderStyle: 'dashed',
               borderColor: '$slate-200',
               textAlign: 'center',
+              '& > div': {
+                width: '$full',
+                maxWidth: '$64',
+                textAlign: 'left',
+              },
             }}
           >
             <h1>Complete your registration</h1>
             <h2>Enter your name</h2>
             <p>(Will be publicly visible)</p>
-            <UserNameForm
-              user={{
-                name: session?.user?.name,
-              }}
-              onSubmit={onSubmit}
-            />
+            <div>
+              <UserNameForm
+                user={{
+                  name: session?.user?.name,
+                }}
+                onSubmit={onSubmit}
+              />
+            </div>
           </Flex>
         </NewUserLayout.Main>
       </NewUserLayout>

@@ -32,7 +32,7 @@ export const UserUsernameForm: FC<UserUsernameFormProps> = ({
 
   return (
     <form id='user-username-form' onSubmit={onSubmit}>
-      <ResponsiveGrid>
+      <Container>
         <Controller
           name='username'
           control={control}
@@ -47,7 +47,7 @@ export const UserUsernameForm: FC<UserUsernameFormProps> = ({
             />
           )}
         />
-      </ResponsiveGrid>
+      </Container>
     </form>
   );
 };
@@ -121,24 +121,9 @@ const mapPropsToValues = (user: UserUsernameFormProps['user']) => ({
   username: user.username || '',
 });
 
-const ResponsiveGrid = styled('div', {
+const Container = styled('div', {
   display: 'grid',
-  gridTemplateColumns: '1fr',
-  gap: '$2_5',
-  marginBottom: '$2_5',
-  '@sm': {
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '$3',
-    marginBottom: '$3',
-  },
-  '@md': {
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '$3_5',
-    marginBottom: '$3_5',
-  },
-  '@lg': {
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '$4',
-    marginBottom: '$4',
-  },
+  justifyItems: 'start',
+  width: '$full',
+  maxWidth: '$64',
 });

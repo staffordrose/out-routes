@@ -6,7 +6,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import queryString from 'query-string';
 
-import { Flex, Toast, useToast } from '@/components/atoms';
+import { Button, Flex, Toast, useToast } from '@/components/atoms';
 import { Feedback, NewUserLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { sitename } from '@/data/site';
@@ -103,12 +103,28 @@ const NewUserUsername = () => {
                 borderStyle: 'dashed',
                 borderColor: '$slate-200',
                 textAlign: 'center',
+                '& > div': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '$4',
+                  width: '$full',
+                  maxWidth: '$64',
+                  textAlign: 'left',
+                  '& > button': {
+                    alignSelf: 'flex-start',
+                  },
+                },
               }}
             >
               <h1>Welcome to {sitename}!</h1>
               <h2>Select your username</h2>
               <p>(Will be publicly visible)</p>
-              <UserUsernameForm user={{}} onSubmit={onSubmit} />
+              <div>
+                <UserUsernameForm user={{}} onSubmit={onSubmit} />
+                <Button type='submit' form='user-username-form' size='md'>
+                  Submit
+                </Button>
+              </div>
             </Flex>
           </NewUserLayout.Main>
         </NewUserLayout>
