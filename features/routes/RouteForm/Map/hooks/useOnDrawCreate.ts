@@ -1,31 +1,37 @@
 import { MutableRefObject, useCallback, useEffect } from 'react';
-import { UseFieldArrayUpdate } from 'react-hook-form';
+import { UseFieldArrayAppend, UseFieldArrayUpdate } from 'react-hook-form';
 import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
+import { ColorCodes } from '@/data/general';
+import { SymbolCodes } from '@/data/routes';
 import { MapFeature, MapLayer } from '@/types';
 import { createAlphaNumericId } from '@/utils';
-import { RouteFormValues } from '../../helpers';
+import { mapMapFeatureToFeatureValues, RouteFormValues } from '../../helpers';
 import { addLayerFeature, handleFeatureOnDraw } from '../helpers';
 
 type OnDrawCreateProps = {
+  append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   map: MutableRefObject<Map | undefined>;
   draw: MutableRefObject<MapboxDraw | undefined>;
   layers: RouteFormValues['layers'];
   activeLayerId: MapLayer['id'] | null;
+  setActiveLayerId: (id: MapLayer['id'] | null) => void;
 };
 
 export const useOnDrawCreate = ({
+  append,
   update,
   map,
   draw,
   layers,
   activeLayerId,
+  setActiveLayerId,
 }: OnDrawCreateProps) => {
   const onDrawCreate = useCallback(
     async (e: MapboxDraw.DrawCreateEvent) => {
-      if (!draw.current || !activeLayerId) return;
+      if (!draw.current) return;
 
       const drawRef = draw.current;
 
@@ -52,11 +58,27 @@ export const useOnDrawCreate = ({
 
       const features: MapFeature[] = await Promise.all(featuresPromiseArray);
 
-      features.forEach((feature) => {
-        addLayerFeature(update, layers, activeLayerId, feature);
-      });
+      if (!activeLayerId) {
+        const newLayerId = createAlphaNumericId(24);
+
+        append({
+          databaseId: newLayerId,
+          title: '',
+          color: ColorCodes.Red,
+          symbol: SymbolCodes.Marker,
+          features: features.map((feature) =>
+            mapMapFeatureToFeatureValues(feature)
+          ),
+        });
+
+        setActiveLayerId(newLayerId);
+      } else {
+        features.forEach((feature) => {
+          addLayerFeature(update, layers, activeLayerId, feature);
+        });
+      }
     },
-    [update, draw, layers, activeLayerId]
+    [append, update, draw, layers, activeLayerId, setActiveLayerId]
   );
 
   useEffect(() => {

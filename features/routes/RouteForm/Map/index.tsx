@@ -21,7 +21,8 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
     name: 'layers',
   });
 
-  const { mapContainerEl, openPopup } = useMap({
+  const { mapContainerEl, openPopup, setActiveLayerId } = useMap({
+    append,
     update,
     routeId,
     routeMapBounds,
@@ -35,6 +36,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
         append={append}
         remove={remove}
         openPopup={openPopup}
+        setActiveLayerId={setActiveLayerId}
       />
     </StyledMap>
   );

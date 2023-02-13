@@ -9,9 +9,9 @@ export type RouteValues = {
   is_private: 'private' | 'public';
   title: string;
   title_alt: Array<{ text: string }>;
-  activity_type: ActivityTypes;
+  activity_type: ActivityTypes | undefined;
   region: string;
-  country: CountryCodes;
+  country: CountryCodes | undefined;
   image_id: string | null;
   image_full: string | null;
   image_og: string | null;

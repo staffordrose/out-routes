@@ -1,6 +1,11 @@
 import { useCallback, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
+import {
+  UseFieldArrayAppend,
+  UseFieldArrayUpdate,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
@@ -20,12 +25,18 @@ import {
 } from '../hooks';
 
 export type UseMapProps = {
+  append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   routeId: Route['id'];
   routeMapBounds?: LngLatBounds | null;
 };
 
-export const useMap = ({ update, routeId, routeMapBounds }: UseMapProps) => {
+export const useMap = ({
+  append,
+  update,
+  routeId,
+  routeMapBounds,
+}: UseMapProps) => {
   const { state, setSelectedFeatureIds, setPopupFeatureId } = useMapState();
 
   const { control, setValue } = useFormContext<RouteFormValues>();
@@ -33,7 +44,9 @@ export const useMap = ({ update, routeId, routeMapBounds }: UseMapProps) => {
   const activeLayerId = useWatch({ control, name: 'activeLayerId' });
 
   const setActiveLayerId = useCallback(
-    (id: MapLayer['id'] | null) => setValue('activeLayerId', id),
+    (id: MapLayer['id'] | null) => {
+      setValue('activeLayerId', id);
+    },
     [setValue]
   );
 
@@ -104,11 +117,13 @@ export const useMap = ({ update, routeId, routeMapBounds }: UseMapProps) => {
   );
 
   useOnDrawCreate({
+    append,
     update,
     map,
     draw,
     layers,
     activeLayerId,
+    setActiveLayerId,
   });
 
   useOnDrawUpdate({
@@ -139,5 +154,6 @@ export const useMap = ({ update, routeId, routeMapBounds }: UseMapProps) => {
   return {
     mapContainerEl,
     openPopup,
+    setActiveLayerId,
   };
 };

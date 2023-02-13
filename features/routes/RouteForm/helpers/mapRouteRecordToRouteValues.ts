@@ -1,3 +1,5 @@
+import { CountryCodes } from '@/data/general';
+import { ActivityTypes } from '@/data/routes';
 import { Route } from '@/types';
 import { RouteValues } from './types';
 
@@ -14,9 +16,9 @@ export const mapRouteRecordToRouteValues = (route: Route): RouteValues => {
     title_alt: Array.isArray(route.title_alt)
       ? route.title_alt.map((t) => ({ text: t }))
       : [],
-    activity_type: (route.activity_type || '') as RouteValues['activity_type'],
+    activity_type: (route.activity_type as ActivityTypes) || undefined,
     region: route.region || '',
-    country: (route.country || '') as RouteValues['country'],
+    country: (route.country as CountryCodes) || undefined,
     image_id: route.image_id || null,
     image_full: route.image_full || null,
     image_og: route.image_og || null,

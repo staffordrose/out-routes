@@ -10,7 +10,7 @@ import { Button, List } from '@/components/atoms';
 import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { styled } from '@/styles';
-import { PopupState } from '@/types';
+import { MapLayer, PopupState } from '@/types';
 import { createAlphaNumericId } from '@/utils';
 import { RouteFormValues } from '../../../helpers';
 import { Layer } from './Layer';
@@ -20,6 +20,7 @@ type MapLayersFeaturesProps = {
   append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
   remove: UseFieldArrayRemove;
   openPopup: (popupState: PopupState) => void;
+  setActiveLayerId: (id: MapLayer['id'] | null) => void;
 };
 
 export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
@@ -27,6 +28,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   append,
   remove,
   openPopup,
+  setActiveLayerId,
 }) => {
   return (
     <div>
@@ -36,6 +38,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
             <Layer
               key={item.id}
               remove={remove}
+              setActiveLayerId={setActiveLayerId}
               item={item}
               layerIndex={index}
               openPopup={openPopup}
@@ -49,14 +52,18 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
           size='xs'
           display='flex'
           type='button'
-          onClick={() =>
+          onClick={() => {
+            const newLayerId = createAlphaNumericId(24);
+
             append({
-              databaseId: createAlphaNumericId(24),
+              databaseId: newLayerId,
               title: '',
               color: ColorCodes.Red,
               symbol: SymbolCodes.Marker,
-            })
-          }
+            });
+
+            setActiveLayerId(newLayerId);
+          }}
         >
           <BiPlus />
           Add Layer

@@ -5,10 +5,12 @@ import { BiTrash, BiEditAlt, BiX } from 'react-icons/bi';
 import { IconButton, TruncatedText } from '@/components/atoms';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
+import { MapLayer } from '@/types';
 import { RouteFormValues } from '../../../../helpers';
 
 type LayerDetailsProps = {
   remove: UseFieldArrayRemove;
+  setActiveLayerId: (id: MapLayer['id'] | null) => void;
   layerIndex: number;
   isFieldsVisible: boolean;
   toggleFieldsVisibility: () => void;
@@ -16,6 +18,7 @@ type LayerDetailsProps = {
 
 export const LayerDetails: FC<LayerDetailsProps> = ({
   remove,
+  setActiveLayerId,
   layerIndex,
   isFieldsVisible,
   toggleFieldsVisibility,
@@ -48,7 +51,12 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
             type='button'
             variant='ghost'
             size='xs'
-            onClick={() => remove(layerIndex)}
+            onClick={(e) => {
+              e.stopPropagation();
+
+              remove(layerIndex);
+              setActiveLayerId(null);
+            }}
           >
             <BiTrash />
           </IconButton>

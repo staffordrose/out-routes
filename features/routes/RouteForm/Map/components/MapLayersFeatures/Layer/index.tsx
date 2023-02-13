@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form';
 
 import { Box } from '@/components/atoms';
-import { PopupState } from '@/types';
+import { MapLayer, PopupState } from '@/types';
 import { RouteFormValues } from '../../../../helpers';
 import { LayerDetails } from './LayerDetails';
 import { LayerFeatures } from './LayerFeatures';
@@ -18,6 +18,7 @@ type LayerProps = {
   item: FieldArrayWithId<RouteFormValues, 'layers', 'id'>;
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
+  setActiveLayerId: (id: MapLayer['id'] | null) => void;
 };
 
 export const Layer: FC<LayerProps> = ({
@@ -25,11 +26,12 @@ export const Layer: FC<LayerProps> = ({
   item,
   layerIndex,
   openPopup,
+  setActiveLayerId,
 }) => {
   const [isFieldsVisible, setFieldsVisible] = useState(false);
   const toggleFieldsVisibility = () => setFieldsVisible(!isFieldsVisible);
 
-  const { control, setValue } = useFormContext<RouteFormValues>();
+  const { control } = useFormContext<RouteFormValues>();
 
   const activeLayerId = useWatch({ control, name: 'activeLayerId' });
   const color = useWatch({ control, name: `layers.${layerIndex}.color` });
@@ -38,7 +40,9 @@ export const Layer: FC<LayerProps> = ({
     <Box
       as='li'
       onClick={() => {
-        item.databaseId && setValue('activeLayerId', item.databaseId);
+        if (item.databaseId) {
+          setActiveLayerId(item.databaseId);
+        }
       }}
       css={{
         position: 'relative',
@@ -60,6 +64,7 @@ export const Layer: FC<LayerProps> = ({
     >
       <LayerDetails
         remove={remove}
+        setActiveLayerId={setActiveLayerId}
         layerIndex={layerIndex}
         isFieldsVisible={isFieldsVisible}
         toggleFieldsVisibility={toggleFieldsVisibility}
