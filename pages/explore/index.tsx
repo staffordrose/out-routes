@@ -18,12 +18,10 @@ const DEFAULT_BOUNDS = JSON.stringify([
 const Explore = () => {
   const router = useRouter();
 
-  const { query } = router;
-
   const bounds = useQueryParam(router.query, 'bounds');
 
   const mapRoutesQuery = useInfiniteQuery({
-    queryKey: ['routes', 'explore-map', query.bounds],
+    queryKey: ['routes', 'explore-map', bounds || DEFAULT_BOUNDS],
     queryFn: ({ pageParam }: QueryFunctionContext): Promise<PaginatedRoutes> =>
       getExploreRoutes(bounds || DEFAULT_BOUNDS, {
         size: QUERY_SIZE,
