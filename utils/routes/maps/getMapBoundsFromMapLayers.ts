@@ -7,19 +7,23 @@ import { LngLat, MapLayer } from '@/types';
 
 export const getMapBoundsFromMapLayers = (
   mapLayers: MapLayer[]
-): LngLatBoundsLike => {
+): LngLatBoundsLike | null => {
   // combine all feature coordinates
   const coordinates: LngLat[] = getAllLngLatFromMapLayers(mapLayers);
 
-  // create bounds with both corners at the first coordinate.
-  const bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
+  if (Array.isArray(coordinates) && coordinates.length) {
+    // create bounds with both corners at the first coordinate.
+    const bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
 
-  // extend bounds to include all coordinates
-  for (const coord of coordinates) {
-    bounds.extend(coord);
+    // extend bounds to include all coordinates
+    for (const coord of coordinates) {
+      bounds.extend(coord);
+    }
+
+    return bounds.toArray() as LngLatBoundsLike;
+  } else {
+    return null;
   }
-
-  return bounds.toArray() as LngLatBoundsLike;
 };
 
 const getAllLngLatFromMapLayers = (mapLayers: MapLayer[]): LngLat[] => {

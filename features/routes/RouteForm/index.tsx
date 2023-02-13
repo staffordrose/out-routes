@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Route, RouteFeature, RouteLayer } from '@/types';
-import { parseMapBounds } from '@/utils';
+import { createAlphaNumericId, parseMapBounds } from '@/utils';
 import { DetailsFields } from './DetailsFields';
 import {
   mapRecordsToValues,
@@ -38,12 +38,10 @@ export const RouteForm: FC<RouteFormProps> = ({
     <FormProvider {...methods}>
       <form id='route-form' onSubmit={onSubmit}>
         <DetailsFields />
-        {!!route?.id && (
-          <Map
-            routeId={route.id}
-            routeMapBounds={parseMapBounds(route.map_bounding_box)}
-          />
-        )}
+        <Map
+          routeId={route?.id || createAlphaNumericId(24)}
+          routeMapBounds={parseMapBounds(route.map_bounding_box)}
+        />
       </form>
     </FormProvider>
   );

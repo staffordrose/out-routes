@@ -3,7 +3,7 @@ import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
 import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
-import { Route, User } from '@/types';
+import { Route, RouteFeature, RouteLayer, User } from '@/types';
 import { addRoute, updateRoute } from '../../api/routes';
 import { uploadRouteImage } from '../../api/uploads';
 
@@ -67,8 +67,14 @@ export const useAddRouteMutation = ({
           // properties from the uploaded route image
           ...routeImageIdUrls,
         },
-        layers,
-        features,
+        layers: (layers || []).map((layer) => ({
+          ...layer,
+          route: { id: route.id } as RouteLayer['route'],
+        })),
+        features: (features || []).map((feature) => ({
+          ...feature,
+          route: { id: route.id } as RouteFeature['route'],
+        })),
       });
     },
     onError: (error) => {
