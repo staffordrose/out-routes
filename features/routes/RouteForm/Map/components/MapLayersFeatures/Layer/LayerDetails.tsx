@@ -1,8 +1,14 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { UseFieldArrayRemove, useFormContext, useWatch } from 'react-hook-form';
 import { BiTrash, BiEditAlt, BiX } from 'react-icons/bi';
 
-import { IconButton, TruncatedText } from '@/components/atoms';
+import {
+  Button,
+  Dialog,
+  Flex,
+  IconButton,
+  TruncatedText,
+} from '@/components/atoms';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapLayer } from '@/types';
@@ -30,6 +36,8 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
     name: `layers.${layerIndex}`,
   });
 
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
   const SymbolIcon =
     symbolIcons[(layer.symbol || SymbolCodes.Marker) as SymbolCodes];
 
@@ -47,19 +55,41 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
       </div>
       <div>
         {!isFieldsVisible && (
-          <IconButton
-            type='button'
-            variant='ghost'
-            size='xs'
-            onClick={(e) => {
-              e.stopPropagation();
+          <Dialog
+            isOpen={isDialogOpen}
+            setOpen={setDialogOpen}
+            title='Are you sure?'
+            body={
+              <Flex direction='column' gap='md'>
+                <p>
+                  Are you sure you want to delete this layer and its features?
+                </p>
+                <Flex justifyContent='end'>
+                  <Button
+                    variant='solid'
+                    size='md'
+                    onClick={(e) => {
+                      e.stopPropagation();
 
-              remove(layerIndex);
-              setActiveLayerId(null);
-            }}
+                      remove(layerIndex);
+                      setActiveLayerId(null);
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                </Flex>
+              </Flex>
+            }
           >
-            <BiTrash />
-          </IconButton>
+            <IconButton
+              type='button'
+              variant='ghost'
+              size='xs'
+              aria-label='Open modal to delete the layer'
+            >
+              <BiTrash />
+            </IconButton>
+          </Dialog>
         )}
         <IconButton
           type='button'
