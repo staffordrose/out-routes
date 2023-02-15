@@ -43,17 +43,15 @@ const StyledIconButton = styled('button', {
         borderColor: '$slate-500',
         color: '$slate-50',
         backgroundColor: '$slate-700',
-        '&:hover': {
+        '&:hover:enabled': {
           borderStyle: 'dashed',
           backgroundColor: '$slate-800',
         },
-        '&:focus': {
+        '&:focus:enabled': {
           borderStyle: 'dashed',
           backgroundColor: '$slate-900',
         },
         '&:disabled': {
-          borderStyle: 'solid',
-          backgroundColor: '$slate-700',
           opacity: 0.5,
           cursor: 'not-allowed',
         },
@@ -62,17 +60,15 @@ const StyledIconButton = styled('button', {
         borderColor: '$slate-500',
         color: '$slate-900',
         backgroundColor: '$slate-50',
-        '&:hover': {
+        '&:hover:enabled': {
           borderStyle: 'dashed',
           backgroundColor: '$slate-200',
         },
-        '&:focus': {
+        '&:focus:enabled': {
           borderStyle: 'dashed',
           backgroundColor: '$slate-300',
         },
         '&:disabled': {
-          borderStyle: 'solid',
-          backgroundColor: '$slate-50',
           opacity: 0.5,
           cursor: 'not-allowed',
         },
@@ -82,17 +78,15 @@ const StyledIconButton = styled('button', {
         borderColor: 'transparent',
         color: '$slate-900',
         backgroundColor: 'transparent',
-        '&:hover': {
+        '&:hover:enabled': {
           borderColor: '$slate-500',
           backgroundColor: '$slate-100',
         },
-        '&:focus': {
+        '&:focus:enabled': {
           borderColor: '$slate-500',
           backgroundColor: '$slate-200',
         },
         '&:disabled': {
-          borderColor: 'transparent',
-          backgroundColor: 'transparent',
           opacity: 0.5,
           cursor: 'not-allowed',
         },

@@ -38,11 +38,11 @@ const StyledInput = styled('input', {
   color: '$slate-900',
   backgroundColor: 'transparent',
   cursor: 'text',
-  '&:hover': {
+  '&:hover:enabled': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
   },
-  '&:focus': {
+  '&:focus:enabled': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
     outlineWidth: '$2',
@@ -50,9 +50,6 @@ const StyledInput = styled('input', {
     outlineColor: '$slate-500',
   },
   '&:disabled': {
-    borderColor: '$gray-300',
-    color: '$gray-900',
-    backgroundColor: 'transparent',
     opacity: 0.5,
     cursor: 'not-allowed',
   },

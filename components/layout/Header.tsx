@@ -437,7 +437,6 @@ const DropdownMenuItem = styled(RadixDropdownMenu.Item, {
   cursor: 'pointer',
   userSelect: 'none',
   '&[data-disabled]': {
-    color: '$gray-900',
     opacity: 0.5,
     cursor: 'not-allowed',
   },

@@ -101,16 +101,21 @@ const SelectTrigger = styled(RadixSelect.SelectTrigger, {
   lineHeight: '$sm',
   color: '$slate-900',
   backgroundColor: 'transparent',
-  '&:hover': {
+  cursor: 'pointer',
+  '&:hover:enabled': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
   },
-  '&:focus': {
+  '&:focus:enabled': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
     outlineWidth: '$2',
     outlineStyle: 'dashed',
     outlineColor: '$slate-500',
+  },
+  '&:disabled': {
+    opacity: 0.5,
+    cursor: 'not-allowed',
   },
   '&[data-placeholder]': {
     color: '$slate-500',
@@ -202,7 +207,6 @@ const StyledOption = styled(RadixSelect.Item, {
   cursor: 'pointer',
   userSelect: 'none',
   '&[data-disabled]': {
-    color: '$gray-900',
     opacity: 0.5,
     pointerEvents: 'none',
   },

@@ -96,12 +96,13 @@ const StyledDropzone = styled('div', {
   textAlign: 'center',
   color: '$slate-900',
   backgroundColor: 'transparent',
+  userSelect: 'none',
   cursor: 'pointer',
-  '&:hover': {
+  '&:has(> input:enabled):hover': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
   },
-  '&:focus-within': {
+  '&:has(> input:enabled):focus-within': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
     outlineWidth: '$2',
@@ -109,9 +110,6 @@ const StyledDropzone = styled('div', {
     outlineColor: '$slate-500',
   },
   '&:has(> input:disabled)': {
-    borderColor: '$gray-300',
-    color: '$gray-900',
-    backgroundColor: 'transparent',
     opacity: 0.5,
     cursor: 'not-allowed',
   },
