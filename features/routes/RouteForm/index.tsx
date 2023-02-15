@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -13,6 +13,7 @@ import {
   yupSchema,
 } from './helpers';
 import { Map } from './Map';
+import { Tabs } from '@/components/atoms';
 
 export type RouteFormProps = {
   route: Route;
@@ -34,13 +35,36 @@ export const RouteForm: FC<RouteFormProps> = ({
     onSubmit: onSubmitHandler,
   });
 
+  const [tab, setTab] = useState<'details' | 'map'>('details');
+
   return (
     <FormProvider {...methods}>
       <form id='route-form' onSubmit={onSubmit}>
-        <DetailsFields />
-        <Map
-          routeId={route?.id || createAlphaNumericId(24)}
-          routeMapBounds={parseMapBounds(route.map_bounding_box)}
+        <Tabs
+          ariaLabel='Select form section'
+          contentMinHeight='calc(100vh - 128px)'
+          tabs={[
+            {
+              value: 'details',
+              label: 'Details',
+              children: <DetailsFields />,
+            },
+            {
+              value: 'map',
+              label: 'Map',
+              children: (
+                <Map
+                  routeId={route?.id || createAlphaNumericId(24)}
+                  routeMapBounds={parseMapBounds(route.map_bounding_box)}
+                />
+              ),
+            },
+          ]}
+          defaultValue='details'
+          value={tab}
+          onValueChange={(value: string) => {
+            setTab(value as 'details' | 'map');
+          }}
         />
       </form>
     </FormProvider>
