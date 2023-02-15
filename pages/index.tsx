@@ -159,35 +159,33 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
       }
 
       return (
-        <>
-          <List as='ul' direction='column' gap='lg' width='full'>
-            {users
-              .filter((user) => user.username !== authUsername)
-              .map(
-                ({
-                  id,
-                  username,
-                  name,
-                  bio,
-                  image_thumb_120,
-                  stats_followers,
-                }) => {
-                  return (
-                    <li key={id}>
-                      <UserCard
-                        orientation='vertical'
-                        image={image_thumb_120}
-                        name={name}
-                        username={username}
-                        bio={bio}
-                        stats_followers={stats_followers}
-                      />
-                    </li>
-                  );
-                }
-              )}
-          </List>
-        </>
+        <List as='ul' direction='column' gap='lg' width='full'>
+          {users
+            .filter((user) => user.username !== authUsername)
+            .map(
+              ({
+                id,
+                username,
+                name,
+                bio,
+                image_thumb_120,
+                stats_followers,
+              }) => {
+                return (
+                  <li key={id}>
+                    <UserCard
+                      orientation='vertical'
+                      image={image_thumb_120}
+                      name={name}
+                      username={username}
+                      bio={bio}
+                      stats_followers={stats_followers}
+                    />
+                  </li>
+                );
+              }
+            )}
+        </List>
       );
     }
     return null;
@@ -225,10 +223,17 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               overflowY: 'auto',
               maxHeight: 'calc(100vh - $14)',
               padding: '$4',
+              whiteSpace: 'nowrap',
+              MsOverflowStyle: 'none' /* Internet Explorer 10+ */,
+              scrollbarWidth: 'none' /* Firefox */,
+              '&::-webkit-scrollbar': {
+                display: 'none' /* Safari and Chrome */,
+              },
             }}
           >
             <h2>Your Routes</h2>
             {renderUserRoutesResult()}
+            <ButtonLink href='/routes/add'>Add a Route</ButtonLink>
           </Flex>
         </MultiColumnLayout.Aside>
         <MultiColumnLayout.Main>
@@ -269,6 +274,12 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
                 overflowY: 'auto',
                 maxHeight: 'calc(100vh - $14)',
                 padding: '$4',
+                whiteSpace: 'nowrap',
+                MsOverflowStyle: 'none' /* Internet Explorer 10+ */,
+                scrollbarWidth: 'none' /* Firefox */,
+                '&::-webkit-scrollbar': {
+                  display: 'none' /* Safari and Chrome */,
+                },
               }}
             >
               <h2>New Users</h2>

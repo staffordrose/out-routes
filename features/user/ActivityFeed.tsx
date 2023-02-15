@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { Link } from '@/components/atoms';
+import { ButtonLink } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
 import { PaginatedActivity } from '@/types';
@@ -35,10 +35,12 @@ export const ActivityFeed: FC<ActivityFeedProps> = ({
         title='Your feed is empty'
       >
         <p>
-          Once you start following other users and starring routes you should
-          begin to see activity. Meanwhile, you can{' '}
-          <Link href='/explore'>explore popular routes</Link>.
+          Once you begin following other users should start to see activity.
         </p>
+        <p>Meanwhile, you can explore popular routes.</p>
+        <ButtonLink variant='solid' size='md' href='/explore'>
+          Explore Routes
+        </ButtonLink>
       </Feedback>
     );
   }
