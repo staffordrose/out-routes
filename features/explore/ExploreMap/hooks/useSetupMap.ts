@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect } from 'react';
+import { MutableRefObject, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Map } from 'mapbox-gl';
 import geoViewport, { GeoViewport } from '@mapbox/geo-viewport';
@@ -99,35 +99,44 @@ export const useSetupMap = ({
         );
       });
     });
-
-    // move end
-    mapRef.on(
-      'moveend',
-      debounce(() => {
-        const bounds = getMapBounds(map);
-
-        shallowPush(
-          router,
-          `/explore?${queryString.stringify({
-            bounds: bounds ? JSON.stringify(bounds) : undefined,
-          })}`
-        );
-      }, 600)
-    );
-
-    // zoom end
-    mapRef.on(
-      'zoomend',
-      debounce(() => {
-        const bounds = getMapBounds(map);
-
-        shallowPush(
-          router,
-          `/explore?${queryString.stringify({
-            bounds: bounds ? JSON.stringify(bounds) : undefined,
-          })}`
-        );
-      }, 600)
-    );
   });
+
+  const onMoveZoomEnd = useCallback(() => {
+    if (!map.current) return;
+
+    const bounds = getMapBounds(map);
+
+    shallowPush(
+      router,
+      `/explore?${queryString.stringify({
+        bounds: bounds ? JSON.stringify(bounds) : undefined,
+      })}`
+    );
+  }, [map, router]);
+
+  useEffect(() => {
+    if (!map.current) return;
+
+    const mapRef = map.current;
+    const cb = debounce(onMoveZoomEnd, 600);
+
+    mapRef.on('moveend', cb);
+
+    return () => {
+      mapRef.off('moveend', cb);
+    };
+  }, [map, onMoveZoomEnd]);
+
+  useEffect(() => {
+    if (!map.current) return;
+
+    const mapRef = map.current;
+    const cb = debounce(onMoveZoomEnd, 600);
+
+    mapRef.on('zoomend', cb);
+
+    return () => {
+      mapRef.off('zoomend', cb);
+    };
+  }, [map, onMoveZoomEnd]);
 };

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 
-import { DefaultLayout, PageHeading } from '@/components/layout';
+import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { ExploreMap } from '@/features/explore';
 import { useQueryParam } from '@/hooks';
@@ -34,6 +34,21 @@ const Explore = () => {
       firstPage?.meta?.page?.cursor,
   });
 
+  const renderResult = () => {
+    if (!router.isReady) {
+      return <Feedback size='md' type='loading' title='Loading map' />;
+    }
+    return (
+      <ExploreMap
+        querySize={QUERY_SIZE}
+        mapBounds={bounds || DEFAULT_BOUNDS}
+        pages={mapRoutesQuery.data?.pages || []}
+        hasMore={mapRoutesQuery.hasNextPage}
+        loadMore={() => mapRoutesQuery.fetchNextPage()}
+      />
+    );
+  };
+
   return (
     <>
       <SEO
@@ -42,13 +57,7 @@ const Explore = () => {
       />
       <DefaultLayout.Main>
         <PageHeading>Explore</PageHeading>
-        <ExploreMap
-          querySize={QUERY_SIZE}
-          mapBounds={bounds || DEFAULT_BOUNDS}
-          pages={mapRoutesQuery.data?.pages || []}
-          hasMore={mapRoutesQuery.hasNextPage}
-          loadMore={() => mapRoutesQuery.fetchNextPage()}
-        />
+        {renderResult()}
       </DefaultLayout.Main>
     </>
   );
