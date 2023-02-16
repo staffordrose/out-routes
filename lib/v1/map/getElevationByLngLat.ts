@@ -1,28 +1,32 @@
-import { FeatureCollection } from 'geojson';
 import queryString from 'query-string';
+import { FeatureCollection } from 'geojson';
 
 import { LngLat } from '@/types';
+import { getJson, StatusError } from '@/utils';
 
 const mapboxGlAccessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN;
 
 const BASE_URL = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery';
-const AUTHORIZATION = `access_token=${mapboxGlAccessToken}`;
 const OPTIONS = queryString.stringify({
+  access_token: mapboxGlAccessToken,
   layers: 'contour',
   limit: 50,
 });
 
-export const getLngLatElevation = async ([
+export const getElevationByLngLat = async ([
   lng,
   lat,
 ]: LngLat): Promise<number> => {
   try {
-    const res = await fetch(
-      `${BASE_URL}/${lng},${lat}.json?${AUTHORIZATION}&${OPTIONS}`
-    );
-    const data: FeatureCollection = res.ok
-      ? await res.json()
-      : ({} as FeatureCollection);
+    const res = await fetch(`${BASE_URL}/${lng},${lat}.json?${OPTIONS}`);
+    const data: FeatureCollection = await getJson(res);
+
+    if (!res.ok) {
+      throw new StatusError(
+        res.status,
+        `Something went wrong attempting to get the elevation`
+      );
+    }
 
     let highestElevation = 0;
 
@@ -33,6 +37,13 @@ export const getLngLatElevation = async ([
 
     return highestElevation;
   } catch (error) {
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new StatusError(
+        400,
+        `Something went wrong attempting to get the elevation`
+      );
+    }
   }
 };
