@@ -88,6 +88,7 @@ export const useOnDrawCreate = ({
       const cb = (e: MapboxDraw.DrawCreateEvent) => {
         onDrawCreate(e);
       };
+
       mapRef.on('draw.create', cb);
 
       return () => {

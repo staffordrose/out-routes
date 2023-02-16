@@ -61,6 +61,7 @@ export const useOnDrawUpdate = ({
       const cb = (e: MapboxDraw.DrawUpdateEvent) => {
         onDrawUpdate(e);
       };
+
       mapRef.on('draw.update', cb);
 
       return () => {

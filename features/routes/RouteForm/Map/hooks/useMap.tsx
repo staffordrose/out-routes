@@ -153,6 +153,8 @@ export const useMap = ({
 
   return {
     mapContainerEl,
+    map,
+    draw,
     openPopup,
     setActiveLayerId,
   };

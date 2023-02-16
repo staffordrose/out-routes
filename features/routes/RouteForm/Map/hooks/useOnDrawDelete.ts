@@ -46,6 +46,7 @@ export const useOnDrawDelete = ({
       const cb = (e: MapboxDraw.DrawDeleteEvent) => {
         onDrawDelete(e);
       };
+
       mapRef.on('draw.delete', cb);
 
       return () => {

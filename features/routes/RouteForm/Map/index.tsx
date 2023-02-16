@@ -5,7 +5,7 @@ import { LngLatBounds } from 'mapbox-gl';
 import { styled } from '@/styles';
 import { Route } from '@/types';
 import { RouteFormValues } from '../helpers';
-import { MapLayersFeatures } from './components';
+import { MapLayersFeatures, Search } from './components';
 import { useMap } from './hooks';
 
 type MapProps = {
@@ -21,7 +21,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
     name: 'layers',
   });
 
-  const { mapContainerEl, openPopup, setActiveLayerId } = useMap({
+  const { mapContainerEl, map, draw, openPopup, setActiveLayerId } = useMap({
     append,
     update,
     routeId,
@@ -30,7 +30,14 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
 
   return (
     <StyledMap>
-      <div ref={mapContainerEl} />
+      <Search
+        append={append}
+        update={update}
+        map={map}
+        draw={draw}
+        setActiveLayerId={setActiveLayerId}
+      />
+      <div id='map-container' ref={mapContainerEl} />
       <MapLayersFeatures
         fields={fields}
         append={append}
@@ -43,15 +50,16 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
 };
 
 const StyledMap = styled('div', {
-  overflow: 'hidden',
   boxSizing: 'border-box',
+  position: 'relative',
+  overflow: 'hidden',
   display: 'grid',
   width: '$full',
   borderWidth: '$2',
   borderStyle: 'dashed',
   borderColor: '$slate-200',
   borderRadius: '$xl',
-  '& > div:first-child': {
+  '& > div#map-container': {
     width: '$full',
     height: 'calc(540px - ($borderWidths$2 + $borderWidths$2))',
     backgroundColor: '$slate-200',

@@ -1,5 +1,8 @@
 export const getJson = async (res: Response): Promise<any | null> => {
-  const isJson = res.headers.get('content-type')?.includes('application/json');
+  const contentType: string = res.headers.get('content-type') || '';
 
-  return isJson ? await res.json() : null;
+  const isJson = contentType.includes('application/json');
+  const isGeoJson = contentType.includes('application/vnd.geo+json');
+
+  return isJson || isGeoJson ? await res.json() : null;
 };

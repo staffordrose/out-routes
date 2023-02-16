@@ -67,6 +67,7 @@ const space = {
   76: '19rem',
   80: '20rem',
   96: '24rem',
+  112: '28rem',
 };
 
 const borderWidths = {
@@ -143,6 +144,9 @@ const colors = {
   'slate-700': '#334155',
   'slate-800': '#1e293b',
   'slate-900': '#0f172a',
+  'slate-900-25': 'rgba(15,23,42,0.25)',
+  'slate-900-50': 'rgba(15,23,42,0.5)',
+  'slate-900-75': 'rgba(15,23,42,0.75)',
   'slate-overlay': 'rgba(15,23,42,0.5)',
   'gray-50': '#f9fafb',
   'gray-100': '#f3f4f6',

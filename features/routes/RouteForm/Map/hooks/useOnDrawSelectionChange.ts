@@ -66,6 +66,7 @@ export const useOnDrawSelectionChange = ({
       const cb = (e: MapboxDraw.DrawSelectionChangeEvent) => {
         onDrawSelectionChange(e);
       };
+
       mapRef.on('draw.selectionchange', cb);
 
       return () => {
