@@ -82,7 +82,6 @@ const TabsList = styled(RadixTabs.List, {
 });
 
 const TabsTrigger = styled(RadixTabs.Trigger, {
-  flex: 1,
   display: 'flex',
   gap: '$3',
   justifyContent: 'center',

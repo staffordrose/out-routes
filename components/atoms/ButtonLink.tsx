@@ -27,12 +27,13 @@ const StyledButtonLink = styled(NextLink, {
   placeItems: 'center',
   width: '$auto',
   height: '$auto',
+  paddingY: '$0_5',
   borderWidth: '$2',
   borderStyle: 'solid',
   borderRadius: '$md',
   fontFamily: '$heading',
   fontWeight: '$medium',
-  lineHeight: '$xs',
+  lineHeight: '$sm',
   cursor: 'pointer',
   userSelect: 'none',
   variants: {
@@ -82,9 +83,10 @@ const StyledButtonLink = styled(NextLink, {
       xs: {
         gap: '$2',
         minHeight: '$7',
-        padding: '0 $2',
+        paddingX: '$2',
         fontSize: '$sm',
         '& > svg': {
+          flexShrink: 0,
           width: '$5',
           height: '$5',
         },
@@ -92,9 +94,10 @@ const StyledButtonLink = styled(NextLink, {
       sm: {
         gap: '$2',
         minHeight: '$8',
-        padding: '0 $2',
+        paddingX: '$2',
         fontSize: '$md',
         '& > svg': {
+          flexShrink: 0,
           width: '$6',
           height: '$6',
         },
@@ -102,9 +105,10 @@ const StyledButtonLink = styled(NextLink, {
       md: {
         gap: '$2_5',
         minHeight: '$10',
-        padding: '0 $2_5',
+        paddingX: '$2_5',
         fontSize: '$lg',
         '& > svg': {
+          flexShrink: 0,
           width: '$7',
           height: '$7',
         },
@@ -112,9 +116,10 @@ const StyledButtonLink = styled(NextLink, {
       lg: {
         gap: '$3',
         minHeight: '$12',
-        padding: '0 $3',
+        paddingX: '$3',
         fontSize: '$xl',
         '& > svg': {
+          flexShrink: 0,
           width: '$8',
           height: '$8',
         },
@@ -122,9 +127,10 @@ const StyledButtonLink = styled(NextLink, {
       xl: {
         gap: '$3_5',
         minHeight: '$14',
-        padding: '0 $3_5',
+        paddingX: '$3_5',
         fontSize: '$2xl',
         '& > svg': {
+          flexShrink: 0,
           width: '$9',
           height: '$9',
         },
