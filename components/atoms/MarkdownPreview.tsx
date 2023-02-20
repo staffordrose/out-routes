@@ -34,16 +34,16 @@ const StyledMarkdownPreview = styled('div', {
   '& > ol': {
     paddingLeft: '$5',
   },
-  '& > p > code': {
+  '& > p code': {
     paddingX: '$1',
     paddingY: '$0_5',
     borderRadius: '$sm',
-    backgroundColor: '$slate-100',
+    backgroundColor: '$slate-200',
   },
   '& > pre:has(code)': {
     paddingX: '$2',
     paddingY: '$1',
     borderRadius: '$sm',
-    backgroundColor: '$slate-100',
+    backgroundColor: '$slate-200',
   },
 });

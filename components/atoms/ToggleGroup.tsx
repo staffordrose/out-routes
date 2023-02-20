@@ -71,10 +71,10 @@ const StyledItem = styled(RadixToggleGroup.Item, {
       solid: {
         borderColor: '$slate-500',
         color: '$slate-50',
-        backgroundColor: '$slate-700',
+        backgroundColor: '$slate-600',
         '&:hover:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-800',
+          backgroundColor: '$slate-700',
         },
         '&[data-state=on]:enabled': {
           borderStyle: 'dashed',
@@ -82,7 +82,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         },
         '&:focus:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-900',
+          backgroundColor: '$slate-800',
         },
         '&:disabled': {
           opacity: 0.5,
@@ -99,7 +99,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         },
         '&[data-state=on]:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-300',
+          backgroundColor: '$slate-400',
         },
         '&:focus:enabled': {
           borderStyle: 'dashed',
@@ -121,7 +121,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         },
         '&[data-state=on]:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-200',
+          backgroundColor: '$slate-300',
         },
         '&:focus:enabled': {
           borderColor: '$slate-500',

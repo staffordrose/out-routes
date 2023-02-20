@@ -41,14 +41,14 @@ const StyledButtonLink = styled(NextLink, {
       solid: {
         borderColor: '$slate-500',
         color: '$slate-50',
-        backgroundColor: '$slate-700',
+        backgroundColor: '$slate-600',
         '&:hover': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-800',
+          backgroundColor: '$slate-700',
         },
         '&:focus': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-900',
+          backgroundColor: '$slate-800',
         },
       },
       outline: {
