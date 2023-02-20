@@ -12,6 +12,7 @@ export type RouteValues = {
   activity_type: ActivityTypes | undefined;
   region: string;
   country: CountryCodes | undefined;
+  summary: string;
   image_id: string | null;
   image_full: string | null;
   image_og: string | null;

@@ -50,6 +50,24 @@ export const globalStyles = globalCss({
   'h1, h2, h3, h4, h5, h6, p': {
     overflowWrap: 'break-word',
   },
+  h1: {
+    fontSize: '2rem',
+  },
+  h2: {
+    fontSize: '1.75rem',
+  },
+  h3: {
+    fontSize: '1.5rem',
+  },
+  h4: {
+    fontSize: '1.25rem',
+  },
+  h5: {
+    fontSize: '1.125rem',
+  },
+  h6: {
+    fontSize: '1rem',
+  },
   '#root': {
     isolation: 'isolate',
   },

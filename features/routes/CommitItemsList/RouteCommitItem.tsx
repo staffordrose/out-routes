@@ -2,7 +2,14 @@ import { FC } from 'react';
 
 import { routeActions } from '@/data/routes';
 import { RouteCommitItem as RouteCommitItemT } from '@/types';
-import { ActivityType, Country, Image, Quotes, TitleAlt } from './properties';
+import {
+  ActivityType,
+  Country,
+  Image,
+  Quotes,
+  Summary,
+  TitleAlt,
+} from './properties';
 import { CommitItem } from './shared';
 
 // TODO: Move fork_route out of RouteCommitItem and make it into its own this (like settings or administration)
@@ -164,6 +171,31 @@ export const RouteCommitItem: FC<RouteCommitItemT> = ({
           type='remove'
           name='Country'
           prevChildren={<Country country={prev?.country} />}
+        />
+      );
+    case routeActions.add_summary:
+      return (
+        <CommitItem
+          type='add'
+          name='Summary'
+          nextChildren={<Summary summary={next?.summary} />}
+        />
+      );
+    case routeActions.update_summary:
+      return (
+        <CommitItem
+          type='update'
+          name='Summary'
+          prevChildren={<Summary summary={prev?.summary} />}
+          nextChildren={<Summary summary={next?.summary} />}
+        />
+      );
+    case routeActions.remove_summary:
+      return (
+        <CommitItem
+          type='remove'
+          name='Summary'
+          prevChildren={<Summary summary={prev?.summary} />}
         />
       );
     case routeActions.add_route_image:

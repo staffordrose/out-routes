@@ -46,7 +46,24 @@ export const forkRoute = async (
     // add characters to the end of slugs that match an existing slug
     const nextSlug = cloneRouteSlug(slug, !!existingAuthRoute?.id);
 
-    const { title, title_alt, activity_type, region, country } = base.route;
+    const {
+      title,
+      title_alt,
+      activity_type,
+      region,
+      country,
+      summary,
+      map_bounding_box,
+      map_start_lng,
+      map_start_lat,
+      map_start_ele,
+      map_end_lng,
+      map_end_lat,
+      map_end_ele,
+      map_distance,
+      stats_layers,
+      stats_features,
+    } = base.route;
 
     // TODO: Image fields are missing
     // fork the route
@@ -63,16 +80,17 @@ export const forkRoute = async (
       activity_type,
       region,
       country,
-      map_bounding_box: base.route.map_bounding_box,
-      map_start_lng: base.route.map_start_lng,
-      map_start_lat: base.route.map_start_lat,
-      map_start_ele: base.route.map_start_ele,
-      map_end_lng: base.route.map_end_lng,
-      map_end_lat: base.route.map_end_lat,
-      map_end_ele: base.route.map_end_ele,
-      map_distance: base.route.map_distance,
-      stats_layers: base.route.stats_layers,
-      stats_features: base.route.stats_features,
+      summary,
+      map_bounding_box,
+      map_start_lng,
+      map_start_lat,
+      map_start_ele,
+      map_end_lng,
+      map_end_lat,
+      map_end_ele,
+      map_distance,
+      stats_layers,
+      stats_features,
       stats_members: 1,
       stats_contributors: 1,
       stats_commits: 1,

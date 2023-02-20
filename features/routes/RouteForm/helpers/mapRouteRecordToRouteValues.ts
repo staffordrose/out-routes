@@ -19,6 +19,7 @@ export const mapRouteRecordToRouteValues = (route: Route): RouteValues => {
     activity_type: (route.activity_type as ActivityTypes) || undefined,
     region: route.region || '',
     country: (route.country as CountryCodes) || undefined,
+    summary: route.summary || '',
     image_id: route.image_id || null,
     image_full: route.image_full || null,
     image_og: route.image_og || null,

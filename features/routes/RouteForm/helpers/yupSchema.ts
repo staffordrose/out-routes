@@ -61,8 +61,7 @@ export const yupRouteSchema = yup.object({
   activity_type: yup.string().required(`Activity type is required`),
   region: yup.string(),
   country: yup.string().required(`Country is required`),
-  ele_start: yup.number(),
-  ele_end: yup.number(),
+  summary: yup.string(),
   image_id: yup.string().nullable(),
   image_full: yup.string().nullable(),
   image_og: yup.string().nullable(),
@@ -76,4 +75,5 @@ export const yupRouteSchema = yup.object({
 export const yupSchema = yup.object({
   route: yupRouteSchema,
   layers: yup.array().of(yupLayerSchema),
+  activeLayerId: yup.string().nullable(),
 });

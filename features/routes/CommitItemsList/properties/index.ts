@@ -9,5 +9,6 @@ export * from './GeometryType';
 export * from './Image';
 export * from './Order';
 export * from './Quotes';
+export * from './Summary';
 export * from './Symbol';
 export * from './TitleAlt';

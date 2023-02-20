@@ -145,6 +145,23 @@ export const compareRoutes = (
     action: 'remove_country',
   });
 
+  // summary
+
+  addRouteProperty({
+    property: 'summary',
+    action: 'add_summary',
+  });
+
+  updateRouteProperty({
+    property: 'summary',
+    action: 'update_summary',
+  });
+
+  removeRouteProperty({
+    property: 'summary',
+    action: 'remove_summary',
+  });
+
   // image_id
 
   addRouteProperty({

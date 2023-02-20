@@ -140,6 +140,7 @@ const tables = [
       { name: "map_end_lat", type: "float" },
       { name: "map_end_ele", type: "float" },
       { name: "map_distance", type: "float" },
+      { name: "summary", type: "text" },
     ],
   },
   {

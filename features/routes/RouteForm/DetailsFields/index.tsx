@@ -2,13 +2,17 @@ import { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { TruncatedText } from '@/components/atoms';
-import { SelectField, TextField } from '@/components/molecules';
+import {
+  MarkdownEditorField,
+  SelectField,
+  TextField,
+} from '@/components/molecules';
 import { countrySelectOptions } from '@/data/general';
 import { activityTypeSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
+import { RouteFormValues } from '../helpers';
 import { ImageField } from './ImageField';
 import { TitleAltFieldArray } from './TitleAltFieldArray';
-import { RouteFormValues } from '../helpers';
 
 export const DetailsFields: FC = () => {
   const { control } = useFormContext<RouteFormValues>();
@@ -128,6 +132,19 @@ export const DetailsFields: FC = () => {
       <ResponsiveGrid>
         <TitleAltFieldArray />
       </ResponsiveGrid>
+      <Controller
+        name='route.summary'
+        control={control}
+        render={({ field, fieldState: { isTouched, error } }) => (
+          <MarkdownEditorField
+            {...field}
+            label='Summary'
+            placeholder='Route summary...'
+            isTouched={isTouched}
+            error={error?.message}
+          />
+        )}
+      />
     </>
   );
 };

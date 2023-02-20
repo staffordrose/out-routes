@@ -3,8 +3,8 @@ import type { IconType } from 'react-icons';
 import {
   BiBody,
   BiCalendarAlt,
-  BiCodeAlt,
   BiCurrentLocation,
+  BiFile,
   BiGitRepoForked,
   BiHistory,
   BiInfoSquare,
@@ -22,6 +22,7 @@ import {
   Icon,
   Link,
   List,
+  MarkdownPreview,
   Separator,
   Text,
 } from '@/components/atoms';
@@ -46,6 +47,7 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
     activity_type,
     region,
     country,
+    summary,
     stats_commits,
     stats_favorites,
     stats_forks,
@@ -79,10 +81,14 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
             {country ? countries[country as CountryCodes] : null}
           </Detail>
         </List>
-        <h2>Description</h2>
-        <Feedback size='sm' type='empty' icon={BiCodeAlt} title='Coming Soon'>
-          Route descriptions are coming soon!
-        </Feedback>
+        <h2>Summary</h2>
+        {summary ? (
+          <MarkdownPreview markdown={summary} />
+        ) : (
+          <Feedback size='sm' type='empty' icon={BiFile} title='No Summary'>
+            A route summary has not been added, yet.
+          </Feedback>
+        )}
       </div>
       <Flex direction='column' gap='lg' width='full'>
         <BorderBox>

@@ -27,6 +27,7 @@ export const mapValuesToRecords = (
       activity_type,
       region,
       country,
+      summary,
       image_id,
       image_full,
       image_og,
@@ -67,6 +68,7 @@ export const mapValuesToRecords = (
       activity_type,
       region,
       country,
+      summary,
       map_bounding_box:
         Array.isArray(mapBounds) && mapBounds.length === 2
           ? JSON.stringify(mapBounds)
