@@ -1,23 +1,23 @@
 import { useMemo } from 'react';
 
 import { startsAndEndsWith, trimHeadingsAndWhitespace } from '../helpers';
-import { StyleType, StyleTypes, StyleTypesMarkdown } from '../types';
+import { Selection, StyleType, StyleTypes, StyleTypesMarkdown } from '../types';
 
-export const useStyleTypes = (selection: string) => {
+export const useStyleTypes = (selectionContent: Selection['content']) => {
   const styleTypes = useMemo<StyleType[]>(() => {
-    const trimmed = trimHeadingsAndWhitespace(selection);
+    const trimmed = trimHeadingsAndWhitespace(selectionContent);
 
     let types: StyleType[] = [];
 
     if (
-      selection?.length >= 4 &&
+      selectionContent?.length >= 4 &&
       startsAndEndsWith(trimmed, StyleTypesMarkdown.B)
     ) {
       types.push(StyleTypes.B);
     }
 
     if (
-      selection?.length >= 2 &&
+      selectionContent?.length >= 2 &&
       !!(
         startsAndEndsWith(trimmed, StyleTypesMarkdown.BI) ||
         (startsAndEndsWith(trimmed, StyleTypesMarkdown.I) &&
@@ -29,7 +29,7 @@ export const useStyleTypes = (selection: string) => {
     }
 
     return types;
-  }, [selection]);
+  }, [selectionContent]);
 
   return styleTypes;
 };

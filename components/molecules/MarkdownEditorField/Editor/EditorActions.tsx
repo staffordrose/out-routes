@@ -8,17 +8,21 @@ import {
   useHeadingType,
   useStyleTypes,
 } from './hooks';
-import { HeadingType, HeadingTypes, StyleType, StyleTypes } from './types';
+import {
+  HeadingType,
+  HeadingTypes,
+  Selection,
+  StyleType,
+  StyleTypes,
+} from './types';
 
 export type EditorActionsProps = {
   textarea: MutableRefObject<HTMLTextAreaElement | null>;
   selectionStart: MutableRefObject<number>;
   selectionEnd: MutableRefObject<number>;
   setValue: (value: string) => void;
-  selection: string;
-  setSelection: (selection: string) => void;
-  selectionFullLine: string;
-  setSelectionFullLine: (selectionFullLine: string) => void;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
 };
 
 export const EditorActions: FC<EditorActionsProps> = ({
@@ -28,8 +32,6 @@ export const EditorActions: FC<EditorActionsProps> = ({
   setValue,
   selection,
   setSelection,
-  selectionFullLine,
-  setSelectionFullLine,
 }) => {
   const changeHeadingType = useChangeHeadingType({
     textarea,
@@ -37,7 +39,6 @@ export const EditorActions: FC<EditorActionsProps> = ({
     selectionEnd,
     setValue,
     setSelection,
-    setSelectionFullLine,
   });
 
   const changeStyleType = useChangeStyleType({
@@ -46,12 +47,11 @@ export const EditorActions: FC<EditorActionsProps> = ({
     selectionEnd,
     setValue,
     setSelection,
-    setSelectionFullLine,
   });
 
-  const headingType = useHeadingType(selectionFullLine);
+  const headingType = useHeadingType(selection.fullLine);
 
-  const styleTypes = useStyleTypes(selection);
+  const styleTypes = useStyleTypes(selection.content);
 
   return (
     <StyledEditorActions>

@@ -2,15 +2,19 @@ import { MutableRefObject, useCallback } from 'react';
 
 import { triggerTextareaChange } from '@/utils';
 import { getFullLine } from '../helpers';
-import { HeadingType, HeadingTypes, HeadingTypesMarkdown } from '../types';
+import {
+  HeadingType,
+  HeadingTypes,
+  HeadingTypesMarkdown,
+  Selection,
+} from '../types';
 
 type UseChangeHeadingTypeProps = {
   textarea: MutableRefObject<HTMLTextAreaElement | null>;
   selectionStart: MutableRefObject<number>;
   selectionEnd: MutableRefObject<number>;
   setValue: (value: string) => void;
-  setSelection: (selection: string) => void;
-  setSelectionFullLine: (selectionFullLine: string) => void;
+  setSelection: (selection: Selection) => void;
 };
 
 export const useChangeHeadingType = ({
@@ -19,7 +23,6 @@ export const useChangeHeadingType = ({
   selectionEnd,
   setValue,
   setSelection,
-  setSelectionFullLine,
 }: UseChangeHeadingTypeProps) => {
   const changeHeadingType = useCallback(
     (type: HeadingType) => {
@@ -118,19 +121,12 @@ export const useChangeHeadingType = ({
       }
 
       setValue(nextValue);
-      setSelection('');
-      setSelectionFullLine(
-        getFullLine(nextValue, selectionStart.current).content
-      );
+      setSelection({
+        content: '',
+        fullLine: getFullLine(nextValue, selectionStart.current).content,
+      });
     },
-    [
-      textarea,
-      selectionStart,
-      selectionEnd,
-      setValue,
-      setSelection,
-      setSelectionFullLine,
-    ]
+    [textarea, selectionStart, selectionEnd, setValue, setSelection]
   );
 
   return changeHeadingType;

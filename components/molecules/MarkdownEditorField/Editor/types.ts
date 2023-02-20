@@ -1,3 +1,8 @@
+export type Selection = {
+  content: string;
+  fullLine: string;
+};
+
 export enum HeadingTypes {
   H1 = 'h1',
   H2 = 'h2',

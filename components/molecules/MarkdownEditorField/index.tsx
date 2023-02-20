@@ -32,8 +32,10 @@ export const MarkdownEditorField = forwardRef(
         ? props.defaultValue.toString()
         : ''
     );
-    const [selection, setSelection] = useState<string>('');
-    const [selectionFullLine, setSelectionFullLine] = useState<string>('');
+    const [selection, setSelection] = useState({
+      content: '',
+      fullLine: '',
+    });
 
     return (
       <StyledMarkdownEditorField>
@@ -48,8 +50,6 @@ export const MarkdownEditorField = forwardRef(
             setValue={setValue}
             selection={selection}
             setSelection={setSelection}
-            selectionFullLine={selectionFullLine}
-            setSelectionFullLine={setSelectionFullLine}
           />
           <Preview value={value} />
         </div>

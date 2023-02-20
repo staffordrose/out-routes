@@ -2,15 +2,14 @@ import { MutableRefObject, useCallback } from 'react';
 
 import { triggerTextareaChange } from '@/utils';
 import { getFullLine, startsAndEndsWith } from '../helpers';
-import { StyleType, StyleTypes, StyleTypesMarkdown } from '../types';
+import { Selection, StyleType, StyleTypes, StyleTypesMarkdown } from '../types';
 
 type UseChangeStyleTypeProps = {
   textarea: MutableRefObject<HTMLTextAreaElement | null>;
   selectionStart: MutableRefObject<number>;
   selectionEnd: MutableRefObject<number>;
   setValue: (value: string) => void;
-  setSelection: (selection: string) => void;
-  setSelectionFullLine: (selectionFullLine: string) => void;
+  setSelection: (selection: Selection) => void;
 };
 
 export const useChangeStyleType = ({
@@ -19,7 +18,6 @@ export const useChangeStyleType = ({
   selectionEnd,
   setValue,
   setSelection,
-  setSelectionFullLine,
 }: UseChangeStyleTypeProps) => {
   const changeStyleType = useCallback(
     (type: StyleType) => {
@@ -140,21 +138,15 @@ export const useChangeStyleType = ({
       }
 
       setValue(nextValue);
-      setSelection(
-        nextValue.substring(selectionStart.current, selectionEnd.current)
-      );
-      setSelectionFullLine(
-        getFullLine(nextValue, selectionStart.current).content
-      );
+      setSelection({
+        content: nextValue.substring(
+          selectionStart.current,
+          selectionEnd.current
+        ),
+        fullLine: getFullLine(nextValue, selectionStart.current).content,
+      });
     },
-    [
-      textarea,
-      selectionStart,
-      selectionEnd,
-      setValue,
-      setSelection,
-      setSelectionFullLine,
-    ]
+    [textarea, selectionStart, selectionEnd, setValue, setSelection]
   );
 
   return changeStyleType;

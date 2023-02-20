@@ -14,27 +14,18 @@ import { styled } from '@/styles';
 import { EditorActions } from './EditorActions';
 import { getFullLine } from './helpers';
 import { useOnKeyDown } from './hooks';
+import { Selection } from './types';
 
 export type EditorProps = ComponentPropsWithoutRef<typeof Textarea> & {
   value: string;
   setValue: (value: string) => void;
-  selection: string;
-  setSelection: (selection: string) => void;
-  selectionFullLine: string;
-  setSelectionFullLine: (selectionFullLine: string) => void;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
 };
 
 export const Editor = forwardRef(
   (
-    {
-      value,
-      setValue,
-      selection,
-      setSelection,
-      selectionFullLine,
-      setSelectionFullLine,
-      ...props
-    }: EditorProps,
+    { value, setValue, selection, setSelection, ...props }: EditorProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
     const textarea = useRef<HTMLTextAreaElement>(null);
@@ -52,7 +43,6 @@ export const Editor = forwardRef(
       selectionEnd,
       value,
       setSelection,
-      setSelectionFullLine,
     });
 
     const onClick = (e: SyntheticEvent<HTMLTextAreaElement>) => {
@@ -61,15 +51,13 @@ export const Editor = forwardRef(
         selectionStart.current = e.target.selectionStart ?? 0;
         selectionEnd.current = e.target.selectionEnd ?? 0;
 
-        setSelection(
-          value.substring(
+        setSelection({
+          content: value.substring(
             selectionStart.current ?? 0,
             selectionEnd.current ?? 0
-          )
-        );
-        setSelectionFullLine(
-          getFullLine(value, selectionStart.current ?? 0).content
-        );
+          ),
+          fullLine: getFullLine(value, selectionStart.current ?? 0).content,
+        });
       }
     };
 
@@ -83,15 +71,13 @@ export const Editor = forwardRef(
       const { value } = e.target;
 
       setValue(value);
-      setSelection(
-        (value || '').substring(
+      setSelection({
+        content: (value || '').substring(
           selectionStart.current ?? 0,
           selectionEnd.current ?? 0
-        )
-      );
-      setSelectionFullLine(
-        getFullLine(value, selectionStart.current ?? 0).content
-      );
+        ),
+        fullLine: getFullLine(value, selectionStart.current ?? 0).content,
+      });
     };
 
     return (
@@ -103,8 +89,6 @@ export const Editor = forwardRef(
           setValue={setValue}
           selection={selection}
           setSelection={setSelection}
-          selectionFullLine={selectionFullLine}
-          setSelectionFullLine={setSelectionFullLine}
         />
         <StyledTextarea
           ref={textarea}

@@ -1,8 +1,13 @@
 import { useMemo } from 'react';
 
-import { HeadingType, HeadingTypes, HeadingTypesMarkdown } from '../types';
+import {
+  HeadingType,
+  HeadingTypes,
+  HeadingTypesMarkdown,
+  Selection,
+} from '../types';
 
-export const useHeadingType = (selectionFullLine: string) => {
+export const useHeadingType = (selectionFullLine: Selection['fullLine']) => {
   const headingType = useMemo<HeadingType | ''>(
     () =>
       selectionFullLine.startsWith(HeadingTypesMarkdown.H3)

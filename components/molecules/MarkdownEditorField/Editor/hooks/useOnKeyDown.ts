@@ -1,14 +1,14 @@
 import { KeyboardEvent, MutableRefObject, useCallback, useEffect } from 'react';
 
 import { getFullLine } from '../helpers';
+import { Selection } from '../types';
 
 type UseOnKeyDownProps = {
   textarea: MutableRefObject<HTMLTextAreaElement | null>;
   selectionStart: MutableRefObject<number>;
   selectionEnd: MutableRefObject<number>;
   value: string;
-  setSelection: (selection: string) => void;
-  setSelectionFullLine: (selectionFullLine: string) => void;
+  setSelection: (selection: Selection) => void;
 };
 
 export const useOnKeyDown = ({
@@ -17,7 +17,6 @@ export const useOnKeyDown = ({
   selectionEnd,
   value,
   setSelection,
-  setSelectionFullLine,
 }: UseOnKeyDownProps) => {
   const onKeyDown = useCallback(
     (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -36,19 +35,17 @@ export const useOnKeyDown = ({
           selectionStart.current = e.target.selectionStart ?? 0;
           selectionEnd.current = e.target.selectionEnd ?? 0;
 
-          setSelection(
-            value.substring(
+          setSelection({
+            content: value.substring(
               selectionStart.current ?? 0,
               selectionEnd.current ?? 0
-            )
-          );
-          setSelectionFullLine(
-            getFullLine(value, selectionStart.current ?? 0).content
-          );
+            ),
+            fullLine: getFullLine(value, selectionStart.current ?? 0).content,
+          });
         }
       }
     },
-    [selectionStart, selectionEnd, value, setSelection, setSelectionFullLine]
+    [selectionStart, selectionEnd, value, setSelection]
   );
 
   useEffect(() => {
