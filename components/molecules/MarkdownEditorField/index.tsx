@@ -66,6 +66,7 @@ const StyledMarkdownEditorField = styled('div', {
   '& > div': {
     display: 'grid',
     gap: '$4',
+    alignItems: 'start',
   },
   '@sm': {
     '& > div': {

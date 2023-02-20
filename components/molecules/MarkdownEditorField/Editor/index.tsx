@@ -147,6 +147,7 @@ const StyledEditor = styled('div', {
 const StyledTextarea = styled('textarea', {
   all: 'unset',
   boxSizing: 'border-box',
+  display: 'block',
   resize: 'vertical',
   width: '$full',
   minHeight: '360px',
