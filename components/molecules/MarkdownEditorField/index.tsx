@@ -8,6 +8,7 @@ import {
 import ReactIs from 'react-is';
 
 import { Label, Text, Textarea } from '@/components/atoms';
+import { useUndoableState } from '@/hooks';
 import { styled } from '@/styles';
 import { Editor } from './Editor';
 import { Preview } from './Preview';
@@ -25,13 +26,21 @@ export const MarkdownEditorField = forwardRef(
     { label, isTouched, error, ...props }: MarkdownEditorFieldProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
-    const [value, setValue] = useState<string>(
+    const {
+      states,
+      index,
+      state: value,
+      setState: setValue,
+      goBack,
+      goForward,
+    } = useUndoableState(
       props.value
         ? props.value.toString()
         : props.defaultValue
         ? props.defaultValue.toString()
         : ''
     );
+
     const [selection, setSelection] = useState({
       content: '',
       fullLine: '',
@@ -46,8 +55,12 @@ export const MarkdownEditorField = forwardRef(
           <Editor
             ref={ref}
             {...props}
+            valueHistoryLength={states.length}
+            valueHistoryIndex={index}
             value={value}
             setValue={setValue}
+            goBack={goBack}
+            goForward={goForward}
             selection={selection}
             setSelection={setSelection}
           />

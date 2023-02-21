@@ -17,15 +17,29 @@ import { useOnKeyDown } from './hooks';
 import { Selection } from './types';
 
 export type EditorProps = ComponentPropsWithoutRef<typeof Textarea> & {
+  valueHistoryLength: number;
+  valueHistoryIndex: number;
   value: string;
   setValue: (value: string) => void;
+  goBack: () => string;
+  goForward: () => string;
   selection: Selection;
   setSelection: (selection: Selection) => void;
 };
 
 export const Editor = forwardRef(
   (
-    { value, setValue, selection, setSelection, ...props }: EditorProps,
+    {
+      valueHistoryLength,
+      valueHistoryIndex,
+      value,
+      setValue,
+      goBack,
+      goForward,
+      selection,
+      setSelection,
+      ...props
+    }: EditorProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
     const textarea = useRef<HTMLTextAreaElement>(null);
@@ -53,10 +67,10 @@ export const Editor = forwardRef(
 
         setSelection({
           content: value.substring(
-            selectionStart.current ?? 0,
-            selectionEnd.current ?? 0
+            selectionStart.current,
+            selectionEnd.current
           ),
-          fullLine: getFullLine(value, selectionStart.current ?? 0).content,
+          fullLine: getFullLine(value, selectionStart.current).content,
         });
       }
     };
@@ -70,14 +84,17 @@ export const Editor = forwardRef(
 
       const { value } = e.target;
 
-      setValue(value);
-      setSelection({
-        content: (value || '').substring(
-          selectionStart.current ?? 0,
-          selectionEnd.current ?? 0
-        ),
-        fullLine: getFullLine(value, selectionStart.current ?? 0).content,
-      });
+      // only update state when onChange is triggered by user action
+      if (e.isTrusted) {
+        setValue(value);
+        setSelection({
+          content: (value || '').substring(
+            selectionStart.current,
+            selectionEnd.current
+          ),
+          fullLine: getFullLine(value, selectionStart.current).content,
+        });
+      }
     };
 
     return (
@@ -86,7 +103,11 @@ export const Editor = forwardRef(
           textarea={textarea}
           selectionStart={selectionStart}
           selectionEnd={selectionEnd}
+          valueHistoryLength={valueHistoryLength}
+          valueHistoryIndex={valueHistoryIndex}
           setValue={setValue}
+          goBack={goBack}
+          goForward={goForward}
           selection={selection}
           setSelection={setSelection}
         />
