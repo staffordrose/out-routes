@@ -44,26 +44,13 @@ export const useAddRouteMutation = ({
 
       return updateRoute(authUser.username, route.slug, 'Route created', {
         route: {
+          // properties from form values
+          ...routeWithoutFiles,
           // properties from newly created route
           id: route.id,
           created_at: route.created_at,
           owner: route.owner,
           slug: route.slug,
-          // properties from form values
-          is_private: routeWithoutFiles.is_private,
-          title: routeWithoutFiles.title,
-          title_alt: routeWithoutFiles.title_alt,
-          activity_type: routeWithoutFiles.activity_type,
-          region: routeWithoutFiles.region,
-          country: routeWithoutFiles.country,
-          map_bounding_box: routeWithoutFiles.map_bounding_box,
-          map_start_lng: routeWithoutFiles.map_start_lng,
-          map_start_lat: routeWithoutFiles.map_start_lat,
-          map_start_ele: routeWithoutFiles.map_start_ele,
-          map_end_lng: routeWithoutFiles.map_end_lng,
-          map_end_lat: routeWithoutFiles.map_end_lat,
-          map_end_ele: routeWithoutFiles.map_end_ele,
-          map_distance: routeWithoutFiles.map_distance,
           // properties from the uploaded route image
           ...routeImageIdUrls,
         },
