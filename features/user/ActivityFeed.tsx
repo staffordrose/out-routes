@@ -35,7 +35,8 @@ export const ActivityFeed: FC<ActivityFeedProps> = ({
         title='Your feed is empty'
       >
         <p>
-          Once you begin following other users should start to see activity.
+          Once you begin following other users, you should start to see
+          activity.
         </p>
         <p>Meanwhile, you can explore popular routes.</p>
         <ButtonLink variant='solid' size='md' href='/explore'>
