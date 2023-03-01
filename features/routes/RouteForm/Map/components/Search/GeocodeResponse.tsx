@@ -55,6 +55,7 @@ export const GeocodeResponse: FC<GeocodeResponseProps> = ({
           return (
             <Button
               key={id}
+              type='button'
               variant='ghost'
               size='xs'
               onClick={() => handleFeatureClick(center, { title: text })}
