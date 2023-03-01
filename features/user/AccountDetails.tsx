@@ -56,7 +56,8 @@ export const AccountDetails: FC<AccountDetails> = ({ user, openToast }) => {
                   <Flex justifyContent='end'>
                     <Button
                       variant='solid'
-                      size='md'
+                      colorScheme='red'
+                      size='lg'
                       onClick={() => {
                         try {
                           deleteAccount();
@@ -65,13 +66,16 @@ export const AccountDetails: FC<AccountDetails> = ({ user, openToast }) => {
                         } catch (error) {}
                       }}
                     >
-                      Confirm
+                      Yes, Delete Account
                     </Button>
                   </Flex>
                 </Flex>
               }
             >
-              <Button aria-label='Open modal to delete account'>
+              <Button
+                colorScheme='red'
+                aria-label='Open modal to delete account'
+              >
                 Delete your account
               </Button>
             </Dialog>

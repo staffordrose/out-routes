@@ -56,7 +56,7 @@ export const Popup: FC<PopupProps> = ({ route }) => {
       >
         <Flex gap='md' alignItems='center'>
           <Link variant='solid' href={`/${username}/${slug}`}>
-            <h3>{title}</h3>
+            <h5>{title}</h5>
           </Link>
           {is_private && (
             <Chip>

@@ -105,6 +105,7 @@ const EditUsername = () => {
                 type: 'submit',
                 form: 'user-username-form',
                 variant: 'solid',
+                colorScheme: 'orange',
                 size: 'md',
                 children: (
                   <>

@@ -95,13 +95,14 @@ export const PopupDetail: FC<PopupDetailProps> = ({
               }}
             />
           </Box>
-          <Heading as='h3'>{title || '[Untitled feature]'}</Heading>
+          <Heading as='h5'>{title || '[Untitled feature]'}</Heading>
         </Flex>
         <IconButton
           variant='ghost'
           size='xs'
           aria-label='Edit Feature'
           onClick={viewFeatureEdit}
+          css={{ flexShrink: 0 }}
         >
           <BiEditAlt />
         </IconButton>

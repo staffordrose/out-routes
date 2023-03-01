@@ -60,6 +60,7 @@ export const CommitRouteForm: FC<CommitRouteFormProps> = ({
       <Flex justifyContent='flex-end' width='full'>
         <Button
           variant='solid'
+          colorScheme='orange'
           size='lg'
           type='submit'
           aria-label='Confirm edits'

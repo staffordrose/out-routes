@@ -176,7 +176,7 @@ const LayerDetails: FC<LayerDetailsProps> = ({
             fill: layer.color || undefined,
           }}
         />
-        <TruncatedText as='h3' lineClamp={1}>
+        <TruncatedText as='h4' lineClamp={1}>
           {layer.title || '[Untitled layer]'}
         </TruncatedText>
       </div>

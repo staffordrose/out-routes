@@ -237,6 +237,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
                         <Flex justifyContent='flex-end' width='full'>
                           <Button
                             variant='solid'
+                            colorScheme='red'
                             size='lg'
                             aria-label='Confirm route deletion'
                             onClick={() => {
@@ -279,6 +280,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
                       type: 'submit',
                       form: 'route-form',
                       variant: 'solid',
+                      colorScheme: 'orange',
                       size: 'md',
                       children: (
                         <>
@@ -295,6 +297,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
                       type: 'submit',
                       form: 'route-form',
                       variant: 'solid',
+                      colorScheme: 'orange',
                       size: 'md',
                       children: (
                         <>

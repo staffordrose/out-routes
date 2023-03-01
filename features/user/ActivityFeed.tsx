@@ -39,7 +39,12 @@ export const ActivityFeed: FC<ActivityFeedProps> = ({
           activity.
         </p>
         <p>Meanwhile, you can explore popular routes.</p>
-        <ButtonLink variant='solid' size='md' href='/explore'>
+        <ButtonLink
+          variant='solid'
+          colorScheme='orange'
+          size='md'
+          href='/explore'
+        >
           Explore Routes
         </ButtonLink>
       </Feedback>

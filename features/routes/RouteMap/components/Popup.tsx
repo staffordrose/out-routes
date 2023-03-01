@@ -91,7 +91,7 @@ export const Popup: FC<PopupProps> = ({ feature }) => {
               }}
             />
           </Box>
-          <Heading as='h3'>{title || '[Untitled feature]'}</Heading>
+          <Heading as='h5'>{title || '[Untitled feature]'}</Heading>
         </Flex>
       </Flex>
       {renderResult()}

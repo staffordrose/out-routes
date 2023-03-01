@@ -158,12 +158,13 @@ export const PopupEdit: FC<PopupEditProps> = ({
           alignItems='center'
           width='full'
         >
-          <h3>{values.title || '[Untitled feature]'}</h3>
+          <h5>{values.title || '[Untitled feature]'}</h5>
           <IconButton
             variant='ghost'
             size='xs'
             aria-label='Go back to feature detail'
             onClick={viewFeatureDetail}
+            css={{ flexShrink: 0 }}
           >
             <BiX />
           </IconButton>

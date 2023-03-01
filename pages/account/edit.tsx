@@ -108,6 +108,7 @@ const EditProfile = () => {
                 type: 'submit',
                 form: 'user-form',
                 variant: 'solid',
+                colorScheme: 'orange',
                 size: 'md',
                 children: (
                   <>

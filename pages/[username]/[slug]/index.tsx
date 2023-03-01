@@ -168,6 +168,7 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
                       id: 'edit-route',
                       actionType: 'responsive-link',
                       variant: 'solid',
+                      colorScheme: 'orange',
                       size: 'md',
                       [`aria-label`]: 'Edit route',
                       href: `${router.asPath}/edit`,

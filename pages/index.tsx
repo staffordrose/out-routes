@@ -8,9 +8,16 @@ import {
   useQueries,
 } from '@tanstack/react-query';
 import queryString from 'query-string';
-import { BiMap } from 'react-icons/bi';
+import { BiMap, BiPlus } from 'react-icons/bi';
 
-import { Box, ButtonLink, Flex, Link, List } from '@/components/atoms';
+import {
+  Box,
+  ButtonLink,
+  Flex,
+  IconButtonLink,
+  Link,
+  List,
+} from '@/components/atoms';
 import { Feedback, MultiColumnLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { sitename } from '@/data/site';
@@ -231,9 +238,22 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               },
             }}
           >
-            <h2>Your Routes</h2>
+            <Flex
+              gap='xs'
+              justifyContent='space-between'
+              alignItems='center'
+              width='full'
+            >
+              <h2>Your Routes</h2>
+              <IconButtonLink
+                variant='ghost'
+                href='/routes/add'
+                aria-label='Add a route'
+              >
+                <BiPlus />
+              </IconButtonLink>
+            </Flex>
             {renderUserRoutesResult()}
-            <ButtonLink href='/routes/add'>Add a Route</ButtonLink>
           </Flex>
         </MultiColumnLayout.Aside>
         <MultiColumnLayout.Main>

@@ -90,7 +90,7 @@ export const RouteCard: FC<RouteCardProps> = ({
               }
             }}
           >
-            <h3>{title}</h3>
+            <h5>{title}</h5>
           </Link>
           {is_private && (
             <Chip>

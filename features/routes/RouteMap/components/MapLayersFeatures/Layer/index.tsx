@@ -25,7 +25,7 @@ export const Layer: FC<LayerProps> = ({ layer, features, openPopup }) => {
             fill: color || undefined,
           }}
         />
-        <TruncatedText as='h3' lineClamp={1}>
+        <TruncatedText as='h4' lineClamp={1}>
           {title || '[Untitled layer]'}
         </TruncatedText>
       </StyledLayerDetails>
