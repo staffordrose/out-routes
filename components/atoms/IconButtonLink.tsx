@@ -9,6 +9,14 @@ export type IconButtonLinkProps = ComponentPropsWithoutRef<
 > & {
   css?: Stitches.CSS;
   variant?: 'solid' | 'outline' | 'ghost';
+  colorScheme?:
+    | 'slate'
+    | 'red'
+    | 'orange'
+    | 'yellow'
+    | 'green'
+    | 'blue'
+    | 'purple';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   borderRadius?: 'normal' | 'full';
 };
@@ -36,45 +44,35 @@ const StyledIconButtonLink = styled(NextLink, {
   variants: {
     variant: {
       solid: {
-        borderColor: '$slate-500',
-        color: '$slate-50',
-        backgroundColor: '$slate-600',
         '&:hover': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-700',
         },
         '&:focus': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-800',
         },
       },
       outline: {
-        borderColor: '$slate-500',
-        color: '$slate-900',
-        backgroundColor: '$slate-50',
         '&:hover': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-200',
         },
         '&:focus': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-300',
         },
       },
       ghost: {
+        borderStyle: 'dashed',
         borderColor: 'transparent',
-        color: '$slate-900',
         backgroundColor: 'transparent',
-        '&:hover': {
-          borderStyle: 'dashed',
-          borderColor: '$slate-500',
-        },
-        '&:focus': {
-          borderStyle: 'dashed',
-          borderColor: '$slate-500',
-          backgroundColor: '$slate-200',
-        },
       },
+    },
+    colorScheme: {
+      slate: {},
+      red: {},
+      orange: {},
+      yellow: {},
+      green: {},
+      blue: {},
+      purple: {},
     },
     size: {
       xs: {
@@ -123,8 +121,319 @@ const StyledIconButtonLink = styled(NextLink, {
       full: { borderRadius: '$full' },
     },
   },
+  compoundVariants: [
+    {
+      variant: 'solid',
+      colorScheme: 'slate',
+      css: {
+        borderColor: '$slate-500',
+        color: '$slate-50',
+        backgroundColor: '$slate-600',
+        '&:hover': {
+          backgroundColor: '$slate-700',
+        },
+        '&:focus': {
+          backgroundColor: '$slate-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'red',
+      css: {
+        borderColor: '$red-500',
+        color: '$red-50',
+        backgroundColor: '$red-600',
+        '&:hover': {
+          backgroundColor: '$red-700',
+        },
+        '&:focus': {
+          backgroundColor: '$red-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'orange',
+      css: {
+        borderColor: '$orange-500',
+        color: '$orange-50',
+        backgroundColor: '$orange-600',
+        '&:hover': {
+          backgroundColor: '$orange-700',
+        },
+        '&:focus': {
+          backgroundColor: '$orange-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'yellow',
+      css: {
+        borderColor: '$yellow-500',
+        color: '$yellow-50',
+        backgroundColor: '$yellow-600',
+        '&:hover': {
+          backgroundColor: '$yellow-700',
+        },
+        '&:focus': {
+          backgroundColor: '$yellow-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'green',
+      css: {
+        borderColor: '$green-500',
+        color: '$green-50',
+        backgroundColor: '$green-600',
+        '&:hover': {
+          backgroundColor: '$green-700',
+        },
+        '&:focus': {
+          backgroundColor: '$green-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'blue',
+      css: {
+        borderColor: '$blue-500',
+        color: '$blue-50',
+        backgroundColor: '$blue-600',
+        '&:hover': {
+          backgroundColor: '$blue-700',
+        },
+        '&:focus': {
+          backgroundColor: '$blue-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'purple',
+      css: {
+        borderColor: '$purple-500',
+        color: '$purple-50',
+        backgroundColor: '$purple-600',
+        '&:hover': {
+          backgroundColor: '$purple-700',
+        },
+        '&:focus': {
+          backgroundColor: '$purple-800',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'slate',
+      css: {
+        borderColor: '$slate-500',
+        color: '$slate-900',
+        backgroundColor: '$slate-50',
+        '&:hover': {
+          backgroundColor: '$slate-200',
+        },
+        '&:focus': {
+          backgroundColor: '$slate-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'red',
+      css: {
+        borderColor: '$red-500',
+        color: '$red-900',
+        backgroundColor: '$red-50',
+        '&:hover': {
+          backgroundColor: '$red-200',
+        },
+        '&:focus': {
+          backgroundColor: '$red-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'orange',
+      css: {
+        borderColor: '$orange-500',
+        color: '$orange-900',
+        backgroundColor: '$orange-50',
+        '&:hover': {
+          backgroundColor: '$orange-200',
+        },
+        '&:focus': {
+          backgroundColor: '$orange-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'yellow',
+      css: {
+        borderColor: '$yellow-500',
+        color: '$yellow-900',
+        backgroundColor: '$yellow-50',
+        '&:hover': {
+          backgroundColor: '$yellow-200',
+        },
+        '&:focus': {
+          backgroundColor: '$yellow-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'green',
+      css: {
+        borderColor: '$green-500',
+        color: '$green-900',
+        backgroundColor: '$green-50',
+        '&:hover': {
+          backgroundColor: '$green-200',
+        },
+        '&:focus': {
+          backgroundColor: '$green-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'blue',
+      css: {
+        borderColor: '$blue-500',
+        color: '$blue-900',
+        backgroundColor: '$blue-50',
+        '&:hover': {
+          backgroundColor: '$blue-200',
+        },
+        '&:focus': {
+          backgroundColor: '$blue-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'purple',
+      css: {
+        borderColor: '$purple-500',
+        color: '$purple-900',
+        backgroundColor: '$purple-50',
+        '&:hover': {
+          backgroundColor: '$purple-200',
+        },
+        '&:focus': {
+          backgroundColor: '$purple-300',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'slate',
+      css: {
+        color: '$slate-900',
+        '&:hover': {
+          borderColor: '$slate-500',
+        },
+        '&:focus': {
+          borderColor: '$slate-500',
+          backgroundColor: '$slate-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'red',
+      css: {
+        color: '$red-900',
+        '&:hover': {
+          borderColor: '$red-500',
+        },
+        '&:focus': {
+          borderColor: '$red-500',
+          backgroundColor: '$red-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'orange',
+      css: {
+        color: '$orange-900',
+        '&:hover': {
+          borderColor: '$orange-500',
+        },
+        '&:focus': {
+          borderColor: '$orange-500',
+          backgroundColor: '$orange-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'yellow',
+      css: {
+        color: '$yellow-900',
+        '&:hover': {
+          borderColor: '$yellow-500',
+        },
+        '&:focus': {
+          borderColor: '$yellow-500',
+          backgroundColor: '$yellow-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'green',
+      css: {
+        color: '$green-900',
+        '&:hover': {
+          borderColor: '$green-500',
+        },
+        '&:focus': {
+          borderColor: '$green-500',
+          backgroundColor: '$green-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'blue',
+      css: {
+        color: '$blue-900',
+        '&:hover': {
+          borderColor: '$blue-500',
+        },
+        '&:focus': {
+          borderColor: '$blue-500',
+          backgroundColor: '$blue-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'purple',
+      css: {
+        color: '$purple-900',
+        '&:hover': {
+          borderColor: '$purple-500',
+        },
+        '&:focus': {
+          borderColor: '$purple-500',
+          backgroundColor: '$purple-200',
+        },
+      },
+    },
+  ],
   defaultVariants: {
     variant: 'outline',
+    colorScheme: 'slate',
     size: 'sm',
     borderRadius: 'normal',
   },

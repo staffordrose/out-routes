@@ -13,6 +13,14 @@ export type ToggleProps = ComponentPropsWithoutRef<typeof StyledToggle> & {
   as?: ElementType;
   css?: Stitches.CSS;
   variant?: 'solid' | 'outline' | 'ghost';
+  colorScheme?:
+    | 'slate'
+    | 'red'
+    | 'orange'
+    | 'yellow'
+    | 'green'
+    | 'blue'
+    | 'purple';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
 
@@ -39,20 +47,14 @@ const StyledToggle = styled(RadixToggle.Root, {
   variants: {
     variant: {
       solid: {
-        borderColor: '$slate-500',
-        color: '$slate-50',
-        backgroundColor: '$slate-600',
         '&:hover:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-700',
         },
         '&[data-state=on]:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-900',
         },
         '&:focus:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-800',
         },
         '&:disabled': {
           opacity: 0.5,
@@ -60,20 +62,14 @@ const StyledToggle = styled(RadixToggle.Root, {
         },
       },
       outline: {
-        borderColor: '$slate-500',
-        color: '$slate-900',
-        backgroundColor: '$slate-50',
         '&:hover:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-200',
         },
         '&[data-state=on]:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-400',
         },
         '&:focus:enabled': {
           borderStyle: 'dashed',
-          backgroundColor: '$slate-300',
         },
         '&:disabled': {
           opacity: 0.5,
@@ -83,25 +79,21 @@ const StyledToggle = styled(RadixToggle.Root, {
       ghost: {
         borderStyle: 'dashed',
         borderColor: 'transparent',
-        color: '$slate-900',
         backgroundColor: 'transparent',
-        '&:hover:enabled': {
-          borderColor: '$slate-500',
-          backgroundColor: '$slate-100',
-        },
-        '&[data-state=on]:enabled': {
-          borderStyle: 'dashed',
-          backgroundColor: '$slate-300',
-        },
-        '&:focus:enabled': {
-          borderColor: '$slate-500',
-          backgroundColor: '$slate-200',
-        },
         '&:disabled': {
           opacity: 0.5,
           cursor: 'not-allowed',
         },
       },
+    },
+    colorScheme: {
+      slate: {},
+      red: {},
+      orange: {},
+      yellow: {},
+      green: {},
+      blue: {},
+      purple: {},
     },
     size: {
       xs: {
@@ -146,8 +138,382 @@ const StyledToggle = styled(RadixToggle.Root, {
       },
     },
   },
+  compoundVariants: [
+    {
+      variant: 'solid',
+      colorScheme: 'slate',
+      css: {
+        borderColor: '$slate-500',
+        color: '$slate-50',
+        backgroundColor: '$slate-600',
+        '&:hover:enabled': {
+          backgroundColor: '$slate-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$slate-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$slate-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'red',
+      css: {
+        borderColor: '$red-500',
+        color: '$red-50',
+        backgroundColor: '$red-600',
+        '&:hover:enabled': {
+          backgroundColor: '$red-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$red-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$red-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'orange',
+      css: {
+        borderColor: '$orange-500',
+        color: '$orange-50',
+        backgroundColor: '$orange-600',
+        '&:hover:enabled': {
+          backgroundColor: '$orange-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$orange-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$orange-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'yellow',
+      css: {
+        borderColor: '$yellow-500',
+        color: '$yellow-50',
+        backgroundColor: '$yellow-600',
+        '&:hover:enabled': {
+          backgroundColor: '$yellow-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$yellow-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$yellow-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'green',
+      css: {
+        borderColor: '$green-500',
+        color: '$green-50',
+        backgroundColor: '$green-600',
+        '&:hover:enabled': {
+          backgroundColor: '$green-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$green-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$green-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'blue',
+      css: {
+        borderColor: '$blue-500',
+        color: '$blue-50',
+        backgroundColor: '$blue-600',
+        '&:hover:enabled': {
+          backgroundColor: '$blue-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$blue-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$blue-800',
+        },
+      },
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'purple',
+      css: {
+        borderColor: '$purple-500',
+        color: '$purple-50',
+        backgroundColor: '$purple-600',
+        '&:hover:enabled': {
+          backgroundColor: '$purple-700',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$purple-900',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$purple-800',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'slate',
+      css: {
+        borderColor: '$slate-500',
+        color: '$slate-900',
+        backgroundColor: '$slate-50',
+        '&:hover:enabled': {
+          backgroundColor: '$slate-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$slate-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$slate-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'red',
+      css: {
+        borderColor: '$red-500',
+        color: '$red-900',
+        backgroundColor: '$red-50',
+        '&:hover:enabled': {
+          backgroundColor: '$red-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$red-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$red-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'orange',
+      css: {
+        borderColor: '$orange-500',
+        color: '$orange-900',
+        backgroundColor: '$orange-50',
+        '&:hover:enabled': {
+          backgroundColor: '$orange-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$orange-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$orange-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'yellow',
+      css: {
+        borderColor: '$yellow-500',
+        color: '$yellow-900',
+        backgroundColor: '$yellow-50',
+        '&:hover:enabled': {
+          backgroundColor: '$yellow-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$yellow-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$yellow-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'green',
+      css: {
+        borderColor: '$green-500',
+        color: '$green-900',
+        backgroundColor: '$green-50',
+        '&:hover:enabled': {
+          backgroundColor: '$green-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$green-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$green-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'blue',
+      css: {
+        borderColor: '$blue-500',
+        color: '$blue-900',
+        backgroundColor: '$blue-50',
+        '&:hover:enabled': {
+          backgroundColor: '$blue-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$blue-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$blue-300',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      colorScheme: 'purple',
+      css: {
+        borderColor: '$purple-500',
+        color: '$purple-900',
+        backgroundColor: '$purple-50',
+        '&:hover:enabled': {
+          backgroundColor: '$purple-200',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$purple-400',
+        },
+        '&:focus:enabled': {
+          backgroundColor: '$purple-300',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'slate',
+      css: {
+        color: '$slate-900',
+        '&:hover:enabled': {
+          borderColor: '$slate-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$slate-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$slate-500',
+          backgroundColor: '$slate-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'red',
+      css: {
+        color: '$red-900',
+        '&:hover:enabled': {
+          borderColor: '$red-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$red-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$red-500',
+          backgroundColor: '$red-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'orange',
+      css: {
+        color: '$orange-900',
+        '&:hover:enabled': {
+          borderColor: '$orange-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$orange-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$orange-500',
+          backgroundColor: '$orange-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'yellow',
+      css: {
+        color: '$yellow-900',
+        '&:hover:enabled': {
+          borderColor: '$yellow-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$yellow-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$yellow-500',
+          backgroundColor: '$yellow-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'green',
+      css: {
+        color: '$green-900',
+        '&:hover:enabled': {
+          borderColor: '$green-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$green-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$green-500',
+          backgroundColor: '$green-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'blue',
+      css: {
+        color: '$blue-900',
+        '&:hover:enabled': {
+          borderColor: '$blue-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$blue-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$blue-500',
+          backgroundColor: '$blue-200',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      colorScheme: 'purple',
+      css: {
+        color: '$purple-900',
+        '&:hover:enabled': {
+          borderColor: '$purple-500',
+        },
+        '&[data-state=on]:enabled': {
+          backgroundColor: '$purple-300',
+        },
+        '&:focus:enabled': {
+          borderColor: '$purple-500',
+          backgroundColor: '$purple-200',
+        },
+      },
+    },
+  ],
   defaultVariants: {
     variant: 'outline',
+    colorScheme: 'slate',
     size: 'sm',
   },
 });
