@@ -23,6 +23,7 @@ export const Coordinates: FC<CoordinatesProps> = ({
 
   return (
     <Button
+      type='button'
       variant='ghost'
       size='xs'
       onClick={() => handleFeatureClick([lng, lat])}
