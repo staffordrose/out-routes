@@ -1,4 +1,5 @@
 import { Session } from 'next-auth';
+import safeJsonStringify from 'safe-json-stringify';
 
 import { User } from '@/types';
 import { StatusError } from '@/utils';
@@ -15,7 +16,7 @@ export const getUser = async (
       .select(['*'])
       .getFirst();
 
-    return authUser || null;
+    return authUser ? JSON.parse(safeJsonStringify(authUser)) : null;
   } catch (error) {
     if (error instanceof Error) {
       throw error;
