@@ -71,7 +71,7 @@ export const Dropzone = forwardRef(
         <RadixAspectRatio.Root ratio={aspectRatio}>
           <Content>
             {isDragActive ? (
-              <p>Drop the files here ...</p>
+              <p>Drop the file{multiple ? `(s)` : ``} here ...</p>
             ) : (
               <p>
                 Drag &apos;n&apos; drop {multiple ? `some files` : `a file`}{' '}

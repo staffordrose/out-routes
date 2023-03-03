@@ -172,8 +172,8 @@ export const FeaturesFieldArray: FC<FeaturesFieldArrayProps> = ({
       </div>
       <AddFeature>
         <Button
-          display='flex'
           type='button'
+          display='flex'
           onClick={() =>
             append({
               files: [],

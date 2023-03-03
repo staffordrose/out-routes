@@ -56,8 +56,8 @@ export const TitleAltFieldArray: FC = () => {
       )}
       {Array.isArray(fields) && fields.length < 3 && (
         <Button
-          display='flex'
           type='button'
+          display='flex'
           onClick={() => append({ text: '' })}
         >
           Add Name

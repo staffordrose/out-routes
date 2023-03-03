@@ -57,8 +57,8 @@ export const LayersFieldArray: FC<LayersFieldArrayProps> = ({
 
       <AddLayer>
         <Button
-          display='flex'
           type='button'
+          display='flex'
           onClick={() =>
             append({
               databaseId: createAlphaNumericId(24),

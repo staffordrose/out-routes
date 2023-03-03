@@ -300,8 +300,8 @@ export const PopupEdit: FC<PopupEditProps> = ({
         </Flex>
       </Flex>
       <Button
-        variant='solid'
         type='button' // prevent early submission of RouteForm
+        variant='solid'
         aria-label='Update feature properties'
         onClick={onSubmit}
       >

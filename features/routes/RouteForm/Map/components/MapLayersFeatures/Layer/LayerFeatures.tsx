@@ -124,9 +124,9 @@ const FeatureButton: FC<FeatureButtonProps> = ({
 
   return (
     <Button
+      type='button' // prevent form submission
       variant='ghost'
       size='xs'
-      type='button' // prevent form submission
       onClick={onClick}
     >
       <SymbolIcon

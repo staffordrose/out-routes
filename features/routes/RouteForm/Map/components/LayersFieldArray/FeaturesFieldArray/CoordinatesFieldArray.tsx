@@ -85,8 +85,8 @@ export const CoordinatesFieldArray: FC<CoordinatesFieldArrayProps> = ({
                 </Flex>
                 {feature?.type && feature.type !== GeometryTypes.Point && (
                   <IconButton
-                    size='xs'
                     type='button'
+                    size='xs'
                     variant='ghost'
                     onClick={() => {
                       remove(index);
@@ -101,9 +101,9 @@ export const CoordinatesFieldArray: FC<CoordinatesFieldArrayProps> = ({
       </List>
       {feature?.type && feature.type !== GeometryTypes.Point && (
         <Button
+          type='button'
           size='xs'
           display='flex'
-          type='button'
           onClick={() => append({ lat: '', lng: '' })}
         >
           <BiPlus />
