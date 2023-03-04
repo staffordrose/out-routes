@@ -166,63 +166,70 @@ const Favorites = ({ isAuthenticated }: FavoritesProps) => {
           >
             Favorites
           </PageHeading>
-          {!Array.isArray(favorites) || !favorites.length ? (
-            <Feedback size='lg' type='empty' icon={BiStar} title='No Favorites'>
-              {authUser?.username && authUser.username === username
-                ? `You haven't starred any routes.`
-                : `@${username} hasn't starred any routes.`}
-            </Feedback>
-          ) : (
-            <>
-              <FavoritesList
-                favorites={favorites}
-                authUser={authUser}
-                favoritesIds={favoritesIds}
-                handleFavorite={handleFavorite}
-                columns={4}
-                cardOrientation='vertical'
-              />
-              {(pageNum !== 1 || hasMore) && (
-                <Flex
-                  gap='lg'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  marginBottom='lg'
-                >
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/favorites${
-                          pageNum > 2
-                            ? `?${queryString.stringify({
-                                page: pageNum - 1,
-                              })}`
-                            : ``
-                        }`
-                      );
-                    }}
-                    disabled={pageNum === 1}
+          <DefaultLayout.MainContent>
+            {!Array.isArray(favorites) || !favorites.length ? (
+              <Feedback
+                size='lg'
+                type='empty'
+                icon={BiStar}
+                title='No Favorites'
+              >
+                {authUser?.username && authUser.username === username
+                  ? `You haven't starred any routes.`
+                  : `@${username} hasn't starred any routes.`}
+              </Feedback>
+            ) : (
+              <>
+                <FavoritesList
+                  favorites={favorites}
+                  authUser={authUser}
+                  favoritesIds={favoritesIds}
+                  handleFavorite={handleFavorite}
+                  columns={4}
+                  cardOrientation='vertical'
+                />
+                {(pageNum !== 1 || hasMore) && (
+                  <Flex
+                    gap='lg'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    marginBottom='lg'
                   >
-                    Previous Page
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/favorites?${queryString.stringify({
-                          page: hasMore ? pageNum + 1 : pageNum,
-                        })}`
-                      );
-                    }}
-                    disabled={isPreviousData || !hasMore}
-                  >
-                    Next Page
-                  </Button>
-                </Flex>
-              )}
-            </>
-          )}
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/favorites${
+                            pageNum > 2
+                              ? `?${queryString.stringify({
+                                  page: pageNum - 1,
+                                })}`
+                              : ``
+                          }`
+                        );
+                      }}
+                      disabled={pageNum === 1}
+                    >
+                      Previous Page
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/favorites?${queryString.stringify({
+                            page: hasMore ? pageNum + 1 : pageNum,
+                          })}`
+                        );
+                      }}
+                      disabled={isPreviousData || !hasMore}
+                    >
+                      Next Page
+                    </Button>
+                  </Flex>
+                )}
+              </>
+            )}
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

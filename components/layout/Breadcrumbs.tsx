@@ -29,7 +29,7 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({ breadcrumbs }) => {
             <BiHome />
           </IconButtonLink>
         </li>
-        <HomeSeparatorRoot decorative orientation='vertical' />
+        <SeparatorRoot decorative orientation='vertical' />
         {breadcrumbs.map(({ id, href, children }, index) => {
           return (
             <Fragment key={id}>
@@ -56,6 +56,10 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({ breadcrumbs }) => {
 };
 
 const StyledBreadcrumbs = styled('nav', {
+  height: '$8',
+  borderBottomWidth: '$1',
+  borderBottomStyle: 'solid',
+  borderBottomColor: '$slate-300',
   userSelect: 'none',
   '& > ul': {
     listStyle: 'none',
@@ -64,8 +68,9 @@ const StyledBreadcrumbs = styled('nav', {
     justifyContent: 'start',
     alignContent: 'center',
     alignItems: 'center',
-    maxWidth: '100vw',
-    height: '$7',
+    maxWidth: '$container_3xl',
+    marginX: '$auto',
+    height: '$full',
     overflow: 'hidden',
     overflowX: 'auto',
     whiteSpace: 'nowrap',
@@ -74,16 +79,25 @@ const StyledBreadcrumbs = styled('nav', {
     '&::-webkit-scrollbar': {
       display: 'none' /* Safari and Chrome */,
     },
+    '& > li': {
+      paddingLeft: '$5',
+      paddingRight: '$4',
+    },
+    '& > li:first-child': {
+      paddingX: '$3',
+    },
   },
 });
 
 const SeparatorRoot = styled(Separator.Root, {
   width: '$px',
-  height: '$full',
-  marginX: '$3',
+  height: '$8',
+  marginX: '$0',
   backgroundColor: '$slate-300',
-});
-
-const HomeSeparatorRoot = styled(SeparatorRoot, {
-  marginLeft: '$1_5',
+  '-webkit-transform-origin': '100% 100%',
+  '-ms-transform-origin': '100% 100%',
+  'transform-origin': '100% 100%',
+  '-webkit-transform': 'rotate(15deg)',
+  '-ms-transform': 'rotate(15deg)',
+  transform: 'rotate(15deg)',
 });

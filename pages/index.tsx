@@ -17,6 +17,7 @@ import {
   IconButtonLink,
   Link,
   List,
+  TruncatedText,
 } from '@/components/atoms';
 import { Feedback, MultiColumnLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
@@ -125,7 +126,9 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
             {routes.map(({ id, owner, slug, title }) => {
               return (
                 <li key={id}>
-                  <Link href={`/${owner?.username}/${slug}`}>{title}</Link>
+                  <Link href={`/${owner?.username}/${slug}`}>
+                    <TruncatedText>{title}</TruncatedText>
+                  </Link>
                 </li>
               );
             })}
@@ -224,12 +227,13 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
           <Flex
             direction='column'
             gap='md'
-            width='full'
             alignItems='flex-start'
+            width='full'
             css={{
               overflowY: 'auto',
               maxHeight: 'calc(100vh - $14)',
-              padding: '$4',
+              paddingX: '$4',
+              paddingBottom: '$4',
               whiteSpace: 'nowrap',
               MsOverflowStyle: 'none' /* Internet Explorer 10+ */,
               scrollbarWidth: 'none' /* Firefox */,
@@ -243,6 +247,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               justifyContent='space-between'
               alignItems='center'
               width='full'
+              css={{ height: '$16' }}
             >
               <h2>Your Routes</h2>
               <IconButtonLink
@@ -263,9 +268,9 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               '& > h1': {
                 paddingX: '$4',
                 paddingY: '$2',
-                borderBottomWidth: '$2',
+                borderBottomWidth: '$1',
                 borderBottomStyle: 'solid',
-                borderBottomColor: '$slate-200',
+                borderBottomColor: '$slate-300',
               },
             }}
           >
@@ -293,7 +298,8 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               css={{
                 overflowY: 'auto',
                 maxHeight: 'calc(100vh - $14)',
-                padding: '$4',
+                paddingX: '$4',
+                paddingBottom: '$4',
                 whiteSpace: 'nowrap',
                 MsOverflowStyle: 'none' /* Internet Explorer 10+ */,
                 scrollbarWidth: 'none' /* Firefox */,
@@ -302,7 +308,14 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
                 },
               }}
             >
-              <h2>New Users</h2>
+              <Flex
+                justifyContent='flex-start'
+                alignItems='center'
+                width='full'
+                css={{ height: '$16' }}
+              >
+                <h2>New Users</h2>
+              </Flex>
               {renderNewUsersResult()}
             </Flex>
           </MultiColumnLayout.MainAside>

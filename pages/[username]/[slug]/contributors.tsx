@@ -193,68 +193,70 @@ const RouteContributors = ({
           >
             Contributors
           </PageHeading>
-          {!Array.isArray(contributors) || !contributors.length ? (
-            <Feedback
-              size='lg'
-              type='empty'
-              icon={BiUser}
-              title='No Contributors'
-            >
-              {`@${username}/${slug} doesn't have any contributors.`}
-            </Feedback>
-          ) : (
-            <>
-              <ContributorsList
-                contributors={contributors}
-                authUser={authUser}
-                followingIds={followingIds}
-                handleFollow={handleFollow}
-                columns={4}
-                cardOrientation='vertical'
-              />
-              {(pageNum !== 1 || hasMore) && (
-                <Flex
-                  gap='lg'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  marginBottom='lg'
-                >
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/${slug}/contributors${
-                          pageNum > 2
-                            ? `?${queryString.stringify({
-                                page: pageNum - 1,
-                              })}`
-                            : ``
-                        }`
-                      );
-                    }}
-                    disabled={pageNum === 1}
+          <DefaultLayout.MainContent>
+            {!Array.isArray(contributors) || !contributors.length ? (
+              <Feedback
+                size='lg'
+                type='empty'
+                icon={BiUser}
+                title='No Contributors'
+              >
+                {`@${username}/${slug} doesn't have any contributors.`}
+              </Feedback>
+            ) : (
+              <>
+                <ContributorsList
+                  contributors={contributors}
+                  authUser={authUser}
+                  followingIds={followingIds}
+                  handleFollow={handleFollow}
+                  columns={4}
+                  cardOrientation='vertical'
+                />
+                {(pageNum !== 1 || hasMore) && (
+                  <Flex
+                    gap='lg'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    marginBottom='lg'
                   >
-                    Previous Page
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/${slug}/contributors?${queryString.stringify(
-                          {
-                            page: hasMore ? pageNum + 1 : pageNum,
-                          }
-                        )}`
-                      );
-                    }}
-                    disabled={isPreviousData || !hasMore}
-                  >
-                    Next Page
-                  </Button>
-                </Flex>
-              )}
-            </>
-          )}
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/${slug}/contributors${
+                            pageNum > 2
+                              ? `?${queryString.stringify({
+                                  page: pageNum - 1,
+                                })}`
+                              : ``
+                          }`
+                        );
+                      }}
+                      disabled={pageNum === 1}
+                    >
+                      Previous Page
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/${slug}/contributors?${queryString.stringify(
+                            {
+                              page: hasMore ? pageNum + 1 : pageNum,
+                            }
+                          )}`
+                        );
+                      }}
+                      disabled={isPreviousData || !hasMore}
+                    >
+                      Next Page
+                    </Button>
+                  </Flex>
+                )}
+              </>
+            )}
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

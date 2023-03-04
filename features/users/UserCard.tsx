@@ -55,7 +55,7 @@ export const UserCard: FC<UserCardProps> = ({
         {orientation === 'vertical' ? (
           <Box css={{ paddingTop: '$4', paddingLeft: '$4' }}>
             <Avatar
-              size='lg'
+              size='md'
               src={image || undefined}
               firstName={name?.split(' ')[0]}
               lastName={name?.split(' ')[1]}
@@ -83,10 +83,9 @@ export const UserCard: FC<UserCardProps> = ({
           width='full'
           height='full'
         >
-          <Flex direction='column' gap='md'>
+          <Flex direction='column' gap='md' width='full'>
             <div>
               <Link
-                variant='solid'
                 href={`/${username}`}
                 onClick={() => {
                   if (typeof onNavigate === 'function') {
@@ -94,7 +93,7 @@ export const UserCard: FC<UserCardProps> = ({
                   }
                 }}
               >
-                <h3>{name}</h3>
+                <TruncatedText as='h5'>{name}</TruncatedText>
               </Link>
               <span>@{username}</span>
             </div>

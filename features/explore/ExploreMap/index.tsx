@@ -45,9 +45,9 @@ const StyledMap = styled('div', {
   overflow: 'hidden',
   display: 'grid',
   width: '$full',
-  borderWidth: '$2',
-  borderStyle: 'dashed',
-  borderColor: '$slate-200',
+  borderWidth: '$1',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
   borderRadius: '$xl',
   '& > div.load-more': {
     position: 'absolute',

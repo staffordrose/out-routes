@@ -173,9 +173,9 @@ const StyledRouteDetails = styled('div', {
 const BorderBox = styled('div', {
   paddingX: '$4',
   paddingY: '$3_5',
-  borderWidth: '$2',
-  borderStyle: 'dashed',
-  borderColor: '$slate-200',
+  borderWidth: '$1',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
   borderRadius: '$xl',
 });
 

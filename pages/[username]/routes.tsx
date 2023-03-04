@@ -187,89 +187,93 @@ const Routes = ({ isAuthenticated }: RoutesProps) => {
           >
             Routes
           </PageHeading>
-          {!Array.isArray(routes) || !routes.length ? (
-            <Feedback size='lg' type='empty' icon={BiMap} title='No Routes'>
-              {authUser?.username && authUser.username === username
-                ? `You haven't created a route.`
-                : `@${username} hasn't created a public route.`}
-            </Feedback>
-          ) : (
-            <>
-              <Grid columns={4} gap='lg' marginBottom='lg'>
-                {routes.map(
-                  ({
-                    id,
-                    owner,
-                    is_private,
-                    slug,
-                    title,
-                    image_card_banner,
-                    stats_favorites,
-                  }) => {
-                    const isFavorited = favoritesIds?.includes(id) || false;
+          <DefaultLayout.MainContent>
+            {!Array.isArray(routes) || !routes.length ? (
+              <Feedback size='lg' type='empty' icon={BiMap} title='No Routes'>
+                {authUser?.username && authUser.username === username
+                  ? `You haven't created a route.`
+                  : `@${username} hasn't created a public route.`}
+              </Feedback>
+            ) : (
+              <>
+                <Grid columns={4} gap='lg' marginBottom='lg'>
+                  {routes.map(
+                    ({
+                      id,
+                      owner,
+                      is_private,
+                      slug,
+                      title,
+                      image_card_banner,
+                      stats_favorites,
+                    }) => {
+                      const isFavorited = favoritesIds?.includes(id) || false;
 
-                    return (
-                      <RouteCard
-                        key={id}
-                        orientation='vertical'
-                        image={image_card_banner}
-                        username={owner?.username}
-                        slug={slug}
-                        is_private={is_private}
-                        title={title}
-                        stats_favorites={stats_favorites}
-                        showFavoriteBtn={isAuthenticated && !authIsOwner}
-                        isFavorited={isFavorited}
-                        handleFavorite={() => {
-                          handleFavorite(
-                            { username: owner?.username, slug },
-                            isFavorited
-                          );
-                        }}
-                      />
-                    );
-                  }
+                      return (
+                        <RouteCard
+                          key={id}
+                          orientation='vertical'
+                          image={image_card_banner}
+                          username={owner?.username}
+                          slug={slug}
+                          is_private={is_private}
+                          title={title}
+                          stats_favorites={stats_favorites}
+                          showFavoriteBtn={isAuthenticated && !authIsOwner}
+                          isFavorited={isFavorited}
+                          handleFavorite={() => {
+                            handleFavorite(
+                              { username: owner?.username, slug },
+                              isFavorited
+                            );
+                          }}
+                        />
+                      );
+                    }
+                  )}
+                </Grid>
+                {(pageNum !== 1 || hasMore) && (
+                  <Flex
+                    gap='lg'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    marginBottom='lg'
+                  >
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/routes${
+                            pageNum > 2
+                              ? `?${queryString.stringify({
+                                  page: pageNum - 1,
+                                })}`
+                              : ``
+                          }`
+                        );
+                      }}
+                      disabled={pageNum === 1}
+                    >
+                      Previous Page
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/routes?${queryString.stringify({
+                            page: hasMore ? pageNum + 1 : pageNum,
+                          })}`
+                        );
+                      }}
+                      disabled={isPreviousData || !hasMore}
+                    >
+                      Next Page
+                    </Button>
+                  </Flex>
                 )}
-              </Grid>
-              {(pageNum !== 1 || hasMore) && (
-                <Flex
-                  gap='lg'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  marginBottom='lg'
-                >
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/routes${
-                          pageNum > 2
-                            ? `?${queryString.stringify({ page: pageNum - 1 })}`
-                            : ``
-                        }`
-                      );
-                    }}
-                    disabled={pageNum === 1}
-                  >
-                    Previous Page
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/routes?${queryString.stringify({
-                          page: hasMore ? pageNum + 1 : pageNum,
-                        })}`
-                      );
-                    }}
-                    disabled={isPreviousData || !hasMore}
-                  >
-                    Next Page
-                  </Button>
-                </Flex>
-              )}
-            </>
-          )}
+              </>
+            )}
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

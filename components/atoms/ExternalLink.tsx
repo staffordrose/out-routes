@@ -13,7 +13,6 @@ export type ExternalLinkProps = ComponentPropsWithoutRef<
 > & {
   as?: ElementType;
   css?: Stitches.CSS;
-  variant?: 'dashed' | 'solid';
   fontFamily?: 'heading' | 'body';
   fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
@@ -24,8 +23,8 @@ export const ExternalLink = forwardRef(
       <StyledExternalLink
         {...props}
         ref={ref}
-        target="_blank"
-        rel="noreferrer"
+        target='_blank'
+        rel='noreferrer'
       />
     );
   }
@@ -38,32 +37,19 @@ const StyledExternalLink = styled('a', {
   boxSizing: 'border-box',
   fontWeight: '$medium',
   textDecoration: 'underline',
-  textDecorationThickness: '2px',
-  textDecorationStyle: 'dashed',
-  textDecorationColor: 'transparent',
+  textDecorationThickness: '1px',
+  textDecorationStyle: 'solid',
+  textDecorationColor: '$slate-300',
   textUnderlineOffset: '0.25em',
   color: '$slate-700',
   cursor: 'pointer',
+  '&:hover': {
+    textDecorationColor: '$slate-500',
+  },
+  '&:focus': {
+    textDecorationColor: '$slate-500',
+  },
   variants: {
-    variant: {
-      dashed: {
-        '&:hover': {
-          textDecorationColor: '$slate-500',
-        },
-        '&:focus': {
-          textDecorationColor: '$slate-500',
-        },
-      },
-      solid: {
-        textDecorationColor: '$slate-500',
-        '&:hover': {
-          textDecorationStyle: 'solid',
-        },
-        '&:focus': {
-          textDecorationStyle: 'solid',
-        },
-      },
-    },
     fontFamily: {
       heading: { fontFamily: '$heading' },
       body: { fontFamily: '$body' },
@@ -75,8 +61,5 @@ const StyledExternalLink = styled('a', {
       lg: { fontSize: '$lg' },
       xl: { fontSize: '$xl' },
     },
-  },
-  defaultVariants: {
-    variant: 'dashed',
   },
 });

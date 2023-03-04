@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
+import { BiErrorCircle } from 'react-icons/bi';
 
-import { Flex } from '@/components/atoms';
+import { Flex, Icon } from '@/components/atoms';
 import { UnauthenticatedLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
 
@@ -29,32 +30,38 @@ const Error = () => {
   const router = useRouter();
   const { error } = router.query;
 
-  const title = errorLabels[(error as Errors) || Errors.Default];
+  const title = errorLabels[error as Errors] || errorLabels[Errors.Default];
 
   return (
     <>
       <SEO isNoIndex title={title} />
       <UnauthenticatedLayout>
         <UnauthenticatedLayout.Main>
-          <Flex
-            direction='column'
-            gap='md'
-            alignItems='center'
-            css={{
-              width: '$full',
-              maxWidth: 640,
-              marginX: '$auto',
-              marginY: '$48',
-              padding: '$6',
-              borderWidth: '$2',
-              borderStyle: 'dashed',
-              borderColor: '$slate-200',
-              textAlign: 'center',
-            }}
-          >
-            <h1>{title}</h1>
-            <p>{errorDescriptions[(error as Errors) || Errors.Default]}</p>
-          </Flex>
+          <UnauthenticatedLayout.MainContent>
+            <Flex
+              direction='column'
+              gap='md'
+              justifyContent='center'
+              alignItems='center'
+              width='full'
+              css={{
+                maxWidth: 640,
+                minHeight: '$64',
+                marginX: '$auto',
+                marginY: 'calc(50vh - $14 - $32)',
+                padding: '$4',
+                borderWidth: '$1',
+                borderStyle: 'solid',
+                borderColor: '$slate-300',
+                borderRadius: '$xl',
+                textAlign: 'center',
+              }}
+            >
+              <Icon as={BiErrorCircle} size='2xl' />
+              <h1>{title}</h1>
+              <p>{errorDescriptions[(error as Errors) || Errors.Default]}</p>
+            </Flex>
+          </UnauthenticatedLayout.MainContent>
         </UnauthenticatedLayout.Main>
       </UnauthenticatedLayout>
     </>

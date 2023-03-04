@@ -31,7 +31,7 @@ const StyledTextarea = styled('textarea', {
   resize: 'vertical',
   width: '$full',
   padding: '$2',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-300',
   borderRadius: '$md',
@@ -47,9 +47,9 @@ const StyledTextarea = styled('textarea', {
   '&:focus:enabled': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
-    outlineWidth: '$2',
-    outlineStyle: 'dashed',
-    outlineColor: '$slate-500',
+    outlineWidth: '$1',
+    outlineStyle: 'solid',
+    outlineColor: '$blue-300',
   },
   '&:disabled': {
     opacity: 0.5,

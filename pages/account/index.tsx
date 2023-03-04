@@ -70,7 +70,9 @@ const Account = () => {
           >
             Account
           </PageHeading>
-          <AccountDetails user={user} openToast={openToast} />
+          <DefaultLayout.MainContent>
+            <AccountDetails user={user} openToast={openToast} />
+          </DefaultLayout.MainContent>
         </>
       );
     }

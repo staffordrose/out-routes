@@ -68,39 +68,44 @@ const NewUserName = () => {
     return (
       <NewUserLayout>
         <NewUserLayout.Main>
-          <Flex
-            direction='column'
-            gap='md'
-            alignItems='center'
-            css={{
-              width: '$full',
-              maxWidth: 640,
-              marginX: '$auto',
-              marginY: '$48',
-              padding: '$6',
-              borderWidth: '$2',
-              borderStyle: 'dashed',
-              borderColor: '$slate-200',
-              textAlign: 'center',
-              '& > div': {
-                width: '$full',
-                maxWidth: '$64',
-                textAlign: 'left',
-              },
-            }}
-          >
-            <h1>Complete your registration</h1>
-            <h2>Enter your name</h2>
-            <p>(Will be publicly visible)</p>
-            <div>
-              <UserNameForm
-                user={{
-                  name: session?.user?.name,
-                }}
-                onSubmit={onSubmit}
-              />
-            </div>
-          </Flex>
+          <NewUserLayout.MainContent>
+            <Flex
+              direction='column'
+              gap='md'
+              justifyContent='center'
+              alignItems='center'
+              width='full'
+              css={{
+                maxWidth: 640,
+                minHeight: '$96',
+                marginX: '$auto',
+                marginY: 'calc(50vh - $14 - $48)',
+                padding: '$4',
+                borderWidth: '$1',
+                borderStyle: 'solid',
+                borderColor: '$slate-300',
+                borderRadius: '$xl',
+                textAlign: 'center',
+                '& > div': {
+                  width: '$full',
+                  maxWidth: '$64',
+                  textAlign: 'left',
+                },
+              }}
+            >
+              <h1>Complete your registration</h1>
+              <h2>Enter your name</h2>
+              <p>(Will be publicly visible)</p>
+              <div>
+                <UserNameForm
+                  user={{
+                    name: session?.user?.name,
+                  }}
+                  onSubmit={onSubmit}
+                />
+              </div>
+            </Flex>
+          </NewUserLayout.MainContent>
         </NewUserLayout.Main>
       </NewUserLayout>
     );

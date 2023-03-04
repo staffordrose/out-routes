@@ -78,9 +78,9 @@ export const LayersFieldArray: FC<LayersFieldArrayProps> = ({
 
 const StyledLayersFieldArray = styled('div', {
   overflow: 'hidden',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
-  borderColor: '$slate-200',
+  borderColor: '$slate-300',
   borderRadius: '$md',
 });
 
@@ -118,9 +118,9 @@ const Layer: FC<LayerProps> = ({ remove, item, layerIndex, openPopup }) => {
       css={{
         position: 'relative',
         width: '$full',
-        borderBottomWidth: '$2',
+        borderBottomWidth: '$1',
         borderBottomStyle: 'solid',
-        borderBottomColor: '$slate-200',
+        borderBottomColor: '$slate-300',
         '&::before': {
           content: '',
           position: 'absolute',
@@ -213,7 +213,7 @@ const StyledLayerDetails = styled('div', {
   paddingRight: '$2',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-200',
+  borderBottomColor: '$slate-300',
   '& > div:first-child': {
     display: 'flex',
     gap: '$0_5',
@@ -329,7 +329,7 @@ const StyledLayerFields = styled('div', {
   paddingLeft: '$3_5',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-200',
+  borderBottomColor: '$slate-300',
   '& > *': {
     flexShrink: 1,
   },

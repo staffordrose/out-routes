@@ -43,7 +43,7 @@ const StyledLayerDetails = styled('div', {
   paddingRight: '$2',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-200',
+  borderBottomColor: '$slate-300',
   '& > svg': {
     flexShrink: 0,
     width: '$7',

@@ -26,7 +26,7 @@ const StyledKBD = styled('kbd', {
   all: 'unset',
   boxSizing: 'border-box',
   padding: '$1 $2',
-  borderBottomWidth: '$2',
+  borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
   borderBottomColor: '$slate-300',
   borderRadius: '$md',

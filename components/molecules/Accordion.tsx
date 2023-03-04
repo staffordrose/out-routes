@@ -130,7 +130,7 @@ const StyledTrigger = styled(RadixAccordion.Trigger, {
   alignItems: 'center',
   width: '$full',
   height: '$auto',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderRadius: '$md',
   padding: '0 $5',
@@ -146,11 +146,9 @@ const StyledTrigger = styled(RadixAccordion.Trigger, {
         color: '$slate-900',
         backgroundColor: '$slate-50',
         '&:hover': {
-          borderStyle: 'dashed',
           backgroundColor: '$slate-200',
         },
         '&:focus': {
-          borderStyle: 'dashed',
           backgroundColor: '$slate-300',
         },
         '&:disabled': {
@@ -161,7 +159,6 @@ const StyledTrigger = styled(RadixAccordion.Trigger, {
         },
       },
       ghost: {
-        borderStyle: 'dashed',
         borderColor: 'transparent',
         color: '$slate-900',
         backgroundColor: 'transparent',

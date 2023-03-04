@@ -107,7 +107,7 @@ const StyledLayerFields = styled('div', {
   paddingLeft: '$3_5',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-200',
+  borderBottomColor: '$slate-300',
   '& > *': {
     flexShrink: 1,
   },

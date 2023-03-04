@@ -163,74 +163,81 @@ const Followers = ({ isAuthenticated }: FollowersProps) => {
           >
             Followers
           </PageHeading>
-          {!Array.isArray(followers) || !followers.length ? (
-            <Feedback size='lg' type='empty' icon={BiUser} title='No Followers'>
-              <p>
-                {authUser?.username && authUser.username === username
-                  ? `You don't have any followers.`
-                  : `@${username} doesn't have any followers.`}
-              </p>
-              {authUser?.username && authUser.username !== username && (
-                <Button
-                  onClick={() => {
-                    handleFollow({ username }, false);
-                  }}
-                >
-                  Follow Them
-                </Button>
-              )}
-            </Feedback>
-          ) : (
-            <>
-              <FollowersList
-                followers={followers}
-                authUser={authUser}
-                followingIds={followingIds}
-                handleFollow={handleFollow}
-                columns={4}
-                cardOrientation='vertical'
-              />
-              {(pageNum !== 1 || hasMore) && (
-                <Flex
-                  gap='lg'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  marginBottom='lg'
-                >
+          <DefaultLayout.MainContent>
+            {!Array.isArray(followers) || !followers.length ? (
+              <Feedback
+                size='lg'
+                type='empty'
+                icon={BiUser}
+                title='No Followers'
+              >
+                <p>
+                  {authUser?.username && authUser.username === username
+                    ? `You don't have any followers.`
+                    : `@${username} doesn't have any followers.`}
+                </p>
+                {authUser?.username && authUser.username !== username && (
                   <Button
                     onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/followers${
-                          pageNum > 2
-                            ? `?${queryString.stringify({
-                                page: pageNum - 1,
-                              })}`
-                            : ``
-                        }`
-                      );
+                      handleFollow({ username }, false);
                     }}
-                    disabled={pageNum === 1}
                   >
-                    Previous Page
+                    Follow Them
                   </Button>
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/followers?${queryString.stringify({
-                          page: hasMore ? pageNum + 1 : pageNum,
-                        })}`
-                      );
-                    }}
-                    disabled={isPreviousData || !hasMore}
+                )}
+              </Feedback>
+            ) : (
+              <>
+                <FollowersList
+                  followers={followers}
+                  authUser={authUser}
+                  followingIds={followingIds}
+                  handleFollow={handleFollow}
+                  columns={4}
+                  cardOrientation='vertical'
+                />
+                {(pageNum !== 1 || hasMore) && (
+                  <Flex
+                    gap='lg'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    marginBottom='lg'
                   >
-                    Next Page
-                  </Button>
-                </Flex>
-              )}
-            </>
-          )}
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/followers${
+                            pageNum > 2
+                              ? `?${queryString.stringify({
+                                  page: pageNum - 1,
+                                })}`
+                              : ``
+                          }`
+                        );
+                      }}
+                      disabled={pageNum === 1}
+                    >
+                      Previous Page
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/followers?${queryString.stringify({
+                            page: hasMore ? pageNum + 1 : pageNum,
+                          })}`
+                        );
+                      }}
+                      disabled={isPreviousData || !hasMore}
+                    >
+                      Next Page
+                    </Button>
+                  </Flex>
+                )}
+              </>
+            )}
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

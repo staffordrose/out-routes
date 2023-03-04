@@ -66,7 +66,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
   boxSizing: 'border-box',
   display: 'flex',
   placeItems: 'center',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   fontWeight: '$medium',
   lineHeight: '$xs',
@@ -84,37 +84,18 @@ const StyledItem = styled(RadixToggleGroup.Item, {
   variants: {
     variant: {
       solid: {
-        '&:hover:enabled': {
-          borderStyle: 'dashed',
-        },
-        '&[data-state=on]:enabled': {
-          borderStyle: 'dashed',
-        },
-        '&:focus:enabled': {
-          borderStyle: 'dashed',
-        },
         '&:disabled': {
           opacity: 0.5,
           cursor: 'not-allowed',
         },
       },
       outline: {
-        '&:hover:enabled': {
-          borderStyle: 'dashed',
-        },
-        '&[data-state=on]:enabled': {
-          borderStyle: 'dashed',
-        },
-        '&:focus:enabled': {
-          borderStyle: 'dashed',
-        },
         '&:disabled': {
           opacity: 0.5,
           cursor: 'not-allowed',
         },
       },
       ghost: {
-        borderStyle: 'dashed',
         borderColor: 'transparent',
         backgroundColor: 'transparent',
         '&:disabled': {
@@ -435,6 +416,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$slate-900',
         '&:hover:enabled': {
           borderColor: '$slate-500',
+          backgroundColor: '$slate-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$slate-300',
@@ -452,6 +434,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$red-900',
         '&:hover:enabled': {
           borderColor: '$red-500',
+          backgroundColor: '$red-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$red-300',
@@ -469,6 +452,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$orange-900',
         '&:hover:enabled': {
           borderColor: '$orange-500',
+          backgroundColor: '$orange-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$orange-300',
@@ -486,6 +470,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$yellow-900',
         '&:hover:enabled': {
           borderColor: '$yellow-500',
+          backgroundColor: '$yellow-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$yellow-300',
@@ -503,6 +488,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$green-900',
         '&:hover:enabled': {
           borderColor: '$green-500',
+          backgroundColor: '$green-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$green-300',
@@ -520,6 +506,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$blue-900',
         '&:hover:enabled': {
           borderColor: '$blue-500',
+          backgroundColor: '$blue-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$blue-300',
@@ -537,6 +524,7 @@ const StyledItem = styled(RadixToggleGroup.Item, {
         color: '$purple-900',
         '&:hover:enabled': {
           borderColor: '$purple-500',
+          backgroundColor: '$purple-50',
         },
         '&[data-state=on]:enabled': {
           backgroundColor: '$purple-300',

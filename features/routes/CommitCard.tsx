@@ -39,7 +39,6 @@ export const CommitCard: FC<CommitCardProps> = ({
       >
         <Flex direction='column' gap='xs' alignItems='flex-start'>
           <Link
-            variant='solid'
             href={`/${username}/${slug}/history/${id}`}
             onClick={() => {
               if (typeof onNavigate === 'function') {

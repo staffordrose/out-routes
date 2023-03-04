@@ -8,7 +8,6 @@ import {
   ButtonProps,
   Dialog,
   DialogProps,
-  Flex,
   Heading,
   IconButton,
   IconButtonLink,
@@ -51,7 +50,7 @@ export const PageHeading: FC<PageHeadingProps> = ({
       {Array.isArray(breadcrumbs) && breadcrumbs.length > 0 && (
         <Breadcrumbs breadcrumbs={breadcrumbs} />
       )}
-      <Flex gap='md' justifyContent='space-between' alignItems='center'>
+      <div>
         <StyledHeading as='h1'>{children}</StyledHeading>
         <StyledActions>
           {Array.isArray(actions) &&
@@ -87,17 +86,26 @@ export const PageHeading: FC<PageHeadingProps> = ({
               }
             })}
         </StyledActions>
-      </Flex>
+      </div>
     </StyledPageHeading>
   );
 };
 
 const StyledPageHeading = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '$1',
   width: '$full',
-  paddingY: '$3',
+  borderBottomWidth: '$1',
+  borderBottomStyle: 'solid',
+  borderBottomColor: '$slate-300',
+  '& > *:last-child': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '$full',
+    maxWidth: '$container_3xl',
+    minHeight: '$14',
+    marginX: '$auto',
+    paddingX: '$4',
+  },
 });
 
 const StyledHeading = styled(Heading, {

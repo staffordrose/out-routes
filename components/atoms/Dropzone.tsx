@@ -89,7 +89,7 @@ export const Dropzone = forwardRef(
 Dropzone.displayName = 'Dropzone';
 
 const StyledDropzone = styled('div', {
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-300',
   fontSize: '$md',
@@ -105,9 +105,9 @@ const StyledDropzone = styled('div', {
   '&:has(> input:enabled):focus-within': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
-    outlineWidth: '$2',
-    outlineStyle: 'dashed',
-    outlineColor: '$slate-500',
+    outlineWidth: '$1',
+    outlineStyle: 'solid',
+    outlineColor: '$blue-300',
   },
   '&:has(> input:disabled)': {
     opacity: 0.5,

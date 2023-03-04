@@ -4,6 +4,7 @@ import { Footer, Header } from '@/components/layout';
 import { styled } from '@/styles';
 
 export type MultiColumnLayoutProps = {
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   children: ReactNode;
 };
 
@@ -29,10 +30,21 @@ const Container = styled('div', {
   flexDirection: 'row',
   alignItems: 'flex-start',
   width: '$full',
-  maxWidth: '$container_xl',
   minHeight: 'calc(100vh - $14)',
   marginX: '$auto',
-  paddingTop: '$14',
+  variants: {
+    maxWidth: {
+      sm: { maxWidth: '$container_sm' },
+      md: { maxWidth: '$container_md' },
+      lg: { maxWidth: '$container_lg' },
+      xl: { maxWidth: '$container_xl' },
+      '2xl': { maxWidth: '$container_2xl' },
+      '3xl': { maxWidth: '$container_3xl' },
+    },
+  },
+  defaultVariants: {
+    maxWidth: 'xl',
+  },
 });
 
 // Aside
@@ -52,9 +64,9 @@ const StyledAside = styled('aside', {
   display: 'none',
   visibility: 'hidden',
   height: 'calc(100vh - $14)',
-  borderRightWidth: '$2',
+  borderRightWidth: '$1',
   borderRightStyle: 'solid',
-  borderRightColor: '$slate-200',
+  borderRightColor: '$slate-300',
   '@md': {
     display: 'block',
     visibility: 'visible',
@@ -105,9 +117,9 @@ const StyledMainAside = styled('aside', {
   visibility: 'hidden',
   width: '$full',
   height: 'calc(100vh - $14)',
-  borderLeftWidth: '$2',
+  borderLeftWidth: '$1',
   borderLeftStyle: 'solid',
-  borderLeftColor: '$slate-200',
+  borderLeftColor: '$slate-300',
   '@lg': {
     display: 'block',
     visibility: 'visible',

@@ -129,7 +129,7 @@ Editor.displayName = 'Editor';
 const StyledEditor = styled('div', {
   overflow: 'auto',
   width: '$full',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-300',
   borderRadius: '$md',
@@ -139,9 +139,9 @@ const StyledEditor = styled('div', {
   },
   '&:has(> textarea:enabled):focus-within': {
     borderColor: '$slate-700',
-    outlineWidth: '$2',
-    outlineStyle: 'dashed',
-    outlineColor: '$slate-500',
+    outlineWidth: '$1',
+    outlineStyle: 'solid',
+    outlineColor: '$blue-300',
   },
   '&:has(> textarea:disabled)': {
     opacity: 0.5,

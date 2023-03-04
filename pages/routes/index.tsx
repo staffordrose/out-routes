@@ -176,7 +176,7 @@ const Routes = ({ authUsername }: RoutesProps) => {
         >
           Your Routes
         </PageHeading>
-        {renderResult()}
+        <DefaultLayout.MainContent>{renderResult()}</DefaultLayout.MainContent>
       </DefaultLayout.Main>
     </>
   );

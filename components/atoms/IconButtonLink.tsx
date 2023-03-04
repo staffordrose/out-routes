@@ -35,7 +35,7 @@ const StyledIconButtonLink = styled(NextLink, {
   display: 'flex',
   placeItems: 'center',
   overflow: 'hidden',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   fontWeight: '$medium',
   lineHeight: '$xs',
@@ -43,24 +43,9 @@ const StyledIconButtonLink = styled(NextLink, {
   userSelect: 'none',
   variants: {
     variant: {
-      solid: {
-        '&:hover': {
-          borderStyle: 'dashed',
-        },
-        '&:focus': {
-          borderStyle: 'dashed',
-        },
-      },
-      outline: {
-        '&:hover': {
-          borderStyle: 'dashed',
-        },
-        '&:focus': {
-          borderStyle: 'dashed',
-        },
-      },
+      solid: {},
+      outline: {},
       ghost: {
-        borderStyle: 'dashed',
         borderColor: 'transparent',
         backgroundColor: 'transparent',
       },
@@ -339,6 +324,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$slate-900',
         '&:hover': {
           borderColor: '$slate-500',
+          backgroundColor: '$slate-50',
         },
         '&:focus': {
           borderColor: '$slate-500',
@@ -353,6 +339,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$red-900',
         '&:hover': {
           borderColor: '$red-500',
+          backgroundColor: '$red-50',
         },
         '&:focus': {
           borderColor: '$red-500',
@@ -367,6 +354,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$orange-900',
         '&:hover': {
           borderColor: '$orange-500',
+          backgroundColor: '$orange-50',
         },
         '&:focus': {
           borderColor: '$orange-500',
@@ -381,6 +369,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$yellow-900',
         '&:hover': {
           borderColor: '$yellow-500',
+          backgroundColor: '$yellow-50',
         },
         '&:focus': {
           borderColor: '$yellow-500',
@@ -395,6 +384,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$green-900',
         '&:hover': {
           borderColor: '$green-500',
+          backgroundColor: '$green-50',
         },
         '&:focus': {
           borderColor: '$green-500',
@@ -409,6 +399,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$blue-900',
         '&:hover': {
           borderColor: '$blue-500',
+          backgroundColor: '$blue-50',
         },
         '&:focus': {
           borderColor: '$blue-500',
@@ -423,6 +414,7 @@ const StyledIconButtonLink = styled(NextLink, {
         color: '$purple-900',
         '&:hover': {
           borderColor: '$purple-500',
+          backgroundColor: '$purple-50',
         },
         '&:focus': {
           borderColor: '$purple-500',

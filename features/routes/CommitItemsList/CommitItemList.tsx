@@ -105,7 +105,7 @@ export const CommitItemsList: FC<CommitItemsListProps> = ({ items }) => {
       </Flex>
       {Array.isArray(layerCommitItems) && layerCommitItems.length > 0 && (
         <>
-          <Separator width='full' height='xs' marginY='lg' colorScale={300} />
+          <Separator width='full' height='xs' marginY='lg' />
           <Box marginBottom='xl'>
             <h3>Layers</h3>
             {layerCommitItems.map((commitItem, i) => {
@@ -128,7 +128,7 @@ export const CommitItemsList: FC<CommitItemsListProps> = ({ items }) => {
       )}
       {Array.isArray(featureCommitItems) && featureCommitItems.length > 0 && (
         <>
-          <Separator width='full' height='xs' marginY='lg' colorScale={300} />
+          <Separator width='full' height='xs' marginY='lg' />
           <Box marginBottom='xl'>
             <h3>Features</h3>
             {featureCommitItems.map((commitItem, i) => {

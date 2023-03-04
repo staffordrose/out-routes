@@ -30,7 +30,7 @@ const StyledMarkdownPreview = styled('div', {
     marginTop: '$4',
     marginBottom: '$4',
     borderBottomWidth: '$1',
-    borderBottomStyle: 'dashed',
+    borderBottomStyle: 'solid',
     borderBottomColor: '$slate-200',
   },
   '& > p': {

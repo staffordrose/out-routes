@@ -311,12 +311,14 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
           >
             Edit Route
           </PageHeading>
-          <RouteForm
-            route={route}
-            layers={layers || []}
-            features={features || []}
-            onSubmit={onSubmitRouteForm}
-          />
+          <DefaultLayout.MainContent>
+            <RouteForm
+              route={route}
+              layers={layers || []}
+              features={features || []}
+              onSubmit={onSubmitRouteForm}
+            />
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

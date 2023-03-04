@@ -13,5 +13,5 @@ export const Container: FC<ContainerProps> = (props) => {
 const StyledContainer = styled('div', {
   width: '$full',
   minHeight: 'calc(100vh - $14)',
-  paddingTop: '$14',
+  // paddingTop: '$14',
 });

@@ -12,7 +12,7 @@ export const Main: FC<MainProps> = (props) => {
 
 const StyledMain = styled('main', {
   width: '$full',
-  maxWidth: '$container_xl',
+  maxWidth: '$container_3xl',
   minHeight: 'calc(100vh - $14)',
   marginX: '$auto',
   paddingX: '$4',

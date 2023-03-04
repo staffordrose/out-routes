@@ -37,13 +37,13 @@ const StyledMap = styled('div', {
   overflow: 'hidden',
   display: 'grid',
   width: '$full',
-  borderWidth: '$2',
-  borderStyle: 'dashed',
-  borderColor: '$slate-200',
+  borderWidth: '$1',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
   borderRadius: '$xl',
   '& > div:first-child': {
     width: '$full',
-    height: 'calc(540px - ($borderWidths$2 + $borderWidths$2))',
+    height: 'calc(540px - ($borderWidths$1 + $borderWidths$1))',
     backgroundColor: '$slate-200',
   },
   '& > ul:last-child': {

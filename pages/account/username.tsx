@@ -118,23 +118,25 @@ const EditUsername = () => {
           >
             Change Username
           </PageHeading>
-          <List as='ul' direction='column' marginBottom='xl'>
-            <li>
-              <p>This can only be changed once every 12 months!</p>
-            </li>
-            <li>
-              <p>
-                Your current username is:{' '}
-                <Text as='span' fontWeight='bold'>
-                  {authUser.username}
-                </Text>
-              </p>
-            </li>
-          </List>
-          <UserUsernameForm
-            user={{ username: authUser.username }}
-            onSubmit={onSubmit}
-          />
+          <DefaultLayout.MainContent maxWidth='sm'>
+            <List as='ul' direction='column' marginBottom='xl'>
+              <li>
+                <p>This can only be changed once every 12 months!</p>
+              </li>
+              <li>
+                <p>
+                  Your current username is:{' '}
+                  <Text as='span' fontWeight='bold'>
+                    {authUser.username}
+                  </Text>
+                </p>
+              </li>
+            </List>
+            <UserUsernameForm
+              user={{ username: authUser.username }}
+              onSubmit={onSubmit}
+            />
+          </DefaultLayout.MainContent>
         </>
       );
     }

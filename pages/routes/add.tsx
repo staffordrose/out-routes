@@ -106,12 +106,14 @@ const AddRoute = () => {
           >
             Add Route
           </PageHeading>
-          <RouteForm
-            route={{} as Route}
-            layers={[]}
-            features={[]}
-            onSubmit={onSubmit}
-          />
+          <DefaultLayout.MainContent>
+            <RouteForm
+              route={{} as Route}
+              layers={[]}
+              features={[]}
+              onSubmit={onSubmit}
+            />
+          </DefaultLayout.MainContent>
         </>
       );
     }

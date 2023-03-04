@@ -103,6 +103,6 @@ const StyledActivityFeed = styled('div', {
   '&:not(:last-child) > div': {
     borderBottomWidth: '$1',
     borderBottomStyle: 'solid',
-    borderBottomColor: '$slate-200',
+    borderBottomColor: '$slate-300',
   },
 });

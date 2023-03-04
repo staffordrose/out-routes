@@ -238,6 +238,7 @@ export const {
       container_lg: '1024px',
       container_xl: '1280px',
       container_2xl: '1536px',
+      container_3xl: '2048px',
     },
     space,
     transitions: {},
@@ -256,19 +257,19 @@ export const {
       justifyContent: value,
       alignItems: value,
     }),
-    marginX: (value: Stitches.ScaleValue<'space'>) => ({
+    marginX: (value: Stitches.ScaleValue<'space'> | string | number) => ({
       marginLeft: value,
       marginRight: value,
     }),
-    marginY: (value: Stitches.ScaleValue<'space'>) => ({
+    marginY: (value: Stitches.ScaleValue<'space'> | string | number) => ({
       marginTop: value,
       marginBottom: value,
     }),
-    paddingX: (value: Stitches.ScaleValue<'space'>) => ({
+    paddingX: (value: Stitches.ScaleValue<'space'> | string | number) => ({
       paddingLeft: value,
       paddingRight: value,
     }),
-    paddingY: (value: Stitches.ScaleValue<'space'>) => ({
+    paddingY: (value: Stitches.ScaleValue<'space'> | string | number) => ({
       paddingTop: value,
       paddingBottom: value,
     }),

@@ -135,23 +135,23 @@ export const FauxHeader: FC = () => {
 };
 
 const StyledHeader = styled('header', {
-  position: 'fixed',
+  position: 'sticky',
   zIndex: '$appbar',
   top: 0,
   left: 0,
   width: '$full',
   height: '$14',
-  borderBottomWidth: '$2',
-  borderBottomStyle: 'dashed',
+  borderBottomWidth: '$1',
+  borderBottomStyle: 'solid',
   borderBottomColor: '$slate-300',
-  backgroundColor: '$slate-100',
+  backgroundColor: '$slate-50',
   '& > div': {
     display: 'flex',
     gap: '$4',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '$full',
-    maxWidth: '$container_xl',
+    maxWidth: '$container_3xl',
     height: '$full',
     marginX: '$auto',
     paddingX: '$4',
@@ -286,6 +286,7 @@ type DropdownMenuProps = {
 const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
   return (
     <DropdownMenuComp
+      sideOffset={-4}
       items={[
         <DropdownMenuComp.Header key='header'>
           <Flex gap='sm' alignItems='center'>

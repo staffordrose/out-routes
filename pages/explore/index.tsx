@@ -57,7 +57,7 @@ const Explore = () => {
       />
       <DefaultLayout.Main>
         <PageHeading>Explore</PageHeading>
-        {renderResult()}
+        <DefaultLayout.MainContent>{renderResult()}</DefaultLayout.MainContent>
       </DefaultLayout.Main>
     </>
   );

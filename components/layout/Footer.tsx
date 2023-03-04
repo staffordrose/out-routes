@@ -30,15 +30,16 @@ export const Footer: FC<FooterProps> = ({ marginTop }) => {
 
 const StyledFooter = styled('footer', {
   width: '$full',
-  borderTopWidth: '$2',
-  borderTopStyle: 'dashed',
-  borderTopColor: '$slate-200',
+  borderTopWidth: '$1',
+  borderTopStyle: 'solid',
+  borderTopColor: '$slate-300',
   '& > div': {
     width: '$full',
-    maxWidth: '$container_xl',
+    maxWidth: '$container_3xl',
     height: '$full',
     marginX: '$auto',
-    padding: '$3',
+    paddingY: '$3',
+    paddingX: '$4',
   },
   variants: {
     marginTop: {

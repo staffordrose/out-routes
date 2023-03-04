@@ -25,6 +25,9 @@ export const RouteDetailBanner: FC<RouteDetailBannerProps> = ({ src, alt }) => {
 
 const StyledRouteDetailBanner = styled('div', {
   width: '$full',
+  borderBottomWidth: '$1',
+  borderBottomStyle: 'solid',
+  borderBottomColor: '$slate-300',
   backgroundColor: '$slate-50',
   '& > div': {
     width: '$full',

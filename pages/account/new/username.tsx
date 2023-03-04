@@ -89,43 +89,53 @@ const NewUserUsername = () => {
       return (
         <NewUserLayout>
           <NewUserLayout.Main>
-            <Flex
-              direction='column'
-              gap='md'
-              alignItems='center'
-              css={{
-                width: '$full',
-                maxWidth: 640,
-                marginX: '$auto',
-                marginY: '$48',
-                padding: '$6',
-                borderWidth: '$2',
-                borderStyle: 'dashed',
-                borderColor: '$slate-200',
-                textAlign: 'center',
-                '& > div': {
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '$4',
-                  width: '$full',
-                  maxWidth: '$64',
-                  textAlign: 'left',
-                  '& > button': {
-                    alignSelf: 'flex-start',
+            <NewUserLayout.MainContent>
+              <Flex
+                direction='column'
+                gap='md'
+                justifyContent='center'
+                alignItems='center'
+                width='full'
+                css={{
+                  maxWidth: 640,
+                  minHeight: '$96',
+                  marginX: '$auto',
+                  marginY: 'calc(50vh - $14 - $48)',
+                  padding: '$4',
+                  borderWidth: '$1',
+                  borderStyle: 'solid',
+                  borderColor: '$slate-300',
+                  borderRadius: '$xl',
+                  textAlign: 'center',
+                  '& > div': {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '$4',
+                    width: '$full',
+                    maxWidth: '$64',
+                    textAlign: 'left',
+                    '& > button': {
+                      alignSelf: 'flex-start',
+                    },
                   },
-                },
-              }}
-            >
-              <h1>Welcome to {sitename}!</h1>
-              <h2>Select your username</h2>
-              <p>(Will be publicly visible)</p>
-              <div>
-                <UserUsernameForm user={{}} onSubmit={onSubmit} />
-                <Button type='submit' form='user-username-form' size='md'>
-                  Submit
-                </Button>
-              </div>
-            </Flex>
+                }}
+              >
+                <h1>Welcome to {sitename}!</h1>
+                <h2>Select your username</h2>
+                <p>(Will be publicly visible)</p>
+                <div>
+                  <UserUsernameForm user={{}} onSubmit={onSubmit} />
+                  <Button
+                    type='submit'
+                    form='user-username-form'
+                    variant='solid'
+                    size='md'
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </Flex>
+            </NewUserLayout.MainContent>
           </NewUserLayout.Main>
         </NewUserLayout>
       );

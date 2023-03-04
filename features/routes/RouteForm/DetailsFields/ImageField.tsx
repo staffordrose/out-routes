@@ -125,7 +125,7 @@ const Preview = styled('div', {
   position: 'relative',
   overflow: 'hidden',
   width: '$full',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-300',
   borderRadius: '$md',

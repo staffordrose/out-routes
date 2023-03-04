@@ -39,7 +39,7 @@ const StyledButton = styled('button', {
   width: '$auto',
   height: '$auto',
   paddingY: '$0_5',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderRadius: '$md',
   fontFamily: '$heading',
@@ -50,31 +50,18 @@ const StyledButton = styled('button', {
   variants: {
     variant: {
       solid: {
-        '&:hover:enabled': {
-          borderStyle: 'dashed',
-        },
-        '&:focus:enabled': {
-          borderStyle: 'dashed',
-        },
         '&:disabled': {
           opacity: 0.5,
           cursor: 'not-allowed',
         },
       },
       outline: {
-        '&:hover:enabled': {
-          borderStyle: 'dashed',
-        },
-        '&:focus:enabled': {
-          borderStyle: 'dashed',
-        },
         '&:disabled': {
           opacity: 0.5,
           cursor: 'not-allowed',
         },
       },
       ghost: {
-        borderStyle: 'dashed',
         borderColor: 'transparent',
         backgroundColor: 'transparent',
         '&:disabled': {
@@ -372,6 +359,7 @@ const StyledButton = styled('button', {
         color: '$slate-900',
         '&:hover:enabled': {
           borderColor: '$slate-500',
+          backgroundColor: '$slate-50',
         },
         '&:focus:enabled': {
           borderColor: '$slate-500',
@@ -386,6 +374,7 @@ const StyledButton = styled('button', {
         color: '$red-900',
         '&:hover:enabled': {
           borderColor: '$red-500',
+          backgroundColor: '$red-50',
         },
         '&:focus:enabled': {
           borderColor: '$red-500',
@@ -400,6 +389,7 @@ const StyledButton = styled('button', {
         color: '$orange-900',
         '&:hover:enabled': {
           borderColor: '$orange-500',
+          backgroundColor: '$orange-50',
         },
         '&:focus:enabled': {
           borderColor: '$orange-500',
@@ -414,6 +404,7 @@ const StyledButton = styled('button', {
         color: '$yellow-900',
         '&:hover:enabled': {
           borderColor: '$yellow-500',
+          backgroundColor: '$yellow-50',
         },
         '&:focus:enabled': {
           borderColor: '$yellow-500',
@@ -428,6 +419,7 @@ const StyledButton = styled('button', {
         color: '$green-900',
         '&:hover:enabled': {
           borderColor: '$green-500',
+          backgroundColor: '$green-50',
         },
         '&:focus:enabled': {
           borderColor: '$green-500',
@@ -442,6 +434,7 @@ const StyledButton = styled('button', {
         color: '$blue-900',
         '&:hover:enabled': {
           borderColor: '$blue-500',
+          backgroundColor: '$blue-50',
         },
         '&:focus:enabled': {
           borderColor: '$blue-500',
@@ -456,6 +449,7 @@ const StyledButton = styled('button', {
         color: '$purple-900',
         '&:hover:enabled': {
           borderColor: '$purple-500',
+          backgroundColor: '$purple-50',
         },
         '&:focus:enabled': {
           borderColor: '$purple-500',

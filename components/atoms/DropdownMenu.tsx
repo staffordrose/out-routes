@@ -14,6 +14,9 @@ import { styled } from '@/styles';
 type DropdownMenuProps = ComponentPropsWithoutRef<
   typeof RadixDropdownMenu.Trigger
 > & {
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  sideOffset?: number;
+  align?: 'start' | 'end';
   items: ReactNode[];
   children: ReactNode;
 };
@@ -34,7 +37,13 @@ type DropdownMenuComponent = ForwardRefExoticComponent<
 
 export const DropdownMenu = forwardRef(
   (
-    { items, children }: DropdownMenuProps,
+    {
+      side = 'bottom',
+      sideOffset = 0,
+      align = 'end',
+      items,
+      children,
+    }: DropdownMenuProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return (
@@ -43,7 +52,11 @@ export const DropdownMenu = forwardRef(
           {children}
         </RadixDropdownMenu.Trigger>
         <RadixDropdownMenu.Portal>
-          <DropdownMenuContent side='bottom' sideOffset={-4} align='end'>
+          <DropdownMenuContent
+            side={side}
+            sideOffset={sideOffset}
+            align={align}
+          >
             <DropdownMenuArrow />
             {items}
           </DropdownMenuContent>
@@ -79,8 +92,8 @@ const DropdownMenuContent = styled(RadixDropdownMenu.Content, {
   zIndex: '$menu',
   minWidth: '$56',
   padding: '$2',
-  borderWidth: '$2',
-  borderStyle: 'dashed',
+  borderWidth: '$1',
+  borderStyle: 'solid',
   borderColor: '$slate-500',
   borderRadius: '$lg',
   backgroundColor: '$slate-50',

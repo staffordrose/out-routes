@@ -252,185 +252,189 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
           >
             {name}
           </PageHeading>
-          <Grid
-            gap='md'
-            css={{
-              position: 'relative',
-              alignItems: 'start',
-              '@md': {
-                gridTemplateColumns: '$48 auto 1fr',
-              },
-              '@lg': {
-                gridTemplateColumns: '$64 auto 1fr',
-              },
-            }}
-          >
-            <Flex
-              direction='column'
-              gap='xl'
+          <DefaultLayout.MainContent paddingY='none'>
+            <Grid
               css={{
+                position: 'relative',
+                alignItems: 'start',
+                '@md': {
+                  gridTemplateColumns: '$48 auto 1fr',
+                  gap: '$4',
+                },
                 '@lg': {
-                  position: 'sticky',
-                  top: '$24',
+                  gridTemplateColumns: '$64 auto 1fr',
                 },
               }}
             >
-              <Box
+              <Flex
+                direction='column'
+                gap='xl'
                 css={{
-                  width: '$24',
+                  paddingTop: '$4',
                   '@md': {
-                    width: '$full',
-                  },
-                  '& > *:nth-child(1)': {
-                    display: 'block',
-                    visibility: 'visible',
-                    '@md': {
-                      display: 'none',
-                      visibility: 'hidden',
-                    },
-                  },
-                  '& > *:nth-child(2)': {
-                    display: 'none',
-                    visibility: 'hidden',
-                    '@md': {
-                      display: 'block',
-                      visibility: 'visible',
-                    },
-                    '@lg': {
-                      display: 'none',
-                      visibility: 'hidden',
-                    },
-                  },
-                  '& > *:nth-child(3)': {
-                    display: 'none',
-                    visibility: 'hidden',
-                    '@lg': {
-                      display: 'block',
-                      visibility: 'visible',
-                    },
+                    position: 'sticky',
+                    top: '$14',
                   },
                 }}
               >
-                <Avatar
-                  size='xl'
-                  priority
-                  src={image_thumb_120 || undefined}
-                  firstName={firstName}
-                  lastName={lastName}
-                />
-                <Avatar
-                  size='2xl'
-                  priority
-                  src={image_thumb_120 || undefined}
-                  firstName={firstName}
-                  lastName={lastName}
-                />
-                <Avatar
-                  size='3xl'
-                  priority
-                  src={image_thumb_360 || undefined}
-                  firstName={firstName}
-                  lastName={lastName}
-                />
-              </Box>
-              <Flex direction='column' gap='sm' alignItems='flex-start'>
-                <p>@{username}</p>
-                {!!bio && <p>{bio}</p>}
-                <div>
-                  <Flex gap='xs' alignItems='center'>
-                    <Button
-                      variant='ghost'
-                      size='xs'
-                      onClick={() => {
-                        handleShallowPush('followers');
-                      }}
-                    >
-                      {stats_followers || 0} follower
-                      {stats_followers !== 1 ? 's' : ''}
-                    </Button>
-                    <RxDotFilled />
-                    <Button
-                      variant='ghost'
-                      size='xs'
-                      onClick={() => {
-                        handleShallowPush('following');
-                      }}
-                    >
-                      {stats_following || 0} following
-                    </Button>
-                  </Flex>
-                </div>
-                {!!company && <p>{company}</p>}
-                {!!location && <p>{location}</p>}
-                {!!created_at && (
-                  <p>Joined {dayjs(created_at).format('MMMM YYYY')}</p>
-                )}
+                <Box
+                  css={{
+                    width: '$24',
+                    '@md': {
+                      width: '$full',
+                    },
+                    '& > *:nth-child(1)': {
+                      display: 'block',
+                      visibility: 'visible',
+                      '@md': {
+                        display: 'none',
+                        visibility: 'hidden',
+                      },
+                    },
+                    '& > *:nth-child(2)': {
+                      display: 'none',
+                      visibility: 'hidden',
+                      '@md': {
+                        display: 'block',
+                        visibility: 'visible',
+                      },
+                      '@lg': {
+                        display: 'none',
+                        visibility: 'hidden',
+                      },
+                    },
+                    '& > *:nth-child(3)': {
+                      display: 'none',
+                      visibility: 'hidden',
+                      '@lg': {
+                        display: 'block',
+                        visibility: 'visible',
+                      },
+                    },
+                  }}
+                >
+                  <Avatar
+                    size='xl'
+                    priority
+                    src={image_thumb_120 || undefined}
+                    firstName={firstName}
+                    lastName={lastName}
+                  />
+                  <Avatar
+                    size='2xl'
+                    priority
+                    src={image_thumb_120 || undefined}
+                    firstName={firstName}
+                    lastName={lastName}
+                  />
+                  <Avatar
+                    size='3xl'
+                    priority
+                    src={image_thumb_360 || undefined}
+                    firstName={firstName}
+                    lastName={lastName}
+                  />
+                </Box>
+                <Flex direction='column' gap='sm' alignItems='flex-start'>
+                  <p>@{username}</p>
+                  {!!bio && <p>{bio}</p>}
+                  <div>
+                    <Flex gap='xs' alignItems='center'>
+                      <Button
+                        variant='ghost'
+                        size='xs'
+                        onClick={() => {
+                          handleShallowPush('followers');
+                        }}
+                      >
+                        {stats_followers || 0} follower
+                        {stats_followers !== 1 ? 's' : ''}
+                      </Button>
+                      <RxDotFilled />
+                      <Button
+                        variant='ghost'
+                        size='xs'
+                        onClick={() => {
+                          handleShallowPush('following');
+                        }}
+                      >
+                        {stats_following || 0} following
+                      </Button>
+                    </Flex>
+                  </div>
+                  {!!company && <p>{company}</p>}
+                  {!!location && <p>{location}</p>}
+                  {!!created_at && (
+                    <p>Joined {dayjs(created_at).format('MMMM YYYY')}</p>
+                  )}
+                </Flex>
               </Flex>
-            </Flex>
-            <Separator width='sm' height='full' marginX='lg' />
-            <Tabs
-              ariaLabel='Select profile tab'
-              contentMinHeight='calc(100vh - 128px)'
-              tabs={[
-                {
-                  value: 'routes',
-                  label: 'Routes',
-                  children: (
-                    <RoutesTab
-                      isAuthenticated={isAuthenticated}
-                      authUser={authUser}
-                      username={username}
-                      handleFavorite={handleFavorite}
-                    />
-                  ),
-                },
-                {
-                  value: 'followers',
-                  label: 'Followers',
-                  children: (
-                    <FollowersTab
-                      isAuthenticated={isAuthenticated}
-                      authUser={authUser}
-                      username={username}
-                      handleFollow={handleFollow}
-                    />
-                  ),
-                },
-                {
-                  value: 'following',
-                  label: 'Following',
-                  children: (
-                    <FollowingTab
-                      isAuthenticated={isAuthenticated}
-                      authUser={authUser}
-                      username={username}
-                      handleFollow={handleFollow}
-                    />
-                  ),
-                },
-                {
-                  value: 'favorites',
-                  label: 'Favorites',
-                  children: (
-                    <FavoritesTab
-                      isAuthenticated={isAuthenticated}
-                      authUser={authUser}
-                      username={username}
-                      handleFavorite={handleFavorite}
-                    />
-                  ),
-                },
-              ]}
-              defaultValue='routes'
-              value={tab || 'routes'}
-              onValueChange={(value: string) => {
-                handleShallowPush(value as unknown as TabValue);
-              }}
-              css={{
-                maxWidth: 'calc(100vw - $8)',
-              }}
-            />
-          </Grid>
+              <Separator width='xs' height='full' />
+              <Tabs
+                ariaLabel='Select profile tab'
+                contentMinHeight='calc(100vh - 160px)'
+                tabs={[
+                  {
+                    value: 'routes',
+                    label: 'Routes',
+                    children: (
+                      <RoutesTab
+                        isAuthenticated={isAuthenticated}
+                        authUser={authUser}
+                        username={username}
+                        handleFavorite={handleFavorite}
+                      />
+                    ),
+                  },
+                  {
+                    value: 'followers',
+                    label: 'Followers',
+                    children: (
+                      <FollowersTab
+                        isAuthenticated={isAuthenticated}
+                        authUser={authUser}
+                        username={username}
+                        handleFollow={handleFollow}
+                      />
+                    ),
+                  },
+                  {
+                    value: 'following',
+                    label: 'Following',
+                    children: (
+                      <FollowingTab
+                        isAuthenticated={isAuthenticated}
+                        authUser={authUser}
+                        username={username}
+                        handleFollow={handleFollow}
+                      />
+                    ),
+                  },
+                  {
+                    value: 'favorites',
+                    label: 'Favorites',
+                    children: (
+                      <FavoritesTab
+                        isAuthenticated={isAuthenticated}
+                        authUser={authUser}
+                        username={username}
+                        handleFavorite={handleFavorite}
+                      />
+                    ),
+                  },
+                ]}
+                defaultValue='routes'
+                value={tab || 'routes'}
+                onValueChange={(value: string) => {
+                  handleShallowPush(value as unknown as TabValue);
+                }}
+                css={{
+                  maxWidth: 'calc(100vw - $8)',
+                  paddingTop: '$4',
+                }}
+              />
+            </Grid>
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );
@@ -635,7 +639,6 @@ const RoutesTab: FC<RoutesTabProps> = ({
       <Flex gap='md' alignItems='baseline'>
         <h2>Routes</h2>
         <Link
-          variant='solid'
           aria-label={`View all @${username}'s routes`}
           href={`/${username}/routes`}
         >
@@ -740,7 +743,6 @@ const FollowersTab: FC<FollowersTabProps> = ({
       <Flex gap='md' alignItems='baseline'>
         <h2>Followers</h2>
         <Link
-          variant='solid'
           aria-label={`View all @${username}'s followers`}
           href={`/${username}/followers`}
         >
@@ -839,7 +841,6 @@ const FollowingTab: FC<FollowingTabProps> = ({
       <Flex gap='md' alignItems='baseline'>
         <h2>Following</h2>
         <Link
-          variant='solid'
           aria-label={`View all users @${username}'s follows`}
           href={`/${username}/following`}
         >
@@ -931,7 +932,6 @@ const FavoritesTab: FC<FavoritesTabProps> = ({
       <Flex gap='md' alignItems='baseline'>
         <h2>Favorites</h2>
         <Link
-          variant='solid'
           aria-label={`View all @${username}'s starred routes`}
           href={`/${username}/favorites`}
         >

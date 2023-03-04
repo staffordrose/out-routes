@@ -31,7 +31,7 @@ const StyledFauxInput = styled('button', {
   width: '$48',
   height: '$9',
   padding: '0 $2',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-300',
   borderRadius: '$md',
@@ -49,8 +49,8 @@ const StyledFauxInput = styled('button', {
   '&:focus': {
     borderColor: '$slate-700',
     backgroundColor: '$slate-50',
-    outlineWidth: '$2',
-    outlineStyle: 'dashed',
-    outlineColor: '$slate-500',
+    outlineWidth: '$1',
+    outlineStyle: 'solid',
+    outlineColor: '$blue-300',
   },
 });

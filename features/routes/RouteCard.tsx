@@ -10,6 +10,7 @@ import {
   Image,
   Link,
   Text,
+  TruncatedText,
 } from '@/components/atoms';
 import { Card } from '@/components/molecules';
 import { Route, User } from '@/types';
@@ -82,7 +83,6 @@ export const RouteCard: FC<RouteCardProps> = ({
       >
         <Flex gap='md' alignItems='center'>
           <Link
-            variant='solid'
             href={`/${username}/${slug}`}
             onClick={() => {
               if (typeof onNavigate === 'function') {
@@ -90,7 +90,12 @@ export const RouteCard: FC<RouteCardProps> = ({
               }
             }}
           >
-            <h5>{title}</h5>
+            <TruncatedText
+              as='h5'
+              lineClamp={orientation === 'vertical' ? 2 : 1}
+            >
+              {title}
+            </TruncatedText>
           </Link>
           {is_private && (
             <Chip>

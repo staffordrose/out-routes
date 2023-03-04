@@ -6,7 +6,6 @@ import { styled } from '@/styles';
 
 export type LinkProps = ComponentPropsWithoutRef<typeof StyledLink> & {
   css?: Stitches.CSS;
-  variant?: 'dashed' | 'solid';
   fontFamily?: 'heading' | 'body';
   fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
@@ -24,33 +23,19 @@ const StyledLink = styled(NextLink, {
   boxSizing: 'border-box',
   fontWeight: '$medium',
   textDecoration: 'underline',
-  textDecorationThickness: '2px',
-  textDecorationStyle: 'dashed',
-  textDecorationColor: 'transparent',
-  textDecorationSkipInk: 'none',
+  textDecorationThickness: '1px',
+  textDecorationStyle: 'solid',
+  textDecorationColor: '$slate-300',
   textUnderlineOffset: '0.25em',
   color: '$slate-700',
   cursor: 'pointer',
+  '&:hover': {
+    textDecorationColor: '$slate-500',
+  },
+  '&:focus': {
+    textDecorationColor: '$slate-500',
+  },
   variants: {
-    variant: {
-      dashed: {
-        '&:hover': {
-          textDecorationColor: '$slate-500',
-        },
-        '&:focus': {
-          textDecorationColor: '$slate-500',
-        },
-      },
-      solid: {
-        textDecorationColor: '$slate-500',
-        '&:hover': {
-          textDecorationStyle: 'solid',
-        },
-        '&:focus': {
-          textDecorationStyle: 'solid',
-        },
-      },
-    },
     fontFamily: {
       heading: { fontFamily: '$heading' },
       body: { fontFamily: '$body' },
@@ -63,8 +48,5 @@ const StyledLink = styled(NextLink, {
       lg: { fontSize: '$lg' },
       xl: { fontSize: '$xl' },
     },
-  },
-  defaultVariants: {
-    variant: 'dashed',
   },
 });

@@ -222,7 +222,7 @@ const AddFeature = styled('div', {
   paddingLeft: '$3_5',
   borderWidth: '$1',
   borderStyle: 'solid',
-  borderColor: '$slate-200',
+  borderColor: '$slate-300',
 });
 
 type TitleProps = {

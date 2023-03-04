@@ -138,69 +138,73 @@ const RouteHistory = ({ isAuthorized }: RouteHistoryProps) => {
           >
             History
           </PageHeading>
-          {!Array.isArray(commits) || !commits.length ? (
-            <Feedback size='lg' type='empty' icon={BiUser} title='No History'>
-              {`@${username}/${slug} doesn't have any entries in its history.`}
-            </Feedback>
-          ) : (
-            <>
-              <Flex direction='column' gap='md' marginBottom='lg'>
-                {commits.map((commit) => {
-                  return (
-                    <CommitCard
-                      key={commit.id}
-                      orientation='horizontal'
-                      username={username}
-                      slug={slug}
-                      id={commit.id}
-                      created_at={commit.created_at}
-                      title={commit.title}
-                      user={commit.user}
-                    />
-                  );
-                })}
-              </Flex>
-              {(pageNum !== 1 || hasMore) && (
-                <Flex
-                  gap='lg'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  marginBottom='lg'
-                >
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/${slug}/history${
-                          pageNum > 2
-                            ? `?${queryString.stringify({
-                                page: pageNum - 1,
-                              })}`
-                            : ``
-                        }`
-                      );
-                    }}
-                    disabled={pageNum === 1}
-                  >
-                    Previous Page
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      shallowPush(
-                        router,
-                        `/${username}/${slug}/history?${queryString.stringify({
-                          page: hasMore ? pageNum + 1 : pageNum,
-                        })}`
-                      );
-                    }}
-                    disabled={isPreviousData || !hasMore}
-                  >
-                    Next Page
-                  </Button>
+          <DefaultLayout.MainContent>
+            {!Array.isArray(commits) || !commits.length ? (
+              <Feedback size='lg' type='empty' icon={BiUser} title='No History'>
+                {`@${username}/${slug} doesn't have any entries in its history.`}
+              </Feedback>
+            ) : (
+              <>
+                <Flex direction='column' gap='md' marginBottom='lg'>
+                  {commits.map((commit) => {
+                    return (
+                      <CommitCard
+                        key={commit.id}
+                        orientation='horizontal'
+                        username={username}
+                        slug={slug}
+                        id={commit.id}
+                        created_at={commit.created_at}
+                        title={commit.title}
+                        user={commit.user}
+                      />
+                    );
+                  })}
                 </Flex>
-              )}
-            </>
-          )}
+                {(pageNum !== 1 || hasMore) && (
+                  <Flex
+                    gap='lg'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    marginBottom='lg'
+                  >
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/${slug}/history${
+                            pageNum > 2
+                              ? `?${queryString.stringify({
+                                  page: pageNum - 1,
+                                })}`
+                              : ``
+                          }`
+                        );
+                      }}
+                      disabled={pageNum === 1}
+                    >
+                      Previous Page
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        shallowPush(
+                          router,
+                          `/${username}/${slug}/history?${queryString.stringify(
+                            {
+                              page: hasMore ? pageNum + 1 : pageNum,
+                            }
+                          )}`
+                        );
+                      }}
+                      disabled={isPreviousData || !hasMore}
+                    >
+                      Next Page
+                    </Button>
+                  </Flex>
+                )}
+              </>
+            )}
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

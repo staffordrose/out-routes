@@ -46,7 +46,7 @@ export const UserNameForm: FC<UserNameFormProps> = ({
             />
           )}
         />
-        <Button size='md' type='submit'>
+        <Button variant='solid' size='md' type='submit'>
           Submit
         </Button>
       </Container>

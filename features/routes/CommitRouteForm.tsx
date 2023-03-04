@@ -122,8 +122,8 @@ const CommitItemsListWrapper = styled('div', {
   overflowY: 'auto',
   maxHeight: '50vh',
   padding: '$2',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
-  borderColor: '$slate-100',
+  borderColor: '$slate-300',
   borderRadius: '$md',
 });

@@ -128,16 +128,15 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
           >
             {title || `[Untitled History Entry]`}
           </PageHeading>
-
-          <div>
+          <DefaultLayout.MainContent>
             <h2>Summary</h2>
             <Box
               marginBottom='xl'
               css={{
                 padding: '$2',
-                borderWidth: '$2',
-                borderStyle: 'dashed',
-                borderColor: '$slate-200',
+                borderWidth: '$1',
+                borderStyle: 'solid',
+                borderColor: '$slate-300',
                 borderRadius: '$md',
               }}
             >
@@ -183,7 +182,7 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
                 />
               )}
             </div>
-          </div>
+          </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
     );

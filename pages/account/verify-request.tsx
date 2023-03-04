@@ -10,26 +10,31 @@ const VerifyRequest = () => {
       <SEO isNoIndex title='Please Check Your Email' />
       <UnauthenticatedLayout>
         <UnauthenticatedLayout.Main>
-          <Flex
-            direction='column'
-            gap='md'
-            alignItems='center'
-            css={{
-              width: '$full',
-              maxWidth: 640,
-              marginX: '$auto',
-              marginY: '$48',
-              padding: '$6',
-              borderWidth: '$2',
-              borderStyle: 'dashed',
-              borderColor: '$slate-200',
-              textAlign: 'center',
-            }}
-          >
-            <Icon as={BiMailSend} size='4xl' />
-            <h1>Please check your email</h1>
-            <p>A sign in link has been sent to your email address.</p>
-          </Flex>
+          <UnauthenticatedLayout.MainContent>
+            <Flex
+              direction='column'
+              gap='md'
+              justifyContent='center'
+              alignItems='center'
+              width='full'
+              css={{
+                maxWidth: 640,
+                minHeight: '$64',
+                marginX: '$auto',
+                marginY: 'calc(50vh - $14 - $32)',
+                padding: '$4',
+                borderWidth: '$1',
+                borderStyle: 'solid',
+                borderColor: '$slate-300',
+                borderRadius: '$xl',
+                textAlign: 'center',
+              }}
+            >
+              <Icon as={BiMailSend} size='2xl' />
+              <h1>Please check your email</h1>
+              <p>A sign in link has been sent to your email address.</p>
+            </Flex>
+          </UnauthenticatedLayout.MainContent>
         </UnauthenticatedLayout.Main>
       </UnauthenticatedLayout>
     </>

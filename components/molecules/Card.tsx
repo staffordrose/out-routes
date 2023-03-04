@@ -64,7 +64,7 @@ const StyledCard = styled(Flex, {
   overflow: 'hidden',
   borderWidth: '$1',
   borderStyle: 'solid',
-  borderColor: '$slate-200',
+  borderColor: '$slate-300',
   borderRadius: '$lg',
   backgroundColor: '$slate-50',
   variants: {

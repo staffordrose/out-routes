@@ -29,7 +29,11 @@ export const globalStyles = globalCss({
   '*, *::before, *::after': { boxSizing: 'border-box' },
   '*': { margin: 0, padding: 0 },
   'html, body': { height: '$full' },
+  html: {
+    overflow: 'hidden',
+  },
   body: {
+    overflow: 'auto',
     minWidth: 320,
     fontFamily: '$body',
     fontWeight: '$light',
@@ -82,7 +86,7 @@ export const globalStyles = globalCss({
     padding: '$2',
     borderWidth: '$1',
     borderStyle: 'solid',
-    borderColor: '$slate-200',
+    borderColor: '$slate-300',
     borderRadius: '$lg',
     backgroundColor: '$slate-50',
   },

@@ -43,8 +43,8 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
 
 const StyledList = styled(List, {
   '& > li:not(:last-child)': {
-    borderBottomWidth: '$2',
+    borderBottomWidth: '$1',
     borderBottomStyle: 'solid',
-    borderBottomColor: '$slate-200',
+    borderBottomColor: '$slate-300',
   },
 });

@@ -121,7 +121,9 @@ const EditProfile = () => {
           >
             Edit Profile
           </PageHeading>
-          <UserForm user={authUser} onSubmit={onSubmit} />
+          <DefaultLayout.MainContent maxWidth='lg'>
+            <UserForm user={authUser} onSubmit={onSubmit} />
+          </DefaultLayout.MainContent>
         </>
       );
     }

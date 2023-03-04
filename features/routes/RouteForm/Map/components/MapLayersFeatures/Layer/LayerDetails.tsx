@@ -115,7 +115,7 @@ const StyledLayerDetails = styled('div', {
   paddingRight: '$2',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-200',
+  borderBottomColor: '$slate-300',
   '& > div:first-child': {
     display: 'flex',
     gap: '$0_5',

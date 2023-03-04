@@ -20,9 +20,9 @@ export const Preview: FC<PreviewProps> = ({ value }) => {
 
 const StyledPreview = styled('div', {
   minHeight: '360px',
-  borderWidth: '$2',
+  borderWidth: '$1',
   borderStyle: 'solid',
-  borderColor: '$slate-50',
+  borderColor: '$slate-200',
   borderRadius: '$md',
   backgroundColor: '$slate-50',
   '& > div:first-child': {
@@ -30,9 +30,9 @@ const StyledPreview = styled('div', {
     alignItems: 'center',
     minHeight: '$12',
     paddingX: '$2',
-    borderBottomWidth: '$2',
+    borderBottomWidth: '$1',
     borderBottomStyle: 'solid',
-    borderBottomColor: '$slate-100',
+    borderBottomColor: '$slate-200',
   },
   '& > div:last-child': {
     padding: '$2',
