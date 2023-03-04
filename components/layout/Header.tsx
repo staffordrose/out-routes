@@ -3,8 +3,6 @@ import { NextRouter, useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import queryString from 'query-string';
 import { useQuery } from '@tanstack/react-query';
-import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu';
-import { keyframes } from '@stitches/react';
 import { BiDotsVerticalRounded, BiMapAlt, BiSearch } from 'react-icons/bi';
 
 import { sitename } from '@/data/site';
@@ -15,6 +13,7 @@ import { User } from '@/types';
 import {
   Avatar,
   ButtonLink,
+  DropdownMenu as DropdownMenuComp,
   FauxInput,
   Flex,
   IconButton,
@@ -286,161 +285,80 @@ type DropdownMenuProps = {
 
 const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
   return (
-    <RadixDropdownMenu.Root>
-      <RadixDropdownMenu.Trigger asChild>
-        <IconButton
-          variant='ghost'
-          size='md'
-          borderRadius='full'
-          aria-label='Open menu'
+    <DropdownMenuComp
+      items={[
+        <DropdownMenuComp.Header key='header'>
+          <Flex gap='sm' alignItems='center'>
+            <Avatar
+              size='xs'
+              src={user.image_thumb_32 || ''}
+              firstName={user.name?.split(' ')[0] || ''}
+              lastName={user.name?.split(' ')[1] || ''}
+            />
+            <span>{email}</span>
+          </Flex>
+        </DropdownMenuComp.Header>,
+        <DropdownMenuComp.Separator key='separator-1' />,
+        <DropdownMenuComp.Item
+          key='explore'
+          onSelect={() => {
+            router.push(`/explore`);
+          }}
         >
-          <BiDotsVerticalRounded />
-        </IconButton>
-      </RadixDropdownMenu.Trigger>
-
-      <RadixDropdownMenu.Portal>
-        <DropdownMenuContent side='bottom' sideOffset={-4} align='end'>
-          <DropdownMenuArrow />
-          <DropdownMenuHeader>
-            <Flex gap='sm' alignItems='center'>
-              <Avatar
-                size='xs'
-                src={user.image_thumb_32 || ''}
-                firstName={user.name?.split(' ')[0] || ''}
-                lastName={user.name?.split(' ')[1] || ''}
-              />
-              <span>{email}</span>
-            </Flex>
-          </DropdownMenuHeader>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onSelect={() => {
-              router.push(`/explore`);
-            }}
-          >
-            Explore
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onSelect={() => {
-              router.push(`/routes/add`);
-            }}
-          >
-            Add route
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onSelect={() => {
-              router.push(`/routes`);
-            }}
-          >
-            Your routes
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onSelect={() => {
-              router.push(`/${user.username}`);
-            }}
-          >
-            Your profile
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onSelect={() => {
-              router.push(`/account`);
-            }}
-          >
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onSelect={() => {
-              signOut();
-            }}
-          >
-            Sign out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </RadixDropdownMenu.Portal>
-    </RadixDropdownMenu.Root>
+          Explore
+        </DropdownMenuComp.Item>,
+        <DropdownMenuComp.Item
+          key='add-route'
+          onSelect={() => {
+            router.push(`/routes/add`);
+          }}
+        >
+          Add route
+        </DropdownMenuComp.Item>,
+        <DropdownMenuComp.Item
+          key='routes'
+          onSelect={() => {
+            router.push(`/routes`);
+          }}
+        >
+          Your routes
+        </DropdownMenuComp.Item>,
+        <DropdownMenuComp.Item
+          key='profile'
+          onSelect={() => {
+            router.push(`/${user.username}`);
+          }}
+        >
+          Your profile
+        </DropdownMenuComp.Item>,
+        <DropdownMenuComp.Separator key='separator-2' />,
+        <DropdownMenuComp.Item
+          key='account'
+          onSelect={() => {
+            router.push(`/account`);
+          }}
+        >
+          Account
+        </DropdownMenuComp.Item>,
+        <DropdownMenuComp.Separator key='separator-3' />,
+        <DropdownMenuComp.Item
+          key='sign-out'
+          onSelect={() => {
+            signOut();
+          }}
+        >
+          Sign out
+        </DropdownMenuComp.Item>,
+      ]}
+    >
+      <IconButton
+        variant='ghost'
+        size='md'
+        borderRadius='full'
+        aria-label='Open menu'
+      >
+        <BiDotsVerticalRounded />
+      </IconButton>
+    </DropdownMenuComp>
   );
 };
-
-const slideUpAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateY(2px)' },
-  '100%': { opacity: 1, transform: 'translateY(0)' },
-});
-
-const slideRightAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateX(-2px)' },
-  '100%': { opacity: 1, transform: 'translateX(0)' },
-});
-
-const slideDownAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateY(-2px)' },
-  '100%': { opacity: 1, transform: 'translateY(0)' },
-});
-
-const slideLeftAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateX(2px)' },
-  '100%': { opacity: 1, transform: 'translateX(0)' },
-});
-
-const DropdownMenuContent = styled(RadixDropdownMenu.Content, {
-  zIndex: '$menu',
-  minWidth: '$56',
-  padding: '$2',
-  borderWidth: '$2',
-  borderStyle: 'dashed',
-  borderColor: '$slate-500',
-  borderRadius: '$lg',
-  backgroundColor: '$slate-50',
-  boxShadow:
-    '0px 15px 30px -15px $colors$slate-900-25, 0px 15px 30px -15px $colors$slate-900-50',
-  animationDuration: '400ms',
-  animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-  willChange: 'transform, opacity',
-  '&[data-state="open"]': {
-    '&[data-side="top"]': { animationName: slideDownAndFade },
-    '&[data-side="right"]': { animationName: slideLeftAndFade },
-    '&[data-side="bottom"]': { animationName: slideUpAndFade },
-    '&[data-side="left"]': { animationName: slideRightAndFade },
-  },
-});
-
-const DropdownMenuArrow = styled(RadixDropdownMenu.Arrow, {
-  width: '$3',
-  height: '$2',
-  fill: '$slate-500',
-});
-
-const DropdownMenuHeader = styled(RadixDropdownMenu.Label, {
-  fontSize: '$sm',
-  color: '$slate-500',
-});
-
-const DropdownMenuSeparator = styled(RadixDropdownMenu.Separator, {
-  height: '$px',
-  margin: '$2 0',
-  backgroundColor: '$slate-200',
-});
-
-const DropdownMenuItem = styled(RadixDropdownMenu.Item, {
-  all: 'unset',
-  boxSizing: 'border-box',
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  height: '$8',
-  padding: '0 $2',
-  borderRadius: '$md',
-  fontSize: '$sm',
-  lineHeight: '$xs',
-  color: '$slate-900',
-  cursor: 'pointer',
-  userSelect: 'none',
-  '&[data-disabled]': {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-  '&[data-highlighted]': {
-    backgroundColor: '$slate-200',
-  },
-});

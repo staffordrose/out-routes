@@ -6,6 +6,7 @@ export * from './ButtonLink';
 export * from './Center';
 export * from './Chip';
 export * from './Dialog';
+export * from './DropdownMenu';
 export * from './Dropzone';
 export * from './ExternalButtonLink';
 export * from './ExternalLink';
