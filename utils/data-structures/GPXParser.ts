@@ -69,7 +69,7 @@ export class GPXParser {
     this.parse();
   }
 
-  parse() {
+  private parse() {
     const metadata = this.xml.querySelector('metadata');
 
     if (metadata) {
@@ -89,7 +89,7 @@ export class GPXParser {
     };
   }
 
-  getWaypoints() {
+  private getWaypoints() {
     const waypoints: Element[] = [].slice.call(
       this.xml.querySelectorAll('wpt')
     );
@@ -119,12 +119,12 @@ export class GPXParser {
     }
   }
 
-  getTracks() {
+  private getTracks() {
     const tracks: Element[] = [].slice.call(this.xml.querySelectorAll('trk'));
 
     for (const index in tracks) {
-      let track = tracks[index];
-      let res = {} as Track;
+      const track = tracks[index];
+      const res = {} as Track;
 
       res.name = this.getElementValue(track, 'name');
       res.cmt = this.getElementValue(track, 'cmt');
@@ -132,8 +132,8 @@ export class GPXParser {
       res.src = this.getElementValue(track, 'src');
       res.number = this.getElementValue(track, 'number');
 
-      let type = this.queryDirectSelector(track, 'type');
-      res.type = type !== null ? type.innerHTML : null;
+      const type = this.queryDirectSelector(track, 'type');
+      res.type = type?.innerHTML ? this.trimCDATA(type.innerHTML) : null;
 
       let link = {} as Link;
       let linkEl = track.querySelector('link');
@@ -172,7 +172,7 @@ export class GPXParser {
     }
   }
 
-  queryDirectSelector(parent: Element, property: string) {
+  private queryDirectSelector(parent: Element, property: string) {
     const elements = parent.querySelectorAll(property);
 
     let finalElem = elements[0];
@@ -191,7 +191,7 @@ export class GPXParser {
     return finalElem;
   }
 
-  getElementValue(parent: Element, property: string) {
+  private getElementValue(parent: Element, property: string) {
     let elem = parent.querySelector(property);
     if (elem !== null) {
       const getElementValueRecursive = (el: Element) => {
@@ -213,6 +213,8 @@ export class GPXParser {
           }
         }
 
+        content = this.trimCDATA(content);
+
         return content;
       };
 
@@ -221,7 +223,7 @@ export class GPXParser {
     return elem;
   }
 
-  calcDistance(points: Point[]) {
+  private calcDistance(points: Point[]) {
     const res = {} as Distance;
 
     let totalDistance: Distance['total'] = 0;
@@ -239,7 +241,7 @@ export class GPXParser {
     return res;
   }
 
-  calcDistanceBetween(wpt1: Point, wpt2: Point) {
+  private calcDistanceBetween(wpt1: Point, wpt2: Point) {
     const latlng1 = {} as Point;
     latlng1.lat = wpt1.lat;
     latlng1.lon = wpt1.lon;
@@ -260,7 +262,7 @@ export class GPXParser {
     return 6371000 * c;
   }
 
-  calcElevation(points: Point[]) {
+  private calcElevation(points: Point[]) {
     const res = {} as Elevation;
 
     let dp = 0;
@@ -305,7 +307,7 @@ export class GPXParser {
     return res;
   }
 
-  calcSlope(points: Point[], cumul: Distance['cumul']) {
+  private calcSlope(points: Point[], cumul: Distance['cumul']) {
     const res: number[] = [];
 
     for (let i = 0; i < points.length - 1; i++) {
@@ -319,5 +321,12 @@ export class GPXParser {
     }
 
     return res;
+  }
+
+  private trimCDATA(str: string): string {
+    if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
+      return str.slice(9, -3);
+    }
+    return str;
   }
 }
