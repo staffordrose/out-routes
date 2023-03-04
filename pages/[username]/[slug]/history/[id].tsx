@@ -103,8 +103,8 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
     return (
       <>
         <SEO
-          title={`${route.title} - ${title || `[Untitled History Entry]`}`}
-          description={`View ${title || `[Untitled History Entry]`}.`}
+          title={`${route.title} - ${title || `[Untitled history entry]`}`}
+          description={`View ${title || `[Untitled history entry]`}.`}
         />
         <DefaultLayout.Main>
           <PageHeading
@@ -126,7 +126,7 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
               },
             ]}
           >
-            {title || `[Untitled History Entry]`}
+            {title || `[Untitled history entry]`}
           </PageHeading>
           <DefaultLayout.MainContent>
             <h2>Summary</h2>

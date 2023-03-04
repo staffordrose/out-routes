@@ -26,7 +26,7 @@ export const Layer: FC<LayerProps> = ({ layer, features, openPopup }) => {
           }}
         />
         <TruncatedText as='h4' lineClamp={1}>
-          {title || '[Untitled layer]'}
+          {title || '[Untitled section]'}
         </TruncatedText>
       </StyledLayerDetails>
       <LayerFeatures layer={layer} features={features} openPopup={openPopup} />

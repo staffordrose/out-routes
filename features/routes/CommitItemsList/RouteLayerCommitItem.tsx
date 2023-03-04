@@ -16,7 +16,7 @@ export const RouteLayerCommitItem: FC<RouteLayerCommitItemT> = ({
       return (
         <CommitItem
           type='add'
-          name='Add Layer'
+          name='Add Section'
           nextChildren={
             <div>
               <Row name='Order'>
@@ -40,7 +40,7 @@ export const RouteLayerCommitItem: FC<RouteLayerCommitItemT> = ({
       return (
         <CommitItem
           type='remove'
-          name='Remove Layer'
+          name='Remove Section'
           prevChildren={
             <div>
               <Row name='Order'>

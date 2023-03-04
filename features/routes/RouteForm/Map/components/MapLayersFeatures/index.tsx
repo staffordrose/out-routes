@@ -77,7 +77,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
           }}
         >
           <BiPlus />
-          Add Layer
+          Add Section
         </Button>
         <Dialog
           isOpen={isDialogOpen}
@@ -210,10 +210,10 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
             type='button'
             size='xs'
             display='flex'
-            aria-label='Open modal to import layer'
+            aria-label='Open modal to import file'
           >
             <BiImport />
-            Import Layer
+            Import
           </Button>
         </Dialog>
       </AddLayer>

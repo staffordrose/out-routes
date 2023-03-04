@@ -151,7 +151,7 @@ export const RouteFeatureCommitItem: FC<RouteFeatureCommitItemT> = ({
       return (
         <CommitItem
           type='update'
-          name='Change Layer'
+          name='Change Section'
           prevChildren={prev?.layer?.id} // TODO: Change id to title
           nextChildren={next?.layer?.id} // TODO: Change id to title
         />

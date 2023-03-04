@@ -69,7 +69,7 @@ export const LayersFieldArray: FC<LayersFieldArrayProps> = ({
           }
         >
           <BiPlus />
-          Add Layer
+          Add Section
         </Button>
       </AddLayer>
     </StyledLayersFieldArray>
@@ -177,7 +177,7 @@ const LayerDetails: FC<LayerDetailsProps> = ({
           }}
         />
         <TruncatedText as='h4' lineClamp={1}>
-          {layer.title || '[Untitled layer]'}
+          {layer.title || '[Untitled section]'}
         </TruncatedText>
       </div>
       <div>

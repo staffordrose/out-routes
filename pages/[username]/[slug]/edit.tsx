@@ -231,7 +231,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
                       id: 'delete-route',
                       actionType: 'dialog',
                       [`aria-label`]: 'Open dialog to delete route',
-                      title: 'Delete Route',
+                      title: 'Delete route?',
                       description: `Are you sure you want to delete this route? This action is irreversible!`,
                       body: (
                         <Flex justifyContent='flex-end' width='full'>

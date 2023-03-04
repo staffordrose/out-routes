@@ -50,7 +50,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
           }}
         />
         <TruncatedText as='h4' lineClamp={1}>
-          {layer.title || '[Untitled layer]'}
+          {layer.title || '[Untitled section]'}
         </TruncatedText>
       </div>
       <div>
@@ -58,16 +58,17 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
           <Dialog
             isOpen={isDialogOpen}
             setOpen={setDialogOpen}
-            title='Are you sure?'
+            title='Delete section?'
             body={
               <Flex direction='column' gap='md'>
                 <p>
-                  Are you sure you want to delete this layer and its features?
+                  Are you sure you want to delete this section and its features?
                 </p>
                 <Flex justifyContent='end'>
                   <Button
                     variant='solid'
-                    size='md'
+                    colorScheme='red'
+                    size='lg'
                     onClick={(e) => {
                       e.stopPropagation();
 
@@ -75,7 +76,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                       setActiveLayerId(null);
                     }}
                   >
-                    Confirm
+                    Yes, Delete It
                   </Button>
                 </Flex>
               </Flex>
@@ -85,7 +86,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
               type='button'
               variant='ghost'
               size='xs'
-              aria-label='Open modal to delete the layer'
+              aria-label='Open modal to delete the section'
             >
               <BiTrash />
             </IconButton>

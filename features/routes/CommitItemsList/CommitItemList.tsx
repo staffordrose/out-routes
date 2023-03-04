@@ -107,7 +107,7 @@ export const CommitItemsList: FC<CommitItemsListProps> = ({ items }) => {
         <>
           <Separator width='full' height='xs' marginY='lg' />
           <Box marginBottom='xl'>
-            <h3>Layers</h3>
+            <h3>Sections</h3>
             {layerCommitItems.map((commitItem, i) => {
               return (
                 <Fragment key={commitItem.id}>

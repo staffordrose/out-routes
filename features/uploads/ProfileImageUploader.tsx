@@ -59,7 +59,7 @@ export const ProfileImageUploader: FC<ProfileImageUploaderProps> = ({
           <Dialog
             isOpen={isDeleteImageDialogOpen}
             setOpen={setDeleteImageDialogOpen}
-            title='Are you sure?'
+            title='Delete profile image?'
             body={
               <Flex direction='column' gap='md'>
                 <p>
@@ -69,13 +69,14 @@ export const ProfileImageUploader: FC<ProfileImageUploaderProps> = ({
                 <Flex justifyContent='end'>
                   <Button
                     variant='solid'
+                    colorScheme='red'
                     size='lg'
                     disabled={deleteProfileImageMutation.isLoading}
                     onClick={() => {
                       deleteProfileImageMutation.mutate();
                     }}
                   >
-                    Confirm
+                    Yes, Delete It
                   </Button>
                 </Flex>
               </Flex>

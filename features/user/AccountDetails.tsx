@@ -46,7 +46,7 @@ export const AccountDetails: FC<AccountDetails> = ({ user, openToast }) => {
             <Dialog
               isOpen={isDialogOpen}
               setOpen={setDialogOpen}
-              title='Are you sure?'
+              title='Delete your account?'
               body={
                 <Flex direction='column' gap='md'>
                   <p>

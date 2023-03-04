@@ -29,7 +29,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
         icon={BiShapePolygon}
         title='No Features'
       >
-        This layer does not have any features.
+        This section does not have any features.
       </Feedback>
     );
   }
