@@ -14,7 +14,12 @@ import { BiCheck, BiEdit, BiStar } from 'react-icons/bi';
 import { ButtonLink, Separator, Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { SEO } from '@/components/utility';
-import { RouteDetailBanner, RouteDetails, RouteMap } from '@/features/routes';
+import {
+  RouteDetailBanner,
+  RouteDetails,
+  RouteGPXExport,
+  RouteMap,
+} from '@/features/routes';
 import { useQueryParam } from '@/hooks';
 import { getRouteByUsernameSlug } from '@/lib/v1/api/routes';
 import { getUser, isAuthFavoritingRoute } from '@/lib/v1/api/user';
@@ -213,6 +218,7 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
           </PageHeading>
           <RouteDetails username={username} route={route} />
           <Separator width='full' height='xs' marginY='lg' colorScale={200} />
+          <RouteGPXExport route={route} layers={layers} features={features} />
           <RouteMap route={route} layers={layers} features={features} />
         </DefaultLayout.Main>
       </>

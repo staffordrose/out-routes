@@ -7,4 +7,5 @@ export * from './RouteContributors';
 export * from './RouteDetailBanner';
 export * from './RouteDetails';
 export * from './RouteForm';
+export * from './RouteGPXExport';
 export * from './RouteMap';
