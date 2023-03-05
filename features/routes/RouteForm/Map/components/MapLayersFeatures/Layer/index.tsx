@@ -47,9 +47,6 @@ export const Layer: FC<LayerProps> = ({
       css={{
         position: 'relative',
         width: '$full',
-        borderRightWidth: '$1',
-        borderRightStyle: 'solid',
-        borderRightColor: '$slate-300',
         borderBottomWidth: '$1',
         borderBottomStyle: 'solid',
         borderBottomColor: '$slate-300',

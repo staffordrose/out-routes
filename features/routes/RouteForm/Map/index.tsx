@@ -76,6 +76,15 @@ const StyledMap = styled('div', {
     minHeight: '100vh',
     '& > div:first-child': {
       height: 'calc(100vh - $14)',
+      borderLeftWidth: '$1',
+      borderLeftStyle: 'solid',
+      borderLeftColor: '$slate-300',
+    },
+    '& > div:last-child': {
+      minHeight: 'calc(100vh - $14)',
+      borderRightWidth: '$1',
+      borderRightStyle: 'solid',
+      borderRightColor: '$slate-300',
     },
   },
   '@lg': {

@@ -242,7 +242,4 @@ const AddLayer = styled('div', {
   minHeight: '$24',
   padding: '$2',
   paddingLeft: '$3_5',
-  borderRightWidth: '$1',
-  borderRightStyle: 'solid',
-  borderRightColor: '$slate-300',
 });
