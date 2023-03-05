@@ -68,12 +68,5 @@ export const TitleAltFieldArray: FC = () => {
 };
 
 const StyledTitleAltFieldArray = styled('div', {
-  padding: '$2',
-  paddingTop: 0,
   width: '$full',
-  borderRadius: '$md',
-  backgroundColor: '$slate-100',
-  '& input': {
-    backgroundColor: '$white',
-  },
 });

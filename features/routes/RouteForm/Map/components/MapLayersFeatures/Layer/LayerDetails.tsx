@@ -106,6 +106,8 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
 };
 
 const StyledLayerDetails = styled('div', {
+  position: 'sticky',
+  top: '$14',
   display: 'flex',
   gap: '$1',
   justifyContent: 'space-between',
@@ -117,6 +119,7 @@ const StyledLayerDetails = styled('div', {
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
   borderBottomColor: '$slate-300',
+  backgroundColor: '$white',
   '& > div:first-child': {
     display: 'flex',
     gap: '$0_5',

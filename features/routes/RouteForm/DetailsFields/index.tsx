@@ -18,7 +18,7 @@ export const DetailsFields: FC = () => {
   const { control } = useFormContext<RouteFormValues>();
 
   return (
-    <>
+    <StyledDetailsFields>
       <ImageField />
       <ResponsiveGrid>
         <Controller
@@ -132,28 +132,47 @@ export const DetailsFields: FC = () => {
       <ResponsiveGrid>
         <TitleAltFieldArray />
       </ResponsiveGrid>
-      <Controller
-        name='route.summary'
-        control={control}
-        render={({ field, fieldState: { isTouched, error } }) => (
-          <MarkdownEditorField
-            {...field}
-            label='Summary'
-            placeholder='Route summary...'
-            isTouched={isTouched}
-            error={error?.message}
-          />
-        )}
-      />
-    </>
+      <FullWidthGrid>
+        <Controller
+          name='route.summary'
+          control={control}
+          render={({ field, fieldState: { isTouched, error } }) => (
+            <MarkdownEditorField
+              {...field}
+              label='Summary'
+              placeholder='Route summary...'
+              isTouched={isTouched}
+              error={error?.message}
+            />
+          )}
+        />
+      </FullWidthGrid>
+    </StyledDetailsFields>
   );
 };
+
+const StyledDetailsFields = styled('div', {
+  width: '$full',
+  maxWidth: '$container_xl',
+  marginX: '$auto',
+  paddingTop: '$2_5',
+  '@sm': {
+    paddingTop: '$3',
+  },
+  '@md': {
+    paddingTop: '$3_5',
+  },
+  '@lg': {
+    paddingTop: '$4',
+  },
+});
 
 const ResponsiveGrid = styled('div', {
   display: 'grid',
   gridTemplateColumns: '1fr',
   gap: '$2_5',
   marginBottom: '$2_5',
+  paddingX: '$4',
   '@sm': {
     gridTemplateColumns: 'repeat(2, 1fr)',
     gap: '$3',
@@ -167,6 +186,22 @@ const ResponsiveGrid = styled('div', {
   '@lg': {
     gridTemplateColumns: 'repeat(4, 1fr)',
     gap: '$4',
+    marginBottom: '$4',
+  },
+});
+
+const FullWidthGrid = styled('div', {
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  marginBottom: '$2_5',
+  paddingX: '$4',
+  '@sm': {
+    marginBottom: '$3',
+  },
+  '@md': {
+    marginBottom: '$3_5',
+  },
+  '@lg': {
     marginBottom: '$4',
   },
 });

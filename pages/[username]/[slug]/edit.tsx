@@ -311,7 +311,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
           >
             Edit Route
           </PageHeading>
-          <DefaultLayout.MainContent>
+          <DefaultLayout.MainContent paddingX='none' paddingY='none'>
             <RouteForm
               route={route}
               layers={layers || []}
@@ -327,7 +327,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
 };
 
 EditRoute.getLayout = (page: ReactNode) => {
-  return <DefaultLayout footerGap='sm'>{page}</DefaultLayout>;
+  return <DefaultLayout>{page}</DefaultLayout>;
 };
 
 export default EditRoute;

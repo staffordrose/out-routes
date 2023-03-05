@@ -98,6 +98,8 @@ export const LayerFields: FC<LayerFieldsProps> = ({ layerIndex }) => {
 };
 
 const StyledLayerFields = styled('div', {
+  position: 'sticky',
+  top: 'calc($14 + $12)',
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax($56, 1fr))',
   gap: '$2',
@@ -108,6 +110,7 @@ const StyledLayerFields = styled('div', {
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
   borderBottomColor: '$slate-300',
+  backgroundColor: '$white',
   '& > *': {
     flexShrink: 1,
   },

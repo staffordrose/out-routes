@@ -19,6 +19,7 @@ export type Tab = {
 export type TabsProps = ComponentPropsWithoutRef<typeof TabsRoot> & {
   as?: ElementType;
   css?: Stitches.CSS;
+  justify?: 'left' | 'center' | 'right';
   tabs: Tab[];
   defaultValue?: string;
   value?: string;
@@ -29,12 +30,12 @@ export type TabsProps = ComponentPropsWithoutRef<typeof TabsRoot> & {
 
 export const Tabs = forwardRef(
   (
-    { tabs, value, ariaLabel, contentMinHeight, ...props }: TabsProps,
+    { justify, tabs, value, ariaLabel, contentMinHeight, ...props }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     return (
       <TabsRoot {...props} ref={ref} value={value}>
-        <TabsList aria-label={ariaLabel}>
+        <TabsList justify={justify} aria-label={ariaLabel}>
           {tabs.map(({ value, label }) => {
             return (
               <TabsTrigger key={value} value={value}>
@@ -79,6 +80,31 @@ const TabsList = styled(RadixTabs.List, {
   '&::-webkit-scrollbar': {
     display: 'none' /* Safari and Chrome */,
   },
+  variants: {
+    justify: {
+      left: {
+        '& > *:last-child': {
+          marginRight: 'auto',
+        },
+      },
+      center: {
+        '& > *:first-child': {
+          marginLeft: 'auto',
+        },
+        '& > *:last-child': {
+          marginRight: 'auto',
+        },
+      },
+      right: {
+        '& > *:first-child': {
+          marginLeft: 'auto',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    justify: 'left',
+  },
 });
 
 const TabsTrigger = styled(RadixTabs.Trigger, {
@@ -89,10 +115,10 @@ const TabsTrigger = styled(RadixTabs.Trigger, {
   minHeight: '$12',
   padding: '0 $3',
   border: 'none',
-  borderTopWidth: '$6',
+  borderTopWidth: '$4',
   borderTopStyle: 'solid',
   borderTopColor: 'transparent',
-  borderBottomWidth: '$6',
+  borderBottomWidth: '$4',
   borderBottomStyle: 'solid',
   borderBottomColor: 'transparent',
   borderRadius: 0,
@@ -111,7 +137,7 @@ const TabsTrigger = styled(RadixTabs.Trigger, {
     borderBottomColor: '$orange-500',
   },
   '&:focus': {
-    backgroundColor: '$slate-200',
+    backgroundColor: '$slate-100',
   },
   '&:disabled': {
     backgroundColor: 'transparent',
@@ -127,6 +153,5 @@ const TabsTrigger = styled(RadixTabs.Trigger, {
 const TabsContent = styled(RadixTabs.Content, {
   flexGrow: 1,
   minHeight: '$64',
-  paddingY: '$4',
   outline: 'none',
 });

@@ -158,6 +158,12 @@ const Routes = ({ authUsername }: RoutesProps) => {
       <SEO isNoIndex title='Your Routes' />
       <DefaultLayout.Main>
         <PageHeading
+          breadcrumbs={[
+            {
+              id: 'routes',
+              children: 'routes',
+            },
+          ]}
           actions={[
             {
               id: 'add-route',

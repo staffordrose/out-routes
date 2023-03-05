@@ -41,8 +41,8 @@ export const RouteForm: FC<RouteFormProps> = ({
     <FormProvider {...methods}>
       <form id='route-form' onSubmit={onSubmit}>
         <Tabs
+          justify='center'
           ariaLabel='Select form section'
-          contentMinHeight='calc(100vh - 128px)'
           tabs={[
             {
               value: 'details',

@@ -38,8 +38,8 @@ const StyledFooter = styled('footer', {
     maxWidth: '$container_3xl',
     height: '$full',
     marginX: '$auto',
-    paddingY: '$3',
     paddingX: '$4',
+    paddingY: '$3',
   },
   variants: {
     marginTop: {

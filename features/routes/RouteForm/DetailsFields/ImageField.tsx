@@ -18,9 +18,9 @@ export const ImageField: FC = () => {
   const [imageSrc, setImageSrc] = useState<string | undefined>();
 
   return (
-    <>
+    <StyledImageField>
       <Label htmlFor='route.files'>Image</Label>
-      <StyledImageField>
+      <div>
         {existingImage || !!imageSrc ? (
           <Preview>
             <AspectRatio ratio={24 / 9}>
@@ -102,13 +102,14 @@ export const ImageField: FC = () => {
             />
           </Box>
         )}
-      </StyledImageField>
-    </>
+      </div>
+    </StyledImageField>
   );
 };
 
 const StyledImageField = styled('div', {
   marginBottom: '$2_5',
+  paddingX: '$4',
   '@sm': {
     marginBottom: '$3',
   },

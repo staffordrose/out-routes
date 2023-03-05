@@ -85,7 +85,13 @@ const AddRoute = () => {
       return (
         <>
           <PageHeading
-            breadcrumbs={[]}
+            breadcrumbs={[
+              {
+                id: 'routes',
+                href: `/routes`,
+                children: 'routes',
+              },
+            ]}
             actions={[
               {
                 id: 'save-route',
@@ -106,7 +112,7 @@ const AddRoute = () => {
           >
             Add Route
           </PageHeading>
-          <DefaultLayout.MainContent>
+          <DefaultLayout.MainContent paddingX='none' paddingY='none'>
             <RouteForm
               route={{} as Route}
               layers={[]}

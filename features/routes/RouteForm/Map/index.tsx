@@ -30,14 +30,16 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
 
   return (
     <StyledMap>
-      <Search
-        append={append}
-        update={update}
-        map={map}
-        draw={draw}
-        setActiveLayerId={setActiveLayerId}
-      />
-      <div id='map-container' ref={mapContainerEl} />
+      <div>
+        <Search
+          append={append}
+          update={update}
+          map={map}
+          draw={draw}
+          setActiveLayerId={setActiveLayerId}
+        />
+        <div id='map-container' ref={mapContainerEl} />
+      </div>
       <MapLayersFeatures
         fields={fields}
         append={append}
@@ -52,28 +54,29 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
 const StyledMap = styled('div', {
   boxSizing: 'border-box',
   position: 'relative',
-  overflow: 'hidden',
   display: 'grid',
   width: '$full',
-  borderWidth: '$1',
-  borderStyle: 'solid',
-  borderColor: '$slate-300',
-  borderRadius: '$xl',
-  '& > div#map-container': {
+  '& > div:first-child': {
+    position: 'sticky',
+    top: '$14',
     width: '$full',
-    height: 'calc(540px - ($borderWidths$1 + $borderWidths$1))',
-    backgroundColor: '$slate-200',
-  },
-  '& > div:last-child': {
-    overflowY: 'auto',
-    scrollbarWidth: 'none',
-    '&::-webkit-scrollbar': {
-      display: 'none',
+    height: 'calc(100vh - $14 - $8 - $14 - $12 - $12)',
+    '& > div#map-container': {
+      width: '$full',
+      height: '$full',
+      backgroundColor: '$slate-200',
     },
   },
+  '& > div:last-child': {
+    position: 'relative',
+    zIndex: 10,
+  },
   '@md': {
-    height: 540,
     gridTemplateColumns: '1fr $64',
+    minHeight: '100vh',
+    '& > div:first-child': {
+      height: 'calc(100vh - $14)',
+    },
   },
   '@lg': {
     gridTemplateColumns: '1fr $76',

@@ -42,7 +42,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   return (
-    <div>
+    <StyledMapLayersFeatures>
       <List as='ul' direction='column' width='full'>
         {fields.map((item, index) => {
           return (
@@ -217,16 +217,32 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
           </Button>
         </Dialog>
       </AddLayer>
-    </div>
+    </StyledMapLayersFeatures>
   );
 };
+
+const StyledMapLayersFeatures = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  borderTopWidth: '$1',
+  borderTopStyle: 'solid',
+  borderTopColor: '$slate-300',
+  backgroundColor: '$white',
+  '@md': {
+    borderTop: 'none',
+  },
+});
 
 const AddLayer = styled('div', {
   display: 'flex',
   gap: '$2',
   justifyContent: 'flex-start',
-  alignItems: 'center',
-  minHeight: '$12',
+  alignItems: 'flex-start',
+  minHeight: '$24',
   padding: '$2',
   paddingLeft: '$3_5',
+  borderRightWidth: '$1',
+  borderRightStyle: 'solid',
+  borderRightColor: '$slate-300',
 });
