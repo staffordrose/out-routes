@@ -166,7 +166,7 @@ const Feature: FC<FeatureProps> = ({
   feature: { type, title, color, symbol },
   onClick,
 }) => {
-  const dragRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (dragRef.current) {
@@ -248,7 +248,7 @@ const Feature: FC<FeatureProps> = ({
         ];
 
   return (
-    <StyledFeature ref={dragRef}>
+    <StyledFeature>
       <Button type='button' variant='ghost' size='xs' onClick={onClick}>
         <SymbolIcon
           style={{
@@ -257,14 +257,19 @@ const Feature: FC<FeatureProps> = ({
         />
         <span>{title || '[Untitled feature]'}</span>
       </Button>
-      <DragHandle />
+      <DragHandle dragRef={dragRef} />
     </StyledFeature>
   );
 };
 
-const DragHandle = () => {
+type DragHandleProps = {
+  dragRef: MutableRefObject<HTMLButtonElement | null>;
+};
+
+const DragHandle: FC<DragHandleProps> = ({ dragRef }) => {
   return (
     <IconButton
+      ref={dragRef}
       className='drag-handle'
       type='button'
       variant='ghost'
@@ -282,10 +287,10 @@ const StyledFeature = styled('div', {
   display: 'flex',
   gap: '$1',
   width: '$full',
-  [`&:has(> ${DragHandle}:focus)`]: {
+  [`&:has(> ${DragHandle}:focus) > button:first-child`]: {
     opacity: 0.5,
   },
-  [`&:has(> ${DragHandle}:active)`]: {
+  [`&:has(> ${DragHandle}:active) > button:first-child`]: {
     opacity: 0.5,
   },
   '& > button:first-child': {
