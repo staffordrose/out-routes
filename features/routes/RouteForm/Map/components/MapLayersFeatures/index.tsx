@@ -3,6 +3,7 @@ import {
   FieldArrayWithId,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
+  UseFieldArrayUpdate,
 } from 'react-hook-form';
 import { BiImport, BiPlus } from 'react-icons/bi';
 
@@ -28,6 +29,7 @@ type MapLayersFeaturesProps = {
   fields: FieldArrayWithId<RouteFormValues, 'layers', 'id'>[];
   append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
   remove: UseFieldArrayRemove;
+  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   openPopup: (popupState: PopupState) => void;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
 };
@@ -36,6 +38,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   fields,
   append,
   remove,
+  update,
   openPopup,
   setActiveLayerId,
 }) => {
@@ -49,6 +52,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
             <Layer
               key={item.id}
               remove={remove}
+              update={update}
               setActiveLayerId={setActiveLayerId}
               item={item}
               layerIndex={index}

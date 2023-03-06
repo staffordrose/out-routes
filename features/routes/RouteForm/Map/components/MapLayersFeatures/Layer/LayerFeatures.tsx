@@ -1,8 +1,11 @@
-import { FC } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { FC, MutableRefObject, useEffect, useRef } from 'react';
+import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
 import { BiShapePolygon, BiShareAlt } from 'react-icons/bi';
+import { MdDragHandle } from 'react-icons/md';
+import { gsap } from 'gsap';
+import Draggable from 'gsap/dist/Draggable';
 
-import { Box, Button } from '@/components/atoms';
+import { Box, Button, IconButton } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { GeometryTypes, SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
@@ -15,15 +18,37 @@ import {
   RouteFormValues,
 } from '../../../../helpers';
 
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(Draggable);
+}
+
 type LayerFeaturesProps = {
+  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
 };
 
 export const LayerFeatures: FC<LayerFeaturesProps> = ({
+  update,
   layerIndex,
   openPopup,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const activeIndicatorRef = useRef<HTMLDivElement>(null);
+
+  const showActiveIndicator = (y: number) => {
+    if (activeIndicatorRef.current) {
+      activeIndicatorRef.current.style.top = `${y}px`;
+      activeIndicatorRef.current.style.opacity = '1';
+    }
+  };
+  const hideActiveIndicator = () => {
+    if (activeIndicatorRef.current) {
+      activeIndicatorRef.current.style.top = '0px';
+      activeIndicatorRef.current.style.opacity = '0';
+    }
+  };
+
   const { control } = useFormContext<RouteFormValues>();
 
   const layer = useWatch({
@@ -31,12 +56,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
     name: `layers.${layerIndex}`,
   });
 
-  const features = useWatch({
-    control,
-    name: `layers.${layerIndex}.features`,
-  });
-
-  const { color, symbol } = layer;
+  const { color, symbol, features } = layer;
 
   if (!Array.isArray(features) || !features.length) {
     return (
@@ -54,7 +74,8 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
   }
 
   return (
-    <StyledLayerFeatures>
+    <StyledLayerFeatures ref={containerRef}>
+      <ActiveIndicator ref={activeIndicatorRef} />
       {features.map((feature, featureOrder) => {
         const mapFeature = mapFeatureValuesToMapFeature(
           {
@@ -67,12 +88,16 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
         );
 
         return (
-          <FeatureButton
+          <Feature
             key={feature.databaseId}
-            layer={{
-              color,
-              symbol,
-            }}
+            update={update}
+            layerIndex={layerIndex}
+            layer={layer}
+            containerRef={containerRef}
+            showActiveIndicator={showActiveIndicator}
+            hideActiveIndicator={hideActiveIndicator}
+            featureOrder={featureOrder}
+            featuresLength={features?.length || 0}
             feature={feature}
             onClick={() =>
               openPopup({
@@ -88,11 +113,13 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
 };
 
 const StyledLayerFeatures = styled('div', {
+  position: 'relative',
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax($56, 1fr))',
   width: '$full',
-  padding: '$2',
+  marginY: '$2',
   paddingLeft: '$3_5',
+  paddingRight: '$2',
   '& > button': {
     justifyContent: 'flex-start',
     width: '$full',
@@ -102,17 +129,115 @@ const StyledLayerFeatures = styled('div', {
   },
 });
 
-type FeatureButtonProps = {
-  layer: Pick<LayerValues, 'color' | 'symbol'>;
+const ActiveIndicator = styled('div', {
+  position: 'absolute',
+  zIndex: 10,
+  top: 0,
+  width: 'calc(100% - $3_5 - $2_5)',
+  height: '$0_5',
+  marginLeft: '$3_5',
+  borderRadius: '$full',
+  backgroundColor: '$blue-500',
+  opacity: 0,
+});
+
+type FeatureProps = {
+  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  layerIndex: number;
+  layer: LayerValues;
+  containerRef: MutableRefObject<HTMLDivElement | null>;
+  showActiveIndicator: (y: number) => void;
+  hideActiveIndicator: () => void;
+  featureOrder: number;
+  featuresLength: number;
   feature: FeatureValues;
   onClick: () => void;
 };
 
-const FeatureButton: FC<FeatureButtonProps> = ({
+const Feature: FC<FeatureProps> = ({
+  update,
+  layerIndex,
   layer,
+  containerRef,
+  showActiveIndicator,
+  hideActiveIndicator,
+  featureOrder,
+  featuresLength,
   feature: { type, title, color, symbol },
   onClick,
 }) => {
+  const dragRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (dragRef.current) {
+      Draggable.create(dragRef.current, {
+        type: 'y',
+        bounds: containerRef.current,
+        snap: {
+          y: (endValue) => {
+            return Math.round(endValue / 28) * 28;
+          },
+        },
+        onDrag: function () {
+          const change =
+            (this.y > 0 ? Math.floor(this.y / 28) : Math.ceil(this.y / 28)) *
+            28;
+
+          let direction = this.getDirection();
+
+          if (featureOrder === 0 && change <= 28) {
+            direction = 'down';
+          } else if (featureOrder === featuresLength - 1 && change <= 28) {
+            direction = 'up';
+          } else {
+            direction = direction === 'down' ? 'down' : 'up';
+          }
+
+          const start = (featureOrder + (direction === 'down' ? 1 : 0)) * 28;
+
+          const position = start + change;
+
+          showActiveIndicator(position);
+        },
+        onDragEnd: function () {
+          if (!Array.isArray(layer.features) || !layer.features.length) {
+            return;
+          }
+
+          const from = featureOrder;
+          const to =
+            featureOrder +
+            (this.y > 0 ? Math.floor(this.y / 28) : Math.ceil(this.y / 28));
+
+          if (from === to) {
+            update(layerIndex, layer);
+            return;
+          }
+
+          const feature = layer.features[from];
+
+          let features = layer.features.filter((_, index) => index !== from);
+          features = [...features.slice(0, to), feature, ...features.slice(to)];
+
+          update(layerIndex, { ...layer, features });
+
+          hideActiveIndicator();
+        },
+      });
+    }
+  }, [
+    update,
+    containerRef,
+    dragRef,
+    showActiveIndicator,
+    hideActiveIndicator,
+    layerIndex,
+    layer,
+    layer.features,
+    featureOrder,
+    featuresLength,
+  ]);
+
   const SymbolIcon =
     type === GeometryTypes.LineString
       ? BiShareAlt
@@ -123,18 +248,62 @@ const FeatureButton: FC<FeatureButtonProps> = ({
         ];
 
   return (
-    <Button
-      type='button' // prevent form submission
-      variant='ghost'
-      size='xs'
-      onClick={onClick}
-    >
-      <SymbolIcon
-        style={{
-          fill: color || layer.color || undefined,
-        }}
-      />
-      <span>{title || '[Untitled feature]'}</span>
-    </Button>
+    <StyledFeature ref={dragRef}>
+      <Button type='button' variant='ghost' size='xs' onClick={onClick}>
+        <SymbolIcon
+          style={{
+            fill: color || layer.color || undefined,
+          }}
+        />
+        <span>{title || '[Untitled feature]'}</span>
+      </Button>
+      <DragHandle />
+    </StyledFeature>
   );
 };
+
+const DragHandle = () => {
+  return (
+    <IconButton
+      className='drag-handle'
+      type='button'
+      variant='ghost'
+      size='xs'
+      aria-label='Move feature'
+    >
+      <MdDragHandle />
+    </IconButton>
+  );
+};
+
+DragHandle.toString = () => '.drag-handle';
+
+const StyledFeature = styled('div', {
+  display: 'flex',
+  gap: '$1',
+  width: '$full',
+  [`&:has(> ${DragHandle}:focus)`]: {
+    opacity: 0.5,
+  },
+  [`&:has(> ${DragHandle}:active)`]: {
+    opacity: 0.5,
+  },
+  '& > button:first-child': {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+    '& > span': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      display: '-webkit-box',
+      WebkitBoxOrient: 'vertical',
+      WebkitLineClamp: 1,
+      lineClamp: 1,
+    },
+  },
+  [`& > ${DragHandle}`]: {
+    flexShrink: 0,
+    '& > *': {
+      pointerEvents: 'none',
+    },
+  },
+});

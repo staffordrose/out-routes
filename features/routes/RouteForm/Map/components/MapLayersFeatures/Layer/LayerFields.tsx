@@ -99,6 +99,7 @@ export const LayerFields: FC<LayerFieldsProps> = ({ layerIndex }) => {
 
 const StyledLayerFields = styled('div', {
   position: 'sticky',
+  zIndex: 1,
   top: 'calc($14 + $12)',
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax($56, 1fr))',

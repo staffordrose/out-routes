@@ -44,6 +44,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
         fields={fields}
         append={append}
         remove={remove}
+        update={update}
         openPopup={openPopup}
         setActiveLayerId={setActiveLayerId}
       />

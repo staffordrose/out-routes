@@ -2,11 +2,12 @@ import { FC, useState } from 'react';
 import {
   FieldArrayWithId,
   UseFieldArrayRemove,
+  UseFieldArrayUpdate,
   useFormContext,
   useWatch,
 } from 'react-hook-form';
 
-import { Box } from '@/components/atoms';
+import { styled } from '@/styles';
 import { MapLayer, PopupState } from '@/types';
 import { RouteFormValues } from '../../../../helpers';
 import { LayerDetails } from './LayerDetails';
@@ -15,6 +16,7 @@ import { LayerFields } from './LayerFields';
 
 type LayerProps = {
   remove: UseFieldArrayRemove;
+  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   item: FieldArrayWithId<RouteFormValues, 'layers', 'id'>;
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
@@ -23,6 +25,7 @@ type LayerProps = {
 
 export const Layer: FC<LayerProps> = ({
   remove,
+  update,
   item,
   layerIndex,
   openPopup,
@@ -37,26 +40,14 @@ export const Layer: FC<LayerProps> = ({
   const color = useWatch({ control, name: `layers.${layerIndex}.color` });
 
   return (
-    <Box
-      as='li'
+    <StyledLayer
       onClick={() => {
         if (item.databaseId) {
           setActiveLayerId(item.databaseId);
         }
       }}
       css={{
-        position: 'relative',
-        width: '$full',
-        borderBottomWidth: '$1',
-        borderBottomStyle: 'solid',
-        borderBottomColor: '$slate-300',
         '&::before': {
-          content: '',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '$1_5',
-          height: '$full',
           backgroundColor: color,
           opacity: item.databaseId === activeLayerId ? 1 : 0.25,
         },
@@ -70,7 +61,27 @@ export const Layer: FC<LayerProps> = ({
         toggleFieldsVisibility={toggleFieldsVisibility}
       />
       {isFieldsVisible && <LayerFields layerIndex={layerIndex} />}
-      <LayerFeatures layerIndex={layerIndex} openPopup={openPopup} />
-    </Box>
+      <LayerFeatures
+        update={update}
+        layerIndex={layerIndex}
+        openPopup={openPopup}
+      />
+    </StyledLayer>
   );
 };
+
+const StyledLayer = styled('li', {
+  position: 'relative',
+  width: '$full',
+  borderBottomWidth: '$1',
+  borderBottomStyle: 'solid',
+  borderBottomColor: '$slate-300',
+  '&::before': {
+    content: '',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '$1_5',
+    height: '$full',
+  },
+});
