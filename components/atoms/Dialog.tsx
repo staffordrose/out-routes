@@ -9,6 +9,7 @@ export type DialogProps = {
   title: string;
   description?: string;
   body: ReactNode;
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 } & (
   | {
       isOpen: boolean;
@@ -28,13 +29,14 @@ export const Dialog = ({
   title,
   description,
   body,
+  maxWidth,
   children,
 }: DialogProps) => (
   <RadixDialog.Root open={isOpen} onOpenChange={setOpen}>
     <RadixDialog.Trigger asChild>{children}</RadixDialog.Trigger>
     <RadixDialog.Portal>
       <DialogOverlay />
-      <DialogContent>
+      <DialogContent maxWidth={maxWidth}>
         <DialogTitle>{title}</DialogTitle>
         {!!description && <DialogDescription>{description}</DialogDescription>}
         {body}
@@ -73,7 +75,6 @@ const DialogContent = styled(RadixDialog.Content, {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 'calc(100vw - $8)',
-  maxWidth: 460,
   maxHeight: 'calc(100vh - $8)',
   padding: '$4',
   borderRadius: '$xl',
@@ -83,6 +84,18 @@ const DialogContent = styled(RadixDialog.Content, {
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   '&:focus': {
     outline: 'none',
+  },
+  variants: {
+    maxWidth: {
+      xs: { maxWidth: 320 },
+      sm: { maxWidth: 400 },
+      md: { maxWidth: 480 },
+      lg: { maxWidth: 540 },
+      xl: { maxWidth: 720 },
+    },
+  },
+  defaultVariants: {
+    maxWidth: 'md',
   },
 });
 

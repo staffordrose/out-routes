@@ -26,12 +26,14 @@ type LayerFeaturesProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
+  isLayerFeaturesReordering: boolean;
 };
 
 export const LayerFeatures: FC<LayerFeaturesProps> = ({
   update,
   layerIndex,
   openPopup,
+  isLayerFeaturesReordering,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeIndicatorRef = useRef<HTMLDivElement>(null);
@@ -99,6 +101,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
             featureOrder={featureOrder}
             featuresLength={features?.length || 0}
             feature={feature}
+            isLayerFeaturesReordering={isLayerFeaturesReordering}
             onClick={() =>
               openPopup({
                 center: getFeatureLngLat(mapFeature),
@@ -151,6 +154,7 @@ type FeatureProps = {
   featureOrder: number;
   featuresLength: number;
   feature: FeatureValues;
+  isLayerFeaturesReordering: boolean;
   onClick: () => void;
 };
 
@@ -164,6 +168,7 @@ const Feature: FC<FeatureProps> = ({
   featureOrder,
   featuresLength,
   feature: { type, title, color, symbol },
+  isLayerFeaturesReordering,
   onClick,
 }) => {
   const dragRef = useRef<HTMLButtonElement>(null);
@@ -257,7 +262,7 @@ const Feature: FC<FeatureProps> = ({
         />
         <span>{title || '[Untitled feature]'}</span>
       </Button>
-      <DragHandle dragRef={dragRef} />
+      {isLayerFeaturesReordering ? <DragHandle dragRef={dragRef} /> : <div />}
     </StyledFeature>
   );
 };
@@ -284,7 +289,8 @@ const DragHandle: FC<DragHandleProps> = ({ dragRef }) => {
 DragHandle.toString = () => '.drag-handle';
 
 const StyledFeature = styled('div', {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: '1fr 28px',
   gap: '$1',
   width: '$full',
   [`&:has(> ${DragHandle}:focus) > button:first-child`]: {
@@ -294,7 +300,6 @@ const StyledFeature = styled('div', {
     opacity: 0.5,
   },
   '& > button:first-child': {
-    flexGrow: 1,
     justifyContent: 'flex-start',
     '& > span': {
       overflow: 'hidden',
@@ -306,7 +311,6 @@ const StyledFeature = styled('div', {
     },
   },
   [`& > ${DragHandle}`]: {
-    flexShrink: 0,
     '& > *': {
       pointerEvents: 'none',
     },

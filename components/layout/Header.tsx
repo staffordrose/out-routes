@@ -302,6 +302,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         <DropdownMenuComp.Separator key='separator-1' />,
         <DropdownMenuComp.Item
           key='explore'
+          size='md'
           onSelect={() => {
             router.push(`/explore`);
           }}
@@ -310,6 +311,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         </DropdownMenuComp.Item>,
         <DropdownMenuComp.Item
           key='add-route'
+          size='md'
           onSelect={() => {
             router.push(`/routes/add`);
           }}
@@ -318,6 +320,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         </DropdownMenuComp.Item>,
         <DropdownMenuComp.Item
           key='routes'
+          size='md'
           onSelect={() => {
             router.push(`/routes`);
           }}
@@ -326,6 +329,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         </DropdownMenuComp.Item>,
         <DropdownMenuComp.Item
           key='profile'
+          size='md'
           onSelect={() => {
             router.push(`/${user.username}`);
           }}
@@ -335,6 +339,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         <DropdownMenuComp.Separator key='separator-2' />,
         <DropdownMenuComp.Item
           key='account'
+          size='md'
           onSelect={() => {
             router.push(`/account`);
           }}
@@ -344,6 +349,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         <DropdownMenuComp.Separator key='separator-3' />,
         <DropdownMenuComp.Item
           key='sign-out'
+          size='md'
           onSelect={() => {
             signOut();
           }}

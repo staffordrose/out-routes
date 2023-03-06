@@ -58,7 +58,7 @@ export const DropdownMenu = forwardRef(
             align={align}
           >
             <DropdownMenuArrow />
-            {items}
+            <DropdownMenuContentBody>{items}</DropdownMenuContentBody>
           </DropdownMenuContent>
         </RadixDropdownMenu.Portal>
       </RadixDropdownMenu.Root>
@@ -91,14 +91,12 @@ const slideLeftAndFade = keyframes({
 const DropdownMenuContent = styled(RadixDropdownMenu.Content, {
   zIndex: '$menu',
   minWidth: '$56',
-  padding: '$2',
   borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-500',
   borderRadius: '$lg',
-  backgroundColor: '$slate-50',
   boxShadow:
-    '0px 15px 30px -15px $colors$slate-900-25, 0px 15px 30px -15px $colors$slate-900-50',
+    '0px 7.5px 15px -7.5px $colors$slate-900-25, 0px 7.5px 15px -7.5px $colors$slate-900-50',
   animationDuration: '400ms',
   animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
   willChange: 'transform, opacity',
@@ -114,6 +112,13 @@ const DropdownMenuArrow = styled(RadixDropdownMenu.Arrow, {
   width: '$3',
   height: '$2',
   fill: '$slate-500',
+});
+
+const DropdownMenuContentBody = styled('div', {
+  overflow: 'hidden',
+  width: '$full',
+  borderRadius: '$lg',
+  backgroundColor: '$slate-50',
 });
 
 // Header
@@ -139,7 +144,17 @@ const StyledDropdownMenuHeader = styled(RadixDropdownMenu.Label, {
 // Item
 type DropdownMenuItemProps = ComponentPropsWithoutRef<
   typeof StyledDropdownMenuItem
->;
+> & {
+  colorScheme?:
+    | 'slate'
+    | 'red'
+    | 'orange'
+    | 'yellow'
+    | 'green'
+    | 'blue'
+    | 'purple';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+};
 
 const DropdownMenuItem = forwardRef(
   (props: DropdownMenuItemProps, ref: ForwardedRef<HTMLDivElement>) => {
@@ -157,9 +172,9 @@ const StyledDropdownMenuItem = styled(RadixDropdownMenu.Item, {
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
-  height: '$8',
+  width: '$full',
+  height: '$auto',
   padding: '0 $2',
-  borderRadius: '$md',
   fontSize: '$sm',
   lineHeight: '$xs',
   color: '$slate-900',
@@ -169,8 +184,112 @@ const StyledDropdownMenuItem = styled(RadixDropdownMenu.Item, {
     opacity: 0.5,
     cursor: 'not-allowed',
   },
-  '&[data-highlighted]': {
-    backgroundColor: '$slate-200',
+  variants: {
+    colorScheme: {
+      slate: {
+        color: '$slate-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$slate-200',
+        },
+      },
+      red: {
+        color: '$red-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$red-200',
+        },
+      },
+      orange: {
+        color: '$orange-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$orange-200',
+        },
+      },
+      yellow: {
+        color: '$yellow-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$yellow-200',
+        },
+      },
+      green: {
+        color: '$green-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$green-200',
+        },
+      },
+      blue: {
+        color: '$blue-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$blue-200',
+        },
+      },
+      purple: {
+        color: '$purple-900',
+        '&[data-highlighted]': {
+          backgroundColor: '$purple-200',
+        },
+      },
+    },
+    size: {
+      xs: {
+        gap: '$2',
+        minHeight: '$7',
+        paddingX: '$2',
+        fontSize: '$sm',
+        '& > svg': {
+          flexShrink: 0,
+          width: '$5',
+          height: '$5',
+        },
+      },
+      sm: {
+        gap: '$2',
+        minHeight: '$8',
+        paddingX: '$2',
+        fontSize: '$md',
+        '& > svg': {
+          flexShrink: 0,
+          width: '$6',
+          height: '$6',
+        },
+      },
+      md: {
+        gap: '$2_5',
+        minHeight: '$10',
+        paddingX: '$2_5',
+        fontSize: '$lg',
+        '& > svg': {
+          flexShrink: 0,
+          width: '$7',
+          height: '$7',
+        },
+      },
+      lg: {
+        gap: '$3',
+        minHeight: '$12',
+        paddingX: '$3',
+        fontSize: '$xl',
+        '& > svg': {
+          flexShrink: 0,
+          width: '$8',
+          height: '$8',
+        },
+      },
+      xl: {
+        gap: '$3_5',
+        minHeight: '$14',
+        paddingX: '$3_5',
+        fontSize: '$2xl',
+        '& > svg': {
+          flexShrink: 0,
+          width: '$9',
+          height: '$9',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    colorScheme: 'slate',
+    size: 'sm',
   },
 });
 
@@ -191,6 +310,7 @@ DropdownMenu.Separator = DropdownMenuSeparator;
 
 const StyledDropdownMenuSeparator = styled(RadixDropdownMenu.Separator, {
   height: '$px',
-  margin: '$2 0',
+  // margin: '$2 0',
+  margin: 0,
   backgroundColor: '$slate-200',
 });

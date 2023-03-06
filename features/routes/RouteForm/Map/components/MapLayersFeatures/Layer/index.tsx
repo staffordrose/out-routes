@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import {
   FieldArrayWithId,
   UseFieldArrayRemove,
@@ -9,10 +9,9 @@ import {
 
 import { styled } from '@/styles';
 import { MapLayer, PopupState } from '@/types';
-import { RouteFormValues } from '../../../../helpers';
+import { LayerValues, RouteFormValues } from '../../../../helpers';
 import { LayerDetails } from './LayerDetails';
 import { LayerFeatures } from './LayerFeatures';
-import { LayerFields } from './LayerFields';
 
 type LayerProps = {
   remove: UseFieldArrayRemove;
@@ -21,6 +20,8 @@ type LayerProps = {
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
+  layersWithFeaturesReordering: Set<LayerValues['databaseId']>;
+  toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
 
 export const Layer: FC<LayerProps> = ({
@@ -30,14 +31,17 @@ export const Layer: FC<LayerProps> = ({
   layerIndex,
   openPopup,
   setActiveLayerId,
+  layersWithFeaturesReordering,
+  toggleLayerFeaturesReordering,
 }) => {
-  const [isFieldsVisible, setFieldsVisible] = useState(false);
-  const toggleFieldsVisibility = () => setFieldsVisible(!isFieldsVisible);
-
   const { control } = useFormContext<RouteFormValues>();
 
   const activeLayerId = useWatch({ control, name: 'activeLayerId' });
   const color = useWatch({ control, name: `layers.${layerIndex}.color` });
+
+  const isLayerFeaturesReordering = layersWithFeaturesReordering.has(
+    item.databaseId
+  );
 
   return (
     <StyledLayer
@@ -54,17 +58,18 @@ export const Layer: FC<LayerProps> = ({
       }}
     >
       <LayerDetails
+        update={update}
         remove={remove}
         setActiveLayerId={setActiveLayerId}
         layerIndex={layerIndex}
-        isFieldsVisible={isFieldsVisible}
-        toggleFieldsVisibility={toggleFieldsVisibility}
+        isLayerFeaturesReordering={isLayerFeaturesReordering}
+        toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}
       />
-      {isFieldsVisible && <LayerFields layerIndex={layerIndex} />}
       <LayerFeatures
         update={update}
         layerIndex={layerIndex}
         openPopup={openPopup}
+        isLayerFeaturesReordering={isLayerFeaturesReordering}
       />
     </StyledLayer>
   );

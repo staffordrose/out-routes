@@ -1,10 +1,22 @@
 import { FC, useState } from 'react';
-import { UseFieldArrayRemove, useFormContext, useWatch } from 'react-hook-form';
-import { BiTrash, BiEditAlt, BiX } from 'react-icons/bi';
+import {
+  UseFieldArrayRemove,
+  UseFieldArrayUpdate,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
+import {
+  BiCheck,
+  BiDotsVerticalRounded,
+  BiEditAlt,
+  BiSortAlt2,
+  BiTrash,
+} from 'react-icons/bi';
 
 import {
   Button,
   Dialog,
+  DropdownMenu,
   Flex,
   IconButton,
   TruncatedText,
@@ -12,22 +24,25 @@ import {
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapLayer } from '@/types';
-import { RouteFormValues } from '../../../../helpers';
+import { LayerValues, RouteFormValues } from '../../../../helpers';
+import { LayerEdit } from './LayerEdit';
 
 type LayerDetailsProps = {
+  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   remove: UseFieldArrayRemove;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
   layerIndex: number;
-  isFieldsVisible: boolean;
-  toggleFieldsVisibility: () => void;
+  isLayerFeaturesReordering: boolean;
+  toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
 
 export const LayerDetails: FC<LayerDetailsProps> = ({
+  update,
   remove,
   setActiveLayerId,
   layerIndex,
-  isFieldsVisible,
-  toggleFieldsVisibility,
+  isLayerFeaturesReordering,
+  toggleLayerFeaturesReordering,
 }) => {
   const { control } = useFormContext<RouteFormValues>();
 
@@ -36,72 +51,117 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
     name: `layers.${layerIndex}`,
   });
 
-  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const SymbolIcon =
     symbolIcons[(layer.symbol || SymbolCodes.Marker) as SymbolCodes];
 
   return (
-    <StyledLayerDetails>
-      <div>
-        <SymbolIcon
-          style={{
-            fill: layer.color || undefined,
-          }}
-        />
-        <TruncatedText as='h4' lineClamp={1}>
-          {layer.title || '[Untitled section]'}
-        </TruncatedText>
-      </div>
-      <div>
-        {!isFieldsVisible && (
-          <Dialog
-            isOpen={isDialogOpen}
-            setOpen={setDialogOpen}
-            title='Delete section?'
-            body={
-              <Flex direction='column' gap='md'>
-                <p>
-                  Are you sure you want to delete this section and its features?
-                </p>
-                <Flex justifyContent='end'>
-                  <Button
-                    variant='solid'
-                    colorScheme='red'
-                    size='lg'
-                    onClick={(e) => {
-                      e.stopPropagation();
+    <>
+      <Dialog
+        maxWidth='sm'
+        isOpen={isEditDialogOpen}
+        setOpen={setEditDialogOpen}
+        title='Edit Section'
+        body={
+          <LayerEdit update={update} layerIndex={layerIndex} layer={layer} />
+        }
+      />
+      <Dialog
+        maxWidth='sm'
+        isOpen={isDeleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        title='Delete section?'
+        body={
+          <Flex direction='column' gap='md'>
+            <p>
+              Are you sure you want to delete this section and its features?
+            </p>
+            <Flex justifyContent='end'>
+              <Button
+                variant='solid'
+                colorScheme='red'
+                size='lg'
+                onClick={(e) => {
+                  e.stopPropagation();
 
-                      remove(layerIndex);
-                      setActiveLayerId(null);
-                    }}
-                  >
-                    Yes, Delete It
-                  </Button>
-                </Flex>
-              </Flex>
-            }
-          >
+                  remove(layerIndex);
+                  setActiveLayerId(null);
+                }}
+              >
+                Yes, Delete It
+              </Button>
+            </Flex>
+          </Flex>
+        }
+      />
+      <StyledLayerDetails>
+        <div>
+          <SymbolIcon
+            style={{
+              fill: layer.color || undefined,
+            }}
+          />
+          <TruncatedText as='h4' lineClamp={1}>
+            {layer.title || '[Untitled section]'}
+          </TruncatedText>
+        </div>
+        <div>
+          {isLayerFeaturesReordering ? (
             <IconButton
               type='button'
               variant='ghost'
               size='xs'
-              aria-label='Open modal to delete the section'
+              onClick={() => {
+                toggleLayerFeaturesReordering(layer.databaseId);
+              }}
             >
-              <BiTrash />
+              <BiCheck />
             </IconButton>
-          </Dialog>
-        )}
-        <IconButton
-          type='button'
-          variant='ghost'
-          size='xs'
-          onClick={toggleFieldsVisibility}
-        >
-          {isFieldsVisible ? <BiX /> : <BiEditAlt />}
-        </IconButton>
-      </div>
-    </StyledLayerDetails>
+          ) : (
+            <DropdownMenu
+              items={[
+                <DropdownMenu.Item
+                  key='edit-layer'
+                  size='xs'
+                  aria-label='Open modal to edit the section'
+                  onSelect={() => setEditDialogOpen(!isEditDialogOpen)}
+                >
+                  <BiEditAlt />
+                  <span>Edit Section</span>
+                </DropdownMenu.Item>,
+                <DropdownMenu.Item
+                  key='reorder-features'
+                  size='xs'
+                  onSelect={() => {
+                    toggleLayerFeaturesReordering(layer.databaseId);
+                  }}
+                >
+                  <BiSortAlt2 />
+                  <span>Reorder Features</span>
+                </DropdownMenu.Item>,
+                <DropdownMenu.Separator key='delete-separator' />,
+                <DropdownMenu.Item
+                  key='delete-layer'
+                  size='xs'
+                  colorScheme='red'
+                  aria-label='Open modal to delete the section'
+                  onSelect={() => setDeleteDialogOpen(!isDeleteDialogOpen)}
+                >
+                  <BiTrash />
+                  <span>Delete Section</span>
+                </DropdownMenu.Item>,
+              ]}
+            >
+              <IconButton type='button' variant='ghost' size='xs'>
+                <BiDotsVerticalRounded />
+              </IconButton>
+            </DropdownMenu>
+          )}
+        </div>
+      </StyledLayerDetails>
+    </>
   );
 };
 

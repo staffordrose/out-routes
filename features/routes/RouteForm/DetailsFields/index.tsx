@@ -27,6 +27,7 @@ export const DetailsFields: FC = () => {
           render={({ field, fieldState: { isTouched, error } }) => (
             <SelectField
               {...field}
+              contentWidth='xs'
               label='Visibility'
               placeholder='Select visibility'
               isTouched={isTouched}
@@ -34,7 +35,6 @@ export const DetailsFields: FC = () => {
               groups={[
                 {
                   id: 'visibilities',
-                  label: 'Visibilities',
                   options: [
                     {
                       value: 'private',
@@ -72,6 +72,7 @@ export const DetailsFields: FC = () => {
           render={({ field, fieldState: { isTouched, error } }) => (
             <SelectField
               {...field}
+              contentWidth='sm'
               label='Activity Type'
               placeholder='Select activity'
               isTouched={isTouched}
@@ -111,6 +112,7 @@ export const DetailsFields: FC = () => {
           render={({ field, fieldState: { isTouched, error } }) => (
             <SelectField
               {...field}
+              contentWidth='xl'
               label='Country'
               placeholder='Select country'
               isTouched={isTouched}

@@ -16,6 +16,7 @@ import { LngLat, MapFeature, MapLayer, PopupState } from '@/types';
 import { createAlphaNumericId, GPXParser, readFile } from '@/utils';
 import {
   FeatureValues,
+  LayerValues,
   mapMapFeatureToFeatureValues,
   RouteFormValues,
 } from '../../../helpers';
@@ -44,6 +45,23 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
 
+  const [layersWithFeaturesReordering, setLayersWithFeaturesReordering] =
+    useState<Set<LayerValues['databaseId']>>(new Set());
+
+  const toggleLayerFeaturesReordering = (
+    layerId: LayerValues['databaseId']
+  ) => {
+    const next = new Set(layersWithFeaturesReordering);
+
+    if (next.has(layerId)) {
+      next.delete(layerId);
+    } else {
+      next.add(layerId);
+    }
+
+    setLayersWithFeaturesReordering(next);
+  };
+
   return (
     <StyledMapLayersFeatures>
       <List as='ul' direction='column' width='full'>
@@ -57,11 +75,12 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
               item={item}
               layerIndex={index}
               openPopup={openPopup}
+              layersWithFeaturesReordering={layersWithFeaturesReordering}
+              toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}
             />
           );
         })}
       </List>
-
       <AddLayer>
         <Button
           type='button'

@@ -27,13 +27,21 @@ export type SelectProps = ComponentPropsWithoutRef<typeof StyledSelect> & {
   as?: ElementType;
   css?: Stitches.CSS;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  contentWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   placeholder?: string;
   groups: SelectGroup[];
 };
 
 export const Select = forwardRef(
   (
-    { size, placeholder = '', value, groups, ...selectProps }: SelectProps,
+    {
+      size,
+      contentWidth,
+      placeholder = '',
+      value,
+      groups,
+      ...selectProps
+    }: SelectProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return (
@@ -45,7 +53,7 @@ export const Select = forwardRef(
           </SelectIcon>
         </SelectTrigger>
         <RadixSelect.Portal>
-          <SelectContent>
+          <SelectContent width={contentWidth}>
             <SelectScrollUpButton>
               <BiChevronUp />
             </SelectScrollUpButton>
@@ -157,7 +165,6 @@ const SelectIcon = styled(RadixSelect.SelectIcon, {
 const SelectContent = styled(RadixSelect.Content, {
   zIndex: '$menu',
   overflow: 'hidden',
-  minWidth: '$56',
   borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-500',
@@ -165,6 +172,18 @@ const SelectContent = styled(RadixSelect.Content, {
   backgroundColor: '$slate-50',
   boxShadow:
     '0px 15px 30px -15px $colors$slate-900-25, 0px 15px 30px -15px $colors$slate-900-50',
+  variants: {
+    width: {
+      xs: { minWidth: '$40', maxWidth: '$48' },
+      sm: { minWidth: '$48', maxWidth: '$56' },
+      md: { minWidth: '$56', maxWidth: '$64' },
+      lg: { minWidth: '$64', maxWidth: '$72' },
+      xl: { minWidth: '$72', maxWidth: '$80' },
+    },
+  },
+  defaultVariants: {
+    width: 'md',
+  },
 });
 
 const SelectViewport = styled(RadixSelect.Viewport, {
