@@ -6,11 +6,13 @@ import {
   forwardRef,
   ReactNode,
 } from 'react';
-import * as RadixSelect from '@radix-ui/react-select';
+// TODO: Add back once issue #1795 is fixed
+// import * as RadixSelect from '@radix-ui/react-select';
 import type * as Stitches from '@stitches/react';
 import { BiCheck, BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
 import { styled } from '@/styles';
+import * as RadixSelect from '../utility/Select';
 
 type SelectOption = {
   label: ReactNode;
