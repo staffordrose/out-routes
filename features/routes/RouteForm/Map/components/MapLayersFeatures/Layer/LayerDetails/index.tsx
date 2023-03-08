@@ -216,7 +216,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
 const StyledLayerDetails = styled('div', {
   position: 'sticky',
   zIndex: 10,
-  top: '$14',
+  top: 0,
   display: 'flex',
   gap: '$1',
   justifyContent: 'space-between',

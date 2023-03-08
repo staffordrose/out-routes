@@ -109,13 +109,12 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
 const StyledMap = styled('div', {
   boxSizing: 'border-box',
   position: 'relative',
-  display: 'grid',
   width: '$full',
   '& > div:first-child': {
     position: 'sticky',
     top: '$14',
     width: '$full',
-    height: 'calc(100vh - $14 - $8 - $14 - $12 - $12)',
+    height: 'calc(100vh - $14 - $8 - $14 - $12 - $24)',
     '& > div#map-container': {
       width: '$full',
       height: '$full',
@@ -127,16 +126,20 @@ const StyledMap = styled('div', {
     zIndex: 10,
   },
   '@md': {
+    display: 'grid',
     gridTemplateColumns: '1fr $64',
-    minHeight: '100vh',
+    height: 'calc(100vh - $14 - $8 - $14 - $12)',
     '& > div:first-child': {
-      height: 'calc(100vh - $14)',
+      height: '$full',
       borderLeftWidth: '$1',
       borderLeftStyle: 'solid',
       borderLeftColor: '$slate-300',
     },
     '& > div:last-child': {
-      minHeight: 'calc(100vh - $14)',
+      overflowY: 'auto',
+      borderLeftWidth: '$1',
+      borderLeftStyle: 'solid',
+      borderLeftColor: '$slate-300',
       borderRightWidth: '$1',
       borderRightStyle: 'solid',
       borderRightColor: '$slate-300',

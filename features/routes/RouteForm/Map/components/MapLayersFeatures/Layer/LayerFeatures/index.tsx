@@ -2,7 +2,6 @@ import { FC, useRef } from 'react';
 import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
 import { BiShapePolygon } from 'react-icons/bi';
 
-import { Box } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
 import { MapFeature, PopupState } from '@/types';
@@ -53,52 +52,59 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
     name: `layers.${layerIndex}`,
   });
 
-  if (!Array.isArray(layer.features) || !layer.features.length) {
+  const renderResult = () => {
+    if (!Array.isArray(layer.features) || !layer.features.length) {
+      return (
+        <EmptyState>
+          <Feedback
+            size='xs'
+            type='empty'
+            icon={BiShapePolygon}
+            title='No Features'
+          >
+            This section does not have any features.
+          </Feedback>
+        </EmptyState>
+      );
+    }
     return (
-      <Box css={{ paddingLeft: '$1_5' }}>
-        <Feedback
-          size='xs'
-          type='empty'
-          icon={BiShapePolygon}
-          title='No Features'
-        >
-          This section does not have any features.
-        </Feedback>
-      </Box>
+      <FeaturesGrid ref={containerRef}>
+        <ActiveIndicator ref={activeIndicatorRef} />
+        {layer.features.map((feature, featureOrder) => {
+          return (
+            <Feature
+              key={feature.databaseId}
+              update={update}
+              layerIndex={layerIndex}
+              layer={layer}
+              containerRef={containerRef}
+              showActiveIndicator={showActiveIndicator}
+              hideActiveIndicator={hideActiveIndicator}
+              featureOrder={featureOrder}
+              featuresLength={layer.features?.length || 0}
+              feature={feature}
+              openPopup={openPopup}
+              closePopup={closePopup}
+              openFeatureEditDialog={openFeatureEditDialog}
+              isLayerFeaturesReordering={isLayerFeaturesReordering}
+            />
+          );
+        })}
+      </FeaturesGrid>
     );
-  }
+  };
 
-  return (
-    <StyledLayerFeatures ref={containerRef}>
-      <ActiveIndicator ref={activeIndicatorRef} />
-      {layer.features.map((feature, featureOrder) => {
-        return (
-          <Feature
-            key={feature.databaseId}
-            update={update}
-            layerIndex={layerIndex}
-            layer={layer}
-            containerRef={containerRef}
-            showActiveIndicator={showActiveIndicator}
-            hideActiveIndicator={hideActiveIndicator}
-            featureOrder={featureOrder}
-            featuresLength={layer.features?.length || 0}
-            feature={feature}
-            openPopup={openPopup}
-            closePopup={closePopup}
-            openFeatureEditDialog={openFeatureEditDialog}
-            isLayerFeaturesReordering={isLayerFeaturesReordering}
-          />
-        );
-      })}
-    </StyledLayerFeatures>
-  );
+  return <StyledLayerFeatures>{renderResult()}</StyledLayerFeatures>;
 };
 
 const StyledLayerFeatures = styled('div', {
+  borderBottomWidth: '$1',
+  borderBottomStyle: 'solid',
+  borderBottomColor: '$slate-300',
+});
+
+const FeaturesGrid = styled('div', {
   position: 'relative',
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax($56, 1fr))',
   width: '$full',
   marginY: '$2',
   paddingLeft: '$3_5',
@@ -107,19 +113,19 @@ const StyledLayerFeatures = styled('div', {
     justifyContent: 'flex-start',
     width: '$full',
   },
-  '@md': {
-    gridTemplateColumns: '1fr',
-  },
 });
 
 const ActiveIndicator = styled('div', {
   position: 'absolute',
   zIndex: 10,
   top: 0,
-  width: 'calc(100% - $3_5 - $2_5)',
+  width: 'calc(100% - $6)',
   height: '$0_5',
-  marginLeft: '$3_5',
   borderRadius: '$full',
   backgroundColor: '$blue-500',
   opacity: 0,
+});
+
+const EmptyState = styled('div', {
+  paddingLeft: '$1_5',
 });

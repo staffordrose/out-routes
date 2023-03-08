@@ -263,6 +263,7 @@ const StyledMapLayersFeatures = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
+  width: '$full',
   borderTopWidth: '$1',
   borderTopStyle: 'solid',
   borderTopColor: '$slate-300',

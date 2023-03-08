@@ -163,11 +163,10 @@ const StyledSearch = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$2',
-  width: '$full',
+  width: 'calc($full - $20)',
   maxWidth: '$112',
   '& > input': {
     width: '$full',
-    maxWidth: '$64',
     backgroundColor: '$white',
   },
   '& > button': {

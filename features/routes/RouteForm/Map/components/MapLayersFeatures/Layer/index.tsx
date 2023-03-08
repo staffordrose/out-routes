@@ -95,12 +95,10 @@ export const Layer: FC<LayerProps> = ({
 const StyledLayer = styled('li', {
   position: 'relative',
   width: '$full',
-  borderBottomWidth: '$1',
-  borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-300',
   '&::before': {
     content: '',
     position: 'absolute',
+    zIndex: 100,
     top: 0,
     left: 0,
     width: '$1_5',
