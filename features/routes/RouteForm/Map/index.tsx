@@ -1,12 +1,19 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { LngLatBounds } from 'mapbox-gl';
 
+import { Dialog } from '@/components/atoms';
 import { styled } from '@/styles';
-import { Route } from '@/types';
-import { RouteFormValues } from '../helpers';
-import { MapLayersFeatures, Search } from './components';
+import { MapFeature, Route } from '@/types';
+import { LayerValues, RouteFormValues } from '../helpers';
+import { FeatureEdit, MapLayersFeatures, Search } from './components';
 import { useMap } from './hooks';
+
+const initialFeatureEditProps = {
+  layerIndex: 0,
+  layer: {} as LayerValues,
+  feature: {} as MapFeature,
+};
 
 type MapProps = {
   routeId: Route['id'];
@@ -16,39 +23,85 @@ type MapProps = {
 export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
   const { control } = useFormContext<RouteFormValues>();
 
+  const [featureEditProps, setFeatureEditProps] = useState<{
+    layerIndex: number;
+    layer: LayerValues;
+    feature: MapFeature;
+  }>(initialFeatureEditProps);
+
+  const [isFeatureDialogOpen, setFeatureDialogOpen] = useState<boolean>(false);
+
+  const openFeatureEditDialog = (
+    layerIndex: number,
+    layer: LayerValues,
+    feature: MapFeature
+  ) => {
+    setFeatureEditProps({
+      layerIndex,
+      layer,
+      feature,
+    });
+    setFeatureDialogOpen(true);
+  };
+
+  const closeFeatureEditDialog = () => {
+    setFeatureEditProps(initialFeatureEditProps);
+    setFeatureDialogOpen(false);
+  };
+
   const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'layers',
   });
 
-  const { mapContainerEl, map, draw, openPopup, setActiveLayerId } = useMap({
-    append,
-    update,
-    routeId,
-    routeMapBounds,
-  });
+  const { mapContainerEl, map, draw, openPopup, closePopup, setActiveLayerId } =
+    useMap({
+      append,
+      update,
+      routeId,
+      routeMapBounds,
+      openFeatureEditDialog,
+    });
 
   return (
-    <StyledMap>
-      <div>
-        <Search
-          append={append}
-          update={update}
-          map={map}
-          draw={draw}
-          setActiveLayerId={setActiveLayerId}
-        />
-        <div id='map-container' ref={mapContainerEl} />
-      </div>
-      <MapLayersFeatures
-        fields={fields}
-        append={append}
-        remove={remove}
-        update={update}
-        openPopup={openPopup}
-        setActiveLayerId={setActiveLayerId}
+    <>
+      <Dialog
+        maxWidth='sm'
+        isOpen={isFeatureDialogOpen}
+        setOpen={setFeatureDialogOpen}
+        title='Edit Feature'
+        body={
+          <FeatureEdit
+            {...featureEditProps}
+            update={update}
+            openPopup={openPopup}
+            closeFeatureEditDialog={closeFeatureEditDialog}
+          />
+        }
       />
-    </StyledMap>
+      <StyledMap>
+        <div>
+          <Search
+            append={append}
+            update={update}
+            map={map}
+            draw={draw}
+            setActiveLayerId={setActiveLayerId}
+          />
+          <div id='map-container' ref={mapContainerEl} />
+        </div>
+        <MapLayersFeatures
+          fields={fields}
+          append={append}
+          remove={remove}
+          update={update}
+          openPopup={openPopup}
+          closePopup={closePopup}
+          setActiveLayerId={setActiveLayerId}
+          openFeatureEditDialog={openFeatureEditDialog}
+        />
+      </StyledMap>
+    </>
   );
 };
 

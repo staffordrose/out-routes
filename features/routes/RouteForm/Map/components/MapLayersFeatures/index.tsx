@@ -31,8 +31,14 @@ type MapLayersFeaturesProps = {
   append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
   remove: UseFieldArrayRemove;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
-  openPopup: (popupState: PopupState) => void;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
+  openPopup: (popupState: PopupState) => void;
+  closePopup: () => void;
+  openFeatureEditDialog: (
+    layerIndex: number,
+    layer: LayerValues,
+    feature: MapFeature
+  ) => void;
 };
 
 export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
@@ -40,8 +46,10 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   append,
   remove,
   update,
-  openPopup,
   setActiveLayerId,
+  openPopup,
+  closePopup,
+  openFeatureEditDialog,
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
 
@@ -71,10 +79,12 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
               key={item.id}
               remove={remove}
               update={update}
-              setActiveLayerId={setActiveLayerId}
               item={item}
               layerIndex={index}
+              setActiveLayerId={setActiveLayerId}
               openPopup={openPopup}
+              closePopup={closePopup}
+              openFeatureEditDialog={openFeatureEditDialog}
               layersWithFeaturesReordering={layersWithFeaturesReordering}
               toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}
             />

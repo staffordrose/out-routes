@@ -1,148 +1,32 @@
-import { FC, MutableRefObject, useEffect, useRef } from 'react';
-import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
-import { BiShapePolygon, BiShareAlt } from 'react-icons/bi';
+import { FC, MutableRefObject, useEffect, useMemo, useRef } from 'react';
+import { UseFieldArrayUpdate } from 'react-hook-form';
+import {
+  BiDotsVerticalRounded,
+  BiEditAlt,
+  BiShapePolygon,
+  BiShareAlt,
+  BiTrash,
+} from 'react-icons/bi';
 import { MdDragHandle } from 'react-icons/md';
 import { gsap } from 'gsap';
 import Draggable from 'gsap/dist/Draggable';
 
-import { Box, Button, IconButton } from '@/components/atoms';
-import { Feedback } from '@/components/layout';
+import { Button, DropdownMenu, IconButton } from '@/components/atoms';
 import { GeometryTypes, SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
-import { PopupState } from '@/types';
+import { MapFeature, PopupState } from '@/types';
 import { getFeatureLngLat } from '@/utils';
 import {
   FeatureValues,
   LayerValues,
   mapFeatureValuesToMapFeature,
   RouteFormValues,
-} from '../../../../helpers';
+} from '../../../../../helpers';
+import { deleteLayerFeature } from '../../../../helpers';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(Draggable);
 }
-
-type LayerFeaturesProps = {
-  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
-  layerIndex: number;
-  openPopup: (popupState: PopupState) => void;
-  isLayerFeaturesReordering: boolean;
-};
-
-export const LayerFeatures: FC<LayerFeaturesProps> = ({
-  update,
-  layerIndex,
-  openPopup,
-  isLayerFeaturesReordering,
-}) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const activeIndicatorRef = useRef<HTMLDivElement>(null);
-
-  const showActiveIndicator = (y: number) => {
-    if (activeIndicatorRef.current) {
-      activeIndicatorRef.current.style.top = `${y}px`;
-      activeIndicatorRef.current.style.opacity = '1';
-    }
-  };
-  const hideActiveIndicator = () => {
-    if (activeIndicatorRef.current) {
-      activeIndicatorRef.current.style.top = '0px';
-      activeIndicatorRef.current.style.opacity = '0';
-    }
-  };
-
-  const { control } = useFormContext<RouteFormValues>();
-
-  const layer = useWatch({
-    control,
-    name: `layers.${layerIndex}`,
-  });
-
-  const { color, symbol, features } = layer;
-
-  if (!Array.isArray(features) || !features.length) {
-    return (
-      <Box css={{ paddingLeft: '$1_5' }}>
-        <Feedback
-          size='xs'
-          type='empty'
-          icon={BiShapePolygon}
-          title='No Features'
-        >
-          This section does not have any features.
-        </Feedback>
-      </Box>
-    );
-  }
-
-  return (
-    <StyledLayerFeatures ref={containerRef}>
-      <ActiveIndicator ref={activeIndicatorRef} />
-      {features.map((feature, featureOrder) => {
-        const mapFeature = mapFeatureValuesToMapFeature(
-          {
-            id: layer.databaseId as string,
-            color,
-            symbol,
-          },
-          featureOrder,
-          feature
-        );
-
-        return (
-          <Feature
-            key={feature.databaseId}
-            update={update}
-            layerIndex={layerIndex}
-            layer={layer}
-            containerRef={containerRef}
-            showActiveIndicator={showActiveIndicator}
-            hideActiveIndicator={hideActiveIndicator}
-            featureOrder={featureOrder}
-            featuresLength={features?.length || 0}
-            feature={feature}
-            isLayerFeaturesReordering={isLayerFeaturesReordering}
-            onClick={() =>
-              openPopup({
-                center: getFeatureLngLat(mapFeature),
-                feature: mapFeature,
-              })
-            }
-          />
-        );
-      })}
-    </StyledLayerFeatures>
-  );
-};
-
-const StyledLayerFeatures = styled('div', {
-  position: 'relative',
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax($56, 1fr))',
-  width: '$full',
-  marginY: '$2',
-  paddingLeft: '$3_5',
-  paddingRight: '$2',
-  '& > button': {
-    justifyContent: 'flex-start',
-    width: '$full',
-  },
-  '@md': {
-    gridTemplateColumns: '1fr',
-  },
-});
-
-const ActiveIndicator = styled('div', {
-  position: 'absolute',
-  zIndex: 10,
-  top: 0,
-  width: 'calc(100% - $3_5 - $2_5)',
-  height: '$0_5',
-  marginLeft: '$3_5',
-  borderRadius: '$full',
-  backgroundColor: '$blue-500',
-  opacity: 0,
-});
 
 type FeatureProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
@@ -154,11 +38,17 @@ type FeatureProps = {
   featureOrder: number;
   featuresLength: number;
   feature: FeatureValues;
+  openPopup: (popupState: PopupState) => void;
+  closePopup: () => void;
+  openFeatureEditDialog: (
+    layerIndex: number,
+    layer: LayerValues,
+    feature: MapFeature
+  ) => void;
   isLayerFeaturesReordering: boolean;
-  onClick: () => void;
 };
 
-const Feature: FC<FeatureProps> = ({
+export const Feature: FC<FeatureProps> = ({
   update,
   layerIndex,
   layer,
@@ -167,9 +57,11 @@ const Feature: FC<FeatureProps> = ({
   hideActiveIndicator,
   featureOrder,
   featuresLength,
-  feature: { type, title, color, symbol },
+  feature,
+  openPopup,
+  closePopup,
+  openFeatureEditDialog,
   isLayerFeaturesReordering,
-  onClick,
 }) => {
   const dragRef = useRef<HTMLButtonElement>(null);
 
@@ -243,6 +135,8 @@ const Feature: FC<FeatureProps> = ({
     featuresLength,
   ]);
 
+  const { type, title, color, symbol } = feature;
+
   const SymbolIcon =
     type === GeometryTypes.LineString
       ? BiShareAlt
@@ -252,9 +146,33 @@ const Feature: FC<FeatureProps> = ({
           (symbol || layer.symbol || SymbolCodes.Marker) as SymbolCodes
         ];
 
+  const mapFeature = useMemo(
+    () =>
+      mapFeatureValuesToMapFeature(
+        {
+          id: layer.databaseId as string,
+          color: layer.color,
+          symbol: layer.symbol,
+        },
+        featureOrder,
+        feature
+      ),
+    [layer, featureOrder, feature]
+  );
+
   return (
     <StyledFeature>
-      <Button type='button' variant='ghost' size='xs' onClick={onClick}>
+      <Button
+        type='button'
+        variant='ghost'
+        size='xs'
+        onClick={() => {
+          openPopup({
+            center: getFeatureLngLat(mapFeature),
+            feature: mapFeature,
+          });
+        }}
+      >
         <SymbolIcon
           style={{
             fill: color || layer.color || undefined,
@@ -262,7 +180,43 @@ const Feature: FC<FeatureProps> = ({
         />
         <span>{title || '[Untitled feature]'}</span>
       </Button>
-      {isLayerFeaturesReordering ? <DragHandle dragRef={dragRef} /> : <div />}
+      {isLayerFeaturesReordering ? (
+        <DragHandle dragRef={dragRef} />
+      ) : (
+        <DropdownMenu
+          items={[
+            <DropdownMenu.Item
+              key='edit-feature'
+              size='xs'
+              aria-label='Open modal to edit the feature'
+              onSelect={() => {
+                openFeatureEditDialog(layerIndex, layer, mapFeature);
+              }}
+            >
+              <BiEditAlt />
+              <span>Edit Feature</span>
+            </DropdownMenu.Item>,
+            <DropdownMenu.Separator key='delete-separator' />,
+            <DropdownMenu.Item
+              key='delete-feature'
+              size='xs'
+              colorScheme='red'
+              aria-label='Open modal to delete the feature'
+              onSelect={() => {
+                deleteLayerFeature(update, layerIndex, layer, mapFeature);
+                closePopup();
+              }}
+            >
+              <BiTrash />
+              <span>Delete Feature</span>
+            </DropdownMenu.Item>,
+          ]}
+        >
+          <IconButton type='button' variant='ghost' size='xs'>
+            <BiDotsVerticalRounded />
+          </IconButton>
+        </DropdownMenu>
+      )}
     </StyledFeature>
   );
 };
@@ -290,7 +244,7 @@ DragHandle.toString = () => '.drag-handle';
 
 const StyledFeature = styled('div', {
   display: 'grid',
-  gridTemplateColumns: '1fr 28px',
+  gridTemplateColumns: '1fr 32px',
   gap: '$1',
   width: '$full',
   [`&:has(> ${DragHandle}:focus) > button:first-child`]: {
@@ -309,6 +263,9 @@ const StyledFeature = styled('div', {
       WebkitLineClamp: 1,
       lineClamp: 1,
     },
+  },
+  '& > button:last-child': {
+    justifySelf: 'center',
   },
   [`& > ${DragHandle}`]: {
     '& > *': {

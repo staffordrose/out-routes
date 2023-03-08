@@ -10,9 +10,10 @@ import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { mapboxgl } from '@/lib/client';
-import { MapLayer, PopupState, Route } from '@/types';
-import { RouteFormValues } from '../../helpers';
+import { MapFeature, MapLayer, PopupState, Route } from '@/types';
+import { LayerValues, RouteFormValues } from '../../helpers';
 import { Popup } from '../components';
+import { getLayerValuesById } from '../helpers';
 import {
   useDrawFeatures,
   useMapState,
@@ -29,6 +30,11 @@ export type UseMapProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   routeId: Route['id'];
   routeMapBounds?: LngLatBounds | null;
+  openFeatureEditDialog: (
+    layerIndex: number,
+    layer: LayerValues,
+    feature: MapFeature
+  ) => void;
 };
 
 export const useMap = ({
@@ -36,6 +42,7 @@ export const useMap = ({
   update,
   routeId,
   routeMapBounds,
+  openFeatureEditDialog,
 }: UseMapProps) => {
   const { state, setSelectedFeatureIds, setPopupFeatureId } = useMapState();
 
@@ -92,16 +99,21 @@ export const useMap = ({
 
       setPopupFeatureId(feature.id);
 
+      const layer = getLayerValuesById(layers, feature.properties.layer);
+
+      if (!layer) return;
+
       // create popup root
       const popupNode = document.createElement('div');
       const popupRoot = createRoot(popupNode);
       popupRoot.render(
         <Popup
-          update={update}
-          layers={layers}
-          activeLayerId={activeLayerId}
+          layerIndex={layers.findIndex(
+            (layer) => layer.databaseId === feature.properties.layer
+          )}
+          layer={layer}
           feature={feature}
-          closePopup={closePopup}
+          openFeatureEditDialog={openFeatureEditDialog}
         />
       );
 
@@ -113,7 +125,7 @@ export const useMap = ({
         .setDOMContent(popupNode)
         .addTo(map.current);
     },
-    [update, layers, activeLayerId, setPopupFeatureId, closePopup]
+    [layers, setPopupFeatureId, closePopup, openFeatureEditDialog]
   );
 
   useOnDrawCreate({
@@ -156,6 +168,7 @@ export const useMap = ({
     map,
     draw,
     openPopup,
+    closePopup,
     setActiveLayerId,
   };
 };

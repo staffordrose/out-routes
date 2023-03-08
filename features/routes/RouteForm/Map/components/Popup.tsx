@@ -6,16 +6,25 @@ import { Box, Flex, Heading, IconButton, Text } from '@/components/atoms';
 import { GeometryTypeNames, SymbolCodes, symbolIcons } from '@/data/routes';
 import { MapFeature } from '@/types';
 import { trimFeatureSymbolCode } from '@/utils';
-import { Area, Distance, Elevation } from '../../../../CommitItemsList';
+import { Area, Distance, Elevation } from '../../../CommitItemsList';
+import { LayerValues } from '../../helpers';
 
-type PopupDetailProps = {
+type PopupProps = {
+  layerIndex: number;
+  layer: LayerValues;
   feature: MapFeature;
-  viewFeatureEdit: () => void;
+  openFeatureEditDialog: (
+    layerIndex: number,
+    layer: LayerValues,
+    feature: MapFeature
+  ) => void;
 };
 
-export const PopupDetail: FC<PopupDetailProps> = ({
+export const Popup: FC<PopupProps> = ({
+  layerIndex,
+  layer,
   feature,
-  viewFeatureEdit,
+  openFeatureEditDialog,
 }) => {
   const { type, coordinates } = feature.geometry;
   const {
@@ -98,10 +107,13 @@ export const PopupDetail: FC<PopupDetailProps> = ({
           <Heading as='h5'>{title || '[Untitled feature]'}</Heading>
         </Flex>
         <IconButton
+          type='button'
           variant='ghost'
           size='xs'
           aria-label='Edit Feature'
-          onClick={viewFeatureEdit}
+          onClick={() => {
+            openFeatureEditDialog(layerIndex, layer, feature);
+          }}
           css={{ flexShrink: 0 }}
         >
           <BiEditAlt />

@@ -8,7 +8,7 @@ import {
 } from 'react-hook-form';
 
 import { styled } from '@/styles';
-import { MapLayer, PopupState } from '@/types';
+import { MapFeature, MapLayer, PopupState } from '@/types';
 import { LayerValues, RouteFormValues } from '../../../../helpers';
 import { LayerDetails } from './LayerDetails';
 import { LayerFeatures } from './LayerFeatures';
@@ -18,8 +18,14 @@ type LayerProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   item: FieldArrayWithId<RouteFormValues, 'layers', 'id'>;
   layerIndex: number;
-  openPopup: (popupState: PopupState) => void;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
+  openPopup: (popupState: PopupState) => void;
+  closePopup: () => void;
+  openFeatureEditDialog: (
+    layerIndex: number,
+    layer: LayerValues,
+    feature: MapFeature
+  ) => void;
   layersWithFeaturesReordering: Set<LayerValues['databaseId']>;
   toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
@@ -29,8 +35,10 @@ export const Layer: FC<LayerProps> = ({
   update,
   item,
   layerIndex,
-  openPopup,
   setActiveLayerId,
+  openPopup,
+  closePopup,
+  openFeatureEditDialog,
   layersWithFeaturesReordering,
   toggleLayerFeaturesReordering,
 }) => {
@@ -69,6 +77,8 @@ export const Layer: FC<LayerProps> = ({
         update={update}
         layerIndex={layerIndex}
         openPopup={openPopup}
+        closePopup={closePopup}
+        openFeatureEditDialog={openFeatureEditDialog}
         isLayerFeaturesReordering={isLayerFeaturesReordering}
       />
     </StyledLayer>

@@ -1,22 +1,14 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import NextImage from 'next/image';
 import { UseFieldArrayUpdate } from 'react-hook-form';
-import * as yup from 'yup';
 
 import { Button, Flex, Text, TruncatedText } from '@/components/atoms';
 import { SelectField, TextField } from '@/components/molecules';
 import { colorSelectOptions } from '@/data/general';
 import { symbolSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
-import { LayerValues, RouteFormValues } from '../../../../helpers';
-
-const yupSchema = yup.object({
-  title: yup.string().max(60, `Can't be longer than 60 characters`),
-  color: yup.string(),
-  symbol: yup.string(),
-});
-
-type Key = 'title' | 'color' | 'symbol';
+import { LayerValues, RouteFormValues } from '../../../../../../helpers';
+import { useLayerEditForm } from './hooks';
 
 type LayerEditProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
@@ -29,90 +21,20 @@ export const LayerEdit: FC<LayerEditProps> = ({
   layerIndex,
   layer,
 }) => {
-  const [status, setStatus] = useState('');
-
-  const [values, setValues] = useState<Record<Key, string>>({
-    title: layer.title,
-    color: layer.color,
-    symbol: layer.symbol,
+  const {
+    status,
+    values,
+    touched,
+    errors,
+    setValues,
+    setTouched,
+    validate,
+    onSubmit,
+  } = useLayerEditForm({
+    update,
+    layerIndex,
+    layer,
   });
-
-  const [touched, setTouched] = useState<Record<Key, boolean>>({
-    title: false,
-    color: false,
-    symbol: false,
-  });
-
-  const [errors, setErrors] = useState<Record<Key, yup.ValidationError | null>>(
-    {
-      title: null,
-      color: null,
-      symbol: null,
-    }
-  );
-
-  const updateValues = (
-    property: Key,
-    value: typeof values.title | typeof values.color | typeof values.symbol
-  ) => {
-    setValues((prev) => ({
-      ...prev,
-      [property]: value,
-    }));
-  };
-
-  const updateTouched = (property: Key, value: boolean) => {
-    setTouched((prev) => ({
-      ...prev,
-      [property]: value,
-    }));
-  };
-
-  const updateErrors = (property: Key, value: yup.ValidationError | null) => {
-    setErrors((prev) => ({
-      ...prev,
-      [property]: value,
-    }));
-  };
-
-  const validate = async () => {
-    for (const value in values) {
-      try {
-        await yupSchema.validateAt(value, values);
-
-        if (errors[value as Key]) {
-          updateErrors(value as Key, null);
-        }
-      } catch (error) {
-        if (error instanceof yup.ValidationError) {
-          updateErrors(value as Key, error);
-        }
-      }
-    }
-  };
-
-  const onSubmit = async () => {
-    try {
-      setStatus('');
-
-      await validate();
-
-      if (Object.values(errors).some((error) => error !== null)) {
-        throw new Error('Something went wrong submitting the form');
-      }
-
-      update(layerIndex, {
-        ...layer,
-        title: values.title,
-        color: values.color,
-        symbol: values.symbol,
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        setStatus(error.message);
-      }
-    }
-  };
 
   return (
     <StyledLayerEdit>
@@ -124,14 +46,13 @@ export const LayerEdit: FC<LayerEditProps> = ({
       <FieldsGrid>
         <TextField
           name='title'
-          label='Name'
-          placeholder='Approach'
+          placeholder='Name'
           value={values.title}
           onChange={(e) => {
-            updateValues('title', e.target.value);
+            setValues('title', e.target.value);
           }}
           onBlur={() => {
-            updateTouched('title', true);
+            setTouched('title', true);
             validate();
           }}
           isTouched={touched.title}
@@ -139,14 +60,13 @@ export const LayerEdit: FC<LayerEditProps> = ({
         />
         <SelectField
           name='color'
-          label='Color'
           placeholder='Color'
           value={values.color}
           onChange={(value) => {
-            updateValues('color', value);
+            setValues('color', value);
           }}
           onBlur={() => {
-            updateTouched('color', true);
+            setTouched('color', true);
             validate();
           }}
           isTouched={touched.color}
@@ -173,14 +93,13 @@ export const LayerEdit: FC<LayerEditProps> = ({
         />
         <SelectField
           name='symbol'
-          label='Symbol'
           placeholder='Symbol'
           value={values.symbol}
           onChange={(value) => {
-            updateValues('symbol', value);
+            setValues('symbol', value);
           }}
           onBlur={() => {
-            updateTouched('symbol', true);
+            setTouched('symbol', true);
             validate();
           }}
           isTouched={touched.symbol}
@@ -223,14 +142,14 @@ export const LayerEdit: FC<LayerEditProps> = ({
 };
 
 const StyledLayerEdit = styled('div', {
-  display: 'grid',
+  display: 'flex',
+  flexDirection: 'column',
   gap: '$4',
   width: '$full',
 });
 
 const StatusWrapper = styled('div', {
   width: '$full',
-  paddingY: '$4',
   textAlign: 'center',
 });
 

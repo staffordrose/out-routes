@@ -6,7 +6,11 @@ import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { MapFeature, MapLayer, PopupState } from '@/types';
 import { getFeatureLngLat } from '@/utils';
 import { RouteFormValues } from '../../helpers';
-import { handleFeatureOnDraw, updateLayerFeature } from '../helpers';
+import {
+  getLayerValuesById,
+  handleFeatureOnDraw,
+  updateLayerFeature,
+} from '../helpers';
 import { MapState } from './useMapState';
 
 type OnDrawUpdateProps = {
@@ -30,6 +34,14 @@ export const useOnDrawUpdate = ({
     async (e: MapboxDraw.DrawUpdateEvent) => {
       if (!activeLayerId) return;
 
+      const activeLayer = getLayerValuesById(layers, activeLayerId);
+
+      if (!activeLayer) return;
+
+      const activeLayerIndex = layers.findIndex(
+        (layer) => layer.databaseId === activeLayerId
+      );
+
       const featuresPromiseArray = e.features
         .filter((feature) => feature?.id)
         .map((feature) => handleFeatureOnDraw(feature as MapFeature));
@@ -37,7 +49,7 @@ export const useOnDrawUpdate = ({
       const features: MapFeature[] = await Promise.all(featuresPromiseArray);
 
       features.forEach((feature) => {
-        updateLayerFeature(update, layers, activeLayerId, feature);
+        updateLayerFeature(update, activeLayerIndex, activeLayer, feature);
       });
 
       if (

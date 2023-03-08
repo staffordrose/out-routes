@@ -5,7 +5,7 @@ import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { MapFeature } from '@/types';
 import { RouteFormValues } from '../../helpers';
-import { deleteLayerFeature } from '../helpers';
+import { deleteLayerFeature, getLayerValuesById } from '../helpers';
 
 type OnDrawDeleteProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
@@ -33,7 +33,15 @@ export const useOnDrawDelete = ({
 
         if (!layerId) return;
 
-        deleteLayerFeature(update, layers, layerId, feature as MapFeature);
+        const layer = getLayerValuesById(layers, layerId);
+
+        if (!layer) return;
+
+        const layerIndex = layers.findIndex(
+          (layer) => layer.databaseId === layerId
+        );
+
+        deleteLayerFeature(update, layerIndex, layer, feature as MapFeature);
       });
     },
     [update, layers, closePopup]

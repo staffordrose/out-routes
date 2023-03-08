@@ -24,7 +24,7 @@ import {
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapLayer } from '@/types';
-import { LayerValues, RouteFormValues } from '../../../../helpers';
+import { LayerValues, RouteFormValues } from '../../../../../helpers';
 import { LayerEdit } from './LayerEdit';
 
 type LayerDetailsProps = {
@@ -112,7 +112,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
             <IconButton
               type='button'
               variant='ghost'
-              size='xs'
+              size='sm'
               onClick={() => {
                 toggleLayerFeaturesReordering(layer.databaseId);
               }}
@@ -124,7 +124,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
               items={[
                 <DropdownMenu.Item
                   key='edit-layer'
-                  size='xs'
+                  size='sm'
                   aria-label='Open modal to edit the section'
                   onSelect={() => setEditDialogOpen(!isEditDialogOpen)}
                 >
@@ -133,7 +133,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                 </DropdownMenu.Item>,
                 <DropdownMenu.Item
                   key='reorder-features'
-                  size='xs'
+                  size='sm'
                   onSelect={() => {
                     toggleLayerFeaturesReordering(layer.databaseId);
                   }}
@@ -144,7 +144,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                 <DropdownMenu.Separator key='delete-separator' />,
                 <DropdownMenu.Item
                   key='delete-layer'
-                  size='xs'
+                  size='sm'
                   colorScheme='red'
                   aria-label='Open modal to delete the section'
                   onSelect={() => setDeleteDialogOpen(!isDeleteDialogOpen)}
@@ -154,7 +154,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                 </DropdownMenu.Item>,
               ]}
             >
-              <IconButton type='button' variant='ghost' size='xs'>
+              <IconButton type='button' variant='ghost' size='sm'>
                 <BiDotsVerticalRounded />
               </IconButton>
             </DropdownMenu>

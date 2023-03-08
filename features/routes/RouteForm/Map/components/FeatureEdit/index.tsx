@@ -1,182 +1,69 @@
 import { FC, useState } from 'react';
 import NextImage from 'next/image';
 import { UseFieldArrayUpdate } from 'react-hook-form';
-import * as yup from 'yup';
 import { nanoid } from 'nanoid';
-import { BiX } from 'react-icons/bi';
 
-import {
-  Button,
-  Flex,
-  IconButton,
-  Text,
-  TruncatedText,
-} from '@/components/atoms';
+import { Button, Flex, Text, TruncatedText } from '@/components/atoms';
 import { SelectField, TextareaField, TextField } from '@/components/molecules';
 import { colorSelectOptions } from '@/data/general';
 import { GeometryTypeNames, symbolSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
-import { MapFeature, MapLayer } from '@/types';
-import { trimFeatureSymbolCode } from '@/utils';
-import { RouteFormValues } from '../../../helpers';
-import { updateLayerFeature } from '../../helpers';
+import { MapFeature, PopupState } from '@/types';
+import { LayerValues, RouteFormValues } from '../../../helpers';
+import { UseFeatureEditForm } from './hooks';
 
-const yupSchema = yup.object({
-  title: yup.string().max(60, `Can't be longer than 60 characters`),
-  color: yup.string().nullable(),
-  symbol: yup.string().nullable(),
-  description: yup.string().max(280, `Can't be longer than 280 characters`),
-});
-
-type Key = 'title' | 'color' | 'symbol' | 'description';
-
-type PopupEditProps = {
+type FeatureEditProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
-  layers: RouteFormValues['layers'];
-  activeLayerId: MapLayer['id'] | null;
+  layerIndex: number;
+  layer: LayerValues;
   feature: MapFeature;
-  viewFeatureDetail: () => void;
-  closePopup: () => void;
+  openPopup: (popupState: PopupState) => void;
+  closeFeatureEditDialog: () => void;
 };
 
-export const PopupEdit: FC<PopupEditProps> = ({
+export const FeatureEdit: FC<FeatureEditProps> = ({
   update,
-  layers,
-  activeLayerId,
+  layerIndex,
+  layer,
   feature,
-  viewFeatureDetail,
-  closePopup,
+  openPopup,
+  closeFeatureEditDialog,
 }) => {
-  const [status, setStatus] = useState('');
+  const {
+    status,
+    values,
+    touched,
+    errors,
+    updateValues,
+    updateTouched,
+    validate,
+    onSubmit,
+  } = UseFeatureEditForm({
+    update,
+    layerIndex,
+    layer,
+    feature,
+    openPopup,
+    closeFeatureEditDialog,
+  });
 
   // key is changed when user removes selection
   const [colorKey, setColorKey] = useState(nanoid());
   const [symbolKey, setSymbolKey] = useState(nanoid());
 
-  const [values, setValues] = useState<Record<Key, string | undefined>>({
-    title: feature.properties.title || '',
-    color: feature.properties.color || undefined,
-    symbol: trimFeatureSymbolCode(feature.properties.symbol) || undefined,
-    description: feature.properties.description || '',
-  });
-
-  const [touched, setTouched] = useState<Record<Key, boolean>>({
-    title: false,
-    color: false,
-    symbol: false,
-    description: false,
-  });
-
-  const [errors, setErrors] = useState<Record<Key, yup.ValidationError | null>>(
-    {
-      title: null,
-      color: null,
-      symbol: null,
-      description: null,
-    }
-  );
-
-  const updateValues = (
-    property: Key,
-    value:
-      | typeof values.title
-      | typeof values.color
-      | typeof values.symbol
-      | typeof values.description
-  ) => {
-    setValues((prev) => ({
-      ...prev,
-      [property]: value,
-    }));
-  };
-
-  const updateTouched = (property: Key, value: boolean) => {
-    setTouched((prev) => ({
-      ...prev,
-      [property]: value,
-    }));
-  };
-
-  const updateErrors = (property: Key, value: yup.ValidationError | null) => {
-    setErrors((prev) => ({
-      ...prev,
-      [property]: value,
-    }));
-  };
-
-  const validate = async () => {
-    for (const value in values) {
-      try {
-        await yupSchema.validateAt(value, values);
-
-        if (errors[value as Key]) {
-          updateErrors(value as Key, null);
-        }
-      } catch (error) {
-        if (error instanceof yup.ValidationError) {
-          updateErrors(value as Key, error);
-        }
-      }
-    }
-  };
-
-  const onSubmit = async () => {
-    try {
-      setStatus('');
-
-      await validate();
-
-      if (Object.values(errors).some((error) => error !== null)) {
-        throw new Error('Something went wrong submitting the form');
-      }
-
-      updateLayerFeature(update, layers, activeLayerId, {
-        ...feature,
-        properties: {
-          ...feature.properties,
-          title: values.title,
-          color: values.color,
-          symbol: values.symbol,
-          description: values.description,
-        },
-      });
-
-      closePopup();
-    } catch (error) {
-      if (error instanceof Error) {
-        setStatus(error.message);
-      }
-    }
-  };
+  if (!feature.id) {
+    return null;
+  }
 
   return (
-    <FauxForm>
+    <StyledFeatureEdit>
       <Flex direction='column' gap='sm' width='full'>
-        <Flex
-          gap='sm'
-          justifyContent='space-between'
-          alignItems='center'
-          width='full'
-        >
-          <h5>{values.title || '[Untitled feature]'}</h5>
-          <IconButton
-            variant='ghost'
-            size='xs'
-            aria-label='Go back to feature detail'
-            onClick={viewFeatureDetail}
-            css={{ flexShrink: 0 }}
-          >
-            <BiX />
-          </IconButton>
-        </Flex>
-
         {!!status && (
           <StatusWrapper>
             <Text color='red-700'>{status}</Text>
           </StatusWrapper>
         )}
-
-        <Flex direction='column' gap='xs' width='full'>
+        <FieldsGrid>
           <TextField
             name='title'
             placeholder='Name'
@@ -284,6 +171,7 @@ export const PopupEdit: FC<PopupEditProps> = ({
             />
           )}
           <TextareaField
+            rows={4}
             name='description'
             placeholder='Description'
             value={values.description}
@@ -297,34 +185,39 @@ export const PopupEdit: FC<PopupEditProps> = ({
             isTouched={touched.description}
             error={errors.description?.message}
           />
-        </Flex>
+        </FieldsGrid>
       </Flex>
-      <Button
-        type='button' // prevent early submission of RouteForm
-        variant='solid'
-        aria-label='Update feature properties'
-        onClick={onSubmit}
-      >
-        Update
-      </Button>
-    </FauxForm>
+      <Flex justifyContent='end' width='full'>
+        <Button
+          type='button' // prevent early submission of RouteForm
+          variant='solid'
+          size='lg'
+          aria-label='Update feature properties'
+          onClick={onSubmit}
+        >
+          Update
+        </Button>
+      </Flex>
+    </StyledFeatureEdit>
   );
 };
 
-const FauxForm = styled('div', {
+const StyledFeatureEdit = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '$1',
-  justifyContent: 'space-between',
+  gap: '$4',
   width: 'full',
-  height: 'full',
-  minHeight: 236,
 });
 
 const StatusWrapper = styled('div', {
   width: '$full',
-  paddingY: '$4',
   textAlign: 'center',
+});
+
+const FieldsGrid = styled('div', {
+  display: 'grid',
+  gap: '$2',
+  width: '$full',
 });
 
 const ColorLabel = styled('div', {
