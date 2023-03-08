@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import {
   FieldArrayWithId,
+  UseFieldArrayMove,
   UseFieldArrayRemove,
   UseFieldArrayUpdate,
   useFormContext,
@@ -14,9 +15,11 @@ import { LayerDetails } from './LayerDetails';
 import { LayerFeatures } from './LayerFeatures';
 
 type LayerProps = {
+  move: UseFieldArrayMove;
   remove: UseFieldArrayRemove;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   item: FieldArrayWithId<RouteFormValues, 'layers', 'id'>;
+  layersCount: number;
   layerIndex: number;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
   openPopup: (popupState: PopupState) => void;
@@ -31,9 +34,11 @@ type LayerProps = {
 };
 
 export const Layer: FC<LayerProps> = ({
+  move,
   remove,
   update,
   item,
+  layersCount,
   layerIndex,
   setActiveLayerId,
   openPopup,
@@ -66,9 +71,11 @@ export const Layer: FC<LayerProps> = ({
       }}
     >
       <LayerDetails
-        update={update}
+        move={move}
         remove={remove}
+        update={update}
         setActiveLayerId={setActiveLayerId}
+        layersCount={layersCount}
         layerIndex={layerIndex}
         isLayerFeaturesReordering={isLayerFeaturesReordering}
         toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}

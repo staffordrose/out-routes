@@ -49,7 +49,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
     setFeatureDialogOpen(false);
   };
 
-  const { fields, append, remove, update } = useFieldArray({
+  const { fields, append, move, remove, update } = useFieldArray({
     control,
     name: 'layers',
   });
@@ -93,6 +93,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
         <MapLayersFeatures
           fields={fields}
           append={append}
+          move={move}
           remove={remove}
           update={update}
           openPopup={openPopup}

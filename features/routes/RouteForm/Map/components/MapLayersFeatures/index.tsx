@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import {
   FieldArrayWithId,
   UseFieldArrayAppend,
+  UseFieldArrayMove,
   UseFieldArrayRemove,
   UseFieldArrayUpdate,
 } from 'react-hook-form';
@@ -29,6 +30,7 @@ import { Layer } from './Layer';
 type MapLayersFeaturesProps = {
   fields: FieldArrayWithId<RouteFormValues, 'layers', 'id'>[];
   append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
+  move: UseFieldArrayMove;
   remove: UseFieldArrayRemove;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
@@ -44,6 +46,7 @@ type MapLayersFeaturesProps = {
 export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   fields,
   append,
+  move,
   remove,
   update,
   setActiveLayerId,
@@ -77,9 +80,11 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
           return (
             <Layer
               key={item.id}
+              move={move}
               remove={remove}
               update={update}
               item={item}
+              layersCount={fields.length}
               layerIndex={index}
               setActiveLayerId={setActiveLayerId}
               openPopup={openPopup}

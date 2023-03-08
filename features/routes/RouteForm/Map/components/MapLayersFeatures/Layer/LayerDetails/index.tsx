@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import {
+  UseFieldArrayMove,
   UseFieldArrayRemove,
   UseFieldArrayUpdate,
   useFormContext,
@@ -8,9 +9,11 @@ import {
 import {
   BiCheck,
   BiDotsVerticalRounded,
+  BiDownArrowAlt,
   BiEditAlt,
   BiSortAlt2,
   BiTrash,
+  BiUpArrowAlt,
 } from 'react-icons/bi';
 
 import {
@@ -28,18 +31,22 @@ import { LayerValues, RouteFormValues } from '../../../../../helpers';
 import { LayerEdit } from './LayerEdit';
 
 type LayerDetailsProps = {
-  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  move: UseFieldArrayMove;
   remove: UseFieldArrayRemove;
+  update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
+  layersCount: number;
   layerIndex: number;
   isLayerFeaturesReordering: boolean;
   toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
 
 export const LayerDetails: FC<LayerDetailsProps> = ({
-  update,
+  move,
   remove,
+  update,
   setActiveLayerId,
+  layersCount,
   layerIndex,
   isLayerFeaturesReordering,
   toggleLayerFeaturesReordering,
@@ -135,6 +142,28 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                 >
                   <BiEditAlt />
                   <span>Edit Section</span>
+                </DropdownMenu.Item>,
+                <DropdownMenu.Item
+                  key='move-layer-up'
+                  size='sm'
+                  disabled={layerIndex === 0}
+                  onSelect={() => {
+                    move(layerIndex, layerIndex - 1);
+                  }}
+                >
+                  <BiUpArrowAlt />
+                  <span>Move Up</span>
+                </DropdownMenu.Item>,
+                <DropdownMenu.Item
+                  key='move-layer-down'
+                  size='sm'
+                  disabled={layerIndex === layersCount - 1}
+                  onSelect={() => {
+                    move(layerIndex, layerIndex + 1);
+                  }}
+                >
+                  <BiDownArrowAlt />
+                  <span>Move Down</span>
                 </DropdownMenu.Item>,
                 <DropdownMenu.Item
                   key='reorder-features'
