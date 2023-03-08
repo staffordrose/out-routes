@@ -51,6 +51,9 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
     name: `layers.${layerIndex}`,
   });
 
+  const featuresLength =
+    (Array.isArray(layer.features) && layer.features.length) || 0;
+
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -76,7 +79,9 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
         body={
           <Flex direction='column' gap='md'>
             <p>
-              Are you sure you want to delete this section and its features?
+              This section has {featuresLength || ''} feature
+              {featuresLength === 1 ? '' : 's'}. Are you sure you want to delete
+              it?
             </p>
             <Flex justifyContent='end'>
               <Button
@@ -147,7 +152,18 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                   size='sm'
                   colorScheme='red'
                   aria-label='Open modal to delete the section'
-                  onSelect={() => setDeleteDialogOpen(!isDeleteDialogOpen)}
+                  onSelect={() => {
+                    // if layer has features, open dialog, otherwise delete
+                    if (
+                      Array.isArray(layer.features) &&
+                      layer.features.length
+                    ) {
+                      setDeleteDialogOpen(!isDeleteDialogOpen);
+                    } else {
+                      remove(layerIndex);
+                      setActiveLayerId(null);
+                    }
+                  }}
                 >
                   <BiTrash />
                   <span>Delete Section</span>
