@@ -77,6 +77,7 @@ export const Layer: FC<LayerProps> = ({
         setActiveLayerId={setActiveLayerId}
         layersCount={layersCount}
         layerIndex={layerIndex}
+        closePopup={closePopup}
         isLayerFeaturesReordering={isLayerFeaturesReordering}
         toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}
       />

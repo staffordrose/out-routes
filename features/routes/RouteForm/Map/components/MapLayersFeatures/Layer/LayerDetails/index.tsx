@@ -37,6 +37,7 @@ type LayerDetailsProps = {
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
   layersCount: number;
   layerIndex: number;
+  closePopup: () => void;
   isLayerFeaturesReordering: boolean;
   toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
@@ -48,6 +49,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
   setActiveLayerId,
   layersCount,
   layerIndex,
+  closePopup,
   isLayerFeaturesReordering,
   toggleLayerFeaturesReordering,
 }) => {
@@ -100,6 +102,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
 
                   remove(layerIndex);
                   setActiveLayerId(null);
+                  closePopup();
                 }}
               >
                 Yes, Delete It
