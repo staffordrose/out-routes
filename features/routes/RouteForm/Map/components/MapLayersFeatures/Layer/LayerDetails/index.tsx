@@ -139,6 +139,9 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                 <DropdownMenu.Item
                   key='reorder-features'
                   size='sm'
+                  disabled={
+                    !Array.isArray(layer.features) || !layer.features.length
+                  }
                   onSelect={() => {
                     toggleLayerFeaturesReordering(layer.databaseId);
                   }}
