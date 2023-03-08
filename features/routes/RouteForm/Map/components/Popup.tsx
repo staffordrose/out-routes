@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { Position } from 'geojson';
 import { BiEditAlt, BiShapePolygon, BiShareAlt } from 'react-icons/bi';
 
-import { Box, Flex, Heading, IconButton, Text } from '@/components/atoms';
+import { Heading, IconButton, TruncatedText } from '@/components/atoms';
 import { GeometryTypeNames, SymbolCodes, symbolIcons } from '@/data/routes';
+import { styled } from '@/styles';
 import { MapFeature } from '@/types';
 import { trimFeatureSymbolCode } from '@/utils';
 import { Area, Distance, Elevation } from '../../../CommitItemsList';
@@ -44,8 +45,7 @@ export const Popup: FC<PopupProps> = ({
     if (type === GeometryTypeNames.Point) {
       return (
         <>
-          <Lat coordinates={coordinates} />
-          <Lng coordinates={coordinates} />
+          <Coordinates coordinates={coordinates} />
           <EleStartItem combined ele={ele_start} />
           <Description description={description} />
         </>
@@ -81,31 +81,18 @@ export const Popup: FC<PopupProps> = ({
         ];
 
   return (
-    <>
-      <Flex
-        gap='sm'
-        justifyContent='space-between'
-        alignItems='center'
-        width='full'
-        marginBottom='sm'
-      >
-        <Flex gap='xs' placeItems='center'>
-          <Box
-            css={{
-              '& > svg': {
-                width: '$5',
-                height: '$5',
-              },
+    <StyledPopup>
+      <div>
+        <div>
+          <SymbolIcon
+            style={{
+              fill: color || layerColor || undefined,
             }}
-          >
-            <SymbolIcon
-              style={{
-                fill: color || layerColor || undefined,
-              }}
-            />
-          </Box>
-          <Heading as='h5'>{title || '[Untitled feature]'}</Heading>
-        </Flex>
+          />
+          <TruncatedText as='h5' lineClamp={2}>
+            {title || '[Untitled feature]'}
+          </TruncatedText>
+        </div>
         <IconButton
           type='button'
           variant='ghost'
@@ -118,26 +105,62 @@ export const Popup: FC<PopupProps> = ({
         >
           <BiEditAlt />
         </IconButton>
-      </Flex>
-      {renderResult()}
-    </>
+      </div>
+      <div>{renderResult()}</div>
+    </StyledPopup>
   );
 };
 
-const Lat: FC<{ coordinates: Position }> = ({ coordinates }) => {
-  return (
-    <>
-      <Text fontWeight='medium'>Latitude</Text>
-      <span>{coordinates[1]}</span>
-    </>
-  );
-};
+const StyledPopup = styled('div', {
+  '& > div:first-child': {
+    position: 'sticky',
+    top: 0,
+    left: 0,
+    display: 'flex',
+    gap: '$2',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: 'full',
+    height: '$12',
+    padding: '$2',
+    borderBottomWidth: '$1',
+    borderBottomStyle: 'solid',
+    borderBottomColor: '$slate-300',
+    backgroundColor: '$white',
+    '& > div': {
+      display: 'flex',
+      gap: '$1',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      width: '$full',
+      minHeight: '$7',
+      paddingY: '$1',
+      '& > svg': {
+        flexShrink: 0,
+        width: '$6',
+        height: '$6',
+      },
+    },
+  },
+  '& > div:last-child': {
+    overflowY: 'auto',
+    height: 'calc($52 - $12)',
+    padding: '$2',
+  },
+  '@md': {
+    '& > div:last-child': {
+      height: 'calc($64 - $12)',
+    },
+  },
+});
 
-const Lng: FC<{ coordinates: Position }> = ({ coordinates }) => {
+const Coordinates: FC<{ coordinates: Position }> = ({ coordinates }) => {
   return (
     <>
-      <Text fontWeight='medium'>Longitude</Text>
-      <span>{coordinates[0]}</span>
+      <Heading as='h6'>Coordinates</Heading>
+      <span>
+        {coordinates[1]}, {coordinates[0]}
+      </span>
     </>
   );
 };
@@ -148,8 +171,12 @@ const EleStartItem: FC<{ combined?: boolean; ele?: number | null }> = ({
 }) => {
   return (
     <>
-      <Text fontWeight='medium'>{!combined ? `Start ` : ``}Elevation</Text>
-      <Elevation {...props} />
+      <Heading as='h6'>{!combined ? `Start ` : ``}Elevation</Heading>
+      {typeof props.ele === 'number' ? (
+        <Elevation {...props} />
+      ) : (
+        <PlaceholderText>[No elevation]</PlaceholderText>
+      )}
     </>
   );
 };
@@ -157,8 +184,12 @@ const EleStartItem: FC<{ combined?: boolean; ele?: number | null }> = ({
 const EleEndItem: typeof Elevation = (props) => {
   return (
     <>
-      <Text fontWeight='medium'>End Elevation</Text>
-      <Elevation {...props} />
+      <Heading as='h6'>End Elevation</Heading>
+      {typeof props.ele === 'number' ? (
+        <Elevation {...props} />
+      ) : (
+        <PlaceholderText>[No elevation]</PlaceholderText>
+      )}
     </>
   );
 };
@@ -166,7 +197,7 @@ const EleEndItem: typeof Elevation = (props) => {
 const DistanceItem: typeof Distance = (props) => {
   return (
     <>
-      <Text fontWeight='medium'>Distance</Text>
+      <Heading as='h6'>Distance</Heading>
       <Distance {...props} />
     </>
   );
@@ -175,7 +206,7 @@ const DistanceItem: typeof Distance = (props) => {
 const AreaItem: typeof Area = (props) => {
   return (
     <>
-      <Text fontWeight='medium'>Area</Text>
+      <Heading as='h6'>Area</Heading>
       <Area {...props} />
     </>
   );
@@ -184,8 +215,16 @@ const AreaItem: typeof Area = (props) => {
 const Description: FC<{ description?: string }> = ({ description }) => {
   return (
     <>
-      <Text fontWeight='medium'>Description</Text>
-      <span>{description || '[No description]'}</span>
+      <Heading as='h6'>Description</Heading>
+      {description ? (
+        <span>{description}</span>
+      ) : (
+        <PlaceholderText>[No description]</PlaceholderText>
+      )}
     </>
   );
 };
+
+const PlaceholderText = styled('span', {
+  color: '$slate-500',
+});

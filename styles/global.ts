@@ -79,11 +79,9 @@ export const globalStyles = globalCss({
     width: '$full',
   },
   '.mapboxgl-popup-content': {
-    overflowY: 'auto',
+    overflow: 'hidden',
     width: '$full',
-    minHeight: 254,
-    maxHeight: 320,
-    padding: '$2',
+    padding: 0,
     borderWidth: '$1',
     borderStyle: 'solid',
     borderColor: '$slate-300',
