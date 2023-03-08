@@ -288,17 +288,15 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
     <DropdownMenuComp
       sideOffset={-4}
       items={[
-        <DropdownMenuComp.Header key='header'>
-          <Flex gap='sm' alignItems='center'>
-            <Avatar
-              size='xs'
-              src={user.image_thumb_32 || ''}
-              firstName={user.name?.split(' ')[0] || ''}
-              lastName={user.name?.split(' ')[1] || ''}
-            />
-            <span>{email}</span>
-          </Flex>
-        </DropdownMenuComp.Header>,
+        <DropdownHeader key='header'>
+          <Avatar
+            size='xs'
+            src={user.image_thumb_32 || ''}
+            firstName={user.name?.split(' ')[0] || ''}
+            lastName={user.name?.split(' ')[1] || ''}
+          />
+          <span>{email}</span>
+        </DropdownHeader>,
         <DropdownMenuComp.Separator key='separator-1' />,
         <DropdownMenuComp.Item
           key='explore'
@@ -369,3 +367,12 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
     </DropdownMenuComp>
   );
 };
+
+const DropdownHeader = styled(DropdownMenuComp.Header, {
+  display: 'flex',
+  gap: '$2',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  minHeight: '$12',
+  paddingX: '$2_5',
+});
