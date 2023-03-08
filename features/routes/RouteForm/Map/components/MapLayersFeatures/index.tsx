@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, MutableRefObject, useState } from 'react';
 import {
   FieldArrayWithId,
   UseFieldArrayAppend,
@@ -6,6 +6,7 @@ import {
   UseFieldArrayRemove,
   UseFieldArrayUpdate,
 } from 'react-hook-form';
+import type { Map } from 'mapbox-gl';
 import { BiImport, BiPlus } from 'react-icons/bi';
 
 import { Button, Dialog, Dropzone, List } from '@/components/atoms';
@@ -33,6 +34,7 @@ type MapLayersFeaturesProps = {
   move: UseFieldArrayMove;
   remove: UseFieldArrayRemove;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  map: MutableRefObject<Map | undefined>;
   setActiveLayerId: (id: MapLayer['id'] | null) => void;
   openPopup: (popupState: PopupState) => void;
   closePopup: () => void;
@@ -49,6 +51,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   move,
   remove,
   update,
+  map,
   setActiveLayerId,
   openPopup,
   closePopup,
@@ -83,6 +86,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
               move={move}
               remove={remove}
               update={update}
+              map={map}
               item={item}
               layersCount={fields.length}
               layerIndex={index}

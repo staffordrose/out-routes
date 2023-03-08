@@ -1,5 +1,6 @@
-import { FC, useRef } from 'react';
+import { FC, MutableRefObject, useRef } from 'react';
 import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
+import type { Map } from 'mapbox-gl';
 import { BiShapePolygon } from 'react-icons/bi';
 
 import { Feedback } from '@/components/layout';
@@ -10,6 +11,7 @@ import { Feature } from './Feature';
 
 type LayerFeaturesProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  map: MutableRefObject<Map | undefined>;
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
   closePopup: () => void;
@@ -23,6 +25,7 @@ type LayerFeaturesProps = {
 
 export const LayerFeatures: FC<LayerFeaturesProps> = ({
   update,
+  map,
   layerIndex,
   openPopup,
   closePopup,
@@ -75,6 +78,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
             <Feature
               key={feature.databaseId}
               update={update}
+              map={map}
               layerIndex={layerIndex}
               layer={layer}
               containerRef={containerRef}

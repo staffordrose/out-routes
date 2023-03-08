@@ -1,5 +1,6 @@
 import { FC, MutableRefObject, useEffect, useMemo, useRef } from 'react';
 import { UseFieldArrayUpdate } from 'react-hook-form';
+import type { Map } from 'mapbox-gl';
 import {
   BiDotsVerticalRounded,
   BiEditAlt,
@@ -12,10 +13,15 @@ import { gsap } from 'gsap';
 import Draggable from 'gsap/dist/Draggable';
 
 import { Button, DropdownMenu, IconButton } from '@/components/atoms';
-import { GeometryTypes, SymbolCodes, symbolIcons } from '@/data/routes';
+import {
+  GeometryTypeNames,
+  GeometryTypes,
+  SymbolCodes,
+  symbolIcons,
+} from '@/data/routes';
 import { styled } from '@/styles';
-import { MapFeature, PopupState } from '@/types';
-import { getFeatureLngLat } from '@/utils';
+import { LngLat, MapFeature, PopupState } from '@/types';
+import { getFeatureLngLat, getMapBoundsFromCoordinates } from '@/utils';
 import {
   FeatureValues,
   LayerValues,
@@ -30,6 +36,7 @@ if (typeof window !== 'undefined') {
 
 type FeatureProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  map: MutableRefObject<Map | undefined>;
   layerIndex: number;
   layer: LayerValues;
   containerRef: MutableRefObject<HTMLDivElement | null>;
@@ -50,6 +57,7 @@ type FeatureProps = {
 
 export const Feature: FC<FeatureProps> = ({
   update,
+  map,
   layerIndex,
   layer,
   containerRef,
@@ -167,10 +175,32 @@ export const Feature: FC<FeatureProps> = ({
         variant='ghost'
         size='xs'
         onClick={() => {
+          const center = getFeatureLngLat(mapFeature);
+
           openPopup({
-            center: getFeatureLngLat(mapFeature),
+            center,
             feature: mapFeature,
           });
+
+          if (
+            mapFeature.geometry.type === GeometryTypeNames.Polygon ||
+            mapFeature.geometry.type === GeometryTypeNames.LineString
+          ) {
+            const mapBounds = getMapBoundsFromCoordinates(
+              (mapFeature.geometry.type === GeometryTypeNames.Polygon
+                ? mapFeature.geometry.coordinates[0]
+                : mapFeature.geometry.coordinates) as LngLat[]
+            );
+
+            if (mapBounds) {
+              map.current?.fitBounds(mapBounds, {
+                padding: 48,
+              });
+            }
+          } else {
+            // fly to point
+            map.current?.flyTo({ center, zoom: 14 });
+          }
         }}
       >
         <SymbolIcon

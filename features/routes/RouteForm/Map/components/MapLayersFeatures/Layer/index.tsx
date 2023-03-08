@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MutableRefObject } from 'react';
 import {
   FieldArrayWithId,
   UseFieldArrayMove,
@@ -7,6 +7,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
+import type { Map } from 'mapbox-gl';
 
 import { styled } from '@/styles';
 import { MapFeature, MapLayer, PopupState } from '@/types';
@@ -18,6 +19,7 @@ type LayerProps = {
   move: UseFieldArrayMove;
   remove: UseFieldArrayRemove;
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
+  map: MutableRefObject<Map | undefined>;
   item: FieldArrayWithId<RouteFormValues, 'layers', 'id'>;
   layersCount: number;
   layerIndex: number;
@@ -37,6 +39,7 @@ export const Layer: FC<LayerProps> = ({
   move,
   remove,
   update,
+  map,
   item,
   layersCount,
   layerIndex,
@@ -83,6 +86,7 @@ export const Layer: FC<LayerProps> = ({
       />
       <LayerFeatures
         update={update}
+        map={map}
         layerIndex={layerIndex}
         openPopup={openPopup}
         closePopup={closePopup}

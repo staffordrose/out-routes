@@ -1,20 +1,32 @@
-import { FC } from 'react';
+import { FC, MutableRefObject } from 'react';
+import type { Map } from 'mapbox-gl';
 import { BiShapePolygon, BiShareAlt } from 'react-icons/bi';
 
 import { Button } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
-import { GeometryTypes, SymbolCodes, symbolIcons } from '@/data/routes';
+import {
+  GeometryTypeNames,
+  GeometryTypes,
+  SymbolCodes,
+  symbolIcons,
+} from '@/data/routes';
 import { styled } from '@/styles';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
-import { getFeatureLngLat, mapFeatureRecordToMapFeature } from '@/utils';
+import { LngLat, PopupState, RouteFeature, RouteLayer } from '@/types';
+import {
+  getFeatureLngLat,
+  getMapBoundsFromCoordinates,
+  mapFeatureRecordToMapFeature,
+} from '@/utils';
 
 type LayerFeaturesProps = {
+  map: MutableRefObject<Map | undefined>;
   layer: RouteLayer;
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
 };
 
 export const LayerFeatures: FC<LayerFeaturesProps> = ({
+  map,
   layer,
   features,
   openPopup,
@@ -33,6 +45,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
       </Feedback>
     );
   }
+
   return (
     <StyledLayerFeatures>
       {features.map((feature) => {
@@ -46,12 +59,34 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
               symbol,
             }}
             feature={feature}
-            onClick={() =>
+            onClick={() => {
+              const center = getFeatureLngLat(mapFeature);
+
               openPopup({
-                center: getFeatureLngLat(mapFeature),
+                center,
                 feature: mapFeature,
-              })
-            }
+              });
+
+              if (
+                mapFeature.geometry.type === GeometryTypeNames.Polygon ||
+                mapFeature.geometry.type === GeometryTypeNames.LineString
+              ) {
+                const mapBounds = getMapBoundsFromCoordinates(
+                  (mapFeature.geometry.type === GeometryTypeNames.Polygon
+                    ? mapFeature.geometry.coordinates[0]
+                    : mapFeature.geometry.coordinates) as LngLat[]
+                );
+
+                if (mapBounds) {
+                  map.current?.fitBounds(mapBounds, {
+                    padding: 48,
+                  });
+                }
+              } else {
+                // fly to point
+                map.current?.flyTo({ center, zoom: 14 });
+              }
+            }}
           />
         );
       })}

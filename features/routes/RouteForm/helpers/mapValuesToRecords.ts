@@ -2,7 +2,8 @@ import { GeometryTypes } from '@/data/routes';
 import { Route, RouteFeature, RouteLayer } from '@/types';
 import {
   createAlphaNumericId,
-  getMapBoundsFromMapLayers,
+  getAllCoordinatesFromMapLayers,
+  getMapBoundsFromCoordinates,
   getMapEndLngLatEle,
   getMapStartLngLatEle,
 } from '@/utils';
@@ -42,7 +43,8 @@ export const mapValuesToRecords = (
       mapLayerValuesToMapLayer(layerIndex, layer)
     );
 
-    const mapBounds = getMapBoundsFromMapLayers(mapLayers);
+    const coordinates = getAllCoordinatesFromMapLayers(mapLayers);
+    const mapBounds = getMapBoundsFromCoordinates(coordinates);
 
     const {
       lng: mapStartLng,

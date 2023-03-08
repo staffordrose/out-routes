@@ -13,7 +13,7 @@ type RouteMapProps = {
 };
 
 export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
-  const { mapContainerEl, openPopup } = useMap({
+  const { mapContainerEl, map, openPopup } = useMap({
     mapBounds: route.map_bounding_box
       ? parseMapBounds(route.map_bounding_box)
       : null,
@@ -25,6 +25,7 @@ export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
     <StyledMap>
       <div ref={mapContainerEl} />
       <MapLayersFeatures
+        map={map}
         layers={layers}
         features={features}
         openPopup={openPopup}

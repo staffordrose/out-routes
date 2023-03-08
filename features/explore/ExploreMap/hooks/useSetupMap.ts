@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce';
 
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
-import { getMapBounds, shallowPush } from '@/utils';
+import { getCurrentMapBounds, shallowPush } from '@/utils';
 import { MapState, MapStateActions } from './useMapState';
 
 type UseSetupMapProps = {
@@ -104,7 +104,7 @@ export const useSetupMap = ({
   const onMoveZoomEnd = useCallback(() => {
     if (!map.current) return;
 
-    const bounds = getMapBounds(map);
+    const bounds = getCurrentMapBounds(map);
 
     shallowPush(
       router,

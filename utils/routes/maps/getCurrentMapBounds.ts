@@ -3,10 +3,10 @@ import type { LngLatBoundsLike, Map } from 'mapbox-gl';
 
 import { roundToDecimalCount } from '../../arithmetic';
 
-export const getMapBounds = (
-  mapRef: MutableRefObject<Map | undefined>
+export const getCurrentMapBounds = (
+  map: MutableRefObject<Map | undefined>
 ): LngLatBoundsLike | null => {
-  const bounds = mapRef.current?.getBounds();
+  const bounds = map.current?.getBounds();
   const arr = bounds?.toArray();
 
   if (!Array.isArray(arr)) return null;

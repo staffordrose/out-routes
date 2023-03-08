@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, MutableRefObject } from 'react';
+import type { Map } from 'mapbox-gl';
 
 import { TruncatedText } from '@/components/atoms';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
@@ -7,12 +8,13 @@ import { PopupState, RouteFeature, RouteLayer } from '@/types';
 import { LayerFeatures } from './LayerFeatures';
 
 type LayerProps = {
+  map: MutableRefObject<Map | undefined>;
   layer: RouteLayer;
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
 };
 
-export const Layer: FC<LayerProps> = ({ layer, features, openPopup }) => {
+export const Layer: FC<LayerProps> = ({ map, layer, features, openPopup }) => {
   const { title, color, symbol } = layer;
 
   const SymbolIcon = symbolIcons[(symbol || SymbolCodes.Marker) as SymbolCodes];
@@ -29,7 +31,12 @@ export const Layer: FC<LayerProps> = ({ layer, features, openPopup }) => {
           {title || '[Untitled section]'}
         </TruncatedText>
       </StyledLayerDetails>
-      <LayerFeatures layer={layer} features={features} openPopup={openPopup} />
+      <LayerFeatures
+        map={map}
+        layer={layer}
+        features={features}
+        openPopup={openPopup}
+      />
     </li>
   );
 };

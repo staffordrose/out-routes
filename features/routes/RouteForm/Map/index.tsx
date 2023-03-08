@@ -96,6 +96,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
           move={move}
           remove={remove}
           update={update}
+          map={map}
           openPopup={openPopup}
           closePopup={closePopup}
           setActiveLayerId={setActiveLayerId}

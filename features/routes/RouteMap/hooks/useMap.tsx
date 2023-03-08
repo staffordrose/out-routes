@@ -66,6 +66,7 @@ export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
 
   return {
     mapContainerEl,
+    map,
     openPopup,
   };
 };

@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, MutableRefObject } from 'react';
+import type { Map } from 'mapbox-gl';
 
 import { List } from '@/components/atoms';
 import { styled } from '@/styles';
@@ -6,12 +7,14 @@ import { PopupState, RouteFeature, RouteLayer } from '@/types';
 import { Layer } from './Layer';
 
 type MapLayersFeaturesProps = {
+  map: MutableRefObject<Map | undefined>;
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
 };
 
 export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
+  map,
   layers,
   features,
   openPopup,
@@ -24,6 +27,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
           return (
             <Layer
               key={layer.id}
+              map={map}
               layer={layer}
               features={
                 Array.isArray(features)
