@@ -2,19 +2,38 @@ import { useState } from 'react';
 import { UseFieldArrayUpdate } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature, PopupState } from '@/types';
 import { getFeatureLngLat, trimFeatureSymbolCode } from '@/utils';
 import { LayerValues, RouteFormValues } from '../../../../helpers';
 import { updateLayerFeature } from '../../../helpers';
 
 const yupSchema = yup.object({
+  type: yup.string(),
+  lat: yup.string().when('type', {
+    is: (type: string) => type === GeometryTypeNames.Point,
+    then: yup.string().min(1, 'Latitude is required').required(),
+    otherwise: yup.string().nullable(),
+  }),
+  lng: yup.string().when('type', {
+    is: (type: string) => type === GeometryTypeNames.Point,
+    then: yup.string().min(1, 'Longitude is required').required(),
+    otherwise: yup.string().nullable(),
+  }),
   title: yup.string().max(60, `Can't be longer than 60 characters`),
   color: yup.string().nullable(),
   symbol: yup.string().nullable(),
   description: yup.string().max(280, `Can't be longer than 280 characters`),
 });
 
-type Key = 'title' | 'color' | 'symbol' | 'description';
+type Key =
+  | 'type'
+  | 'lat'
+  | 'lng'
+  | 'title'
+  | 'color'
+  | 'symbol'
+  | 'description';
 
 type UseFeatureEditFormProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
@@ -36,6 +55,15 @@ export const UseFeatureEditForm = ({
   const [status, setStatus] = useState('');
 
   const [values, setValues] = useState<Record<Key, string | undefined>>({
+    type: feature.geometry?.type || '',
+    lat:
+      feature.geometry?.type === GeometryTypeNames.Point
+        ? feature.geometry.coordinates[1].toString()
+        : undefined,
+    lng:
+      feature.geometry?.type === GeometryTypeNames.Point
+        ? feature.geometry.coordinates[0].toString()
+        : undefined,
     title: feature.properties?.title || '',
     color: feature.properties?.color || undefined,
     symbol: feature.properties?.symbol
@@ -45,6 +73,9 @@ export const UseFeatureEditForm = ({
   });
 
   const [touched, setTouched] = useState<Record<Key, boolean>>({
+    type: false,
+    lat: false,
+    lng: false,
     title: false,
     color: false,
     symbol: false,
@@ -53,6 +84,9 @@ export const UseFeatureEditForm = ({
 
   const [errors, setErrors] = useState<Record<Key, yup.ValidationError | null>>(
     {
+      type: null,
+      lat: null,
+      lng: null,
       title: null,
       color: null,
       symbol: null,
@@ -111,11 +145,28 @@ export const UseFeatureEditForm = ({
       await validate();
 
       if (Object.values(errors).some((error) => error !== null)) {
-        throw new Error('Something went wrong submitting the form');
+        return;
       }
+
+      const latFloat = parseFloat(values.lat || '');
+      const lngFloat = parseFloat(values.lng || '');
 
       const mapFeature = {
         ...feature,
+        geometry:
+          feature.geometry.type === GeometryTypeNames.Point
+            ? {
+                ...feature.geometry,
+                coordinates: [
+                  !Number.isNaN(lngFloat)
+                    ? lngFloat
+                    : feature.geometry.coordinates[0],
+                  values.lat && !Number.isNaN(latFloat)
+                    ? latFloat
+                    : feature.geometry.coordinates[1],
+                ],
+              }
+            : feature.geometry,
         properties: {
           ...feature.properties,
           title: values.title,

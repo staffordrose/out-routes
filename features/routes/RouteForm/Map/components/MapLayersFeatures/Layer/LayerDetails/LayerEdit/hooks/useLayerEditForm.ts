@@ -95,7 +95,7 @@ export const useLayerEditForm = ({
       await validate();
 
       if (Object.values(errors).some((error) => error !== null)) {
-        throw new Error('Something went wrong submitting the form');
+        return;
       }
 
       update(layerIndex, {

@@ -63,21 +63,55 @@ export const FeatureEdit: FC<FeatureEditProps> = ({
             <Text color='red-700'>{status}</Text>
           </StatusWrapper>
         )}
+        <TextField
+          name='title'
+          placeholder='Name'
+          value={values.title}
+          onChange={(e) => {
+            updateValues('title', e.target.value);
+          }}
+          onBlur={() => {
+            updateTouched('title', true);
+            validate();
+          }}
+          isTouched={touched.title}
+          error={errors.title?.message}
+        />
         <FieldsGrid>
-          <TextField
-            name='title'
-            placeholder='Name'
-            value={values.title}
-            onChange={(e) => {
-              updateValues('title', e.target.value);
-            }}
-            onBlur={() => {
-              updateTouched('title', true);
-              validate();
-            }}
-            isTouched={touched.title}
-            error={errors.title?.message}
-          />
+          {feature.geometry.type === GeometryTypeNames.Point && (
+            <CoordinatesFieldsGrid>
+              <TextField
+                type='number'
+                name='lat'
+                placeholder='Latitude'
+                value={values.lat}
+                onChange={(e) => {
+                  updateValues('lat', e.target.value);
+                }}
+                onBlur={() => {
+                  updateTouched('lat', true);
+                  validate();
+                }}
+                isTouched={touched.lat}
+                error={errors.lat?.message}
+              />
+              <TextField
+                type='number'
+                name='lng'
+                placeholder='Longitude'
+                value={values.lng}
+                onChange={(e) => {
+                  updateValues('lng', e.target.value);
+                }}
+                onBlur={() => {
+                  updateTouched('lng', true);
+                  validate();
+                }}
+                isTouched={touched.lng}
+                error={errors.lng?.message}
+              />
+            </CoordinatesFieldsGrid>
+          )}
           <SelectField
             key={colorKey}
             name='color'
@@ -217,6 +251,14 @@ const StatusWrapper = styled('div', {
 const FieldsGrid = styled('div', {
   display: 'grid',
   gap: '$2',
+  width: '$full',
+});
+
+const CoordinatesFieldsGrid = styled('div', {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '$1',
+  alignItems: 'start',
   width: '$full',
 });
 
