@@ -141,7 +141,10 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                   key='edit-layer'
                   size='sm'
                   aria-label='Open modal to edit the section'
-                  onSelect={() => setEditDialogOpen(!isEditDialogOpen)}
+                  onSelect={() => {
+                    closePopup();
+                    setEditDialogOpen(!isEditDialogOpen);
+                  }}
                 >
                   <BiEditAlt />
                   <span>Edit Section</span>

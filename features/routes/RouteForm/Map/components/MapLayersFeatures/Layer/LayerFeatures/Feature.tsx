@@ -1,9 +1,17 @@
-import { FC, MutableRefObject, useEffect, useMemo, useRef } from 'react';
+import {
+  FC,
+  MutableRefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { UseFieldArrayUpdate } from 'react-hook-form';
 import type { Map } from 'mapbox-gl';
 import {
   BiDotsVerticalRounded,
   BiEditAlt,
+  BiLayer,
   BiShapePolygon,
   BiShareAlt,
   BiTrash,
@@ -12,7 +20,7 @@ import { MdDragHandle } from 'react-icons/md';
 import { gsap } from 'gsap';
 import Draggable from 'gsap/dist/Draggable';
 
-import { Button, DropdownMenu, IconButton } from '@/components/atoms';
+import { Button, Dialog, DropdownMenu, IconButton } from '@/components/atoms';
 import {
   GeometryTypeNames,
   GeometryTypes,
@@ -29,6 +37,7 @@ import {
   RouteFormValues,
 } from '../../../../../helpers';
 import { deleteLayerFeature } from '../../../../helpers';
+import { FeatureMove } from './FeatureMove';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(Draggable);
@@ -71,6 +80,8 @@ export const Feature: FC<FeatureProps> = ({
   openFeatureEditDialog,
   isLayerFeaturesReordering,
 }) => {
+  const [isFeatureMoveDialogOpen, setFeatureMoveDialogOpen] = useState(false);
+
   const dragRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -169,85 +180,113 @@ export const Feature: FC<FeatureProps> = ({
   );
 
   return (
-    <StyledFeature>
-      <Button
-        type='button'
-        variant='ghost'
-        size='xs'
-        onClick={() => {
-          const center = getFeatureLngLat(mapFeature);
+    <>
+      <Dialog
+        maxWidth='xs'
+        isOpen={isFeatureMoveDialogOpen}
+        setOpen={setFeatureMoveDialogOpen}
+        title='Select a Section'
+        body={
+          <FeatureMove
+            update={update}
+            layerIndex={layerIndex}
+            featureOrder={featureOrder}
+          />
+        }
+      />
+      <StyledFeature>
+        <Button
+          type='button'
+          variant='ghost'
+          size='xs'
+          onClick={() => {
+            const center = getFeatureLngLat(mapFeature);
 
-          openPopup({
-            center,
-            feature: mapFeature,
-          });
+            openPopup({
+              center,
+              feature: mapFeature,
+            });
 
-          if (
-            mapFeature.geometry.type === GeometryTypeNames.Polygon ||
-            mapFeature.geometry.type === GeometryTypeNames.LineString
-          ) {
-            const mapBounds = getMapBoundsFromCoordinates(
-              (mapFeature.geometry.type === GeometryTypeNames.Polygon
-                ? mapFeature.geometry.coordinates[0]
-                : mapFeature.geometry.coordinates) as LngLat[]
-            );
+            if (
+              mapFeature.geometry.type === GeometryTypeNames.Polygon ||
+              mapFeature.geometry.type === GeometryTypeNames.LineString
+            ) {
+              const mapBounds = getMapBoundsFromCoordinates(
+                (mapFeature.geometry.type === GeometryTypeNames.Polygon
+                  ? mapFeature.geometry.coordinates[0]
+                  : mapFeature.geometry.coordinates) as LngLat[]
+              );
 
-            if (mapBounds) {
-              map.current?.fitBounds(mapBounds, {
-                padding: 48,
-              });
+              if (mapBounds) {
+                map.current?.fitBounds(mapBounds, {
+                  padding: 48,
+                });
+              }
+            } else {
+              // fly to point
+              map.current?.flyTo({ center, zoom: 14 });
             }
-          } else {
-            // fly to point
-            map.current?.flyTo({ center, zoom: 14 });
-          }
-        }}
-      >
-        <SymbolIcon
-          style={{
-            fill: color || layer.color || undefined,
           }}
-        />
-        <span>{title || '[Untitled feature]'}</span>
-      </Button>
-      {isLayerFeaturesReordering ? (
-        <DragHandle dragRef={dragRef} />
-      ) : (
-        <DropdownMenu
-          items={[
-            <DropdownMenu.Item
-              key='edit-feature'
-              size='xs'
-              aria-label='Open modal to edit the feature'
-              onSelect={() => {
-                openFeatureEditDialog(layerIndex, layer, mapFeature);
-              }}
-            >
-              <BiEditAlt />
-              <span>Edit Feature</span>
-            </DropdownMenu.Item>,
-            <DropdownMenu.Separator key='delete-separator' />,
-            <DropdownMenu.Item
-              key='delete-feature'
-              size='xs'
-              colorScheme='red'
-              aria-label='Open modal to delete the feature'
-              onSelect={() => {
-                deleteLayerFeature(update, layerIndex, layer, mapFeature);
-                closePopup();
-              }}
-            >
-              <BiTrash />
-              <span>Delete Feature</span>
-            </DropdownMenu.Item>,
-          ]}
         >
-          <IconButton type='button' variant='ghost' size='xs'>
-            <BiDotsVerticalRounded />
-          </IconButton>
-        </DropdownMenu>
-      )}
-    </StyledFeature>
+          <SymbolIcon
+            style={{
+              fill: color || layer.color || undefined,
+            }}
+          />
+          <span>{title || '[Untitled feature]'}</span>
+        </Button>
+        {isLayerFeaturesReordering ? (
+          <DragHandle dragRef={dragRef} />
+        ) : (
+          <DropdownMenu
+            items={[
+              <DropdownMenu.Item
+                key='edit-feature'
+                size='xs'
+                aria-label='Open modal to edit the feature'
+                onSelect={() => {
+                  openFeatureEditDialog(layerIndex, layer, mapFeature);
+                  closePopup();
+                }}
+              >
+                <BiEditAlt />
+                <span>Edit Feature</span>
+              </DropdownMenu.Item>,
+              <DropdownMenu.Item
+                key='move-feature'
+                size='xs'
+                aria-label='Open modal to move the feature'
+                onSelect={() => {
+                  setFeatureMoveDialogOpen(true);
+                  closePopup();
+                }}
+              >
+                <BiLayer />
+                <span>Move to Section</span>
+              </DropdownMenu.Item>,
+              <DropdownMenu.Separator key='delete-separator' />,
+              <DropdownMenu.Item
+                key='delete-feature'
+                size='xs'
+                colorScheme='red'
+                aria-label='Open modal to delete the feature'
+                onSelect={() => {
+                  deleteLayerFeature(update, layerIndex, layer, mapFeature);
+                  closePopup();
+                }}
+              >
+                <BiTrash />
+                <span>Delete Feature</span>
+              </DropdownMenu.Item>,
+            ]}
+          >
+            <IconButton type='button' variant='ghost' size='xs'>
+              <BiDotsVerticalRounded />
+            </IconButton>
+          </DropdownMenu>
+        )}
+      </StyledFeature>
+    </>
   );
 };
 
