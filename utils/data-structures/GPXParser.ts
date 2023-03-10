@@ -1,64 +1,31 @@
 // Uses https://github.com/Luuka/GPXParser.js
 
-type Point = {
-  lat: number;
-  lon: number;
-  ele: number | null;
-  time: Date | null;
-};
-
-type Waypoint = Point & {
-  name: string | null;
-  sym: string | null;
-  cmt: string | null;
-  desc: string | null;
-};
-
-type Link = {
-  href: string | null;
-  text: string | null;
-  type: string | null;
-};
-
-type Distance = {
-  total: number | null;
-  cumul: (number | null)[];
-};
-
-type Elevation = {
-  max: number | null;
-  min: number | null;
-  pos: number | null;
-  neg: number | null;
-  avg: number | null;
-};
-
-type Track = {
-  name: string | null;
-  cmt: string | null;
-  desc: string | null;
-  src: string | null;
-  number: string | null;
-  type: string | null;
-  link: Link;
-  distance: Distance;
-  elevation: Elevation;
-  slopes: number[];
-  points: Point[];
-};
-
-const keepMetadata = ['name', 'desc', 'time'];
+import {
+  Distance,
+  Elevation,
+  Link,
+  GPXMetadata,
+  Point,
+  Track,
+  Waypoint,
+} from '@/types';
 
 export class GPXParser {
   gpx: string;
   xml: Document;
-  metadata: Record<string, string | null> = {
+  metadata: GPXMetadata = {
     name: null,
     desc: null,
+    author: null,
+    copyright: null,
+    link: null,
     time: null,
+    keywords: null,
+    bounds: null,
   };
   waypoints: Waypoint[] = [];
   tracks: Track[] = [];
+  error: Error | null = null;
 
   constructor(gpx: string) {
     this.gpx = gpx;
@@ -70,23 +37,89 @@ export class GPXParser {
   }
 
   private parse() {
+    const gpxEl = this.xml.querySelector('gpx');
+    const version = gpxEl?.getAttribute('version');
+
+    if (version !== '1.1') {
+      this.error = new Error('Only GPX version 1.1 can be imported');
+    }
+
+    this.getMetadata();
+    this.getWaypoints();
+    this.getTracks();
+  }
+
+  private getMetadata() {
     const metadata = this.xml.querySelector('metadata');
 
     if (metadata) {
-      for (const property of keepMetadata) {
-        this.metadata[property] = this.getElementValue(metadata, property);
+      // name
+      this.metadata.name = this.getElementValue(metadata, 'name');
+      // description
+      this.metadata.desc = this.getElementValue(metadata, 'desc');
+      // author
+      const authorEl = metadata.querySelector('author');
+      if (authorEl) {
+        const emailEl = authorEl.querySelector('email');
+        const linkEl = authorEl.querySelector('link');
+        this.metadata.author = {
+          name: this.getElementValue(authorEl, 'name') || '',
+          email: emailEl
+            ? {
+                id: emailEl.getAttribute('id') || '',
+                domain: emailEl.getAttribute('domain') || '',
+              }
+            : null,
+          link: linkEl
+            ? {
+                href: linkEl.getAttribute('href') || '',
+                text: this.getElementValue(linkEl, 'text') || '',
+                type: this.getElementValue(linkEl, 'type') || null,
+              }
+            : null,
+        };
+      }
+      // copyright
+      const copyrightEl = metadata.querySelector('copyright');
+      if (copyrightEl) {
+        this.metadata.copyright = {
+          author: copyrightEl.getAttribute('author') || '',
+          year: parseInt(this.getElementValue(copyrightEl, 'year') || ''),
+          license: this.getElementValue(copyrightEl, 'license'),
+        };
+      }
+      // link
+      const linkEl = metadata.querySelector('link');
+      if (linkEl) {
+        this.metadata.link = {
+          href: linkEl.getAttribute('href') || '',
+          text: this.getElementValue(linkEl, 'text') || '',
+          type: this.getElementValue(linkEl, 'type') || null,
+        };
+      }
+      // time
+      const timeStr = this.getElementValue(metadata, 'time');
+      this.metadata.time = !timeStr ? null : new Date(timeStr);
+      // keywords
+      const keywordsStr = this.getElementValue(metadata, 'keywords');
+      const keywordsArr = keywordsStr ? keywordsStr.split(', ') : [];
+      this.metadata.keywords =
+        Array.isArray(keywordsArr) && keywordsArr.length ? keywordsArr : null;
+      // bounds
+      const boundsEl = metadata.querySelector('bounds');
+      if (boundsEl) {
+        this.metadata.bounds = [
+          [
+            parseFloat(boundsEl.getAttribute('minlon') || ''),
+            parseFloat(boundsEl.getAttribute('minlat') || ''),
+          ],
+          [
+            parseFloat(boundsEl.getAttribute('maxlon') || ''),
+            parseFloat(boundsEl.getAttribute('maxlat') || ''),
+          ],
+        ];
       }
     }
-
-    this.getWaypoints();
-
-    this.getTracks();
-
-    return {
-      metadata: this.metadata,
-      waypoints: this.waypoints,
-      tracks: this.tracks,
-    };
   }
 
   private getWaypoints() {
@@ -99,21 +132,33 @@ export class GPXParser {
 
       const res = {} as Waypoint;
 
-      res.name = this.getElementValue(waypoint, 'name');
-      res.sym = this.getElementValue(waypoint, 'sym');
+      /**
+       * waypoint attributes
+       */
+
+      // latitude
       res.lat = parseFloat(waypoint.getAttribute('lat') || '');
+      // longitude
       res.lon = parseFloat(waypoint.getAttribute('lon') || '');
 
-      const floatValue = parseFloat(
-        this.getElementValue(waypoint, 'ele') || ''
-      );
-      res.ele = isNaN(floatValue) ? null : floatValue;
+      /**
+       * waypoint values
+       */
 
+      // name
+      res.name = this.getElementValue(waypoint, 'name');
+      // elevation
+      const eleFloat = parseFloat(this.getElementValue(waypoint, 'ele') || '');
+      res.ele = isNaN(eleFloat) ? null : eleFloat;
+      // symbol
+      res.sym = this.getElementValue(waypoint, 'sym');
+      // comment
       res.cmt = this.getElementValue(waypoint, 'cmt');
+      // description
       res.desc = this.getElementValue(waypoint, 'desc');
-
-      const time = this.getElementValue(waypoint, 'time');
-      res.time = time === null ? null : new Date(time);
+      // time
+      const timeStr = this.getElementValue(waypoint, 'time');
+      res.time = timeStr === null ? null : new Date(timeStr);
 
       this.waypoints.push(res);
     }
@@ -124,45 +169,56 @@ export class GPXParser {
 
     for (const index in tracks) {
       const track = tracks[index];
+
       const res = {} as Track;
 
-      res.name = this.getElementValue(track, 'name');
-      res.cmt = this.getElementValue(track, 'cmt');
-      res.desc = this.getElementValue(track, 'desc');
-      res.src = this.getElementValue(track, 'src');
-      res.number = this.getElementValue(track, 'number');
+      /**
+       * track values
+       */
 
+      // name
+      res.name = this.getElementValue(track, 'name');
+      // comment
+      res.cmt = this.getElementValue(track, 'cmt');
+      // description
+      res.desc = this.getElementValue(track, 'desc');
+      // source
+      res.src = this.getElementValue(track, 'src');
+      // number
+      res.number = this.getElementValue(track, 'number');
+      // type
       const type = this.queryDirectSelector(track, 'type');
       res.type = type?.innerHTML ? this.trimCDATA(type.innerHTML) : null;
-
+      // link
       let link = {} as Link;
       let linkEl = track.querySelector('link');
-
-      if (linkEl !== null) {
-        link.href = linkEl.getAttribute('href');
-        link.text = this.getElementValue(linkEl, 'text');
+      if (linkEl) {
+        // link attributes
+        link.href = linkEl.getAttribute('href') || '';
+        // link values
+        link.text = this.getElementValue(linkEl, 'text') || '';
         link.type = this.getElementValue(linkEl, 'type');
       }
       res.link = link;
-
+      // trackpoints
       let trackpoints: Point[] = [];
       let trkpts: Element[] = [].slice.call(track.querySelectorAll('trkpt'));
-
       for (const trkptIndex in trkpts) {
         const trkpt = trkpts[trkptIndex];
         const pt = {} as Point;
+
+        // trackpoint attributes
         pt.lat = parseFloat(trkpt.getAttribute('lat') || '');
         pt.lon = parseFloat(trkpt.getAttribute('lon') || '');
 
+        // trackpoint values
         let floatValue = parseFloat(this.getElementValue(trkpt, 'ele') || '');
         pt.ele = isNaN(floatValue) ? null : floatValue;
-
         let time = this.getElementValue(trkpt, 'time');
         pt.time = time === null ? null : new Date(time);
 
         trackpoints.push(pt);
       }
-
       res.distance = this.calcDistance(trackpoints);
       res.elevation = this.calcElevation(trackpoints);
       res.slopes = this.calcSlope(trackpoints, res.distance.cumul);
@@ -175,7 +231,7 @@ export class GPXParser {
   private queryDirectSelector(parent: Element, property: string) {
     const elements = parent.querySelectorAll(property);
 
-    let finalElem = elements[0];
+    let finalEl = elements[0];
 
     if (elements.length > 1) {
       const childNodes = parent.childNodes;
@@ -183,17 +239,18 @@ export class GPXParser {
       for (const index in childNodes) {
         const el = childNodes[index];
         if (el instanceof Element && el.tagName === property) {
-          finalElem = el;
+          finalEl = el;
         }
       }
     }
 
-    return finalElem;
+    return finalEl;
   }
 
   private getElementValue(parent: Element, property: string) {
-    let elem = parent.querySelector(property);
-    if (elem !== null) {
+    let el = parent.querySelector(property);
+
+    if (el) {
       const getElementValueRecursive = (el: Element) => {
         let content: string = '';
 
@@ -218,9 +275,10 @@ export class GPXParser {
         return content;
       };
 
-      return getElementValueRecursive(elem);
+      return getElementValueRecursive(el);
     }
-    return elem;
+
+    return el;
   }
 
   private calcDistance(points: Point[]) {

@@ -17,7 +17,7 @@ import { SEO } from '@/components/utility';
 import {
   RouteDetailBanner,
   RouteDetails,
-  RouteGPXExport,
+  RouteMapActions,
   RouteMap,
 } from '@/features/routes';
 import { useQueryParam } from '@/hooks';
@@ -219,7 +219,11 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
           <DefaultLayout.MainContent maxWidth='2xl'>
             <RouteDetails username={username} route={route} />
             <Separator width='full' height='xs' marginY='lg' />
-            <RouteGPXExport route={route} layers={layers} features={features} />
+            <RouteMapActions
+              route={route}
+              layers={layers}
+              features={features}
+            />
             <RouteMap route={route} layers={layers} features={features} />
           </DefaultLayout.MainContent>
         </DefaultLayout.Main>

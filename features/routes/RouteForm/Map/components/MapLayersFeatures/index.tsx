@@ -7,11 +7,26 @@ import {
   UseFieldArrayUpdate,
 } from 'react-hook-form';
 import type { Map } from 'mapbox-gl';
-import { BiImport, BiPlus } from 'react-icons/bi';
+import { BiError, BiImport, BiPlus } from 'react-icons/bi';
 
-import { Button, Dialog, Dropzone, List } from '@/components/atoms';
+import {
+  Button,
+  Dialog,
+  Dropzone,
+  Flex,
+  Icon,
+  List,
+  Text,
+} from '@/components/atoms';
+import { Feedback } from '@/components/layout';
 import { ColorCodes } from '@/data/general';
-import { GeometryTypeNames, SymbolCodes } from '@/data/routes';
+import {
+  GeometryTypeNames,
+  SymbolCodes,
+  symbolCodes,
+  SymbolLabels,
+  symbolLabelsToCodes,
+} from '@/data/routes';
 import { getElevationByLngLat } from '@/lib/v1/api/map';
 import { styled } from '@/styles';
 import { LngLat, MapFeature, MapLayer, PopupState } from '@/types';
@@ -58,6 +73,9 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   openFeatureEditDialog,
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const [isDropzoneLoading, setDropzoneLoading] = useState(false);
+  const [dropzoneError, setDropzoneError] = useState<string>('');
 
   const [layersWithFeaturesReordering, setLayersWithFeaturesReordering] =
     useState<Set<LayerValues['databaseId']>>(new Set());
@@ -126,126 +144,183 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
           setOpen={setDialogOpen}
           title='Upload a GPX File'
           body={
-            <Dropzone
-              aspectRatio={16 / 9}
-              onFileDrop={async ([file]: File[]) => {
-                try {
-                  const fileContents = await readFile(file);
+            <Flex direction='column' gap='md' width='full'>
+              {isDropzoneLoading ? (
+                <Feedback type='loading' title='Parsing File' />
+              ) : (
+                <Dropzone
+                  aspectRatio={3 / 2}
+                  onFileDrop={async ([file]: File[]) => {
+                    setDropzoneError('');
+                    setDropzoneLoading(true);
 
-                  const gpx = new GPXParser(fileContents as string);
+                    try {
+                      const fileContents = await readFile(file);
 
-                  const newLayerId = createAlphaNumericId(24);
+                      const gpx = new GPXParser(fileContents as string);
 
-                  const features: FeatureValues[] = [];
+                      if (gpx.error instanceof Error) {
+                        throw new Error(gpx.error.message);
+                      }
 
-                  const waypointsPromiseArray = gpx.waypoints.map(
-                    async (waypoint) => {
-                      const coordinates = [waypoint.lon, waypoint.lat];
+                      const newLayerId = createAlphaNumericId(24);
 
-                      let mapFeature: MapFeature = {
-                        id: createAlphaNumericId(24),
-                        type: 'Feature',
-                        geometry: {
-                          type: GeometryTypeNames.Point,
-                          coordinates,
-                        },
-                        properties: {
-                          layer: newLayerId,
-                          order: features.length,
-                          title: waypoint.name || '',
-                          description: waypoint.desc || '',
-                        },
-                      };
+                      const features: FeatureValues[] = [];
 
-                      // truncate coordinates
-                      mapFeature = truncateGeometryCoordinates(mapFeature);
+                      const waypointsPromiseArray = gpx.waypoints.map(
+                        async (waypoint) => {
+                          const coordinates = [waypoint.lon, waypoint.lat];
 
-                      const ele = await getElevationByLngLat(
-                        coordinates as LngLat
+                          let mapFeature: MapFeature = {
+                            id: createAlphaNumericId(24),
+                            type: 'Feature',
+                            geometry: {
+                              type: GeometryTypeNames.Point,
+                              coordinates,
+                            },
+                            properties: {
+                              layer: newLayerId,
+                              order: features.length,
+                              title: waypoint.name || '',
+                              symbol: waypoint.sym
+                                ? symbolCodes[waypoint.sym as SymbolCodes] ||
+                                  symbolLabelsToCodes[
+                                    waypoint.sym as SymbolLabels
+                                  ] ||
+                                  undefined
+                                : undefined,
+                              ele_start: waypoint.ele || undefined,
+                              ele_end: waypoint.ele || undefined,
+                              description: waypoint.desc || waypoint.cmt || '',
+                            },
+                          };
+
+                          // truncate coordinates
+                          mapFeature = truncateGeometryCoordinates(mapFeature);
+
+                          // calculate elevation
+                          if (!mapFeature.properties.ele_start) {
+                            const ele = await getElevationByLngLat(
+                              coordinates as LngLat
+                            );
+
+                            // add elevation to properties
+                            mapFeature = {
+                              ...mapFeature,
+                              properties: {
+                                ...mapFeature.properties,
+                                ele_start: ele,
+                                ele_end: ele,
+                              },
+                            };
+                          }
+
+                          features.push(
+                            mapMapFeatureToFeatureValues(mapFeature)
+                          );
+                        }
                       );
 
-                      // add elevation to properties
-                      mapFeature = {
-                        ...mapFeature,
-                        properties: {
-                          ...mapFeature.properties,
-                          ele_start: ele,
-                          ele_end: ele,
-                        },
-                      };
+                      await Promise.all(waypointsPromiseArray);
 
-                      features.push(mapMapFeatureToFeatureValues(mapFeature));
+                      const tracksPromiseArray = gpx.tracks.map(
+                        async (track) => {
+                          let mapFeature: MapFeature = {
+                            id: createAlphaNumericId(24),
+                            type: 'Feature',
+                            geometry: {
+                              type: GeometryTypeNames.LineString,
+                              coordinates: track.points.map(({ lat, lon }) => [
+                                lon,
+                                lat,
+                              ]),
+                            },
+                            properties: {
+                              layer: newLayerId,
+                              order: features.length,
+                              title: track.name || '',
+                              ele_start: track.points[0].ele || undefined,
+                              ele_end:
+                                track.points[track.points.length - 1].ele ||
+                                undefined,
+                              description: track.desc || track.cmt || '',
+                            },
+                          };
+
+                          // truncate coordinates
+                          mapFeature = truncateGeometryCoordinates(mapFeature);
+
+                          // calculate elevation
+                          if (
+                            !mapFeature.properties.ele_start ||
+                            !mapFeature.properties.ele_end
+                          ) {
+                            const { coordinates } = mapFeature.geometry;
+
+                            const ele_start = await getElevationByLngLat(
+                              coordinates[0] as LngLat
+                            );
+                            const ele_end = await getElevationByLngLat(
+                              coordinates[coordinates.length - 1] as LngLat
+                            );
+
+                            // add elevation, distance to properties
+                            mapFeature = {
+                              ...mapFeature,
+                              properties: {
+                                ...mapFeature.properties,
+                                ele_start:
+                                  mapFeature.properties.ele_start || ele_start,
+                                ele_end:
+                                  mapFeature.properties.ele_end || ele_end,
+                                distance:
+                                  calculateLineStringDistance(mapFeature),
+                              },
+                            };
+                          }
+
+                          features.push(
+                            mapMapFeatureToFeatureValues(mapFeature)
+                          );
+                        }
+                      );
+
+                      await Promise.all(tracksPromiseArray);
+
+                      append({
+                        databaseId: newLayerId,
+                        title: '',
+                        color: ColorCodes.Red,
+                        symbol: SymbolCodes.Marker,
+                        features,
+                      });
+
+                      setActiveLayerId(newLayerId);
+
+                      setDialogOpen(false);
+                    } catch (error) {
+                      if (error instanceof Error) {
+                        setDropzoneError(error.message);
+                      }
+                    } finally {
+                      setDropzoneLoading(false);
                     }
-                  );
-
-                  await Promise.all(waypointsPromiseArray);
-
-                  const tracksPromiseArray = gpx.tracks.map(async (track) => {
-                    let mapFeature: MapFeature = {
-                      id: createAlphaNumericId(24),
-                      type: 'Feature',
-                      geometry: {
-                        type: GeometryTypeNames.LineString,
-                        coordinates: track.points.map(({ lat, lon }) => [
-                          lon,
-                          lat,
-                        ]),
-                      },
-                      properties: {
-                        layer: newLayerId,
-                        order: features.length,
-                        title: track.name || '',
-                        description: track.desc || '',
-                      },
-                    };
-
-                    // truncate coordinates
-                    mapFeature = truncateGeometryCoordinates(mapFeature);
-
-                    const { coordinates } = mapFeature.geometry;
-
-                    const ele_start = await getElevationByLngLat(
-                      coordinates[0] as LngLat
-                    );
-                    const ele_end = await getElevationByLngLat(
-                      coordinates[coordinates.length - 1] as LngLat
-                    );
-
-                    // add elevation, distance to properties
-                    mapFeature = {
-                      ...mapFeature,
-                      properties: {
-                        ...mapFeature.properties,
-                        ele_start,
-                        ele_end,
-                        distance: calculateLineStringDistance(mapFeature),
-                      },
-                    };
-
-                    features.push(mapMapFeatureToFeatureValues(mapFeature));
-                  });
-
-                  await Promise.all(tracksPromiseArray);
-
-                  append({
-                    databaseId: newLayerId,
-                    title: '',
-                    color: ColorCodes.Red,
-                    symbol: SymbolCodes.Marker,
-                    features,
-                  });
-
-                  setActiveLayerId(newLayerId);
-
-                  setDialogOpen(false);
-                } catch (error) {
-                  if (error instanceof Error) {
-                    console.log('Error uploading file: ', error.message);
-                  }
-                }
-              }}
-              accept={{ 'text/xml': ['.gpx'] }}
-            />
+                  }}
+                  accept={{ 'text/xml': ['.gpx'] }}
+                />
+              )}
+              {!!dropzoneError && (
+                <Flex
+                  gap='xs'
+                  justifyContent='flex-start'
+                  alignItems='center'
+                  css={{ color: '$red-700' }}
+                >
+                  <Icon as={BiError} />
+                  <Text>{dropzoneError}</Text>
+                </Flex>
+              )}
+            </Flex>
           }
         >
           <Button
