@@ -223,67 +223,119 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
 
                       await Promise.all(waypointsPromiseArray);
 
-                      const tracksPromiseArray = gpx.tracks.map(
-                        async (track) => {
-                          let mapFeature: MapFeature = {
-                            id: createAlphaNumericId(24),
-                            type: 'Feature',
-                            geometry: {
-                              type: GeometryTypeNames.LineString,
-                              coordinates: track.points.map(({ lat, lon }) => [
-                                lon,
-                                lat,
-                              ]),
-                            },
+                      const routesPromiseArray = gpx.routes.map(async (rte) => {
+                        let mapFeature: MapFeature = {
+                          id: createAlphaNumericId(24),
+                          type: 'Feature',
+                          geometry: {
+                            type: GeometryTypeNames.LineString,
+                            coordinates: rte.points.map(({ lat, lon }) => [
+                              lon,
+                              lat,
+                            ]),
+                          },
+                          properties: {
+                            layer: newLayerId,
+                            order: features.length,
+                            title: rte.name || '',
+                            ele_start: rte.points[0].ele || undefined,
+                            ele_end:
+                              rte.points[rte.points.length - 1].ele ||
+                              undefined,
+                            description: rte.desc || rte.cmt || '',
+                          },
+                        };
+
+                        // truncate coordinates
+                        mapFeature = truncateGeometryCoordinates(mapFeature);
+
+                        // calculate elevation
+                        if (
+                          !mapFeature.properties.ele_start ||
+                          !mapFeature.properties.ele_end
+                        ) {
+                          const { coordinates } = mapFeature.geometry;
+
+                          const ele_start = await getElevationByLngLat(
+                            coordinates[0] as LngLat
+                          );
+                          const ele_end = await getElevationByLngLat(
+                            coordinates[coordinates.length - 1] as LngLat
+                          );
+
+                          // add elevation, distance to properties
+                          mapFeature = {
+                            ...mapFeature,
                             properties: {
-                              layer: newLayerId,
-                              order: features.length,
-                              title: track.name || '',
-                              ele_start: track.points[0].ele || undefined,
-                              ele_end:
-                                track.points[track.points.length - 1].ele ||
-                                undefined,
-                              description: track.desc || track.cmt || '',
+                              ...mapFeature.properties,
+                              ele_start:
+                                mapFeature.properties.ele_start || ele_start,
+                              ele_end: mapFeature.properties.ele_end || ele_end,
+                              distance: calculateLineStringDistance(mapFeature),
                             },
                           };
-
-                          // truncate coordinates
-                          mapFeature = truncateGeometryCoordinates(mapFeature);
-
-                          // calculate elevation
-                          if (
-                            !mapFeature.properties.ele_start ||
-                            !mapFeature.properties.ele_end
-                          ) {
-                            const { coordinates } = mapFeature.geometry;
-
-                            const ele_start = await getElevationByLngLat(
-                              coordinates[0] as LngLat
-                            );
-                            const ele_end = await getElevationByLngLat(
-                              coordinates[coordinates.length - 1] as LngLat
-                            );
-
-                            // add elevation, distance to properties
-                            mapFeature = {
-                              ...mapFeature,
-                              properties: {
-                                ...mapFeature.properties,
-                                ele_start:
-                                  mapFeature.properties.ele_start || ele_start,
-                                ele_end:
-                                  mapFeature.properties.ele_end || ele_end,
-                                distance:
-                                  calculateLineStringDistance(mapFeature),
-                              },
-                            };
-                          }
-
-                          features.push(
-                            mapMapFeatureToFeatureValues(mapFeature)
-                          );
                         }
-                      );
+
+                        features.push(mapMapFeatureToFeatureValues(mapFeature));
+                      });
+
+                      await Promise.all(routesPromiseArray);
+
+                      const tracksPromiseArray = gpx.tracks.map(async (trk) => {
+                        let mapFeature: MapFeature = {
+                          id: createAlphaNumericId(24),
+                          type: 'Feature',
+                          geometry: {
+                            type: GeometryTypeNames.LineString,
+                            coordinates: trk.points.map(({ lat, lon }) => [
+                              lon,
+                              lat,
+                            ]),
+                          },
+                          properties: {
+                            layer: newLayerId,
+                            order: features.length,
+                            title: trk.name || '',
+                            ele_start: trk.points[0].ele || undefined,
+                            ele_end:
+                              trk.points[trk.points.length - 1].ele ||
+                              undefined,
+                            description: trk.desc || trk.cmt || '',
+                          },
+                        };
+
+                        // truncate coordinates
+                        mapFeature = truncateGeometryCoordinates(mapFeature);
+
+                        // calculate elevation
+                        if (
+                          !mapFeature.properties.ele_start ||
+                          !mapFeature.properties.ele_end
+                        ) {
+                          const { coordinates } = mapFeature.geometry;
+
+                          const ele_start = await getElevationByLngLat(
+                            coordinates[0] as LngLat
+                          );
+                          const ele_end = await getElevationByLngLat(
+                            coordinates[coordinates.length - 1] as LngLat
+                          );
+
+                          // add elevation, distance to properties
+                          mapFeature = {
+                            ...mapFeature,
+                            properties: {
+                              ...mapFeature.properties,
+                              ele_start:
+                                mapFeature.properties.ele_start || ele_start,
+                              ele_end: mapFeature.properties.ele_end || ele_end,
+                              distance: calculateLineStringDistance(mapFeature),
+                            },
+                          };
+                        }
+
+                        features.push(mapMapFeatureToFeatureValues(mapFeature));
+                      });
 
                       await Promise.all(tracksPromiseArray);
 

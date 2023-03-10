@@ -1,23 +1,23 @@
 import { LngLat } from './Map';
 
-export type Email = {
+export type GPXEmail = {
   id: string;
   domain: string;
 };
 
-export type Link = {
+export type GPXLink = {
   href: string;
   text: string;
   type: string | null;
 };
 
-export type Author = {
+export type GPXAuthor = {
   name: string;
-  email: Email | null;
-  link: Link | null;
+  email: GPXEmail | null;
+  link: GPXLink | null;
 };
 
-export type Copyright = {
+export type GPXCopyright = {
   author: string;
   year: number | null;
   license: string | null;
@@ -26,9 +26,9 @@ export type Copyright = {
 export type GPXMetadata = {
   name: string | null;
   desc: string | null;
-  author: Author | null;
-  copyright: Copyright | null;
-  link: Link | null;
+  author: GPXAuthor | null;
+  copyright: GPXCopyright | null;
+  link: GPXLink | null;
   time: Date | null;
   keywords: string[] | null;
   bounds: LngLat[] | null;
@@ -38,26 +38,26 @@ export type GPXOptions = {
   fileName: string;
 };
 
-export type Point = {
+export type GPXPoint = {
   lat: number;
   lon: number;
   ele: number | null;
   time: Date | null;
 };
 
-export type Waypoint = Point & {
+export type GPXWaypoint = GPXPoint & {
   name: string | null;
   sym: string | null;
   cmt: string | null;
   desc: string | null;
 };
 
-export type Distance = {
+export type GPXDistance = {
   total: number | null;
   cumul: (number | null)[];
 };
 
-export type Elevation = {
+export type GPXElevation = {
   max: number | null;
   min: number | null;
   pos: number | null;
@@ -65,16 +65,18 @@ export type Elevation = {
   avg: number | null;
 };
 
-export type Track = {
+export type GPXRoute = {
   name: string | null;
   cmt: string | null;
   desc: string | null;
   src: string | null;
   number: string | null;
   type: string | null;
-  link: Link;
-  distance: Distance;
-  elevation: Elevation;
+  link: GPXLink | null;
+  distance: GPXDistance;
+  elevation: GPXElevation;
   slopes: number[];
-  points: Point[];
+  points: GPXPoint[];
 };
+
+export type GPXTrack = GPXRoute;

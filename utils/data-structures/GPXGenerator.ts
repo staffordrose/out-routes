@@ -1,11 +1,15 @@
-import { GeometryTypeNames } from '@/data/routes';
+import { GeometryTypeNames, SymbolCodes, symbolLabels } from '@/data/routes';
 import {
+  GPXAuthor,
+  GPXCopyright,
   GPXMetadata,
   GPXOptions,
+  GPXLink,
   LngLat,
   MapFeature,
   MapLayer,
 } from '@/types/maps';
+import { roundToDecimalCount } from '../arithmetic';
 
 export class GPXGenerator {
   metadata: GPXMetadata;
@@ -36,7 +40,7 @@ export class GPXGenerator {
     this.generate();
   }
 
-  private generate() {
+  private generate(): void {
     this.xml = `<?xml version="1.0" encoding="UTF-8"?>` + '\n';
 
     this.xml +=
@@ -50,7 +54,7 @@ export class GPXGenerator {
         if (feature.geometry.type === GeometryTypeNames.Point) {
           this.addWaypoint(feature);
         } else if (feature.geometry.type === GeometryTypeNames.LineString) {
-          this.addTrack(feature);
+          this.addRoute(feature);
         }
       });
     });
@@ -58,143 +62,179 @@ export class GPXGenerator {
     this.xml += `</gpx>`;
   }
 
-  private addMetadata() {
+  private addMetadata(): void {
     this.xml += this.indent() + `<metadata>` + '\n';
 
     // name
     if (this.metadata.name) {
-      this.xml += this.indent(2) + `<name>${this.metadata.name}</name>` + '\n';
+      this.xml += this.addName(this.metadata.name);
     }
     // description
     if (this.metadata.desc) {
-      this.xml += this.indent(2) + `<desc>${this.metadata.desc}</desc>` + '\n';
+      this.xml += this.addDescription(this.metadata.desc);
     }
     // author
     if (this.metadata.author?.name) {
-      const author = [
-        this.indent(2) + `<author>`,
-        this.indent(3) + `<name>${this.metadata.author.name}</name>`,
-      ];
-      if (this.metadata.author.email?.id && this.metadata.author.email.domain) {
-        author.push(
-          this.indent(3) +
-            `<email id="${this.metadata.author.email.id}" domain="${this.metadata.author.email.domain}" />`
-        );
-      }
-      if (this.metadata.author.link?.href) {
-        const link = [
-          this.indent(3) + `<link href="${this.metadata.author.link.href}">`,
-          this.indent(4) + `<text>${this.metadata.author.link.text}</text>`,
-          this.indent(4) + `<type>${this.metadata.author.link.type}</type>`,
-          this.indent(3) + `</link>`,
-        ];
-        author.push(link.join('\n'));
-      }
-      author.push(this.indent(2) + `</author>`);
-      this.xml += author.join('\n') + '\n';
+      this.xml += this.addAuthor(this.metadata.author);
     }
     // copyright
     if (this.metadata.copyright?.author) {
-      const copyright = [
-        this.indent(2) +
-          `<copyright author="${this.metadata.copyright.author}">`,
-      ];
-      if (this.metadata.copyright.year) {
-        copyright.push(
-          this.indent(3) + `<year>${this.metadata.copyright.year}</year>`
-        );
-      }
-      if (this.metadata.copyright.license) {
-        copyright.push(
-          this.indent(3) +
-            `<license>${this.metadata.copyright.license}</license>`
-        );
-      }
-      copyright.push(this.indent(2) + `</copyright>`);
-      this.xml += copyright.join('\n') + '\n';
+      this.xml += this.addCopyright(this.metadata.copyright);
     }
     // link
     if (this.metadata.link?.href && this.metadata.link.text) {
-      const link = [
-        this.indent(2) + `<link href="${this.metadata.link.href}">`,
-        this.indent(3) + `<text>${this.metadata.link.text}</text>`,
-      ];
-      if (this.metadata.link.type) {
-        link.push(this.indent(3) + `<type>${this.metadata.link.type}</type>`);
-      }
-      link.push(this.indent(2) + `</link>`);
-      this.xml += link.join('\n') + '\n';
+      this.xml += this.addLink(this.metadata.link);
     }
     // time
     if (this.metadata.time) {
-      this.xml += this.indent(2) + `<time>${this.metadata.time}</time>` + '\n';
+      this.xml += this.addTime(this.metadata.time);
     }
     // keywords
     if (
       Array.isArray(this.metadata.keywords) &&
       this.metadata.keywords.length
     ) {
-      this.xml +=
-        this.indent(2) +
-        `<keywords>${this.metadata.keywords.join(', ')}</keywords>`;
+      this.xml += this.addKeywords(this.metadata.keywords);
     }
     // bounds
     if (Array.isArray(this.metadata.bounds) && this.metadata.bounds.length) {
-      const [[minlon, minlat], [maxlon, maxlat]] = this.metadata.bounds;
-      this.xml +=
-        this.indent(2) +
-        `<bounds minlat="${minlat}" minlon="${minlon}" maxlat="${maxlat}" maxlon="${maxlon}" />` +
-        '\n';
+      this.xml += this.addBounds(this.metadata.bounds);
     }
 
     this.xml += this.indent() + `</metadata>` + '\n';
   }
 
-  private addWaypoint({ geometry: { coordinates }, properties }: MapFeature) {
+  private addName(name: string): string {
+    return this.indent(2) + `<name>${name}</name>` + '\n';
+  }
+
+  private addDescription(desc: string): string {
+    return this.indent(2) + `<desc>${desc}</desc>` + '\n';
+  }
+
+  private addAuthor({ name, email, link }: GPXAuthor): string {
+    const author = [
+      this.indent(2) + `<author>`,
+      this.indent(3) + `<name>${name}</name>`,
+    ];
+    if (email?.id && email.domain) {
+      author.push(
+        this.indent(3) + `<email id="${email.id}" domain="${email.domain}" />`
+      );
+    }
+    if (link?.href) {
+      const linkArr = [
+        this.indent(3) + `<link href="${link.href}">`,
+        this.indent(4) + `<text>${link.text}</text>`,
+        this.indent(4) + `<type>${link.type}</type>`,
+        this.indent(3) + `</link>`,
+      ];
+      author.push(linkArr.join('\n'));
+    }
+    author.push(this.indent(2) + `</author>`);
+
+    return author.join('\n') + '\n';
+  }
+
+  private addCopyright({ author, year, license }: GPXCopyright): string {
+    const copyright = [this.indent(2) + `<copyright author="${author}">`];
+    if (year) {
+      copyright.push(this.indent(3) + `<year>${year}</year>`);
+    }
+    if (license) {
+      copyright.push(this.indent(3) + `<license>${license}</license>`);
+    }
+    copyright.push(this.indent(2) + `</copyright>`);
+
+    return copyright.join('\n') + '\n';
+  }
+
+  private addLink({ href, text, type }: GPXLink): string {
+    const link = [
+      this.indent(2) + `<link href="${href}">`,
+      this.indent(3) + `<text>${text}</text>`,
+    ];
+    if (type) {
+      link.push(this.indent(3) + `<type>${type}</type>`);
+    }
+    link.push(this.indent(2) + `</link>`);
+
+    return link.join('\n') + '\n';
+  }
+
+  private addTime(time: Date): string {
+    return this.indent(2) + `<time>${time.toISOString()}</time>` + '\n';
+  }
+
+  private addKeywords(keywords: string[]): string {
+    return (
+      this.indent(2) + `<keywords>${keywords.join(', ')}</keywords>` + '\n'
+    );
+  }
+
+  private addBounds([[minlon, minlat], [maxlon, maxlat]]: LngLat[]): string {
+    return (
+      this.indent(2) +
+      `<bounds minlat="${minlat}" minlon="${minlon}" maxlat="${maxlat}" maxlon="${maxlon}" />` +
+      '\n'
+    );
+  }
+
+  private addWaypoint({
+    geometry: { coordinates },
+    properties,
+  }: MapFeature): void {
     const wpt = [
       this.indent() + `<wpt lat="${coordinates[1]}" lon="${coordinates[0]}">`,
-      this.indent(2) + `<ele>${properties.ele_start || 0}</ele>`,
+      this.indent(2) +
+        `<ele>${roundToDecimalCount(properties.ele_start || 0, {
+          decimalCount: 4,
+        }).toFixed(4)}</ele>`,
       this.indent(2) + `<name>${properties.title || ''}</name>`,
-      this.indent(2) + `<desc>${properties.description || ''}</desc>`,
-      this.indent(2) + `<sym>${properties.symbol || ''}</sym>`,
-      this.indent() + `</wpt>`,
     ];
+    if (properties.description) {
+      wpt.push(this.indent(2) + `<desc>${properties.description}</desc>`);
+    }
+    if (properties.symbol && symbolLabels[properties.symbol as SymbolCodes]) {
+      wpt.push(
+        this.indent(2) +
+          `<sym>${symbolLabels[properties.symbol as SymbolCodes]}</sym>`
+      );
+    }
+    wpt.push(this.indent() + `</wpt>`);
+
     this.xml += wpt.join('\n') + '\n';
   }
 
-  private addTrack({ geometry: { coordinates }, properties }: MapFeature) {
-    let trk = [
-      this.indent() + `<trk>`,
+  private addRoute({
+    geometry: { coordinates },
+    properties,
+  }: MapFeature): void {
+    const rte = [
+      this.indent() + `<rte>`,
       this.indent(2) + `<name>${properties.title || ''}</name>`,
-      this.indent(2) + `<desc>${properties.description || ''}</desc>`,
-      this.indent(2) + `<trkseg>`,
     ];
-    trk = trk.concat(
-      (coordinates as LngLat[]).reduce((accum, curr, index) => {
-        const trkpt = [
-          this.indent(3) + `<trkpt lat="${curr[1]}" lon="${curr[0]}">`,
-          this.indent(4) + `<ele>0</ele>`,
-          this.indent(3) + `</trkpt>`,
-        ];
+    if (properties.description) {
+      rte.push(this.indent(2) + `<desc>${properties.description}</desc>`);
+    }
+    (coordinates as LngLat[]).forEach((curr, index) => {
+      const rtept = [
+        this.indent(2) + `<rtept lat="${curr[1]}" lon="${curr[0]}">`,
+        this.indent(3) + `<ele>${(0).toFixed(4)}</ele>`,
+        this.indent(2) + `</rtept>`,
+      ];
+      rte.push(rtept.join('\n'));
+    });
+    rte.push(this.indent() + `</rte>`);
 
-        accum +=
-          trkpt.join('\n') + (index < coordinates.length - 1 ? '\n' : '');
-
-        return accum;
-      }, '')
-    );
-    trk = trk.concat(
-      [this.indent(2) + `</trkseg>`, this.indent() + `</trk>`].join('\n')
-    );
-
-    this.xml += trk.join('\n') + '\n';
+    this.xml += rte.join('\n') + '\n';
   }
 
   private indent(count: number | undefined = 1): string {
     return Array.from({ length: count }, () => '  ').join('');
   }
 
-  download() {
+  download(): void {
     const link = document.createElement('a');
     link.href = `data:text/json;charset=utf-8,` + this.xml;
     link.download = this.options.fileName;
