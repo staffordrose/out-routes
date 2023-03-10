@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
+import { PopupState } from '@/types/maps';
+import { RouteFeature, RouteLayer } from '@/types/routes';
 import { Popup } from '../components';
 import { useMapState, useSetupMap } from '.';
 

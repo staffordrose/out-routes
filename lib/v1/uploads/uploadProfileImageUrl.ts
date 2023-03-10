@@ -1,4 +1,4 @@
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { isValidUrl, StatusError } from '@/utils';
 import { cloudinary } from '../../server';
 import { PROFILE_IMAGE_FOLDER, PROFILE_IMAGE_SIZES } from '../uploads';

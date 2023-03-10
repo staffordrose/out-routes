@@ -1,6 +1,6 @@
 import { GeometryTypeNames } from '@/data/routes';
 import { getElevationByLngLat } from '@/lib/v1/api/map';
-import { LngLat, MapFeature } from '@/types';
+import { LngLat, MapFeature } from '@/types/maps';
 import { calculateLineStringDistance } from './calculateLineStringDistance';
 import { calculatePolygonArea } from './calculatePolygonArea';
 import { truncateGeometryCoordinates } from './truncateGeometryCoordinates';

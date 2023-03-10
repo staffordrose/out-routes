@@ -6,7 +6,7 @@ import {
   getRouteVisibilityByUsernameSlug,
 } from '@/lib/v1/routes';
 import { getUserIdOrThrow, isAuthRouteMember } from '@/lib/v1/user';
-import { PaginatedMembers } from '@/types';
+import { PaginatedMembers } from '@/types/members';
 import {
   allowApiMethods,
   catchApiResponse,

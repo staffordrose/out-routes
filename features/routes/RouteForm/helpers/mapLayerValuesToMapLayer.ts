@@ -1,4 +1,4 @@
-import { MapLayer } from '@/types';
+import { MapLayer } from '@/types/maps';
 import { mapFeatureValuesToMapFeature } from './mapFeatureValuesToMapFeature';
 import { LayerValues } from './types';
 

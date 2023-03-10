@@ -10,7 +10,8 @@ import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { mapboxgl } from '@/lib/client';
-import { MapFeature, MapLayer, PopupState, Route } from '@/types';
+import { MapFeature, MapLayer, PopupState } from '@/types/maps';
+import { Route } from '@/types/routes';
 import { LayerValues, RouteFormValues } from '../../helpers';
 import { Popup } from '../components';
 import { getLayerValuesById } from '../helpers';

@@ -8,7 +8,7 @@ import {
   Point,
   Track,
   Waypoint,
-} from '@/types';
+} from '@/types/maps';
 
 export class GPXParser {
   gpx: string;

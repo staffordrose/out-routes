@@ -10,7 +10,7 @@ import {
 import type { Map } from 'mapbox-gl';
 
 import { styled } from '@/styles';
-import { MapFeature, MapLayer, PopupState } from '@/types';
+import { MapFeature, MapLayer, PopupState } from '@/types/maps';
 import { LayerValues, RouteFormValues } from '../../../../helpers';
 import { LayerDetails } from './LayerDetails';
 import { LayerFeatures } from './LayerFeatures';

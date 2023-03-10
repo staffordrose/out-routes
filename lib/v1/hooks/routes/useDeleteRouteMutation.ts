@@ -2,7 +2,7 @@ import { NextRouter } from 'next/router';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
-import { UsernameAndSlug } from '@/types';
+import { UsernameAndSlug } from '@/types/routes';
 import { deleteRoute } from '../../api/routes';
 
 export type UseDeleteRouteMutationProps = {

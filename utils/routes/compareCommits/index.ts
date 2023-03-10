@@ -1,6 +1,7 @@
 import flatten from 'lodash.flatten';
 
-import { CompareCommitItem, PartialRouteLayersFeatures } from '@/types';
+import { CompareCommitItem } from '@/types/commits';
+import { PartialRouteLayersFeatures } from '@/types/routes';
 import { compareRoutes } from './compareRoutes';
 import { compareRouteFeatures } from './compareRouteFeatures';
 import { compareRouteLayers } from './compareRouteLayers';

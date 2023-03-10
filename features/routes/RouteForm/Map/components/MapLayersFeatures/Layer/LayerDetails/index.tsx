@@ -26,7 +26,7 @@ import {
 } from '@/components/atoms';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
-import { MapLayer } from '@/types';
+import { MapLayer } from '@/types/maps';
 import { LayerValues, RouteFormValues } from '../../../../../helpers';
 import { LayerEdit } from './LayerEdit';
 

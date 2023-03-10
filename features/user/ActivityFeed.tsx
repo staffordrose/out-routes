@@ -4,7 +4,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { ButtonLink } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
-import { PaginatedActivity } from '@/types';
+import { PaginatedActivity } from '@/types/activity';
 import { ActivityCard } from '../user';
 import { BiCollection } from 'react-icons/bi';
 

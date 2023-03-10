@@ -1,7 +1,7 @@
 import type { NextApiHandler, NextApiResponse } from 'next/types';
 
 import { getFollowingByUsername } from '@/lib/v1/users';
-import { PaginatedFollowing } from '@/types';
+import { PaginatedFollowing } from '@/types/user-relationships';
 import { allowApiMethods, catchApiResponse, getQueryParam } from '@/utils';
 
 type GetResponse = NextApiResponse<PaginatedFollowing> | void;

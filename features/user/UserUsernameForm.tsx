@@ -7,7 +7,7 @@ import { TextField } from '@/components/molecules';
 import { useDebounce } from '@/hooks';
 import { checkIfUsernameExists } from '@/lib/v1/api/users';
 import { styled } from '@/styles';
-import { User } from '@/types';
+import { User } from '@/types/users';
 
 export type UserUsernameFormValues = {
   username: string;

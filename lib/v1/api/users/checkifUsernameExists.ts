@@ -1,4 +1,4 @@
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong checking if username exists`;

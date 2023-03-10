@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { PaginatedActivity } from '@/types';
+import { PaginatedActivity } from '@/types/activity';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting your activity feed`;

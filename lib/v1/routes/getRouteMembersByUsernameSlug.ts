@@ -1,6 +1,8 @@
 import safeJsonStringify from 'safe-json-stringify';
 
-import { PaginatedMembers, Route, User } from '@/types';
+import { PaginatedMembers } from '@/types/members';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

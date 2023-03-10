@@ -1,5 +1,6 @@
-import { MapFeature } from '@/types';
 import { UseFieldArrayUpdate } from 'react-hook-form';
+
+import { MapFeature } from '@/types/maps';
 import { mapMapFeatureToFeatureValues, RouteFormValues } from '../../helpers';
 
 export const addLayerFeature = (

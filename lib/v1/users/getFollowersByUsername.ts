@@ -1,6 +1,7 @@
 import safeJsonStringify from 'safe-json-stringify';
 
-import { PaginatedFollowers, User } from '@/types';
+import { PaginatedFollowers } from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

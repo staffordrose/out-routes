@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { styled } from '@/styles';
-import { Route, RouteFeature, RouteLayer } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import { parseMapBounds } from '@/utils';
 import { MapLayersFeatures } from './components';
 import { useMap } from './hooks';

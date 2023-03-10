@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-import { Controls, MapFeature, Viewport } from '@/types';
+import { Controls, MapFeature, Viewport } from '@/types/maps';
 
 export type MapState = {
   mapStyle: string;

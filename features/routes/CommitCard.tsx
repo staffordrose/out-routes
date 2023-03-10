@@ -3,7 +3,9 @@ import { BiCalendarAlt } from 'react-icons/bi';
 
 import { Avatar, Flex, IconButtonLink, Link, Text } from '@/components/atoms';
 import { Card, HoverCard } from '@/components/molecules';
-import { Commit, Route, User } from '@/types';
+import { Commit } from '@/types/commits';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { displayDate } from '@/utils';
 import { UserCard } from '../users';
 

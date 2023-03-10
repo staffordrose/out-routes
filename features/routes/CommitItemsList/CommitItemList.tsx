@@ -16,7 +16,7 @@ import {
   RouteCommitItem as RouteCommitItemT,
   RouteFeatureCommitItem as RouteFeatureCommitItemT,
   RouteLayerCommitItem as RouteLayerCommitItemT,
-} from '@/types';
+} from '@/types/commits';
 import { RouteCommitItem } from './RouteCommitItem';
 import { RouteFeatureCommitItem } from './RouteFeatureCommitItem';
 import { RouteLayerCommitItem } from './RouteLayerCommitItem';

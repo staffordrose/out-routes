@@ -1,4 +1,4 @@
-import { RouteLayer } from '@/types';
+import { RouteLayer } from '@/types/routes';
 import { LayerValues, RouteFormValues } from '../../helpers';
 
 export const getLayerValuesById = (

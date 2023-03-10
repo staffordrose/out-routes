@@ -2,7 +2,7 @@ import type { NextApiHandler, NextApiResponse } from 'next/types';
 import { unstable_getServerSession } from 'next-auth';
 
 import { searchRoutesAndUsers } from '@/lib/v1/search';
-import { SearchRecord } from '@/types';
+import { SearchRecord } from '@/types/search';
 import {
   allowApiMethods,
   catchApiResponse,

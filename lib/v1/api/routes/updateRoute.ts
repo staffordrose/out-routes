@@ -1,4 +1,6 @@
-import { Commit, PartialRouteLayersFeatures, Route, User } from '@/types';
+import { Commit } from '@/types/commits';
+import { PartialRouteLayersFeatures, Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong updating the route`;

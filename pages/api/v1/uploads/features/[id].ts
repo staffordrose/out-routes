@@ -11,7 +11,7 @@ import { MemberRoles, memberRoles } from '@/data/routes';
 import { getRouteIdByFeatureId } from '@/lib/v1/routes';
 import { uploadFeatureImage } from '@/lib/v1/uploads';
 import { getAuthRouteMemberRoleById, getUserIdOrThrow } from '@/lib/v1/user';
-import { RouteFeatureImageIdUrls } from '@/types';
+import { RouteFeatureImageIdUrls } from '@/types/routes';
 import {
   allowApiMethods,
   catchApiResponse,

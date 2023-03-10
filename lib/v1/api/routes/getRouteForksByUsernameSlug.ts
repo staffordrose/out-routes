@@ -1,6 +1,7 @@
 import queryString from 'query-string';
 
-import { PaginatedRoutes, Route, User } from '@/types';
+import { PaginatedRoutes, Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route forks`;

@@ -1,7 +1,7 @@
 import type { NextApiHandler, NextApiResponse } from 'next/types';
 
 import { getRouteFavoritesByUsernameSlug } from '@/lib/v1/routes';
-import { PaginatedFavorites } from '@/types';
+import { PaginatedFavorites } from '@/types/favorites';
 import { allowApiMethods, catchApiResponse, getQueryParam } from '@/utils';
 
 type GetResponse = NextApiResponse<PaginatedFavorites> | void;

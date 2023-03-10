@@ -8,7 +8,10 @@ import {
   RouteFeatureActions,
   routeFeatureActions,
 } from '@/data/routes';
-import { Contributor, Favorite, Route, User } from '@/types';
+import { Contributor } from '@/types/contributors';
+import { Favorite } from '@/types/favorites';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { deleteFeatureImage, deleteRouteImages } from '../uploads';

@@ -13,7 +13,8 @@ import {
   TruncatedText,
 } from '@/components/atoms';
 import { Card } from '@/components/molecules';
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 
 export type RouteCardProps = {
   is_private: Route['is_private'];

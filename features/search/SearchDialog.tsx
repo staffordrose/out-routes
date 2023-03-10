@@ -6,7 +6,8 @@ import { Box, Dialog, Flex, Input, Text } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { useDebounce, usePrevious } from '@/hooks';
 import { searchRoutesAndUsers } from '@/lib/v1/api/search';
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { RouteCard } from '../routes';
 import { UserCard } from '../users';
 

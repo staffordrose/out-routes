@@ -1,6 +1,7 @@
-import { GeocodingResponse } from '@/types';
-import { getJson, StatusError } from '@/utils';
 import queryString from 'query-string';
+
+import { GeocodingResponse } from '@/types/maps';
+import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong with your search`;
 

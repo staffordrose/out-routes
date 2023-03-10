@@ -2,7 +2,8 @@ import { Session } from 'next-auth';
 import safeJsonStringify from 'safe-json-stringify';
 
 import { databaseSchema } from '@/data/db';
-import { RouteSearchRecord, SearchRecord, User } from '@/types';
+import { RouteSearchRecord, SearchRecord } from '@/types/search';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { getUserId } from '../user';

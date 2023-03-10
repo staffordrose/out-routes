@@ -1,7 +1,7 @@
 import { Session } from 'next-auth';
 import safeJsonStringify from 'safe-json-stringify';
 
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

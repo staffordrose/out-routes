@@ -6,15 +6,14 @@ import {
   routeFeatureActions,
   routeLayerActions,
 } from '@/data/routes';
+import { Commit, RouteFeatureCommitItem } from '@/types/commits';
+import { Pull } from '@/types/pulls';
 import {
-  Commit,
   PartialRouteLayersFeatures,
-  Pull,
   Route,
-  RouteFeatureCommitItem,
   RouteLayersFeatures,
-  User,
-} from '@/types';
+} from '@/types/routes';
+import { User } from '@/types/users';
 import { compareCommits, sanitizeAndEscape, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { deleteFeatureImage } from '../uploads';

@@ -11,7 +11,7 @@ import {
   ToastContents,
 } from '@/components/atoms';
 import { styled } from '@/styles';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { ProfileImageUploader } from '../uploads';
 import { deleteAccount } from '@/lib/v1/api/user';
 

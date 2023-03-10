@@ -1,6 +1,7 @@
 import queryString from 'query-string';
 
-import { PaginatedFollowing, User } from '@/types';
+import { PaginatedFollowing } from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting following`;

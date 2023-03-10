@@ -28,7 +28,8 @@ import {
   getFollowersByUsername as getFollowersByUsernameGSSP,
   getUserByUsername as getUserByUsernameGSSP,
 } from '@/lib/v1/users';
-import { PaginatedFollowers, User } from '@/types';
+import { PaginatedFollowers } from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { getQueryParam, shallowPush } from '@/utils';
 import { authOptions } from '../api/auth/[...nextauth]';
 

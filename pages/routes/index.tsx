@@ -14,7 +14,8 @@ import { useQueryParam } from '@/hooks';
 import { getRoutesByUsername } from '@/lib/v1/api/users';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
 import { getRoutesByUsername as getRoutesByUsernameGSSP } from '@/lib/v1/users';
-import { PaginatedRoutes, User } from '@/types';
+import { PaginatedRoutes } from '@/types/routes';
+import { User } from '@/types/users';
 import { shallowPush } from '@/utils';
 import { authOptions } from '../api/auth/[...nextauth]';
 

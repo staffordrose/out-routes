@@ -1,4 +1,6 @@
-import { Member, Route, User } from '@/types';
+import { Member } from '@/types/members';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

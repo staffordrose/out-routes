@@ -1,4 +1,5 @@
-import { Route, RouteLayersFeatures, User } from '@/types';
+import { Route, RouteLayersFeatures } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route`;

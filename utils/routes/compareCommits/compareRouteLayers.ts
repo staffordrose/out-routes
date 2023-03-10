@@ -4,7 +4,8 @@ import pick from 'lodash.pick';
 import { nanoid } from 'nanoid';
 
 import { RouteLayerActions, routeLayerActions } from '@/data/routes';
-import { PartialRouteLayer, RouteLayer, RouteLayerCommitItem } from '@/types';
+import { RouteLayerCommitItem } from '@/types/commits';
+import { PartialRouteLayer, RouteLayer } from '@/types/routes';
 import { arePropertiesEqual, hasProperty, PropertyTypes } from './helpers';
 
 export const compareRouteLayers = (

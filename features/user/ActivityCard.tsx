@@ -4,7 +4,7 @@ import { BiTime } from 'react-icons/bi';
 import { Flex, Link, Text } from '@/components/atoms';
 import { ActivityActions } from '@/data/activity';
 import { styled } from '@/styles';
-import { Activity } from '@/types';
+import { Activity } from '@/types/activity';
 import { displayRelativeTime, isJsonString } from '@/utils';
 import { RouteCard } from '../routes';
 import { UserCard } from '../users';

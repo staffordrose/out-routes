@@ -5,7 +5,9 @@ import { Avatar, Flex, IconButtonLink } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { HoverCard } from '@/components/molecules';
 import { getRouteContributorsByUsernameSlug } from '@/lib/v1/api/routes';
-import { PaginatedContributors, Route, User } from '@/types';
+import { PaginatedContributors } from '@/types/contributors';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { UserCard } from '../users';
 
 const QUERY_SIZE = 20;

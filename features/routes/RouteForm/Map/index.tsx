@@ -4,7 +4,8 @@ import { LngLatBounds } from 'mapbox-gl';
 
 import { Dialog } from '@/components/atoms';
 import { styled } from '@/styles';
-import { MapFeature, Route } from '@/types';
+import { MapFeature } from '@/types/maps';
+import { Route } from '@/types/routes';
 import { LayerValues, RouteFormValues } from '../helpers';
 import { FeatureEdit, MapLayersFeatures, Search } from './components';
 import { useMap } from './hooks';

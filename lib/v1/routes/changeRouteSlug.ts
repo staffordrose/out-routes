@@ -1,6 +1,7 @@
 import slugify from 'slugify';
 
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError, validateSlug } from '@/utils';
 import { getXataClient } from '@/xata';
 

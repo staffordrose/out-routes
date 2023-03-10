@@ -1,7 +1,7 @@
 import type { LngLatBoundsLike } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
-import { LngLat } from '@/types';
+import { LngLat } from '@/types/maps';
 
 export const getMapBoundsFromCoordinates = (
   coordinates: LngLat[]

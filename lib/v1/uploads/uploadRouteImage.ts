@@ -1,5 +1,6 @@
 import streamifier from 'streamifier';
-import { Route, RouteImageIdUrls } from '@/types';
+
+import { Route, RouteImageIdUrls } from '@/types/routes';
 import { createAlphaNumericId, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { cloudinary } from '../../server';

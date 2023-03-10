@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Route, RouteFeature, RouteLayer } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import { createAlphaNumericId, parseMapBounds } from '@/utils';
 import { DetailsFields } from './DetailsFields';
 import {

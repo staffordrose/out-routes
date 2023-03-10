@@ -1,5 +1,8 @@
 import queryString from 'query-string';
-import { PaginatedCommits, Route, User } from '@/types';
+
+import { PaginatedCommits } from '@/types/commits';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route history`;

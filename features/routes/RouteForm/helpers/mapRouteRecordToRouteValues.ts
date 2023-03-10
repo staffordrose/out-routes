@@ -1,6 +1,6 @@
 import { CountryCodes } from '@/data/general';
 import { ActivityTypes } from '@/data/routes';
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { RouteValues } from './types';
 
 export const mapRouteRecordToRouteValues = (route: Route): RouteValues => {

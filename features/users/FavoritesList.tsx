@@ -4,7 +4,9 @@ import dayjs from 'dayjs';
 import { GridProps } from '@/components/atoms';
 import { CardList } from '@/components/organisms';
 import { monthLabels } from '@/data/general';
-import { Favorite, Route, User, UsernameAndSlug } from '@/types';
+import { Favorite } from '@/types/favorites';
+import { Route, UsernameAndSlug } from '@/types/routes';
+import { User } from '@/types/users';
 import { RouteCard, RouteCardProps } from '../routes';
 
 type FavoritesListProps = {

@@ -6,7 +6,7 @@ import {
   getRouteVisibilityByUsernameSlug,
 } from '@/lib/v1/routes';
 import { getUserIdOrThrow, isAuthRouteMember } from '@/lib/v1/user';
-import { CommitWithItems } from '@/types';
+import { CommitWithItems } from '@/types/commits';
 import {
   allowApiMethods,
   catchApiResponse,

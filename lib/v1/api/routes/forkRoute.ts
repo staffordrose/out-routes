@@ -1,4 +1,5 @@
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong forking the route`;

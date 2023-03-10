@@ -3,7 +3,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 
 import { addRoute, getRoutes } from '@/lib/v1/routes';
 import { getUserPropertiesOrThrow } from '@/lib/v1/user';
-import { PaginatedRoutes, Route } from '@/types';
+import { PaginatedRoutes, Route } from '@/types/routes';
 import { allowApiMethods, catchApiResponse, getQueryParam } from '@/utils';
 import { authOptions } from '../../auth/[...nextauth]';
 

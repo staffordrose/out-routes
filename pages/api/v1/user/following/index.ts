@@ -2,7 +2,7 @@ import type { NextApiHandler, NextApiResponse } from 'next/types';
 import { unstable_getServerSession } from 'next-auth';
 
 import { getFollowingIds, getUserIdOrThrow } from '@/lib/v1/user';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { allowApiMethods, catchApiResponse } from '@/utils';
 import { authOptions } from '../../../auth/[...nextauth]';
 

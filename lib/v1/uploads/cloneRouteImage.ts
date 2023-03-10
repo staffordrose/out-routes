@@ -1,4 +1,4 @@
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { createAlphaNumericId, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { cloudinary } from '../../server';

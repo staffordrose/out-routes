@@ -2,7 +2,7 @@ import { NextRouter } from 'next/router';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { updateUser } from '../../api/user';
 
 export type UseUpdateUserMutationProps = {

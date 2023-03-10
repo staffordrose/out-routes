@@ -9,7 +9,7 @@ import { sitename } from '@/data/site';
 import { SearchDialog } from '@/features/search';
 import { getUser } from '@/lib/v1/api/user';
 import { styled } from '@/styles';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import {
   Avatar,
   ButtonLink,

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { routeActions } from '@/data/routes';
-import { RouteCommitItem as RouteCommitItemT } from '@/types';
+import { RouteCommitItem as RouteCommitItemT } from '@/types/commits';
 import {
   ActivityType,
   Country,

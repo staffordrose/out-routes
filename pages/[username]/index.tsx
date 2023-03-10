@@ -63,14 +63,13 @@ import {
   getUserByUsername as getUserByUsernameGSSP,
   getRoutesByUsername as getRoutesByUsernameGSSP,
 } from '@/lib/v1/users';
+import { PaginatedFavorites } from '@/types/favorites';
+import { PaginatedRoutes, UsernameAndSlug } from '@/types/routes';
 import {
-  PaginatedFavorites,
   PaginatedFollowers,
   PaginatedFollowing,
-  PaginatedRoutes,
-  User,
-  UsernameAndSlug,
-} from '@/types';
+} from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { getQueryParam, shallowPush } from '@/utils';
 import { authOptions } from '../api/auth/[...nextauth]';
 

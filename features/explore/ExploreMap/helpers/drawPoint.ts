@@ -1,7 +1,7 @@
 import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 
 export const drawPoint = (route: Route): mapboxgl.AnyLayer => {
   return {

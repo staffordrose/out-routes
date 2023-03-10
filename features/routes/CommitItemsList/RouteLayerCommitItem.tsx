@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { routeLayerActions } from '@/data/routes';
-import { RouteLayerCommitItem as RouteLayerCommitItemT } from '@/types';
+import { RouteLayerCommitItem as RouteLayerCommitItemT } from '@/types/commits';
 import { Color, Order, Quotes, Symbol } from './properties';
 import { CommitItem, Row } from './shared';
 

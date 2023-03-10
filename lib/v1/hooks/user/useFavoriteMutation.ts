@@ -1,7 +1,8 @@
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
-import { User, UsernameAndSlug } from '@/types';
+import { UsernameAndSlug } from '@/types/routes';
+import { User } from '@/types/users';
 import { favoriteRoute } from '../../api/user';
 
 export type UseFavoriteMutationProps = {

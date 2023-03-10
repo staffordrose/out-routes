@@ -16,7 +16,7 @@ import {
   useUploadProfileImageMutation,
 } from '@/lib/v1/hooks/uploads';
 import { styled } from '@/styles';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { ProfileImageForm } from '../user';
 
 export type ProfileImageUploaderProps = {

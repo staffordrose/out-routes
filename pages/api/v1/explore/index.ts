@@ -1,7 +1,7 @@
 import type { NextApiHandler, NextApiResponse } from 'next/types';
 
 import { getExploreRoutes } from '@/lib/v1/explore';
-import { RouteLayersFeatures } from '@/types';
+import { RouteLayersFeatures } from '@/types/routes';
 import { allowApiMethods, catchApiResponse, getQueryParam } from '@/utils';
 
 type GetResponse = NextApiResponse<RouteLayersFeatures> | void;

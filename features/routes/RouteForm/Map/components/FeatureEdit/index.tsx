@@ -8,7 +8,7 @@ import { SelectField, TextareaField, TextField } from '@/components/molecules';
 import { colorSelectOptions } from '@/data/general';
 import { GeometryTypeNames, symbolSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
-import { MapFeature, PopupState } from '@/types';
+import { MapFeature, PopupState } from '@/types/maps';
 import { LayerValues, RouteFormValues } from '../../../helpers';
 import { UseFeatureEditForm } from './hooks';
 

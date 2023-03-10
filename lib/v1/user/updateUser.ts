@@ -1,6 +1,6 @@
 import safeJsonStringify from 'safe-json-stringify';
 
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { sanitizeAndEscape, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

@@ -1,5 +1,11 @@
 import { GeometryTypeNames } from '@/data/routes';
-import { GPXMetadata, GPXOptions, LngLat, MapFeature, MapLayer } from '@/types';
+import {
+  GPXMetadata,
+  GPXOptions,
+  LngLat,
+  MapFeature,
+  MapLayer,
+} from '@/types/maps';
 
 export class GPXGenerator {
   metadata: GPXMetadata;

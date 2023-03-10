@@ -1,7 +1,7 @@
 import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
-import { MapFeature, MapLayer } from '@/types';
+import { MapFeature, MapLayer } from '@/types/maps';
 
 export const drawPoint = (
   layer: MapLayer,

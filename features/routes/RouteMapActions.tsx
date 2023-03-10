@@ -3,7 +3,8 @@ import { BiCaretDownCircle } from 'react-icons/bi';
 
 import { Button, DropdownMenu } from '@/components/atoms';
 import { styled } from '@/styles';
-import { LngLat, Route, RouteFeature, RouteLayer } from '@/types';
+import { LngLat } from '@/types/maps';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import {
   getAllCoordinatesFromMapLayers,
   getMapBoundsFromCoordinates,

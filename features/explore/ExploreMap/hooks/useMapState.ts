@@ -1,6 +1,7 @@
 import { useReducer } from 'react';
 
-import { Controls, Route, Viewport } from '@/types';
+import { Controls, Viewport } from '@/types/maps';
+import { Route } from '@/types/routes';
 
 export type MapState = {
   isMapLoaded: boolean;

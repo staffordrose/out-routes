@@ -1,5 +1,6 @@
 import { ActivityActions } from '@/data/activity';
-import { User, UserRelationship } from '@/types';
+import { UserRelationship } from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { addActivityRecords } from './addActivityRecords';

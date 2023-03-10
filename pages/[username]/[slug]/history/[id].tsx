@@ -25,11 +25,8 @@ import {
   getUserOrThrow as getUserOrThrowGSSP,
   isAuthRouteMember as isAuthRouteMemberGSSP,
 } from '@/lib/v1/user';
-import {
-  CommitWithItems,
-  CompareCommitItem,
-  RouteLayersFeatures,
-} from '@/types';
+import { CommitWithItems, CompareCommitItem } from '@/types/commits';
+import { RouteLayersFeatures } from '@/types/routes';
 import { displayDate, getQueryParam } from '@/utils';
 import { authOptions } from '../../../api/auth/[...nextauth]';
 

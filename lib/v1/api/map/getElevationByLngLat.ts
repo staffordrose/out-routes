@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { LngLat } from '@/types';
+import { LngLat } from '@/types/maps';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong attempting to get the elevation`;

@@ -2,7 +2,7 @@ import { Position } from 'geojson';
 import flatten from 'lodash.flatten';
 
 import { GeometryTypeNames, geometryTypes, GeometryTypes } from '@/data/routes';
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 import { FeatureValues } from './types';
 
 export const mapMapFeatureToFeatureValues = (

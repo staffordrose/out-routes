@@ -1,6 +1,8 @@
 import { CountryCodes } from '@/data/general';
 import { ActivityTypes } from '@/data/routes';
-import { MapFeature, Route, RouteFeature, RouteLayer, User } from '@/types';
+import { MapFeature } from '@/types/maps';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
+import { User } from '@/types/users';
 
 export type RouteValues = {
   files: File[];

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Map, Popup as PopupT } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { Popup, PopupState } from '../components';
 import { useDrawFeatures, useMapState, useSetupMap } from '.';
 

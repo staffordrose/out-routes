@@ -3,7 +3,8 @@ import { LngLatBounds, Map } from 'mapbox-gl';
 
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
+import { PopupState } from '@/types/maps';
+import { RouteFeature, RouteLayer } from '@/types/routes';
 import { drawFeatures } from '../helpers';
 import { MapState } from './useMapState';
 

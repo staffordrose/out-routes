@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { PaginatedUsers } from '@/types';
+import { PaginatedUsers } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting users`;

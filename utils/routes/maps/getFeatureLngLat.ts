@@ -3,7 +3,7 @@ import centerOfMass from '@turf/center-of-mass';
 import * as turf from '@turf/helpers';
 
 import { GeometryTypeNames } from '@/data/routes';
-import type { LngLat, MapFeature } from '@/types';
+import { LngLat, MapFeature } from '@/types/maps';
 import { average, isEven, roundToDecimalCount } from '../../arithmetic';
 
 export const getFeatureLngLat = (feature: MapFeature): LngLat => {

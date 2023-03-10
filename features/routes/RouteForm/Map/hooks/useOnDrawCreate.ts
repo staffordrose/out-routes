@@ -5,7 +5,7 @@ import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
-import { MapFeature, MapLayer } from '@/types';
+import { MapFeature, MapLayer } from '@/types/maps';
 import { createAlphaNumericId } from '@/utils';
 import { mapMapFeatureToFeatureValues, RouteFormValues } from '../../helpers';
 import { addLayerFeature, handleFeatureOnDraw } from '../helpers';

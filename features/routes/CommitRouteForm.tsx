@@ -8,7 +8,7 @@ import { Button, Flex } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { TextField } from '@/components/molecules';
 import { styled } from '@/styles';
-import { CompareCommitItem } from '@/types';
+import { CompareCommitItem } from '@/types/commits';
 import { CommitItemsList } from './CommitItemsList';
 
 export type CommitRouteFormValues = {

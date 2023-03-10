@@ -1,5 +1,5 @@
 import { GeometryTypes } from '@/data/routes';
-import { Route, RouteFeature, RouteLayer } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import {
   createAlphaNumericId,
   getAllCoordinatesFromMapLayers,

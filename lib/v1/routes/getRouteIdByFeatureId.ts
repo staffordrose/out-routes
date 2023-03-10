@@ -1,4 +1,4 @@
-import { Route, RouteFeature } from '@/types';
+import { Route, RouteFeature } from '@/types/routes';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

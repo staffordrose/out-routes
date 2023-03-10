@@ -19,7 +19,7 @@ import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
 import { getUser } from '@/lib/v1/api/user';
 import { useAddRouteMutation } from '@/lib/v1/hooks/routes';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 const AddRoute = () => {

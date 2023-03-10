@@ -6,7 +6,7 @@ import { Feedback } from '@/components/layout';
 import { Button } from '@/components/atoms';
 import { geocodingDataTypeIcons, GeocodingDataTypes } from '@/data/routes';
 import { geocodeQuery } from '@/lib/v1/api/map';
-import { LngLat } from '@/types';
+import { LngLat } from '@/types/maps';
 
 type GeocodeResponseProps = {
   query: string;

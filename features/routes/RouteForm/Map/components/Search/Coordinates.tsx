@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { BiTargetLock } from 'react-icons/bi';
 
 import { Button } from '@/components/atoms';
-import { LngLat } from '@/types';
+import { LngLat } from '@/types/maps';
 import { roundToDecimalCount } from '@/utils';
 
 type CoordinatesProps = {

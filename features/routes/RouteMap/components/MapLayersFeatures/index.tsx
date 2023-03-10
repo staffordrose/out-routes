@@ -3,7 +3,8 @@ import type { Map } from 'mapbox-gl';
 
 import { List } from '@/components/atoms';
 import { styled } from '@/styles';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
+import { PopupState } from '@/types/maps';
+import { RouteFeature, RouteLayer } from '@/types/routes';
 import { Layer } from './Layer';
 
 type MapLayersFeaturesProps = {

@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { PaginatedRoutes } from '@/types';
+import { PaginatedRoutes } from '@/types/routes';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the routes`;

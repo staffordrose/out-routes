@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import flatten from 'lodash.flatten';
 
 import { styled } from '@/styles';
-import { PaginatedRoutes } from '@/types';
+import { PaginatedRoutes } from '@/types/routes';
 import { useMap } from './hooks';
 import { Button } from '@/components/atoms';
 

@@ -3,7 +3,7 @@ import { QueryClient, useMutation } from '@tanstack/react-query';
 import queryString from 'query-string';
 
 import { ToastContents } from '@/components/atoms';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { getRelativePath } from 'utils';
 import { changeUsername } from '../../api/user';
 

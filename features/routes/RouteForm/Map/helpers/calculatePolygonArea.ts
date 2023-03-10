@@ -3,7 +3,7 @@ import * as turf from '@turf/helpers';
 
 import { GeometryTypeNames } from '@/data/routes';
 import { roundToDecimalCount } from '@/utils';
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 
 export const calculatePolygonArea = (feature: MapFeature): number => {
   if (feature.geometry.type !== GeometryTypeNames.Polygon) {

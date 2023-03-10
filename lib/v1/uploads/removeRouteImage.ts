@@ -1,4 +1,4 @@
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { ROUTE_IMAGE_SIZES } from '../uploads';

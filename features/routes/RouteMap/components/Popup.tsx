@@ -5,7 +5,7 @@ import { BiShapePolygon, BiShareAlt } from 'react-icons/bi';
 import { Heading, TruncatedText } from '@/components/atoms';
 import { GeometryTypeNames, SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 import { trimFeatureSymbolCode } from '@/utils';
 import { Area, Distance, Elevation } from '../../CommitItemsList';
 

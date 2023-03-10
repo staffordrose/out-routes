@@ -1,4 +1,4 @@
-import { RouteFeature, RouteFeatureImageIdUrls } from '@/types';
+import { RouteFeature, RouteFeatureImageIdUrls } from '@/types/routes';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong uploading the route feature image`;

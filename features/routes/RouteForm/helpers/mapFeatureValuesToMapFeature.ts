@@ -1,10 +1,10 @@
-import { MapFeature, RouteLayer } from '@/types';
-
 import {
   GeometryTypeNames,
   geometryTypeNames,
   GeometryTypes,
 } from '@/data/routes';
+import { MapFeature } from '@/types/maps';
+import { RouteLayer } from '@/types/routes';
 import { FeatureValues } from './types';
 
 // TODO: Add support for feature images

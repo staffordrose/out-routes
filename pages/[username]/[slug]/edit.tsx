@@ -42,7 +42,10 @@ import {
   getUserId as getUserIdGSSP,
   getUserOrThrow as getUserOrThrowGSSP,
 } from '@/lib/v1/user';
-import { PartialRouteLayersFeatures, RouteLayersFeatures } from '@/types';
+import {
+  PartialRouteLayersFeatures,
+  RouteLayersFeatures,
+} from '@/types/routes';
 import { compareCommits, getQueryParam } from '@/utils';
 import { authOptions } from '../../api/auth/[...nextauth]';
 

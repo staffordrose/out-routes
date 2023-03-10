@@ -13,7 +13,7 @@ import {
   TruncatedText,
 } from '@/components/atoms';
 import { Card } from '@/components/molecules';
-import { User } from '@/types';
+import { User } from '@/types/users';
 
 export type UserCardProps = {
   name: User['name'];

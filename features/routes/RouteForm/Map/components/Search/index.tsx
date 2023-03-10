@@ -20,7 +20,7 @@ import { ColorCodes } from '@/data/general';
 import { GeometryTypeNames, SymbolCodes } from '@/data/routes';
 import { useDebounce } from '@/hooks';
 import { styled } from '@/styles';
-import { LngLat, MapFeature, MapLayer } from '@/types';
+import { LngLat, MapFeature, MapLayer } from '@/types/maps';
 import { createAlphaNumericId } from '@/utils';
 import {
   LayerValues,

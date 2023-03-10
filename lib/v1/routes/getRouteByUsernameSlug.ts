@@ -1,6 +1,7 @@
 import safeJsonStringify from 'safe-json-stringify';
 
-import { Route, RouteLayersFeatures, User } from '@/types';
+import { Route, RouteLayersFeatures } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

@@ -31,7 +31,9 @@ import {
   getFavoritesByUsername as getFavoritesByUsernameGSSP,
   getUserByUsername as getUserByUsernameGSSP,
 } from '@/lib/v1/users';
-import { PaginatedFavorites, User, UsernameAndSlug } from '@/types';
+import { PaginatedFavorites } from '@/types/favorites';
+import { UsernameAndSlug } from '@/types/routes';
+import { User } from '@/types/users';
 import { getQueryParam, shallowPush } from '@/utils';
 import { authOptions } from '../api/auth/[...nextauth]';
 

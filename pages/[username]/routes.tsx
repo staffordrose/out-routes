@@ -31,7 +31,8 @@ import {
   getRoutesByUsername as getRoutesByUsernameGSSP,
   getUserByUsername as getUserByUsernameGSSP,
 } from '@/lib/v1/users';
-import { PaginatedRoutes, User, UsernameAndSlug } from '@/types';
+import { PaginatedRoutes, UsernameAndSlug } from '@/types/routes';
+import { User } from '@/types/users';
 import { getQueryParam, shallowPush } from '@/utils';
 import { authOptions } from '../api/auth/[...nextauth]';
 

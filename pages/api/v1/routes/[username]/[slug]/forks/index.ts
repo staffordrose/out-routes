@@ -11,7 +11,7 @@ import {
   getUserPropertiesOrThrow,
   isAuthRouteMember,
 } from '@/lib/v1/user';
-import { PaginatedRoutes, Route } from '@/types';
+import { PaginatedRoutes, Route } from '@/types/routes';
 import {
   allowApiMethods,
   catchApiResponse,

@@ -2,7 +2,7 @@ import truncate from '@turf/truncate';
 import * as turf from '@turf/helpers';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 
 export const truncateGeometryCoordinates = (
   feature: MapFeature

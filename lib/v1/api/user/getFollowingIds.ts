@@ -1,4 +1,4 @@
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting users that you are following`;

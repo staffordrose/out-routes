@@ -2,7 +2,8 @@ import safeJsonStringify from 'safe-json-stringify';
 import slugify from 'slugify';
 
 import { memberRoles, memberStatuses } from '@/data/routes';
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import {
   cloneRouteSlug,
   sanitizeAndEscape,

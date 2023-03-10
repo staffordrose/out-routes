@@ -1,6 +1,6 @@
 import safeJsonStringify from 'safe-json-stringify';
 
-import { Commit, CommitWithItems } from '@/types';
+import { Commit, CommitWithItems } from '@/types/commits';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

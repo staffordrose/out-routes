@@ -1,6 +1,6 @@
 import { ActivityActions } from '@/data/activity';
 import { databaseSchema } from '@/data/db';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { deleteActivityRecords } from './deleteActivityRecords';

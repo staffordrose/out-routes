@@ -1,7 +1,7 @@
 import type { NextApiHandler, NextApiResponse } from 'next/types';
 
 import { geocodeQuery } from '@/lib/v1/map';
-import { GeocodingResponse } from '@/types';
+import { GeocodingResponse } from '@/types/maps';
 import { allowApiMethods, catchApiResponse, getQueryParam } from '@/utils';
 
 type GetResponse = NextApiResponse<GeocodingResponse> | void;

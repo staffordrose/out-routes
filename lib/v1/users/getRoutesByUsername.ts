@@ -1,6 +1,7 @@
 import safeJsonStringify from 'safe-json-stringify';
 
-import { PaginatedRoutes, User } from '@/types';
+import { PaginatedRoutes } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

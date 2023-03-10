@@ -1,7 +1,7 @@
 import queryString from 'query-string';
 import { FeatureCollection } from 'geojson';
 
-import { LngLat } from '@/types';
+import { LngLat } from '@/types/maps';
 import { getJson, StatusError } from '@/utils';
 
 const mapboxGlAccessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN;

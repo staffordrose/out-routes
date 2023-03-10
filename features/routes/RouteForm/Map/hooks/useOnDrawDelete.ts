@@ -3,7 +3,7 @@ import { UseFieldArrayUpdate } from 'react-hook-form';
 import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 import { RouteFormValues } from '../../helpers';
 import { deleteLayerFeature, getLayerValuesById } from '../helpers';
 

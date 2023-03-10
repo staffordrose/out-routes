@@ -32,7 +32,9 @@ import {
   getUserOrThrow as getUserOrThrowGSSP,
   isAuthRouteMember as isAuthRouteMemberGSSP,
 } from '@/lib/v1/user';
-import { PaginatedContributors, RouteLayersFeatures, User } from '@/types';
+import { PaginatedContributors } from '@/types/contributors';
+import { RouteLayersFeatures } from '@/types/routes';
+import { User } from '@/types/users';
 import { getQueryParam, shallowPush } from '@/utils';
 import { authOptions } from '../../api/auth/[...nextauth]';
 

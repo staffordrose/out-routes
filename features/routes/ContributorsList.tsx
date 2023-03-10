@@ -4,7 +4,8 @@ import dayjs from 'dayjs';
 import { GridProps } from '@/components/atoms';
 import { CardList } from '@/components/organisms';
 import { monthLabels } from '@/data/general';
-import { Contributor, User } from '@/types';
+import { Contributor } from '@/types/contributors';
+import { User } from '@/types/users';
 import { UserCard, UserCardProps } from '../users';
 
 type ContributorsListProps = {

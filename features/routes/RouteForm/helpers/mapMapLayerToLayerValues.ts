@@ -1,6 +1,6 @@
 import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
-import { MapLayer } from '@/types';
+import { MapLayer } from '@/types/maps';
 import { LayerValues } from './types';
 import { mapMapFeatureToFeatureValues } from './mapMapFeatureToFeatureValues';
 

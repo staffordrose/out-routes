@@ -1,5 +1,7 @@
 import { ActivityActions } from '@/data/activity';
-import { Favorite, Route, User } from '@/types';
+import { Favorite } from '@/types/favorites';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { addActivityRecords } from './addActivityRecords';

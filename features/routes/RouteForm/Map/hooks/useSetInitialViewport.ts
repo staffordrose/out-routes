@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect } from 'react';
 import { LngLatBounds, Map } from 'mapbox-gl';
 
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 
 type UseSetInitialViewportProps = {
   routeId?: Route['id'];

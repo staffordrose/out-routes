@@ -3,7 +3,7 @@ import * as turf from '@turf/helpers';
 import { Position } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
-import type { MapFeature, MapLayer } from '@/types';
+import { MapFeature, MapLayer } from '@/types/maps';
 import { roundToDecimalCount } from '../../arithmetic';
 
 export const getMapEndLngLatEle = (

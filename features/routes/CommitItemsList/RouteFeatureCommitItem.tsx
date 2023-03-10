@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { GeometryTypes, routeFeatureActions } from '@/data/routes';
-import { RouteFeatureCommitItem as RouteFeatureCommitItemT } from '@/types';
+import { RouteFeatureCommitItem as RouteFeatureCommitItemT } from '@/types/commits';
 import {
   Area,
   Color,

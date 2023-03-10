@@ -7,7 +7,7 @@ import { SEO } from '@/components/utility';
 import { ExploreMap } from '@/features/explore';
 import { useQueryParam } from '@/hooks';
 import { getExploreRoutes } from '@/lib/v1/api/explore';
-import { PaginatedRoutes } from '@/types';
+import { PaginatedRoutes } from '@/types/routes';
 
 const QUERY_SIZE = 20;
 const DEFAULT_BOUNDS = JSON.stringify([

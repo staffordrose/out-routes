@@ -29,7 +29,7 @@ import {
 } from '@/data/routes';
 import { getElevationByLngLat } from '@/lib/v1/api/map';
 import { styled } from '@/styles';
-import { LngLat, MapFeature, MapLayer, PopupState } from '@/types';
+import { LngLat, MapFeature, MapLayer, PopupState } from '@/types/maps';
 import { createAlphaNumericId, GPXParser, readFile } from '@/utils';
 import {
   FeatureValues,

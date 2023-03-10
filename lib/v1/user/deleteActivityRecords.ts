@@ -1,4 +1,5 @@
-import { Activity, User } from '@/types';
+import { Activity } from '@/types/activity';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

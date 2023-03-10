@@ -1,7 +1,7 @@
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { unfollowUser } from '../../api/user';
 
 export type UseUnfollowMutationProps = {

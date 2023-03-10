@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { SearchRecord } from '@/types';
+import { SearchRecord } from '@/types/search';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong with your search`;

@@ -1,7 +1,7 @@
 import { Session } from 'next-auth';
 import { SelectableColumn } from '@xata.io/client';
 
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient, UsersRecord } from '@/xata';
 

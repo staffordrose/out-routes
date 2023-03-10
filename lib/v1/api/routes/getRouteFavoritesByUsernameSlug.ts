@@ -1,6 +1,8 @@
 import queryString from 'query-string';
 
-import { PaginatedFavorites, Route, User } from '@/types';
+import { PaginatedFavorites } from '@/types/favorites';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route stars`;

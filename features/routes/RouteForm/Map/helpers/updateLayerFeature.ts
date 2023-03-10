@@ -1,6 +1,6 @@
 import { UseFieldArrayUpdate } from 'react-hook-form';
 
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 import {
   LayerValues,
   mapMapFeatureToFeatureValues,

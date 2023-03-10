@@ -2,7 +2,7 @@ import distance from '@turf/distance';
 import * as turf from '@turf/helpers';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { MapFeature } from '@/types';
+import { MapFeature } from '@/types/maps';
 import { roundToDecimalCount } from '@/utils';
 
 export const calculateLineStringDistance = (feature: MapFeature): number => {

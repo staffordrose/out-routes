@@ -1,4 +1,6 @@
-import { Commit, CommitWithItems, Route, User } from '@/types';
+import { Commit, CommitWithItems } from '@/types/commits';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route history entry`;

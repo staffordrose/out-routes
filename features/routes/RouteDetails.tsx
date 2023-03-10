@@ -30,7 +30,8 @@ import { Feedback } from '@/components/layout';
 import { countries, CountryCodes } from '@/data/general';
 import { ActivityTypes, activityTypes } from '@/data/routes';
 import { styled } from '@/styles';
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { displayDate } from '@/utils';
 import { RouteContributors } from './RouteContributors';
 

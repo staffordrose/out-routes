@@ -1,6 +1,7 @@
 import queryString from 'query-string';
 
-import { PaginatedFollowers, User } from '@/types';
+import { PaginatedFollowers } from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting followers`;

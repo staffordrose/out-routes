@@ -34,12 +34,9 @@ import {
   getRoutesByUsername as getRoutesByUsernameGSSP,
   getUsers as getUsersGSSP,
 } from '@/lib/v1/users';
-import {
-  PaginatedActivity,
-  PaginatedRoutes,
-  PaginatedUsers,
-  User,
-} from '@/types';
+import { PaginatedActivity } from '@/types/activity';
+import { PaginatedRoutes } from '@/types/routes';
+import { PaginatedUsers, User } from '@/types/users';
 import { authOptions } from './api/auth/[...nextauth]';
 
 const QUERY_SIZE = 12;

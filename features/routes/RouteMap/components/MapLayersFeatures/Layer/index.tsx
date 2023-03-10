@@ -4,7 +4,8 @@ import type { Map } from 'mapbox-gl';
 import { TruncatedText } from '@/components/atoms';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
-import { PopupState, RouteFeature, RouteLayer } from '@/types';
+import { PopupState } from '@/types/maps';
+import { RouteFeature, RouteLayer } from '@/types/routes';
 import { LayerFeatures } from './LayerFeatures';
 
 type LayerProps = {

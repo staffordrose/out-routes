@@ -1,7 +1,7 @@
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { followUser } from '../../api/user';
 
 export type UseFollowMutationProps = {

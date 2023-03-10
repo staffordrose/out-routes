@@ -28,7 +28,7 @@ import {
   symbolIcons,
 } from '@/data/routes';
 import { styled } from '@/styles';
-import { LngLat, MapFeature, PopupState } from '@/types';
+import { LngLat, MapFeature, PopupState } from '@/types/maps';
 import { getFeatureLngLat, getMapBoundsFromCoordinates } from '@/utils';
 import {
   FeatureValues,

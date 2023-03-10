@@ -10,7 +10,7 @@ import formidable from 'formidable';
 import { MemberRoles, memberRoles } from '@/data/routes';
 import { uploadRouteImage } from '@/lib/v1/uploads';
 import { getAuthRouteMemberRoleById, getUserIdOrThrow } from '@/lib/v1/user';
-import { RouteImageIdUrls } from '@/types';
+import { RouteImageIdUrls } from '@/types/routes';
 import {
   allowApiMethods,
   catchApiResponse,

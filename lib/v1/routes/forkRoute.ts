@@ -2,7 +2,8 @@ import safeJsonStringify from 'safe-json-stringify';
 
 import { ActivityActions } from '@/data/activity';
 import { commitActions, memberRoles, memberStatuses } from '@/data/routes';
-import { Route, RouteFeature, User } from '@/types';
+import { Route, RouteFeature } from '@/types/routes';
+import { User } from '@/types/users';
 import { cloneRouteSlug, StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { cloneFeatureImage, cloneRouteImage } from '../uploads';

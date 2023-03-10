@@ -9,7 +9,7 @@ import {
 
 import { Icon, Image, Separator } from '@/components/atoms';
 import { Container, Footer, UnauthenticatedHeader } from '@/components/layout';
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { RouteCard } from '../../routes';
 import { HeroSection } from './HeroSection';
 import { HorizontalList } from './HorizontalList';

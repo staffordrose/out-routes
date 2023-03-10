@@ -5,7 +5,7 @@ import { BiShapePolygon } from 'react-icons/bi';
 
 import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
-import { MapFeature, PopupState } from '@/types';
+import { MapFeature, PopupState } from '@/types/maps';
 import { LayerValues, RouteFormValues } from '../../../../../helpers';
 import { Feature } from './Feature';
 

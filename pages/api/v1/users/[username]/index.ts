@@ -1,7 +1,7 @@
 import type { NextApiHandler, NextApiResponse } from 'next/types';
 
 import { getUserByUsername } from '@/lib/v1/users';
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { allowApiMethods, catchApiResponse, getQueryParam } from '@/utils';
 
 type GetResponse = NextApiResponse<User> | void;

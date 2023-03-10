@@ -2,7 +2,7 @@ import { MutableRefObject, useCallback, useEffect } from 'react';
 import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
-import { MapFeature, MapLayer, PopupState } from '@/types';
+import { MapFeature, MapLayer, PopupState } from '@/types/maps';
 import { getFeatureLngLat } from '@/utils';
 import { LayerValues, RouteFormValues } from '../../helpers';
 import { MapStateActions } from './useMapState';

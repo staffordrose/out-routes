@@ -1,6 +1,7 @@
 import { ActivityActions } from '@/data/activity';
 import { databaseSchema } from '@/data/db';
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 import { deleteActivityRecords } from './deleteActivityRecords';

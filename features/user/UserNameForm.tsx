@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { Button } from '@/components/atoms';
 import { TextField } from '@/components/molecules';
 import { styled } from '@/styles';
-import { User } from '@/types';
+import { User } from '@/types/users';
 
 export type UserNameFormValues = {
   name: string;

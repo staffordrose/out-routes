@@ -5,7 +5,8 @@ import pick from 'lodash.pick';
 import { nanoid } from 'nanoid';
 
 import { RouteActions, routeActions } from '@/data/routes';
-import { PartialRoute, Route, RouteCommitItem } from '@/types';
+import { RouteCommitItem } from '@/types/commits';
+import { PartialRoute, Route } from '@/types/routes';
 // import { filterPropertiesViaDotNotation } from '../../data-structures';
 import { arePropertiesEqual, hasProperty, PropertyTypes } from './helpers';
 

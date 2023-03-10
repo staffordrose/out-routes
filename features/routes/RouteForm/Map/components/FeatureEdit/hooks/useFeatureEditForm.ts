@@ -3,7 +3,7 @@ import { UseFieldArrayUpdate } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { MapFeature, PopupState } from '@/types';
+import { MapFeature, PopupState } from '@/types/maps';
 import { getFeatureLngLat, trimFeatureSymbolCode } from '@/utils';
 import { LayerValues, RouteFormValues } from '../../../../helpers';
 import { updateLayerFeature } from '../../../helpers';

@@ -1,4 +1,4 @@
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong when adding the route`;

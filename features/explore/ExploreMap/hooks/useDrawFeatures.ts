@@ -3,7 +3,7 @@ import type { Map } from 'mapbox-gl';
 import type { FeatureCollection } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { Route } from '@/types';
+import { Route } from '@/types/routes';
 import { PopupState } from '../components';
 import { drawPoint } from '../helpers';
 import { MapState } from './useMapState';

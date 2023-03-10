@@ -1,7 +1,7 @@
 import { LngLatBoundsLike } from 'mapbox-gl';
 import safeJsonStringify from 'safe-json-stringify';
 
-import { PaginatedRoutes } from '@/types';
+import { PaginatedRoutes } from '@/types/routes';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

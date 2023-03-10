@@ -11,7 +11,8 @@ import {
   Text,
 } from '@/components/atoms';
 import { Card } from '@/components/molecules';
-import { LngLat, Route } from '@/types';
+import { LngLat } from '@/types/maps';
+import { Route } from '@/types/routes';
 
 export type PopupState = {
   center: LngLat;

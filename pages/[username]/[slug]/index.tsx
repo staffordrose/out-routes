@@ -37,7 +37,7 @@ import {
   isAuthFavoritingRoute as isAuthFavoritingRouteGSSP,
   isAuthRouteMember as isAuthRouteMemberGSSP,
 } from '@/lib/v1/user';
-import { RouteLayersFeatures, UsernameAndSlug } from '@/types';
+import { RouteLayersFeatures, UsernameAndSlug } from '@/types/routes';
 import { getQueryParam } from '@/utils';
 import { authOptions } from '../../api/auth/[...nextauth]';
 

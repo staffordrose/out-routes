@@ -1,6 +1,8 @@
 import queryString from 'query-string';
 
-import { PaginatedContributors, Route, User } from '@/types';
+import { PaginatedContributors } from '@/types/contributors';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route contributors`;

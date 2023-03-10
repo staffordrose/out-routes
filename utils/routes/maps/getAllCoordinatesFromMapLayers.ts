@@ -1,7 +1,7 @@
 import flatten from 'lodash.flatten';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { LngLat, MapLayer } from '@/types';
+import { LngLat, MapLayer } from '@/types/maps';
 
 export const getAllCoordinatesFromMapLayers = (
   mapLayers: MapLayer[]

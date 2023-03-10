@@ -1,6 +1,8 @@
 import queryString from 'query-string';
 
-import { PaginatedMembers, Route, User } from '@/types';
+import { PaginatedMembers } from '@/types/members';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { getJson, StatusError } from '@/utils';
 
 const fallbackError = `Something went wrong getting the route members`;

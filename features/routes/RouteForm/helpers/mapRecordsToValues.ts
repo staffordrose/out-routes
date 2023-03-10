@@ -1,4 +1,4 @@
-import { Route, RouteFeature, RouteLayer } from '@/types';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import { mapLayerFeaturesRecordsToLayerValues } from './mapLayerFeaturesRecordsToLayerValues';
 import { mapRouteRecordToRouteValues } from './mapRouteRecordToRouteValues';
 import { RouteFormValues } from './types';

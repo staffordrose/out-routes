@@ -3,7 +3,8 @@ import { LngLatBounds, Map } from 'mapbox-gl';
 import type { FeatureCollection } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { MapLayer, PopupState, RouteFeature, RouteLayer } from '@/types';
+import { MapLayer, PopupState } from '@/types/maps';
+import { RouteFeature, RouteLayer } from '@/types/routes';
 import { getFeatureLngLat, mapLayerRecordToMapLayer } from '@/utils';
 import { drawLineString } from './drawLineString';
 import { drawPoint } from './drawPoint';

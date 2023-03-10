@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import { TextareaField, TextField } from '@/components/molecules';
 import { styled } from '@/styles';
-import { User } from '@/types';
+import { User } from '@/types/users';
 
 export type UserFormValues = {
   name: string;

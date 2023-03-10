@@ -1,6 +1,7 @@
 import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
-import { MapLayer, RouteFeature, RouteLayer } from '@/types';
+import { MapLayer } from '@/types/maps';
+import { RouteFeature, RouteLayer } from '@/types/routes';
 import { FeatureCollection } from 'geojson';
 import { mapFeatureRecordToMapFeature } from './mapFeatureRecordToMapFeature';
 

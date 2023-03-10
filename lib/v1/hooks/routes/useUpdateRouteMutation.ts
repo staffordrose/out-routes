@@ -3,7 +3,8 @@ import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
 import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
-import { Route, User } from '@/types';
+import { Route } from '@/types/routes';
+import { User } from '@/types/users';
 import { updateRoute } from '../../api/routes';
 import { uploadRouteImage } from '../../api/uploads';
 

@@ -1,6 +1,6 @@
 import { Session } from 'next-auth';
 
-import { User } from '@/types';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 

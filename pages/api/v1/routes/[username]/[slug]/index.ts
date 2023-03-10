@@ -13,7 +13,7 @@ import {
   getAuthRouteMemberRoleByUsernameSlug,
 } from '@/lib/v1/user';
 import { MemberRoles, memberRoles } from '@/data/routes';
-import { Route, RouteLayersFeatures } from '@/types';
+import { Route, RouteLayersFeatures } from '@/types/routes';
 import {
   allowApiMethods,
   catchApiResponse,

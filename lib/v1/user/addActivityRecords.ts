@@ -2,7 +2,10 @@ import safeJsonStringify from 'safe-json-stringify';
 import isEmpty from 'lodash.isempty';
 
 import { ActivityActions, activityActionTables } from '@/data/activity';
-import { Favorite, Route, User, UserRelationship } from '@/types';
+import { Favorite } from '@/types/favorites';
+import { Route } from '@/types/routes';
+import { UserRelationship } from '@/types/user-relationships';
+import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
 
