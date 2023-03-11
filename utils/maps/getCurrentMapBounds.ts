@@ -1,7 +1,7 @@
 import type { MutableRefObject } from 'react';
 import type { LngLatBoundsLike, Map } from 'mapbox-gl';
 
-import { roundToDecimalCount } from '../../arithmetic';
+import { roundToDecimalCount } from '../arithmetic';
 
 export const getCurrentMapBounds = (
   map: MutableRefObject<Map | undefined>
