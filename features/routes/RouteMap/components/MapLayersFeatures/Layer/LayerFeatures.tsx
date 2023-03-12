@@ -16,7 +16,7 @@ import { RouteFeature, RouteLayer } from '@/types/routes';
 import {
   getFeatureCenter,
   getMapBoundsFromCoordinates,
-  mapFeatureRecordToMapFeature,
+  mapFeatureRecordToMapboxFeature,
 } from '@/utils';
 
 type LayerFeaturesProps = {
@@ -50,7 +50,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
   return (
     <StyledLayerFeatures>
       {features.map((feature) => {
-        const mapFeature = mapFeatureRecordToMapFeature(layer, feature);
+        const mapFeature = mapFeatureRecordToMapboxFeature(layer, feature);
 
         return (
           <FeatureButton

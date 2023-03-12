@@ -3,9 +3,9 @@ import flatten from 'lodash.flatten';
 
 import { GeometryTypeNames, geometryTypes, GeometryTypes } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
-import { FeatureValues } from './types';
+import { FeatureValues } from '../types';
 
-export const mapMapFeatureToFeatureValues = (
+export const mapMapboxFeatureToFeatureValues = (
   feature: MapFeature
 ): FeatureValues => {
   const { geometry } = feature;

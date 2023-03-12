@@ -5,10 +5,10 @@ import {
 } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
 import { RouteLayer } from '@/types/routes';
-import { FeatureValues } from './types';
+import { FeatureValues } from '../types';
 
 // TODO: Add support for feature images
-export const mapFeatureValuesToMapFeature = (
+export const mapFeatureValuesToMapboxFeature = (
   layer: Pick<RouteLayer, 'id'> & Partial<RouteLayer>,
   featureOrder: number,
   feature: FeatureValues

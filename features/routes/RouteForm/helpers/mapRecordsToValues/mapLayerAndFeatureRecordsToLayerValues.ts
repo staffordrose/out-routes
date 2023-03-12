@@ -2,9 +2,9 @@ import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import { mapFeatureRecordToFeatureValues } from './mapFeatureRecordToFeatureValues';
-import { LayerValues } from './types';
+import { LayerValues } from '../types';
 
-export const mapLayerFeaturesRecordsToLayerValues = (
+export const mapLayerAndFeatureRecordsToLayerValues = (
   layer: RouteLayer,
   features: RouteFeature[]
 ): LayerValues => {

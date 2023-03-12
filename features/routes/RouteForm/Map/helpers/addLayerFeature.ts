@@ -1,7 +1,10 @@
 import { UseFieldArrayUpdate } from 'react-hook-form';
 
 import { MapFeature } from '@/types/maps';
-import { mapMapFeatureToFeatureValues, RouteFormValues } from '../../helpers';
+import {
+  mapMapboxFeatureToFeatureValues,
+  RouteFormValues,
+} from '../../helpers';
 
 export const addLayerFeature = (
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>,
@@ -18,7 +21,7 @@ export const addLayerFeature = (
   if (!nextLayer || layerIndex === -1) return;
 
   nextLayer.features = (nextLayer.features || []).concat(
-    mapMapFeatureToFeatureValues(feature)
+    mapMapboxFeatureToFeatureValues(feature)
   );
 
   update(layerIndex, nextLayer);

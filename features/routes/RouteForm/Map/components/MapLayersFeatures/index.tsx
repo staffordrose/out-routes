@@ -40,7 +40,7 @@ import {
 import {
   FeatureValues,
   LayerValues,
-  mapMapFeatureToFeatureValues,
+  mapMapboxFeatureToFeatureValues,
   RouteFormValues,
 } from '../../../helpers';
 import {
@@ -230,7 +230,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
                           };
 
                           features.push(
-                            mapMapFeatureToFeatureValues(mapFeature)
+                            mapMapboxFeatureToFeatureValues(mapFeature)
                           );
                         }
                       );
@@ -310,7 +310,9 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
                         // truncate coordinates
                         mapFeature = truncateGeometryCoordinates(mapFeature);
 
-                        features.push(mapMapFeatureToFeatureValues(mapFeature));
+                        features.push(
+                          mapMapboxFeatureToFeatureValues(mapFeature)
+                        );
                       });
 
                       await Promise.all(routesPromiseArray);
@@ -388,7 +390,9 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
                         // truncate coordinates
                         mapFeature = truncateGeometryCoordinates(mapFeature);
 
-                        features.push(mapMapFeatureToFeatureValues(mapFeature));
+                        features.push(
+                          mapMapboxFeatureToFeatureValues(mapFeature)
+                        );
                       });
 
                       await Promise.all(tracksPromiseArray);

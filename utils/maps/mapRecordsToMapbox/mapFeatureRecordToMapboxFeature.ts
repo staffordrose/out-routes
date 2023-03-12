@@ -1,9 +1,9 @@
 import { geometryTypeNames, GeometryTypes } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
-import { isJsonString } from '../data-structures';
+import { isJsonString } from '../../data-structures';
 
-export const mapFeatureRecordToMapFeature = (
+export const mapFeatureRecordToMapboxFeature = (
   layer: RouteLayer,
   feature: RouteFeature
 ): MapFeature => {

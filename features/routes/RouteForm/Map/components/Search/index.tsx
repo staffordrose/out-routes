@@ -26,7 +26,7 @@ import { LngLat, MapFeature, MapLayer } from '@/types/maps';
 import { createAlphaNumericId, roundToDecimalCount } from '@/utils';
 import {
   LayerValues,
-  mapMapFeatureToFeatureValues,
+  mapMapboxFeatureToFeatureValues,
   RouteFormValues,
 } from '../../../helpers';
 import { addLayerFeature } from '../../helpers';
@@ -123,7 +123,7 @@ export const Search: FC<SearchProps> = ({
           title: '',
           color: ColorCodes.Red,
           symbol: SymbolCodes.Marker,
-          features: [mapMapFeatureToFeatureValues(f)],
+          features: [mapMapboxFeatureToFeatureValues(f)],
         });
 
         setActiveLayerId(newLayerId);

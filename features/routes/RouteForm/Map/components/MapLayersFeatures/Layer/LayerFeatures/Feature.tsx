@@ -33,7 +33,7 @@ import { getFeatureCenter, getMapBoundsFromCoordinates } from '@/utils';
 import {
   FeatureValues,
   LayerValues,
-  mapFeatureValuesToMapFeature,
+  mapFeatureValuesToMapboxFeature,
   RouteFormValues,
 } from '../../../../../helpers';
 import { deleteLayerFeature } from '../../../../helpers';
@@ -167,7 +167,7 @@ export const Feature: FC<FeatureProps> = ({
 
   const mapFeature = useMemo(
     () =>
-      mapFeatureValuesToMapFeature(
+      mapFeatureValuesToMapboxFeature(
         {
           id: layer.databaseId as string,
           color: layer.color,

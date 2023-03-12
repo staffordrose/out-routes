@@ -6,7 +6,6 @@ export * from './getMapEndLngLatEle';
 export * from './getMapStartLngLatEle';
 export * from './GPXGenerator';
 export * from './GPXParser';
-export * from './mapFeatureRecordToMapFeature';
-export * from './mapLayerRecordToMapLayer';
+export * from './mapRecordsToMapbox';
 export * from './parseMapBounds';
 export * from './trimFeatureSymbolCode';

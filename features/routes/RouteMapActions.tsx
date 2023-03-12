@@ -9,7 +9,7 @@ import {
   getAllCoordinatesFromMapLayers,
   getMapBoundsFromCoordinates,
   GPXGenerator,
-  mapLayerRecordToMapLayer,
+  mapLayerAndFeatureRecordsToMapboxLayer,
 } from '@/utils';
 
 type RouteMapActionsProps = {
@@ -25,7 +25,7 @@ export const RouteMapActions: FC<RouteMapActionsProps> = ({
 }) => {
   const downloadGpx = useCallback(() => {
     const mapLayers = layers.map((layer) =>
-      mapLayerRecordToMapLayer(
+      mapLayerAndFeatureRecordsToMapboxLayer(
         layer,
         features.filter((feature) => layer.id === feature.layer?.id)
       )

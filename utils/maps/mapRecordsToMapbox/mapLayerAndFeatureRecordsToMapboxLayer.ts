@@ -3,16 +3,16 @@ import { SymbolCodes } from '@/data/routes';
 import { MapLayer } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import { FeatureCollection } from 'geojson';
-import { mapFeatureRecordToMapFeature } from './mapFeatureRecordToMapFeature';
+import { mapFeatureRecordToMapboxFeature } from './mapFeatureRecordToMapboxFeature';
 
-export const mapLayerRecordToMapLayer = (
+export const mapLayerAndFeatureRecordsToMapboxLayer = (
   layer: RouteLayer,
   features: RouteFeature[]
 ): MapLayer => {
   const geojson = {
     type: 'FeatureCollection' as FeatureCollection['type'],
     features: features.map((feature) =>
-      mapFeatureRecordToMapFeature(layer, feature)
+      mapFeatureRecordToMapboxFeature(layer, feature)
     ),
   };
 

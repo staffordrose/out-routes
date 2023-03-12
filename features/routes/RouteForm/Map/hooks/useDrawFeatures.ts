@@ -3,7 +3,10 @@ import { Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import type { FeatureCollection } from 'geojson';
 
-import { mapFeatureValuesToMapFeature, RouteFormValues } from '../../helpers';
+import {
+  mapFeatureValuesToMapboxFeature,
+  RouteFormValues,
+} from '../../helpers';
 
 type UseDrawFeaturesProps = {
   map: MutableRefObject<Map | undefined>;
@@ -29,7 +32,7 @@ export const useDrawFeatures = ({
           type: 'FeatureCollection',
           features:
             layer.features?.map((feature, featureOrder) =>
-              mapFeatureValuesToMapFeature(
+              mapFeatureValuesToMapboxFeature(
                 {
                   id: layer.databaseId as string,
                   symbol: layer.symbol,

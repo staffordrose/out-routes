@@ -5,7 +5,10 @@ import type { FeatureCollection } from 'geojson';
 import { GeometryTypeNames } from '@/data/routes';
 import { MapLayer, PopupState } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
-import { getFeatureCenter, mapLayerRecordToMapLayer } from '@/utils';
+import {
+  getFeatureCenter,
+  mapLayerAndFeatureRecordsToMapboxLayer,
+} from '@/utils';
 import { drawLineString } from './drawLineString';
 import { drawPoint } from './drawPoint';
 import { drawPolygon, drawPolygonOutline } from './drawPolygon';
@@ -40,7 +43,10 @@ export const drawFeatures = ({
             )
           : [];
 
-      const mapLayer = mapLayerRecordToMapLayer(layer, layerFeatures);
+      const mapLayer = mapLayerAndFeatureRecordsToMapboxLayer(
+        layer,
+        layerFeatures
+      );
 
       mapLayers.push(mapLayer);
 

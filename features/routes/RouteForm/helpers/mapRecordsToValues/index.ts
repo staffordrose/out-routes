@@ -1,7 +1,10 @@
 import { Route, RouteFeature, RouteLayer } from '@/types/routes';
-import { mapLayerFeaturesRecordsToLayerValues } from './mapLayerFeaturesRecordsToLayerValues';
+import { mapLayerAndFeatureRecordsToLayerValues } from './mapLayerAndFeatureRecordsToLayerValues';
 import { mapRouteRecordToRouteValues } from './mapRouteRecordToRouteValues';
-import { RouteFormValues } from './types';
+import { RouteFormValues } from '../types';
+
+export * from './mapFeatureRecordToFeatureValues';
+export { mapLayerAndFeatureRecordsToLayerValues, mapRouteRecordToRouteValues };
 
 export const mapRecordsToValues = (
   route: Route,
@@ -23,7 +26,10 @@ export const mapRecordsToValues = (
                   )
                 : [];
 
-              return mapLayerFeaturesRecordsToLayerValues(layer, layerFeatures);
+              return mapLayerAndFeatureRecordsToLayerValues(
+                layer,
+                layerFeatures
+              );
             })
         : [],
     activeLayerId: Array.isArray(layers) && layers.length ? layers[0].id : null,

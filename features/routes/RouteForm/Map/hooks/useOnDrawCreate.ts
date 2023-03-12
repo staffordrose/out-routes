@@ -7,7 +7,10 @@ import { ColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { MapFeature, MapLayer } from '@/types/maps';
 import { createAlphaNumericId } from '@/utils';
-import { mapMapFeatureToFeatureValues, RouteFormValues } from '../../helpers';
+import {
+  mapMapboxFeatureToFeatureValues,
+  RouteFormValues,
+} from '../../helpers';
 import {
   addElevationToMapFeature,
   addLayerFeature,
@@ -76,7 +79,7 @@ export const useOnDrawCreate = ({
           color: ColorCodes.Red,
           symbol: SymbolCodes.Marker,
           features: features.map((feature) =>
-            mapMapFeatureToFeatureValues(feature)
+            mapMapboxFeatureToFeatureValues(feature)
           ),
         });
 

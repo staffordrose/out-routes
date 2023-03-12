@@ -1,8 +1,8 @@
 import { MapLayer } from '@/types/maps';
-import { mapFeatureValuesToMapFeature } from './mapFeatureValuesToMapFeature';
-import { LayerValues } from './types';
+import { LayerValues } from '../types';
+import { mapFeatureValuesToMapboxFeature } from './mapFeatureValuesToMapboxFeature';
 
-export const mapLayerValuesToMapLayer = (
+export const mapLayerValuesToMapboxLayer = (
   layerOrder: number,
   layer: LayerValues
 ): MapLayer => {
@@ -16,7 +16,7 @@ export const mapLayerValuesToMapLayer = (
       type: 'FeatureCollection',
       features:
         layer.features?.map((feature, featureOrder) =>
-          mapFeatureValuesToMapFeature(
+          mapFeatureValuesToMapboxFeature(
             {
               id: layer.databaseId as string,
               color: layer.color,

@@ -2,7 +2,7 @@ import { Position } from 'geojson';
 
 import { GeometryTypes } from '@/data/routes';
 import { RouteFeature } from '@/types/routes';
-import { FeatureValues } from './types';
+import { FeatureValues } from '../types';
 
 export const mapFeatureRecordToFeatureValues = (
   feature: RouteFeature

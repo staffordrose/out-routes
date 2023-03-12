@@ -3,7 +3,7 @@ import { UseFieldArrayUpdate } from 'react-hook-form';
 import { MapFeature } from '@/types/maps';
 import {
   LayerValues,
-  mapMapFeatureToFeatureValues,
+  mapMapboxFeatureToFeatureValues,
   RouteFormValues,
 } from '../../helpers';
 
@@ -22,7 +22,7 @@ export const updateLayerFeature = (
 
   nextLayer.features = [
     ...(nextLayer.features || []).slice(0, featureIndex),
-    mapMapFeatureToFeatureValues(feature),
+    mapMapboxFeatureToFeatureValues(feature),
     ...(nextLayer.features || []).slice(featureIndex + 1),
   ];
 
