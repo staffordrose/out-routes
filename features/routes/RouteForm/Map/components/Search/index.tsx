@@ -23,7 +23,11 @@ import { useDebounce } from '@/hooks';
 import { getElevationByLngLat } from '@/lib/v1/api/map';
 import { styled } from '@/styles';
 import { LngLat, MapFeature, MapLayer } from '@/types/maps';
-import { createAlphaNumericId, roundToDecimalCount } from '@/utils';
+import {
+  createAlphaNumericId,
+  isValidLngLat,
+  roundToDecimalCount,
+} from '@/utils';
 import {
   LayerValues,
   mapMapboxFeatureToFeatureValues,
@@ -53,22 +57,17 @@ export const Search: FC<SearchProps> = ({
   const debouncedQuery = useDebounce(query, 300);
 
   const coordinates = useMemo(() => {
-    return (debouncedQuery || '')
+    const coordinates = (debouncedQuery || '')
       .trim()
-      .split(' ')
+      .split(',')
+      .map((s: string) => s.trim())
       .map((s: string) => s.replace(/[^\d.-]/g, ''))
       .map((s: any) => (Number.isNaN(Number(s)) ? null : Number(s)))
       .filter((n: number | null) => n)
       .reverse();
-  }, [debouncedQuery]);
 
-  const isCoordinates = useMemo(() => {
-    return (
-      Array.isArray(coordinates) &&
-      coordinates.length === 2 &&
-      coordinates.every((f) => typeof f === 'number')
-    );
-  }, [coordinates]);
+    return isValidLngLat(coordinates) ? coordinates : null;
+  }, [debouncedQuery]);
 
   const { control } = useFormContext<RouteFormValues>();
 
@@ -151,7 +150,7 @@ export const Search: FC<SearchProps> = ({
       />
       {!!debouncedQuery && (
         <Menu>
-          {isCoordinates ? (
+          {coordinates !== null ? (
             <Coordinates
               coordinates={coordinates}
               handleFeatureClick={handleFeatureClick}
