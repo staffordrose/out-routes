@@ -360,13 +360,13 @@ export class GPXParser {
   ): number | null {
     const float = parseFloat(this.getElementValue(parent, property) || '');
 
-    return isNaN(float) ? null : float;
+    return Number.isNaN(float) ? null : float;
   }
 
   private getElementIntValue(parent: Element, property: string): number | null {
     const int = parseInt(this.getElementValue(parent, property) || '');
 
-    return isNaN(int) ? null : int;
+    return Number.isNaN(int) ? null : int;
   }
 
   private getLinkValue(parent: Element): GPXLink | null {

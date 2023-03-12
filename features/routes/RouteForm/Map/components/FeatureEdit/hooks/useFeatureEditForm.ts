@@ -170,11 +170,11 @@ export const UseFeatureEditForm = ({
       let eleFloat = parseFloat(values.ele || '');
 
       const coordinates = [
-        !isNaN(lngFloat) ? lngFloat : feature.geometry.coordinates[0],
-        !isNaN(latFloat) ? latFloat : feature.geometry.coordinates[1],
+        !Number.isNaN(lngFloat) ? lngFloat : feature.geometry.coordinates[0],
+        !Number.isNaN(latFloat) ? latFloat : feature.geometry.coordinates[1],
       ];
 
-      if (!isNaN(eleFloat)) {
+      if (!Number.isNaN(eleFloat)) {
         eleFloat = feetToMeters(eleFloat);
         coordinates.push(eleFloat);
       }

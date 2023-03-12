@@ -16,7 +16,7 @@ export const addElevationToMapFeature = (
       exaggerated: false,
     });
 
-    if (typeof ele === 'number' && !isNaN(ele)) {
+    if (typeof ele === 'number' && !Number.isNaN(ele)) {
       ele = roundToDecimalCount(ele, { decimalCount: 3 });
       position.push(ele);
     }

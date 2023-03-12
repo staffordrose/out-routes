@@ -20,7 +20,7 @@ export const mapFeatureValuesToMapboxFeature = (
       ? feature.coordinates.map(({ lat, lng, ele }) => {
           const position = [Number(lng), Number(lat)];
 
-          if (!isNaN(Number(ele))) {
+          if (!Number.isNaN(Number(ele))) {
             position.push(Number(ele));
           }
 
