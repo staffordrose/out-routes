@@ -12,8 +12,8 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { mapboxgl } from '@/lib/client';
 import { MapFeature, MapLayer, PopupState } from '@/types/maps';
 import { Route } from '@/types/routes';
+import { RouteMapPopup } from '../../../RouteMapPopup';
 import { LayerValues, RouteFormValues } from '../../helpers';
-import { Popup } from '../components';
 import { getLayerValuesById } from '../helpers';
 import {
   useDrawFeatures,
@@ -108,14 +108,17 @@ export const useMap = ({
       const popupNode = document.createElement('div');
       const popupRoot = createRoot(popupNode);
       popupRoot.render(
-        <Popup
-          layerIndex={layers.findIndex(
-            (layer) => layer.databaseId === feature.properties.layer
-          )}
-          layer={layer}
-          feature={feature}
-          openFeatureEditDialog={openFeatureEditDialog}
-        />
+        <RouteMapPopup>
+          <RouteMapPopup.ActionHeader
+            layerIndex={layers.findIndex(
+              (layer) => layer.databaseId === feature.properties.layer
+            )}
+            layer={layer}
+            feature={feature}
+            openFeatureEditDialog={openFeatureEditDialog}
+          />
+          <RouteMapPopup.Content feature={feature} />
+        </RouteMapPopup>
       );
 
       popupEl.current = new mapboxgl.Popup({

@@ -14,7 +14,7 @@ import { styled } from '@/styles';
 import { LngLat, PopupState } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import {
-  getFeatureLngLat,
+  getFeatureCenter,
   getMapBoundsFromCoordinates,
   mapFeatureRecordToMapFeature,
 } from '@/utils';
@@ -61,7 +61,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
             }}
             feature={feature}
             onClick={() => {
-              const center = getFeatureLngLat(mapFeature);
+              const center = getFeatureCenter(mapFeature);
 
               openPopup({
                 center,

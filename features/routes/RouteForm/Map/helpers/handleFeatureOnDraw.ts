@@ -1,65 +1,44 @@
 import { GeometryTypeNames } from '@/data/routes';
-import { getElevationByLngLat } from '@/lib/v1/api/map';
-import { LngLat, MapFeature } from '@/types/maps';
+import { MapFeature } from '@/types/maps';
 import { calculateLineStringDistance } from './calculateLineStringDistance';
 import { calculatePolygonArea } from './calculatePolygonArea';
 import { truncateGeometryCoordinates } from './truncateGeometryCoordinates';
 
-export const handleFeatureOnDraw = async (feature: MapFeature) => {
-  try {
-    const truncated = truncateGeometryCoordinates(feature);
+export const handleFeatureOnDraw = (feature: MapFeature): MapFeature => {
+  let truncated = truncateGeometryCoordinates(feature);
 
-    const { geometry, properties } = truncated;
-    const { coordinates } = geometry;
+  truncated = {
+    ...truncated,
+    properties: {
+      ...truncated.properties,
+      layerSymbol: trimSymbol(truncated.properties.layerSymbol),
+      symbol: trimSymbol(truncated.properties.symbol),
+    },
+  } as MapFeature;
 
-    if (geometry.type === GeometryTypeNames.Polygon) {
-      const area = calculatePolygonArea(truncated);
+  if (truncated.geometry.type === GeometryTypeNames.Polygon) {
+    const area = calculatePolygonArea(truncated);
 
-      return {
-        ...truncated,
-        properties: {
-          ...properties,
-          layerSymbol: trimSymbol(properties.layerSymbol),
-          symbol: trimSymbol(properties.symbol),
-          area,
-        },
-      } as MapFeature;
-    } else if (geometry.type === GeometryTypeNames.LineString) {
-      const ele_start = await getElevationByLngLat(coordinates[0] as LngLat);
+    return {
+      ...truncated,
+      properties: {
+        ...truncated.properties,
+        area,
+      },
+    };
+  } else if (truncated.geometry.type === GeometryTypeNames.LineString) {
+    const distance = calculateLineStringDistance(truncated);
 
-      const ele_end = await getElevationByLngLat(
-        coordinates[coordinates.length - 1] as LngLat
-      );
-
-      const distance = calculateLineStringDistance(truncated);
-
-      return {
-        ...truncated,
-        properties: {
-          ...properties,
-          layerSymbol: trimSymbol(properties.layerSymbol),
-          symbol: trimSymbol(properties.symbol),
-          ele_start,
-          ele_end,
-          distance,
-        },
-      } as MapFeature;
-    } else if (geometry.type === GeometryTypeNames.Point) {
-      const ele_start = await getElevationByLngLat(coordinates as LngLat);
-
-      return {
-        ...truncated,
-        properties: {
-          ...properties,
-          layerSymbol: trimSymbol(properties.layerSymbol),
-          symbol: trimSymbol(properties.symbol),
-          ele_start,
-        },
-      } as MapFeature;
-    } else {
-      return feature as MapFeature;
-    }
-  } catch (error) {
+    return {
+      ...truncated,
+      properties: {
+        ...truncated.properties,
+        distance,
+      },
+    };
+  } else if (truncated.geometry.type === GeometryTypeNames.Point) {
+    return truncated;
+  } else {
     return feature as MapFeature;
   }
 };

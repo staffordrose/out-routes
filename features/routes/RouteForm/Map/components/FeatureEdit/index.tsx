@@ -79,38 +79,58 @@ export const FeatureEdit: FC<FeatureEditProps> = ({
         />
         <FieldsGrid>
           {feature.geometry.type === GeometryTypeNames.Point && (
-            <CoordinatesFieldsGrid>
-              <TextField
-                type='number'
-                name='lat'
-                placeholder='Latitude'
-                value={values.lat}
-                onChange={(e) => {
-                  updateValues('lat', e.target.value);
-                }}
-                onBlur={() => {
-                  updateTouched('lat', true);
-                  validate();
-                }}
-                isTouched={touched.lat}
-                error={errors.lat?.message}
-              />
-              <TextField
-                type='number'
-                name='lng'
-                placeholder='Longitude'
-                value={values.lng}
-                onChange={(e) => {
-                  updateValues('lng', e.target.value);
-                }}
-                onBlur={() => {
-                  updateTouched('lng', true);
-                  validate();
-                }}
-                isTouched={touched.lng}
-                error={errors.lng?.message}
-              />
-            </CoordinatesFieldsGrid>
+            <>
+              <CoordinatesFieldsGrid>
+                <TextField
+                  type='number'
+                  name='lat'
+                  placeholder='Latitude'
+                  value={values.lat}
+                  onChange={(e) => {
+                    updateValues('lat', e.target.value);
+                  }}
+                  onBlur={() => {
+                    updateTouched('lat', true);
+                    validate();
+                  }}
+                  isTouched={touched.lat}
+                  error={errors.lat?.message}
+                />
+                <TextField
+                  type='number'
+                  name='lng'
+                  placeholder='Longitude'
+                  value={values.lng}
+                  onChange={(e) => {
+                    updateValues('lng', e.target.value);
+                  }}
+                  onBlur={() => {
+                    updateTouched('lng', true);
+                    validate();
+                  }}
+                  isTouched={touched.lng}
+                  error={errors.lng?.message}
+                />
+              </CoordinatesFieldsGrid>
+              <ElevationField>
+                <TextField
+                  type='number'
+                  name='ele'
+                  placeholder='Elevation'
+                  value={values.ele}
+                  onChange={(e) => {
+                    updateValues('ele', e.target.value);
+                  }}
+                  onBlur={() => {
+                    updateTouched('ele', true);
+                    validate();
+                  }}
+                  isTouched={touched.ele}
+                  error={errors.ele?.message}
+                />
+                <Text>Feet</Text>
+              </ElevationField>
+            </>
           )}
           <SelectField
             key={colorKey}
@@ -259,6 +279,14 @@ const CoordinatesFieldsGrid = styled('div', {
   gridTemplateColumns: 'repeat(2, 1fr)',
   gap: '$1',
   alignItems: 'start',
+  width: '$full',
+});
+
+const ElevationField = styled('div', {
+  display: 'grid',
+  gridTemplateColumns: '1fr auto',
+  gap: '$2',
+  alignItems: 'center',
   width: '$full',
 });
 

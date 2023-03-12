@@ -8,14 +8,13 @@ export const yupFeatureSchema = yup.object({
     yup.object({
       lat: yup.string().required(),
       lng: yup.string().required(),
+      ele: yup.string(),
     })
   ),
   title: yup.string().max(60, `Can't be longer than 60 characters`),
   color: yup.string().nullable(),
   symbol: yup.string().nullable(),
   description: yup.string().max(280, `Can't be longer than 280 characters`),
-  ele_start: yup.number(),
-  ele_end: yup.number(),
   distance: yup.number(),
   area: yup.number(),
   image_id: yup.string().nullable(),

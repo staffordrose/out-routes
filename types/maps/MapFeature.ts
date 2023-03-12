@@ -28,8 +28,6 @@ export type MapFeature = {
     color?: string;
     symbol?: string;
     description?: string;
-    ele_start?: number;
-    ele_end?: number;
     distance?: number;
     area?: number;
   };

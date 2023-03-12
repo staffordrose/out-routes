@@ -45,13 +45,11 @@ export type FeatureValues = {
   databaseId?: string;
   files: File[];
   type: string;
-  coordinates: { lat: string; lng: string }[];
+  coordinates: { lat: string; lng: string; ele: string }[];
   title: string;
   color: string | undefined;
   symbol: string | undefined;
   description: string;
-  ele_start: number;
-  ele_end: number;
   distance: number;
   area: number;
   image_id: string | null;

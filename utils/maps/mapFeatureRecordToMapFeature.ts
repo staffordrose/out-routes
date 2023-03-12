@@ -29,8 +29,6 @@ export const mapFeatureRecordToMapFeature = (
       color: feature.color || undefined,
       symbol: feature.symbol || undefined,
       description: feature.description || undefined,
-      ele_start: feature.ele_start || undefined,
-      ele_end: feature.ele_end || undefined,
       distance: feature.distance || undefined,
       area: feature.area || undefined,
     },

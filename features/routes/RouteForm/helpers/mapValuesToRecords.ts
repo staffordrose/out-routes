@@ -119,15 +119,20 @@ export const mapValuesToRecords = (
           const feature = layer.features[featureIndex];
 
           /**
-           * store coordinates as [lng, lat] in db
+           * store coordinates as [lng, lat, ele?] in db
            * to be compatible with mapbox
            */
           const coordinates =
             Array.isArray(feature.coordinates) && feature.coordinates.length
-              ? feature.coordinates.map(({ lat, lng }) => [
-                  Number(lng),
-                  Number(lat),
-                ])
+              ? feature.coordinates.map(({ lat, lng, ele }) => {
+                  const position = [Number(lng), Number(lat)];
+
+                  if (!isNaN(Number(ele))) {
+                    position.push(Number(ele));
+                  }
+
+                  return position;
+                })
               : [];
 
           const {
@@ -136,8 +141,6 @@ export const mapValuesToRecords = (
             color,
             symbol,
             description,
-            ele_start,
-            ele_end,
             distance,
             area,
             image_id,
@@ -148,6 +151,19 @@ export const mapValuesToRecords = (
             image_thumb_240,
             image_thumb_120,
           } = feature;
+
+          const ele_start = [
+            GeometryTypes.Point,
+            GeometryTypes.LineString,
+          ].includes(type as GeometryTypes)
+            ? coordinates[0][2]
+            : null;
+          const ele_end = [
+            GeometryTypes.Point,
+            GeometryTypes.LineString,
+          ].includes(type as GeometryTypes)
+            ? coordinates[coordinates.length - 1][2]
+            : null;
 
           features.push({
             id: feature.databaseId || createAlphaNumericId(24),
@@ -166,12 +182,8 @@ export const mapValuesToRecords = (
             color,
             symbol: type === GeometryTypes.Point ? symbol : null,
             description,
-            ele_start: [GeometryTypes.Point, GeometryTypes.LineString].includes(
-              type as GeometryTypes
-            )
-              ? ele_start
-              : null,
-            ele_end: type === GeometryTypes.LineString ? ele_end : null,
+            ele_start,
+            ele_end,
             distance: type === GeometryTypes.LineString ? distance : null,
             area: type === GeometryTypes.Polygon ? area : null,
             image_id,

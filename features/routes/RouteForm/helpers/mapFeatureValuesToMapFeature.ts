@@ -17,7 +17,15 @@ export const mapFeatureValuesToMapFeature = (
 
   const coordinates =
     Array.isArray(feature.coordinates) && feature.coordinates.length
-      ? feature.coordinates.map(({ lat, lng }) => [Number(lng), Number(lat)])
+      ? feature.coordinates.map(({ lat, lng, ele }) => {
+          const position = [Number(lng), Number(lat)];
+
+          if (!isNaN(Number(ele))) {
+            position.push(Number(ele));
+          }
+
+          return position;
+        })
       : [];
 
   return {
@@ -43,8 +51,6 @@ export const mapFeatureValuesToMapFeature = (
       // Prepend symbol with 'maki-' to support mapboxDrawStyles
       symbol: feature.symbol ? `maki-${feature.symbol}` : undefined,
       description: feature.description || undefined,
-      ele_start: feature.ele_start || undefined,
-      ele_end: feature.ele_end || undefined,
       distance: feature.distance || undefined,
       area: feature.area || undefined,
     },

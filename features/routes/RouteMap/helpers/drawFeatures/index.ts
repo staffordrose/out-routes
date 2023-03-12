@@ -5,7 +5,7 @@ import type { FeatureCollection } from 'geojson';
 import { GeometryTypeNames } from '@/data/routes';
 import { MapLayer, PopupState } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
-import { getFeatureLngLat, mapLayerRecordToMapLayer } from '@/utils';
+import { getFeatureCenter, mapLayerRecordToMapLayer } from '@/utils';
 import { drawLineString } from './drawLineString';
 import { drawPoint } from './drawPoint';
 import { drawPolygon, drawPolygonOutline } from './drawPolygon';
@@ -70,7 +70,7 @@ export const drawFeatures = ({
         // create popup for click events
         mapRef.on('click', feature.id, () => {
           openPopup({
-            center: getFeatureLngLat(feature),
+            center: getFeatureCenter(feature),
             feature,
           });
         });
@@ -78,7 +78,7 @@ export const drawFeatures = ({
         // create popup for touch events
         mapRef.on('touchend', feature.id, () => {
           openPopup({
-            center: getFeatureLngLat(feature),
+            center: getFeatureCenter(feature),
             feature,
           });
         });

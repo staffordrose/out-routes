@@ -1,3 +1,4 @@
+export * from './addElevationToMapFeature';
 export * from './addLayerFeature';
 export * from './calculateLineStringDistance';
 export * from './calculatePolygonArea';

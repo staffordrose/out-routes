@@ -8,7 +8,11 @@ import { SymbolCodes } from '@/data/routes';
 import { MapFeature, MapLayer } from '@/types/maps';
 import { createAlphaNumericId } from '@/utils';
 import { mapMapFeatureToFeatureValues, RouteFormValues } from '../../helpers';
-import { addLayerFeature, handleFeatureOnDraw } from '../helpers';
+import {
+  addElevationToMapFeature,
+  addLayerFeature,
+  handleFeatureOnDraw,
+} from '../helpers';
 
 type OnDrawCreateProps = {
   append: UseFieldArrayAppend<RouteFormValues, 'layers'>;
@@ -30,12 +34,14 @@ export const useOnDrawCreate = ({
   setActiveLayerId,
 }: OnDrawCreateProps) => {
   const onDrawCreate = useCallback(
-    async (e: MapboxDraw.DrawCreateEvent) => {
+    (e: MapboxDraw.DrawCreateEvent) => {
+      if (!map.current) return;
       if (!draw.current) return;
 
+      const mapRef = map.current;
       const drawRef = draw.current;
 
-      const featuresWithId = e.features
+      const featuresWithIdAndElevation = e.features
         .filter((feature) => feature?.id)
         .map((feature) => {
           // remove feature with auto-generated id
@@ -43,20 +49,23 @@ export const useOnDrawCreate = ({
 
           const id: MapFeature['id'] = createAlphaNumericId(24);
 
-          // add feature with custom id
-          drawRef.add({
+          // add custom id
+          let mapFeature = {
             ...feature,
             id,
-          });
+          } as MapFeature;
 
-          return drawRef.get(id) as MapFeature;
+          // add elevation for all positions
+          mapFeature = addElevationToMapFeature(mapRef, mapFeature);
+
+          drawRef.add(mapFeature);
+
+          return mapFeature;
         });
 
-      const featuresPromiseArray = featuresWithId.map((feature) =>
+      const features = featuresWithIdAndElevation.map((feature) =>
         handleFeatureOnDraw(feature)
       );
-
-      const features: MapFeature[] = await Promise.all(featuresPromiseArray);
 
       if (!activeLayerId) {
         const newLayerId = createAlphaNumericId(24);
@@ -78,7 +87,7 @@ export const useOnDrawCreate = ({
         });
       }
     },
-    [append, update, draw, layers, activeLayerId, setActiveLayerId]
+    [append, update, map, draw, layers, activeLayerId, setActiveLayerId]
   );
 
   useEffect(() => {

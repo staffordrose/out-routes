@@ -1,18 +1,15 @@
-import center from '@turf/center';
-import * as turf from '@turf/helpers';
-import { Position } from 'geojson';
-
 import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature, MapLayer } from '@/types/maps';
-import { roundToDecimalCount } from '../arithmetic';
 
 export const getMapEndLngLatEle = (
   mapLayers: MapLayer[]
 ): { lng?: number; lat?: number; ele?: number } => {
   const featureCb = (feature: MapFeature) =>
-    feature.geometry.type === GeometryTypeNames.Point;
+    [GeometryTypeNames.Point, GeometryTypeNames.LineString].includes(
+      feature.geometry.type as GeometryTypeNames
+    );
 
-  const lastLayerWithPoint = Array.from(mapLayers || [])
+  const lastLayerWithPointOrLineString = Array.from(mapLayers || [])
     .reverse()
     .find(({ data }) => {
       return Array.from(data.features || [])
@@ -20,24 +17,35 @@ export const getMapEndLngLatEle = (
         .find(featureCb);
     });
 
-  if (!lastLayerWithPoint) {
+  if (!lastLayerWithPointOrLineString) {
     return { lng: undefined, lat: undefined, ele: undefined };
   }
 
-  const lastPoint = Array.from(lastLayerWithPoint.data.features || [])
+  const lastPointOrLineString = Array.from(
+    lastLayerWithPointOrLineString.data.features || []
+  )
     .reverse()
     .find(featureCb);
 
-  if (!lastPoint) {
+  if (!lastPointOrLineString) {
     return { lng: undefined, lat: undefined, ele: undefined };
   }
 
-  const point = turf.point(lastPoint.geometry.coordinates as Position);
-  const { geometry } = center(point);
+  const { geometry } = lastPointOrLineString;
 
-  return {
-    lng: roundToDecimalCount(geometry.coordinates[0], { decimalCount: 5 }),
-    lat: roundToDecimalCount(geometry.coordinates[1], { decimalCount: 5 }),
-    ele: lastPoint.properties.ele_start,
-  };
+  if (geometry.type === GeometryTypeNames.Point) {
+    return {
+      lng: geometry.coordinates[0],
+      lat: geometry.coordinates[1],
+      ele: geometry.coordinates[2],
+    };
+  } else if (geometry.type === GeometryTypeNames.LineString) {
+    return {
+      lng: geometry.coordinates[0][0],
+      lat: geometry.coordinates[0][1],
+      ele: geometry.coordinates[0][2],
+    };
+  } else {
+    return { lng: undefined, lat: undefined, ele: undefined };
+  }
 };

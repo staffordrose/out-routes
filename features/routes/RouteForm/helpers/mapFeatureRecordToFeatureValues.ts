@@ -24,24 +24,23 @@ export const mapFeatureRecordToFeatureValues = (
     databaseId: feature.id,
     type: feature.type || GeometryTypes.Point,
     /**
-     * coordinates are stored as [lng, lat] in db
+     * coordinates are stored as [lng, lat, ele?] in db
      * to be compatible with mapbox
      */
     coordinates:
       Array.isArray(coordinates) && coordinates.length
-        ? coordinates.map(([lng, lat]: Position) => ({
+        ? coordinates.map(([lng, lat, ele]: Position) => ({
             lat: lat.toString() || '',
             lng: lng.toString() || '',
+            ele: ele?.toString() || '',
           }))
-        : [{ lat: '', lng: '' }],
+        : [{ lat: '', lng: '', ele: '' }],
     title: feature.title || '',
     // color select field requires undefined to show placeholder
     color: feature.color || undefined,
     // symbol select field requires undefined to show placeholder
     symbol: feature.symbol || undefined,
     description: feature.description || '',
-    ele_start: Number(feature.ele_start) || 0,
-    ele_end: Number(feature.ele_end) || 0,
     distance: Number(feature.distance) || 0,
     area: Number(feature.area) || 0,
     image_id: feature.image_id || null,

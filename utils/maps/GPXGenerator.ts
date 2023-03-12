@@ -1,3 +1,5 @@
+import { Position } from 'geojson';
+
 import { GeometryTypeNames, SymbolCodes, symbolLabels } from '@/data/routes';
 import {
   GPXAuthor,
@@ -185,10 +187,13 @@ export class GPXGenerator {
     properties,
   }: MapFeature): void {
     const wpt = [
-      this.indent() + `<wpt lat="${coordinates[1]}" lon="${coordinates[0]}">`,
+      this.indent() +
+        `<wpt lat="${(coordinates as Position)[1]}" lon="${
+          (coordinates as Position)[0]
+        }">`,
       this.indent(2) +
-        `<ele>${roundToDecimalCount(properties.ele_start || 0, {
-          decimalCount: 4,
+        `<ele>${roundToDecimalCount((coordinates as Position)[2] || 0, {
+          decimalCount: 3,
         }).toFixed(4)}</ele>`,
       this.indent(2) + `<name>${properties.title || ''}</name>`,
     ];
@@ -217,10 +222,10 @@ export class GPXGenerator {
     if (properties.description) {
       rte.push(this.indent(2) + `<desc>${properties.description}</desc>`);
     }
-    (coordinates as LngLat[]).forEach((curr, index) => {
+    (coordinates as Position[]).forEach((position) => {
       const rtept = [
-        this.indent(2) + `<rtept lat="${curr[1]}" lon="${curr[0]}">`,
-        this.indent(3) + `<ele>${(0).toFixed(4)}</ele>`,
+        this.indent(2) + `<rtept lat="${position[1]}" lon="${position[0]}">`,
+        this.indent(3) + `<ele>${position[2] || 0}</ele>`,
         this.indent(2) + `</rtept>`,
       ];
       rte.push(rtept.join('\n'));

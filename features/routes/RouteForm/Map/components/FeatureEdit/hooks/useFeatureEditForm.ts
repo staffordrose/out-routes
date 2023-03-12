@@ -4,7 +4,12 @@ import * as yup from 'yup';
 
 import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature, PopupState } from '@/types/maps';
-import { getFeatureLngLat, trimFeatureSymbolCode } from '@/utils';
+import {
+  feetToMeters,
+  getFeatureCenter,
+  metersToFeet,
+  trimFeatureSymbolCode,
+} from '@/utils';
 import { LayerValues, RouteFormValues } from '../../../../helpers';
 import { updateLayerFeature } from '../../../helpers';
 
@@ -20,6 +25,7 @@ const yupSchema = yup.object({
     then: yup.string().min(1, 'Longitude is required').required(),
     otherwise: yup.string().nullable(),
   }),
+  ele: yup.string().nullable(),
   title: yup.string().max(60, `Can't be longer than 60 characters`),
   color: yup.string().nullable(),
   symbol: yup.string().nullable(),
@@ -30,6 +36,7 @@ type Key =
   | 'type'
   | 'lat'
   | 'lng'
+  | 'ele'
   | 'title'
   | 'color'
   | 'symbol'
@@ -64,6 +71,11 @@ export const UseFeatureEditForm = ({
       feature.geometry?.type === GeometryTypeNames.Point
         ? feature.geometry.coordinates[0].toString()
         : undefined,
+    ele:
+      feature.geometry?.type === GeometryTypeNames.Point &&
+      feature.geometry.coordinates[2]
+        ? metersToFeet(feature.geometry.coordinates[2]).toString()
+        : undefined,
     title: feature.properties?.title || '',
     color: feature.properties?.color || undefined,
     symbol: feature.properties?.symbol
@@ -76,6 +88,7 @@ export const UseFeatureEditForm = ({
     type: false,
     lat: false,
     lng: false,
+    ele: false,
     title: false,
     color: false,
     symbol: false,
@@ -87,6 +100,7 @@ export const UseFeatureEditForm = ({
       type: null,
       lat: null,
       lng: null,
+      ele: null,
       title: null,
       color: null,
       symbol: null,
@@ -97,6 +111,9 @@ export const UseFeatureEditForm = ({
   const updateValues = (
     property: Key,
     value:
+      | typeof values.lat
+      | typeof values.lng
+      | typeof values.ele
       | typeof values.title
       | typeof values.color
       | typeof values.symbol
@@ -150,22 +167,26 @@ export const UseFeatureEditForm = ({
 
       const latFloat = parseFloat(values.lat || '');
       const lngFloat = parseFloat(values.lng || '');
+      let eleFloat = parseFloat(values.ele || '');
+
+      const coordinates = [
+        !isNaN(lngFloat) ? lngFloat : feature.geometry.coordinates[0],
+        !isNaN(latFloat) ? latFloat : feature.geometry.coordinates[1],
+      ];
+
+      if (!isNaN(eleFloat)) {
+        eleFloat = feetToMeters(eleFloat);
+        coordinates.push(eleFloat);
+      }
 
       const mapFeature = {
         ...feature,
         geometry:
           feature.geometry.type === GeometryTypeNames.Point
-            ? {
+            ? ({
                 ...feature.geometry,
-                coordinates: [
-                  !Number.isNaN(lngFloat)
-                    ? lngFloat
-                    : feature.geometry.coordinates[0],
-                  values.lat && !Number.isNaN(latFloat)
-                    ? latFloat
-                    : feature.geometry.coordinates[1],
-                ],
-              }
+                coordinates,
+              } as MapFeature['geometry'])
             : feature.geometry,
         properties: {
           ...feature.properties,
@@ -181,7 +202,7 @@ export const UseFeatureEditForm = ({
       closeFeatureEditDialog();
 
       openPopup({
-        center: getFeatureLngLat(mapFeature),
+        center: getFeatureCenter(mapFeature),
         feature: mapFeature,
       });
     } catch (error) {

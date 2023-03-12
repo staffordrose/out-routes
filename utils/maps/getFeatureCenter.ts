@@ -6,7 +6,7 @@ import { GeometryTypeNames } from '@/data/routes';
 import { LngLat, MapFeature } from '@/types/maps';
 import { average, isEven, roundToDecimalCount } from '../arithmetic';
 
-export const getFeatureLngLat = (feature: MapFeature): LngLat => {
+export const getFeatureCenter = (feature: MapFeature): LngLat => {
   let coordinates: LngLat = [0, 0];
 
   if (feature.geometry.type === GeometryTypeNames.Polygon) {
@@ -45,7 +45,7 @@ export const getFeatureLngLat = (feature: MapFeature): LngLat => {
   }
 
   return [
-    roundToDecimalCount(coordinates[0], { decimalCount: 5 }),
-    roundToDecimalCount(coordinates[1], { decimalCount: 5 }),
+    roundToDecimalCount(coordinates[0], { decimalCount: 6 }),
+    roundToDecimalCount(coordinates[1], { decimalCount: 6 }),
   ];
 };

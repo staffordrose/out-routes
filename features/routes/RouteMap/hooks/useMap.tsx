@@ -5,7 +5,7 @@ import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
 import { mapboxgl } from '@/lib/client';
 import { PopupState } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
-import { Popup } from '../components';
+import { RouteMapPopup } from '../../RouteMapPopup';
 import { useMapState, useSetupMap } from '.';
 
 export type UseMapProps = {
@@ -41,7 +41,12 @@ export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
       // create popup root
       const popupNode = document.createElement('div');
       const popupRoot = createRoot(popupNode);
-      popupRoot.render(<Popup feature={feature} />);
+      popupRoot.render(
+        <RouteMapPopup>
+          <RouteMapPopup.Header feature={feature} />
+          <RouteMapPopup.Content feature={feature} />
+        </RouteMapPopup>
+      );
 
       popupEl.current = new mapboxgl.Popup({
         closeButton: false,

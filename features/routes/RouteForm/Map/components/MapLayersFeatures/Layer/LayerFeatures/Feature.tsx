@@ -29,7 +29,7 @@ import {
 } from '@/data/routes';
 import { styled } from '@/styles';
 import { LngLat, MapFeature, PopupState } from '@/types/maps';
-import { getFeatureLngLat, getMapBoundsFromCoordinates } from '@/utils';
+import { getFeatureCenter, getMapBoundsFromCoordinates } from '@/utils';
 import {
   FeatureValues,
   LayerValues,
@@ -200,7 +200,7 @@ export const Feature: FC<FeatureProps> = ({
           variant='ghost'
           size='xs'
           onClick={() => {
-            const center = getFeatureLngLat(mapFeature);
+            const center = getFeatureCenter(mapFeature);
 
             openPopup({
               center,

@@ -14,14 +14,16 @@ import {
 } from 'react-hook-form';
 import type { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
+import { Position } from 'geojson';
 
 import { Input } from '@/components/atoms';
 import { ColorCodes } from '@/data/general';
 import { GeometryTypeNames, SymbolCodes } from '@/data/routes';
 import { useDebounce } from '@/hooks';
+import { getElevationByLngLat } from '@/lib/v1/api/map';
 import { styled } from '@/styles';
 import { LngLat, MapFeature, MapLayer } from '@/types/maps';
-import { createAlphaNumericId } from '@/utils';
+import { createAlphaNumericId, roundToDecimalCount } from '@/utils';
 import {
   LayerValues,
   mapMapFeatureToFeatureValues,
@@ -74,7 +76,7 @@ export const Search: FC<SearchProps> = ({
   const activeLayerId = useWatch({ control, name: 'activeLayerId' });
 
   const handleFeatureClick = useCallback(
-    ([lng, lat]: LngLat, properties?: { title?: string }) => {
+    async ([lng, lat]: LngLat, properties?: { title?: string }) => {
       const cb = ({ databaseId }: LayerValues) => databaseId === activeLayerId;
       const layerColor =
         (activeLayerId && layers?.some(cb) && layers.find(cb)?.color) ||
@@ -85,12 +87,23 @@ export const Search: FC<SearchProps> = ({
           `maki-${layers.find(cb)?.symbol || SymbolCodes.Marker}`) ||
         `maki-${SymbolCodes.Marker}`;
 
+      const position: Position = [
+        roundToDecimalCount(lng, { decimalCount: 6 }),
+        roundToDecimalCount(lat, { decimalCount: 6 }),
+      ];
+
+      const ele = await getElevationByLngLat([lng, lat]);
+
+      if (typeof ele === 'number') {
+        position.push(roundToDecimalCount(ele, { decimalCount: 3 }));
+      }
+
       const f = {
         id: createAlphaNumericId(24),
         type: 'Feature',
         geometry: {
           type: GeometryTypeNames.Point,
-          coordinates: [lng, lat],
+          coordinates: position,
         },
         properties: {
           layerColor,
@@ -119,7 +132,7 @@ export const Search: FC<SearchProps> = ({
       }
 
       // fly to new feature
-      map.current?.flyTo({ center: [lng, lat], zoom: 14 });
+      map.current?.flyTo({ center: [position[0], position[1]], zoom: 14 });
 
       setQuery('');
     },

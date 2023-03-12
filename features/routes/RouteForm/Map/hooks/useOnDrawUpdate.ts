@@ -4,9 +4,10 @@ import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { MapFeature, MapLayer, PopupState } from '@/types/maps';
-import { getFeatureLngLat } from '@/utils';
+import { getFeatureCenter } from '@/utils';
 import { RouteFormValues } from '../../helpers';
 import {
+  addElevationToMapFeature,
   getLayerValuesById,
   handleFeatureOnDraw,
   updateLayerFeature,
@@ -31,8 +32,11 @@ export const useOnDrawUpdate = ({
   openPopup,
 }: OnDrawUpdateProps) => {
   const onDrawUpdate = useCallback(
-    async (e: MapboxDraw.DrawUpdateEvent) => {
+    (e: MapboxDraw.DrawUpdateEvent) => {
+      if (!map.current) return;
       if (!activeLayerId) return;
+
+      const mapRef = map.current;
 
       const activeLayer = getLayerValuesById(layers, activeLayerId);
 
@@ -42,11 +46,20 @@ export const useOnDrawUpdate = ({
         (layer) => layer.databaseId === activeLayerId
       );
 
-      const featuresPromiseArray = e.features
+      const featuresWithUpdatedElevation = e.features
         .filter((feature) => feature?.id)
-        .map((feature) => handleFeatureOnDraw(feature as MapFeature));
+        .map((feature) => {
+          let mapFeature = feature as MapFeature;
 
-      const features: MapFeature[] = await Promise.all(featuresPromiseArray);
+          // add elevation for all positions
+          mapFeature = addElevationToMapFeature(mapRef, mapFeature);
+
+          return mapFeature;
+        });
+
+      const features = featuresWithUpdatedElevation.map((feature) =>
+        handleFeatureOnDraw(feature)
+      );
 
       features.forEach((feature) => {
         updateLayerFeature(update, activeLayerIndex, activeLayer, feature);
@@ -54,16 +67,16 @@ export const useOnDrawUpdate = ({
 
       if (
         popupFeatureId &&
-        e.features.length === 1 &&
-        popupFeatureId === e.features[0].id
+        features.length === 1 &&
+        popupFeatureId === features[0].id
       ) {
         openPopup({
-          center: getFeatureLngLat(e.features[0] as MapFeature),
-          feature: e.features[0] as MapFeature,
+          center: getFeatureCenter(features[0] as MapFeature),
+          feature: features[0] as MapFeature,
         });
       }
     },
-    [update, layers, activeLayerId, popupFeatureId, openPopup]
+    [update, map, layers, activeLayerId, popupFeatureId, openPopup]
   );
 
   useEffect(() => {
