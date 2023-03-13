@@ -7,6 +7,7 @@ import { MapFeature, PopupState } from '@/types/maps';
 import {
   feetToMeters,
   getFeatureCenter,
+  isValidLngLat,
   metersToFeet,
   trimFeatureSymbolCode,
 } from '@/utils';
@@ -17,12 +18,32 @@ const yupSchema = yup.object({
   type: yup.string(),
   lat: yup.string().when('type', {
     is: (type: string) => type === GeometryTypeNames.Point,
-    then: yup.string().min(1, 'Latitude is required').required(),
+    then: yup
+      .string()
+      .test(
+        'is-valid-lat',
+        () => `Latitude must be between -90 and 90`,
+        (value) => {
+          const float = parseFloat(value || '');
+          return !Number.isNaN(float) && float >= -90 && float <= 90;
+        }
+      )
+      .required('Latitude is required'),
     otherwise: yup.string().nullable(),
   }),
   lng: yup.string().when('type', {
     is: (type: string) => type === GeometryTypeNames.Point,
-    then: yup.string().min(1, 'Longitude is required').required(),
+    then: yup
+      .string()
+      .test(
+        'is-valid-lng',
+        () => `Longitude must be between -180 and 180`,
+        (value) => {
+          const float = parseFloat(value || '');
+          return !Number.isNaN(float) && float >= -180 && float <= 180;
+        }
+      )
+      .required('Longitude is required'),
     otherwise: yup.string().nullable(),
   }),
   ele: yup.string().nullable(),
@@ -167,12 +188,12 @@ export const UseFeatureEditForm = ({
 
       const latFloat = parseFloat(values.lat || '');
       const lngFloat = parseFloat(values.lng || '');
-      let eleFloat = parseFloat(values.ele || '');
 
-      const coordinates = [
-        !Number.isNaN(lngFloat) ? lngFloat : feature.geometry.coordinates[0],
-        !Number.isNaN(latFloat) ? latFloat : feature.geometry.coordinates[1],
-      ];
+      const coordinates = isValidLngLat([lngFloat, latFloat])
+        ? [lngFloat, latFloat]
+        : [feature.geometry.coordinates[0], feature.geometry.coordinates[1]];
+
+      let eleFloat = parseFloat(values.ele || '');
 
       if (!Number.isNaN(eleFloat)) {
         eleFloat = feetToMeters(eleFloat);
