@@ -49,11 +49,10 @@ export const mapFeatureValuesToFeatureRecord = (
     ? coordinates[0][2]
     : null;
 
-  const ele_end = [GeometryTypes.Point, GeometryTypes.LineString].includes(
-    type as GeometryTypes
-  )
-    ? coordinates[coordinates.length - 1][2]
-    : null;
+  const ele_end =
+    type === GeometryTypes.LineString
+      ? coordinates[coordinates.length - 1][2]
+      : null;
 
   return {
     id: feature.databaseId || createAlphaNumericId(24),
