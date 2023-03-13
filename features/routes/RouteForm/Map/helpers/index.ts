@@ -5,5 +5,6 @@ export * from './calculatePolygonArea';
 export * from './deleteLayerFeature';
 export * from './getLayerValuesById';
 export * from './handleFeatureOnDraw';
+export * from './mapGPXFeaturesToFeatureValues';
 export * from './truncateGeometryCoordinates';
 export * from './updateLayerFeature';

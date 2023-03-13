@@ -80,3 +80,23 @@ export type GPXRoute = {
 };
 
 export type GPXTrack = GPXRoute;
+
+export enum GPXFeatures {
+  RTE = 'rte',
+  TRK = 'trk',
+  WPT = 'wpt',
+}
+
+export type GPXFeature =
+  | {
+      type: GPXFeatures.RTE;
+      feature: GPXRoute;
+    }
+  | {
+      type: GPXFeatures.TRK;
+      feature: GPXTrack;
+    }
+  | {
+      type: GPXFeatures.WPT;
+      feature: GPXWaypoint;
+    };

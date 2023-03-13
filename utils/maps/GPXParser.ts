@@ -12,6 +12,8 @@ import {
   GPXRoute,
   GPXTrack,
   GPXWaypoint,
+  GPXFeature,
+  GPXFeatures,
 } from '@/types/maps';
 
 export class GPXParser {
@@ -27,6 +29,7 @@ export class GPXParser {
     keywords: null,
     bounds: null,
   };
+  features: GPXFeature[] = [];
   waypoints: GPXWaypoint[] = [];
   routes: GPXRoute[] = [];
   tracks: GPXTrack[] = [];
@@ -50,9 +53,24 @@ export class GPXParser {
     }
 
     this.getMetadata();
-    this.getWaypoints();
-    this.getRoutes();
-    this.getTracks();
+
+    const elements: Element[] = [].slice.call(
+      this.xml.querySelectorAll(
+        `${GPXFeatures.WPT}, ${GPXFeatures.RTE}, ${GPXFeatures.TRK}`
+      )
+    );
+
+    for (const index in elements) {
+      const el = elements[index];
+
+      if (el.tagName === GPXFeatures.WPT) {
+        this.getWaypoint(el);
+      } else if (el.tagName === GPXFeatures.RTE) {
+        this.getRoute(el);
+      } else if (el.tagName === GPXFeatures.TRK) {
+        this.getTrack(el);
+      }
+    }
   }
 
   private getMetadata(): void {
@@ -142,176 +160,159 @@ export class GPXParser {
     ];
   }
 
-  private getWaypoints(): void {
-    const waypoints: Element[] = [].slice.call(
-      this.xml.querySelectorAll('wpt')
-    );
+  private getWaypoint(waypoint: Element): void {
+    const res = {} as GPXWaypoint;
 
-    for (const index in waypoints) {
-      const waypoint = waypoints[index];
+    /**
+     * waypoint attributes
+     */
 
-      const res = {} as GPXWaypoint;
+    // latitude
+    res.lat = this.getFloatAttribute(waypoint, 'lat');
+    // longitude
+    res.lon = this.getFloatAttribute(waypoint, 'lon');
+
+    /**
+     * waypoint values
+     */
+
+    // name
+    res.name = this.getElementValue(waypoint, 'name');
+    // elevation
+    res.ele = this.getElementFloatValue(waypoint, 'ele');
+    // symbol
+    res.sym = this.getElementValue(waypoint, 'sym');
+    // comment
+    res.cmt = this.getElementValue(waypoint, 'cmt');
+    // description
+    res.desc = this.getElementValue(waypoint, 'desc');
+    // time
+    res.time = this.getTimeValue(waypoint);
+
+    this.features.push({ type: GPXFeatures.WPT, feature: res });
+    this.waypoints.push(res);
+  }
+
+  private getRoute(route: Element): void {
+    const res = {} as GPXRoute;
+
+    /**
+     * route values
+     */
+
+    // name
+    res.name = this.getElementValue(route, 'name');
+    // comment
+    res.cmt = this.getElementValue(route, 'cmt');
+    // description
+    res.desc = this.getElementValue(route, 'desc');
+    // source
+    res.src = this.getElementValue(route, 'src');
+    // number
+    res.number = this.getElementValue(route, 'number');
+    // type
+    res.type = this.getTypeValue(route);
+    // link
+    res.link = this.getLinkValue(route);
+    // routepoints
+    const routepoints = [];
+    const rtepts: Element[] = [].slice.call(route.querySelectorAll('rtept'));
+    for (const rteptIndex in rtepts) {
+      const rtept = rtepts[rteptIndex];
+      const pt = {} as GPXPoint;
 
       /**
-       * waypoint attributes
+       * routepoint attributes
        */
 
       // latitude
-      res.lat = this.getFloatAttribute(waypoint, 'lat');
+      pt.lat = this.getFloatAttribute(rtept, 'lat');
       // longitude
-      res.lon = this.getFloatAttribute(waypoint, 'lon');
+      pt.lon = this.getFloatAttribute(rtept, 'lon');
 
       /**
-       * waypoint values
+       * routepoint values
        */
 
-      // name
-      res.name = this.getElementValue(waypoint, 'name');
       // elevation
-      res.ele = this.getElementFloatValue(waypoint, 'ele');
-      // symbol
-      res.sym = this.getElementValue(waypoint, 'sym');
-      // comment
-      res.cmt = this.getElementValue(waypoint, 'cmt');
-      // description
-      res.desc = this.getElementValue(waypoint, 'desc');
+      pt.ele = this.getElementFloatValue(rtept, 'ele');
       // time
-      res.time = this.getTimeValue(waypoint);
+      pt.time = this.getTimeValue(rtept);
 
-      this.waypoints.push(res);
+      routepoints.push(pt);
     }
+    // distance
+    res.distance = this.calcDistance(routepoints);
+    // elevation
+    res.elevation = this.calcElevation(routepoints);
+    // slopes
+    res.slopes = this.calcSlope(routepoints, res.distance.cumul);
+    // points
+    res.points = routepoints;
+
+    this.features.push({ type: GPXFeatures.RTE, feature: res });
+    this.routes.push(res);
   }
 
-  private getRoutes(): void {
-    const routes: Element[] = [].slice.call(this.xml.querySelectorAll('rte'));
+  private getTrack(track: Element): void {
+    const res = {} as GPXTrack;
 
-    for (const index in routes) {
-      const route = routes[index];
+    /**
+     * track values
+     */
 
-      const res = {} as GPXRoute;
-
-      /**
-       * route values
-       */
-
-      // name
-      res.name = this.getElementValue(route, 'name');
-      // comment
-      res.cmt = this.getElementValue(route, 'cmt');
-      // description
-      res.desc = this.getElementValue(route, 'desc');
-      // source
-      res.src = this.getElementValue(route, 'src');
-      // number
-      res.number = this.getElementValue(route, 'number');
-      // type
-      res.type = this.getTypeValue(route);
-      // link
-      res.link = this.getLinkValue(route);
-      // routepoints
-      const routepoints = [];
-      const rtepts: Element[] = [].slice.call(route.querySelectorAll('rtept'));
-      for (const rteptIndex in rtepts) {
-        const rtept = rtepts[rteptIndex];
-        const pt = {} as GPXPoint;
-
-        /**
-         * routepoint attributes
-         */
-
-        // latitude
-        pt.lat = this.getFloatAttribute(rtept, 'lat');
-        // longitude
-        pt.lon = this.getFloatAttribute(rtept, 'lon');
-
-        /**
-         * routepoint values
-         */
-
-        // elevation
-        pt.ele = this.getElementFloatValue(rtept, 'ele');
-        // time
-        pt.time = this.getTimeValue(rtept);
-
-        routepoints.push(pt);
-      }
-      // distance
-      res.distance = this.calcDistance(routepoints);
-      // elevation
-      res.elevation = this.calcElevation(routepoints);
-      // slopes
-      res.slopes = this.calcSlope(routepoints, res.distance.cumul);
-      // points
-      res.points = routepoints;
-
-      this.routes.push(res);
-    }
-  }
-
-  private getTracks(): void {
-    const tracks: Element[] = [].slice.call(this.xml.querySelectorAll('trk'));
-
-    for (const index in tracks) {
-      const track = tracks[index];
-
-      const res = {} as GPXTrack;
+    // name
+    res.name = this.getElementValue(track, 'name');
+    // comment
+    res.cmt = this.getElementValue(track, 'cmt');
+    // description
+    res.desc = this.getElementValue(track, 'desc');
+    // source
+    res.src = this.getElementValue(track, 'src');
+    // number
+    res.number = this.getElementValue(track, 'number');
+    // type
+    res.type = this.getTypeValue(track);
+    // link
+    res.link = this.getLinkValue(track);
+    // trackpoints
+    const trackpoints: GPXPoint[] = [];
+    const trkpts: Element[] = [].slice.call(track.querySelectorAll('trkpt'));
+    for (const trkptIndex in trkpts) {
+      const trkpt = trkpts[trkptIndex];
+      const pt = {} as GPXPoint;
 
       /**
-       * track values
+       * trackpoint attributes
        */
 
-      // name
-      res.name = this.getElementValue(track, 'name');
-      // comment
-      res.cmt = this.getElementValue(track, 'cmt');
-      // description
-      res.desc = this.getElementValue(track, 'desc');
-      // source
-      res.src = this.getElementValue(track, 'src');
-      // number
-      res.number = this.getElementValue(track, 'number');
-      // type
-      res.type = this.getTypeValue(track);
-      // link
-      res.link = this.getLinkValue(track);
-      // trackpoints
-      const trackpoints: GPXPoint[] = [];
-      const trkpts: Element[] = [].slice.call(track.querySelectorAll('trkpt'));
-      for (const trkptIndex in trkpts) {
-        const trkpt = trkpts[trkptIndex];
-        const pt = {} as GPXPoint;
+      // latitude
+      pt.lat = this.getFloatAttribute(trkpt, 'lat');
+      // longitude
+      pt.lon = this.getFloatAttribute(trkpt, 'lon');
 
-        /**
-         * trackpoint attributes
-         */
+      /**
+       * trackpoint values
+       */
 
-        // latitude
-        pt.lat = this.getFloatAttribute(trkpt, 'lat');
-        // longitude
-        pt.lon = this.getFloatAttribute(trkpt, 'lon');
-
-        /**
-         * trackpoint values
-         */
-
-        // elevation
-        pt.ele = this.getElementFloatValue(trkpt, 'ele');
-        // time
-        pt.time = this.getTimeValue(trkpt);
-
-        trackpoints.push(pt);
-      }
-      // distance
-      res.distance = this.calcDistance(trackpoints);
       // elevation
-      res.elevation = this.calcElevation(trackpoints);
-      // slopes
-      res.slopes = this.calcSlope(trackpoints, res.distance.cumul);
-      // points
-      res.points = trackpoints;
+      pt.ele = this.getElementFloatValue(trkpt, 'ele');
+      // time
+      pt.time = this.getTimeValue(trkpt);
 
-      this.tracks.push(res);
+      trackpoints.push(pt);
     }
+    // distance
+    res.distance = this.calcDistance(trackpoints);
+    // elevation
+    res.elevation = this.calcElevation(trackpoints);
+    // slopes
+    res.slopes = this.calcSlope(trackpoints, res.distance.cumul);
+    // points
+    res.points = trackpoints;
+
+    this.features.push({ type: GPXFeatures.TRK, feature: res });
+    this.tracks.push(res);
   }
 
   private getAttribute(node: Element, attribute: string): string | null {
