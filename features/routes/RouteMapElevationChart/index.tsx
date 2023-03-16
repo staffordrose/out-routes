@@ -1,12 +1,9 @@
 import { FC, useMemo } from 'react';
-import { Position } from 'geojson';
-import flatten from 'lodash.flatten';
 
 import { Text } from '@/components/atoms';
-import { GeometryTypeNames } from '@/data/routes';
 import { styled } from '@/styles';
-import { MapFeature, MapLayer } from '@/types/maps';
-import { getLineStringSegmentDistances, roundToDecimalCount } from '@/utils';
+import { MapLayer } from '@/types/maps';
+import { getAggregatedStatsFromMapLayers, getSVGPaths } from './helpers';
 
 type RouteMapElevationChartProps = {
   mapLayers: MapLayer[];
@@ -16,164 +13,11 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
   mapLayers,
 }) => {
   const { features, totalKm, eleMax, eleMin } = useMemo(() => {
-    const isLineStringCb = (feature: MapFeature) =>
-      feature.geometry.type === GeometryTypeNames.LineString;
-
-    return mapLayers.reduce(
-      (accum, layer) => {
-        if (
-          Array.isArray(layer.data.features) &&
-          layer.data.features.some(isLineStringCb)
-        ) {
-          const features = layer.data.features.filter(isLineStringCb);
-
-          const allEle = flatten(
-            features.map((feature) =>
-              (feature.geometry.coordinates as Position[])
-                .map((position) => position[2])
-                .filter((ele) => typeof ele === 'number' && !Number.isNaN(ele))
-            )
-          );
-
-          const eleMax = Math.max.apply(null, allEle);
-          const eleMin = Math.min.apply(null, allEle);
-
-          accum.features = accum.features.concat(features);
-          accum.totalKm += features.reduce(
-            (accum, feature) => (
-              (accum += feature.properties.distance || 0), accum
-            ),
-            0
-          );
-          accum.eleMax = Math.max(eleMax, accum.eleMax);
-          accum.eleMin =
-            accum.eleMin !== null ? Math.min(eleMin, accum.eleMin) : eleMin;
-        }
-
-        return accum;
-      },
-      { features: [], totalKm: 0, eleMax: 0, eleMin: null } as {
-        features: MapFeature[];
-        totalKm: number;
-        eleMax: number;
-        eleMin: number | null;
-      }
-    );
+    return getAggregatedStatsFromMapLayers(mapLayers);
   }, [mapLayers]);
 
   const { featureSeparators, featurePaths } = useMemo(() => {
-    const featureSeparators: { d: string }[] = [];
-    const featurePaths: { d: string; color?: string }[] = [];
-
-    let featureStartDist = 0;
-
-    features.forEach(
-      (
-        { geometry: { coordinates }, properties: { layerColor, color } },
-        featureIndex
-      ) => {
-        const distances = getLineStringSegmentDistances(
-          coordinates as Position[]
-        );
-
-        const relativeDistances = distances.map((d, i) => {
-          const r = d / totalKm;
-
-          if (i === 0 || i === distances.length - 1) {
-            // shorten first and last distance
-            return r - 0.001;
-          } else {
-            return r;
-          }
-        });
-
-        const featureDistance = relativeDistances.reduce(
-          (sum, curr) => ((sum += curr), sum),
-          0
-        );
-
-        const relativeElevations = (coordinates as Position[]).map(
-          (position) => {
-            if (
-              typeof eleMin !== 'number' ||
-              Number.isNaN(eleMin) ||
-              eleMin === eleMax
-            ) {
-              // prevent relative elevation from reaching 0
-              return 0.0125;
-            }
-
-            let ele = (position[2] - eleMin) / (eleMax - eleMin);
-
-            // prevent relative elevation from reaching 0 or 100
-            ele = Math.min(0.9875, ele);
-            ele = Math.max(0.0125, ele);
-
-            return ele;
-          }
-        );
-
-        let d = '';
-        let prevEle = null;
-
-        for (const index in coordinates as Position[]) {
-          let dist = 0;
-
-          if (Number(index) > 0) {
-            dist += relativeDistances[Number(index) - 1];
-          }
-
-          const ele = relativeElevations[index];
-
-          const eleDiff = (prevEle || 0) - ele;
-
-          prevEle = ele;
-
-          let segment = '';
-
-          if (Number(index) === 0) {
-            const x = roundToDecimalCount(100 * (featureStartDist + 0.002), {
-              decimalCount: 3,
-            });
-            const y = roundToDecimalCount(100 * (1 - ele), {
-              decimalCount: 3,
-            });
-            segment = `M${x},${y} `;
-          } else if (Number(index) === coordinates.length - 1) {
-            const x = roundToDecimalCount(100 * (dist - 0.002), {
-              decimalCount: 3,
-            });
-            const y = roundToDecimalCount(100 * eleDiff, {
-              decimalCount: 3,
-            });
-            segment = `l${x},${y} `;
-          } else {
-            const x = roundToDecimalCount(100 * dist, {
-              decimalCount: 3,
-            });
-            const y = roundToDecimalCount(100 * eleDiff, {
-              decimalCount: 3,
-            });
-            segment = `l${x},${y} `;
-          }
-
-          d = d.concat(segment);
-        }
-
-        if (featureIndex > 0) {
-          const x = roundToDecimalCount(100 * featureStartDist, {
-            decimalCount: 3,
-          });
-          featureSeparators.push({ d: `M${x},0 V100` });
-        }
-
-        featureStartDist += featureDistance + 0.002;
-
-        featurePaths.push({ d, color: color || layerColor });
-      }
-    );
-
-    return { featureSeparators, featurePaths };
+    return getSVGPaths(features, totalKm, eleMax, eleMin || 0);
   }, [features, totalKm, eleMax, eleMin]);
 
   return (
@@ -187,27 +31,18 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
         preserveAspectRatio='none'
       >
         <g className='quadrants'>
-          <path
-            d='M0.1,75 H99.9'
-            strokeWidth={1}
-            strokeLinecap='round'
-            vectorEffect='non-scaling-stroke'
-            fill='none'
-          />
-          <path
-            d='M0.1,50 H99.9'
-            strokeWidth={1}
-            strokeLinecap='round'
-            vectorEffect='non-scaling-stroke'
-            fill='none'
-          />
-          <path
-            d='M0.1,25 H99.9'
-            strokeWidth={1}
-            strokeLinecap='round'
-            vectorEffect='non-scaling-stroke'
-            fill='none'
-          />
+          {[25, 50, 75].map((percent) => {
+            return (
+              <path
+                key={percent}
+                d={`M0.1,${percent} H99.9`}
+                strokeWidth={1}
+                strokeLinecap='round'
+                vectorEffect='non-scaling-stroke'
+                fill='none'
+              />
+            );
+          })}
         </g>
         <g className='separators'>
           {Array.isArray(featureSeparators) &&
