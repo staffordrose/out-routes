@@ -32,51 +32,57 @@ export const useOnDrawUpdate = ({
   openPopup,
 }: OnDrawUpdateProps) => {
   const onDrawUpdate = useCallback(
-    (e: MapboxDraw.DrawUpdateEvent) => {
-      if (!map.current) return;
-      if (!activeLayerId) return;
+    async (e: MapboxDraw.DrawUpdateEvent) => {
+      try {
+        if (!activeLayerId) return;
 
-      const mapRef = map.current;
+        const activeLayer = getLayerValuesById(layers, activeLayerId);
 
-      const activeLayer = getLayerValuesById(layers, activeLayerId);
+        if (!activeLayer) return;
 
-      if (!activeLayer) return;
+        const activeLayerIndex = layers.findIndex(
+          (layer) => layer.databaseId === activeLayerId
+        );
 
-      const activeLayerIndex = layers.findIndex(
-        (layer) => layer.databaseId === activeLayerId
-      );
+        const filteredFeatures = e.features.filter((feature) => feature?.id);
 
-      const featuresWithUpdatedElevation = e.features
-        .filter((feature) => feature?.id)
-        .map((feature) => {
-          let mapFeature = feature as MapFeature;
-
+        const featuresPromiseArray = filteredFeatures.map(async (feature) => {
           // add elevation for all positions
-          mapFeature = addElevationToMapFeature(mapRef, mapFeature);
+          const mapFeature = await addElevationToMapFeature(
+            feature as MapFeature
+          );
 
           return mapFeature;
         });
 
-      const features = featuresWithUpdatedElevation.map((feature) =>
-        handleFeatureOnDraw(feature)
-      );
+        const featuresWithUpdatedEle = await Promise.all(featuresPromiseArray);
 
-      features.forEach((feature) => {
-        updateLayerFeature(update, activeLayerIndex, activeLayer, feature);
-      });
+        const features = featuresWithUpdatedEle.map((feature) =>
+          handleFeatureOnDraw(feature)
+        );
 
-      if (
-        popupFeatureId &&
-        features.length === 1 &&
-        popupFeatureId === features[0].id
-      ) {
-        openPopup({
-          center: getFeatureCenter(features[0] as MapFeature),
-          feature: features[0] as MapFeature,
+        features.forEach((feature) => {
+          updateLayerFeature(update, activeLayerIndex, activeLayer, feature);
         });
+
+        if (
+          popupFeatureId &&
+          features.length === 1 &&
+          popupFeatureId === features[0].id
+        ) {
+          openPopup({
+            center: getFeatureCenter(features[0]),
+            feature: features[0],
+          });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          // TODO: Open toast
+          console.error(error);
+        }
       }
     },
-    [update, map, layers, activeLayerId, popupFeatureId, openPopup]
+    [update, layers, activeLayerId, popupFeatureId, openPopup]
   );
 
   useEffect(() => {

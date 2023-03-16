@@ -1,6 +1,7 @@
 export * from './getAllCoordinatesFromMapLayers';
 export * from './getFeatureCenter';
 export * from './getCurrentMapBounds';
+export * from './getLineStringSegmentDistances';
 export * from './getMapBoundsFromCoordinates';
 export * from './getMapEndLngLatEle';
 export * from './getMapStartLngLatEle';

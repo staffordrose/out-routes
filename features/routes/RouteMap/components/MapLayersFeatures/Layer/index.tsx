@@ -21,7 +21,7 @@ export const Layer: FC<LayerProps> = ({ map, layer, features, openPopup }) => {
   const SymbolIcon = symbolIcons[(symbol || SymbolCodes.Marker) as SymbolCodes];
 
   return (
-    <li>
+    <StyledLayer>
       <StyledLayerDetails>
         <SymbolIcon
           style={{
@@ -38,11 +38,19 @@ export const Layer: FC<LayerProps> = ({ map, layer, features, openPopup }) => {
         features={features}
         openPopup={openPopup}
       />
-    </li>
+    </StyledLayer>
   );
 };
 
+const StyledLayer = styled('li', {
+  position: 'relative',
+  width: '$full',
+});
+
 const StyledLayerDetails = styled('div', {
+  position: 'sticky',
+  zIndex: 10,
+  top: 0,
   display: 'flex',
   gap: '$1',
   alignItems: 'center',
@@ -52,6 +60,7 @@ const StyledLayerDetails = styled('div', {
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
   borderBottomColor: '$slate-300',
+  backgroundColor: '$white',
   '& > svg': {
     flexShrink: 0,
     width: '$7',

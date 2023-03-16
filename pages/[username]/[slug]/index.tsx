@@ -241,7 +241,7 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
 };
 
 RouteDetail.getLayout = (page: ReactNode) => {
-  return <DefaultLayout footerGap='sm'>{page}</DefaultLayout>;
+  return <DefaultLayout>{page}</DefaultLayout>;
 };
 
 export default RouteDetail;

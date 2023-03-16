@@ -20,7 +20,7 @@ import { Input } from '@/components/atoms';
 import { ColorCodes } from '@/data/general';
 import { GeometryTypeNames, SymbolCodes } from '@/data/routes';
 import { useDebounce } from '@/hooks';
-import { getElevationByLngLat } from '@/lib/v1/api/map';
+import { getFeatureElevations } from '@/lib/v1/api/map';
 import { styled } from '@/styles';
 import { LngLat, MapFeature, MapLayer } from '@/types/maps';
 import {
@@ -91,10 +91,13 @@ export const Search: FC<SearchProps> = ({
         roundToDecimalCount(lat, { decimalCount: 6 }),
       ];
 
-      const ele = await getElevationByLngLat([lng, lat]);
+      const elevations = await getFeatureElevations({
+        type: GeometryTypeNames.Point,
+        coordinates: position,
+      });
 
-      if (typeof ele === 'number') {
-        position.push(roundToDecimalCount(ele, { decimalCount: 3 }));
+      if (Array.isArray(elevations) && typeof elevations[0] === 'number') {
+        position.push(roundToDecimalCount(elevations[0], { decimalCount: 3 }));
       }
 
       const f = {

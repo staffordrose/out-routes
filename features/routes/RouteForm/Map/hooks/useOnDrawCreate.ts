@@ -37,60 +37,65 @@ export const useOnDrawCreate = ({
   setActiveLayerId,
 }: OnDrawCreateProps) => {
   const onDrawCreate = useCallback(
-    (e: MapboxDraw.DrawCreateEvent) => {
-      if (!map.current) return;
-      if (!draw.current) return;
+    async (e: MapboxDraw.DrawCreateEvent) => {
+      try {
+        if (!draw.current) return;
 
-      const mapRef = map.current;
-      const drawRef = draw.current;
+        const drawRef = draw.current;
 
-      const featuresWithIdAndElevation = e.features
-        .filter((feature) => feature?.id)
-        .map((feature) => {
-          // remove feature with auto-generated id
-          drawRef.delete(feature.id?.toString() as string);
+        const filteredFeatures = e.features.filter((feature) => feature?.id);
 
-          const id: MapFeature['id'] = createAlphaNumericId(24);
-
+        const featuresPromiseArray = filteredFeatures.map(async (feature) => {
           // add custom id
           let mapFeature = {
             ...feature,
-            id,
+            id: createAlphaNumericId(24),
           } as MapFeature;
 
           // add elevation for all positions
-          mapFeature = addElevationToMapFeature(mapRef, mapFeature);
+          mapFeature = await addElevationToMapFeature(mapFeature);
+
+          // remove feature with auto-generated id
+          drawRef.delete((feature.id || '').toString());
 
           drawRef.add(mapFeature);
 
           return mapFeature;
         });
 
-      const features = featuresWithIdAndElevation.map((feature) =>
-        handleFeatureOnDraw(feature)
-      );
+        const featuresWithEle = await Promise.all(featuresPromiseArray);
 
-      if (!activeLayerId) {
-        const newLayerId = createAlphaNumericId(24);
+        const features = featuresWithEle.map((feature) =>
+          handleFeatureOnDraw(feature)
+        );
 
-        append({
-          databaseId: newLayerId,
-          title: '',
-          color: ColorCodes.Red,
-          symbol: SymbolCodes.Marker,
-          features: features.map((feature) =>
-            mapMapboxFeatureToFeatureValues(feature)
-          ),
-        });
+        if (!activeLayerId) {
+          const newLayerId = createAlphaNumericId(24);
 
-        setActiveLayerId(newLayerId);
-      } else {
-        features.forEach((feature) => {
-          addLayerFeature(update, layers, activeLayerId, feature);
-        });
+          append({
+            databaseId: newLayerId,
+            title: '',
+            color: ColorCodes.Red,
+            symbol: SymbolCodes.Marker,
+            features: features.map((feature) =>
+              mapMapboxFeatureToFeatureValues(feature)
+            ),
+          });
+
+          setActiveLayerId(newLayerId);
+        } else {
+          features.forEach((feature) => {
+            addLayerFeature(update, layers, activeLayerId, feature);
+          });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          // TODO: Open toast
+          console.error(error);
+        }
       }
     },
-    [append, update, map, draw, layers, activeLayerId, setActiveLayerId]
+    [append, update, draw, layers, activeLayerId, setActiveLayerId]
   );
 
   useEffect(() => {

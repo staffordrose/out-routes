@@ -21,35 +21,40 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   openPopup,
 }) => {
   return (
-    <StyledList as='ul' direction='column' width='full'>
-      {Array.isArray(layers) &&
-        layers.length > 0 &&
-        layers.map((layer) => {
-          return (
-            <Layer
-              key={layer.id}
-              map={map}
-              layer={layer}
-              features={
-                Array.isArray(features)
-                  ? features.filter(
-                      (feature) =>
-                        feature.layer?.id && feature.layer.id === layer.id
-                    )
-                  : []
-              }
-              openPopup={openPopup}
-            />
-          );
-        })}
-    </StyledList>
+    <StyledMapLayersFeatures>
+      <List as='ul' direction='column' width='full'>
+        {Array.isArray(layers) &&
+          layers.length > 0 &&
+          layers.map((layer) => {
+            return (
+              <Layer
+                key={layer.id}
+                map={map}
+                layer={layer}
+                features={
+                  Array.isArray(features)
+                    ? features.filter(
+                        (feature) =>
+                          feature.layer?.id && feature.layer.id === layer.id
+                      )
+                    : []
+                }
+                openPopup={openPopup}
+              />
+            );
+          })}
+      </List>
+    </StyledMapLayersFeatures>
   );
 };
 
-const StyledList = styled(List, {
-  '& > li:not(:last-child)': {
-    borderBottomWidth: '$1',
-    borderBottomStyle: 'solid',
-    borderBottomColor: '$slate-300',
+const StyledMapLayersFeatures = styled('div', {
+  width: '$full',
+  borderTopWidth: '$1',
+  borderTopStyle: 'solid',
+  borderTopColor: '$slate-300',
+  backgroundColor: '$white',
+  '@md': {
+    borderTop: 'none',
   },
 });

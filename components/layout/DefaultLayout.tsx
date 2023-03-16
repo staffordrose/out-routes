@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
-import { Container, Footer, FooterProps, Header } from '../layout';
 import { styled } from '@/styles';
+import { Container, Footer, FooterProps, Header } from '.';
 
 type DefaultLayoutProps = {
   footerGap?: FooterProps['marginTop'];

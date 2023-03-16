@@ -7,7 +7,12 @@ import { styled } from '@/styles';
 import { MapFeature } from '@/types/maps';
 import { Route } from '@/types/routes';
 import { LayerValues, RouteFormValues } from '../helpers';
-import { FeatureEdit, MapLayersFeatures, Search } from './components';
+import {
+  ElevationChart,
+  FeatureEdit,
+  MapLayersFeatures,
+  Search,
+} from './components';
 import { useMap } from './hooks';
 
 const initialFeatureEditProps = {
@@ -90,6 +95,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
             setActiveLayerId={setActiveLayerId}
           />
           <div id='map-container' ref={mapContainerEl} />
+          <ElevationChart />
         </div>
         <MapLayersFeatures
           fields={fields}
@@ -119,8 +125,14 @@ const StyledMap = styled('div', {
     height: 'calc(100vh - $14 - $8 - $14 - $12 - $24)',
     '& > div#map-container': {
       width: '$full',
-      height: '$full',
+      height: 'calc($full - $18)',
       backgroundColor: '$slate-200',
+    },
+    '& > div:last-child': {
+      height: '$18',
+      borderTopWidth: '$1',
+      borderTopStyle: 'solid',
+      borderTopColor: '$slate-300',
     },
   },
   '& > div:last-child': {
@@ -136,6 +148,12 @@ const StyledMap = styled('div', {
       borderLeftWidth: '$1',
       borderLeftStyle: 'solid',
       borderLeftColor: '$slate-300',
+      '& > div#map-container': {
+        height: 'calc($full - $24)',
+      },
+      '& > div:last-child': {
+        height: '$24',
+      },
     },
     '& > div:last-child': {
       overflowY: 'auto',

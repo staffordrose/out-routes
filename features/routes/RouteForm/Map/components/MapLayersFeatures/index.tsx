@@ -154,8 +154,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
 
                       const newLayerId = createAlphaNumericId(24);
 
-                      const features = mapGPXFeaturesToFeatureValues(
-                        mapRef,
+                      const features = await mapGPXFeaturesToFeatureValues(
                         newLayerId,
                         gpx.features
                       );
