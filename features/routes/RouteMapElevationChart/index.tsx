@@ -72,7 +72,6 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
         { geometry: { coordinates }, properties: { layerColor, color } },
         featureIndex
       ) => {
-        // console.group(featureIndex);
         const distances = getLineStringSegmentDistances(
           coordinates as Position[]
         );
