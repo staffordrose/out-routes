@@ -1,5 +1,5 @@
-import { roundToDecimalCount } from './roundToDecimalCount';
+import { round } from './round';
 
 export const feetToMeters = (feet: number): number => {
-  return roundToDecimalCount(feet * 0.3048, { decimalCount: 3 });
+  return round(feet * 0.3048, 3);
 };

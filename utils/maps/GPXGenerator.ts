@@ -11,7 +11,7 @@ import {
   MapFeature,
   MapLayer,
 } from '@/types/maps';
-import { roundToDecimalCount } from '../arithmetic';
+import { round } from '../arithmetic';
 
 export class GPXGenerator {
   metadata: GPXMetadata;
@@ -192,9 +192,7 @@ export class GPXGenerator {
           (coordinates as Position)[0]
         }">`,
       this.indent(2) +
-        `<ele>${roundToDecimalCount((coordinates as Position)[2] || 0, {
-          decimalCount: 3,
-        }).toFixed(4)}</ele>`,
+        `<ele>${round((coordinates as Position)[2] || 0, 3).toFixed(4)}</ele>`,
       this.indent(2) + `<name>${properties.title || ''}</name>`,
     ];
     if (properties.description) {

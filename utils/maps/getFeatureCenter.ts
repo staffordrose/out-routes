@@ -4,7 +4,7 @@ import * as turf from '@turf/helpers';
 
 import { GeometryTypeNames } from '@/data/routes';
 import { LngLat, MapFeature } from '@/types/maps';
-import { average, isEven, roundToDecimalCount } from '../arithmetic';
+import { average, isEven, round } from '../arithmetic';
 
 export const getFeatureCenter = (feature: MapFeature): LngLat => {
   let coordinates: LngLat = [0, 0];
@@ -44,8 +44,5 @@ export const getFeatureCenter = (feature: MapFeature): LngLat => {
     coordinates = [geometry.coordinates[0], geometry.coordinates[1]];
   }
 
-  return [
-    roundToDecimalCount(coordinates[0], { decimalCount: 6 }),
-    roundToDecimalCount(coordinates[1], { decimalCount: 6 }),
-  ];
+  return [round(coordinates[0], 6), round(coordinates[1], 6)];
 };

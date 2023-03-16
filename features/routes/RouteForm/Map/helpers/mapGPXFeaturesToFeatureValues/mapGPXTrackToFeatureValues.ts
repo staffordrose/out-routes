@@ -1,7 +1,7 @@
 import { GeometryTypeNames } from '@/data/routes';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { GPXTrack, MapFeature } from '@/types/maps';
-import { createAlphaNumericId, roundToDecimalCount } from '@/utils';
+import { createAlphaNumericId, round } from '@/utils';
 import {
   FeatureValues,
   mapMapboxFeatureToFeatureValues,
@@ -15,14 +15,7 @@ export const mapGPXTrackToFeatureValues = async (
 ): Promise<FeatureValues> => {
   try {
     let coordinates = trk.points.map(({ lat, lon, ele }) => {
-      const position = [
-        roundToDecimalCount(lon, {
-          decimalCount: 6,
-        }),
-        roundToDecimalCount(lat, {
-          decimalCount: 6,
-        }),
-      ];
+      const position = [round(lon, 6), round(lat, 6)];
       if (typeof ele === 'number' && !Number.isNaN(ele) && ele !== 0) {
         position.push(ele);
       }
@@ -60,9 +53,7 @@ export const mapGPXTrackToFeatureValues = async (
         title: trk.name || '',
         distance:
           typeof trk.distance.total === 'number'
-            ? roundToDecimalCount(trk.distance.total / 1000, {
-                decimalCount: 3,
-              })
+            ? round(trk.distance.total / 1000, 3)
             : undefined,
         description: trk.desc || trk.cmt || '',
       },

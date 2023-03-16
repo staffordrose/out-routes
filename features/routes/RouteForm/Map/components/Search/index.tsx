@@ -23,11 +23,7 @@ import { useDebounce } from '@/hooks';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { styled } from '@/styles';
 import { LngLat, MapFeature, MapLayer } from '@/types/maps';
-import {
-  createAlphaNumericId,
-  isValidLngLat,
-  roundToDecimalCount,
-} from '@/utils';
+import { createAlphaNumericId, isValidLngLat, round } from '@/utils';
 import {
   LayerValues,
   mapMapboxFeatureToFeatureValues,
@@ -86,10 +82,7 @@ export const Search: FC<SearchProps> = ({
           `maki-${layers.find(cb)?.symbol || SymbolCodes.Marker}`) ||
         `maki-${SymbolCodes.Marker}`;
 
-      const position: Position = [
-        roundToDecimalCount(lng, { decimalCount: 6 }),
-        roundToDecimalCount(lat, { decimalCount: 6 }),
-      ];
+      const position: Position = [round(lng, 6), round(lat, 6)];
 
       const elevations = await getFeatureElevations({
         type: GeometryTypeNames.Point,
@@ -97,7 +90,7 @@ export const Search: FC<SearchProps> = ({
       });
 
       if (Array.isArray(elevations) && typeof elevations[0] === 'number') {
-        position.push(roundToDecimalCount(elevations[0], { decimalCount: 3 }));
+        position.push(round(elevations[0], 3));
       }
 
       const f = {

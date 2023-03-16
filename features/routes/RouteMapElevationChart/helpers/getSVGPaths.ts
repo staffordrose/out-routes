@@ -1,7 +1,7 @@
 import { Position } from 'geojson';
 
 import { MapFeature } from '@/types/maps';
-import { getLineStringSegmentDistances, roundToDecimalCount } from '@/utils';
+import { getLineStringSegmentDistances, round } from '@/utils';
 
 export const getSVGPaths = (
   features: MapFeature[],
@@ -77,28 +77,16 @@ export const getSVGPaths = (
         let segment = '';
 
         if (Number(index) === 0) {
-          const x = roundToDecimalCount(100 * (featureStartDist + 0.002), {
-            decimalCount: 3,
-          });
-          const y = roundToDecimalCount(100 * (1 - ele), {
-            decimalCount: 3,
-          });
+          const x = round(100 * (featureStartDist + 0.002), 3);
+          const y = round(100 * (1 - ele), 3);
           segment = `M${x},${y} `;
         } else if (Number(index) === coordinates.length - 1) {
-          const x = roundToDecimalCount(100 * (dist - 0.002), {
-            decimalCount: 3,
-          });
-          const y = roundToDecimalCount(100 * eleDiff, {
-            decimalCount: 3,
-          });
+          const x = round(100 * (dist - 0.002), 3);
+          const y = round(100 * eleDiff, 3);
           segment = `l${x},${y} `;
         } else {
-          const x = roundToDecimalCount(100 * dist, {
-            decimalCount: 3,
-          });
-          const y = roundToDecimalCount(100 * eleDiff, {
-            decimalCount: 3,
-          });
+          const x = round(100 * dist, 3);
+          const y = round(100 * eleDiff, 3);
           segment = `l${x},${y} `;
         }
 
@@ -106,9 +94,7 @@ export const getSVGPaths = (
       }
 
       if (featureIndex > 0) {
-        const x = roundToDecimalCount(100 * featureStartDist, {
-          decimalCount: 3,
-        });
+        const x = round(100 * featureStartDist, 3);
         featureSeparators.push({ d: `M${x},0 V100` });
       }
 

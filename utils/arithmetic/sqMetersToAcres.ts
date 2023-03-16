@@ -1,5 +1,5 @@
-import { roundToDecimalCount } from './roundToDecimalCount';
+import { round } from './round';
 
 export const sqMetersToAcres = (sqm: number): number => {
-  return roundToDecimalCount(sqm * 0.000247105, { decimalCount: 3 });
+  return round(sqm * 0.000247105, 3);
 };

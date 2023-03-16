@@ -1,7 +1,7 @@
 import { GeometryTypeNames } from '@/data/routes';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { GPXRoute, MapFeature } from '@/types/maps';
-import { createAlphaNumericId, roundToDecimalCount } from '@/utils';
+import { createAlphaNumericId, round } from '@/utils';
 import {
   FeatureValues,
   mapMapboxFeatureToFeatureValues,
@@ -15,14 +15,7 @@ export const mapGPXRouteToFeatureValues = async (
 ): Promise<FeatureValues> => {
   try {
     let coordinates = rte.points.map(({ lat, lon, ele }) => {
-      const position = [
-        roundToDecimalCount(lon, {
-          decimalCount: 6,
-        }),
-        roundToDecimalCount(lat, {
-          decimalCount: 6,
-        }),
-      ];
+      const position = [round(lon, 6), round(lat, 6)];
       if (typeof ele === 'number' && !Number.isNaN(ele) && ele !== 0) {
         position.push(ele);
       }
@@ -60,9 +53,7 @@ export const mapGPXRouteToFeatureValues = async (
         title: rte.name || '',
         distance:
           typeof rte.distance.total === 'number'
-            ? roundToDecimalCount(rte.distance.total / 1000, {
-                decimalCount: 3,
-              })
+            ? round(rte.distance.total / 1000, 3)
             : undefined,
         description: rte.desc || rte.cmt || '',
       },

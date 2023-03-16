@@ -12,7 +12,7 @@ import { Flex, Grid, Heading, Icon } from '@/components/atoms';
 import { GeometryTypeNames } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapFeature } from '@/types/maps';
-import { roundToDecimalCount } from '@/utils';
+import { round } from '@/utils';
 import { Area, Distance, Elevation } from '../CommitItemsList';
 
 export type ContentProps = {
@@ -95,15 +95,9 @@ const LineString: FC<{ feature: MapFeature }> = ({ feature }) => {
 
           const prev: number = elevations[index - 1];
 
-          accum.gain +=
-            curr > prev
-              ? roundToDecimalCount(curr - prev, { decimalCount: 3 })
-              : 0;
+          accum.gain += curr > prev ? round(curr - prev, 3) : 0;
 
-          accum.loss +=
-            curr < prev
-              ? roundToDecimalCount(prev - curr, { decimalCount: 3 })
-              : 0;
+          accum.loss += curr < prev ? round(prev - curr, 3) : 0;
 
           return accum;
         },

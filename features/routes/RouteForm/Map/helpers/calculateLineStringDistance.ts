@@ -3,7 +3,7 @@ import * as turf from '@turf/helpers';
 
 import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
-import { roundToDecimalCount } from '@/utils';
+import { round } from '@/utils';
 
 export const calculateLineStringDistance = (feature: MapFeature): number => {
   if (feature.geometry.type !== GeometryTypeNames.LineString) {
@@ -25,5 +25,5 @@ export const calculateLineStringDistance = (feature: MapFeature): number => {
 
   const sum = distances.reduce((sum, num) => sum + num);
 
-  return roundToDecimalCount(sum, { decimalCount: 3 });
+  return round(sum, 3);
 };

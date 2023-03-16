@@ -3,7 +3,7 @@ import { BiTargetLock } from 'react-icons/bi';
 
 import { Button } from '@/components/atoms';
 import { LngLat } from '@/types/maps';
-import { roundToDecimalCount } from '@/utils';
+import { round } from '@/utils';
 
 type CoordinatesProps = {
   coordinates: [number, number];
@@ -14,12 +14,8 @@ export const Coordinates: FC<CoordinatesProps> = ({
   coordinates,
   handleFeatureClick,
 }) => {
-  const lng = roundToDecimalCount(coordinates[0], {
-    decimalCount: 6,
-  });
-  const lat = roundToDecimalCount(coordinates[1], {
-    decimalCount: 6,
-  });
+  const lng = round(coordinates[0], 6);
+  const lat = round(coordinates[1], 6);
 
   return (
     <Button

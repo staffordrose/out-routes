@@ -1,5 +1,5 @@
-import { roundToDecimalCount } from './roundToDecimalCount';
+import { round } from './round';
 
 export const kilometersToMiles = (km: number): number => {
-  return roundToDecimalCount(km * 0.621371, { decimalCount: 3 });
+  return round(km * 0.621371, 3);
 };

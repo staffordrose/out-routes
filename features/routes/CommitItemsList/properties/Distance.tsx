@@ -1,10 +1,6 @@
 import { FC } from 'react';
 
-import {
-  kilometersToMiles,
-  numberWithCommas,
-  roundToDecimalCount,
-} from '@/utils';
+import { kilometersToMiles, numberWithCommas, round } from '@/utils';
 
 type DistanceProps = {
   distance?: number | null;
@@ -13,11 +9,6 @@ type DistanceProps = {
 export const Distance: FC<DistanceProps> = ({ distance }) => {
   if (typeof distance !== 'number') return null;
   return (
-    <span>
-      {numberWithCommas(
-        roundToDecimalCount(kilometersToMiles(distance), { decimalCount: 1 })
-      )}{' '}
-      mi.
-    </span>
+    <span>{numberWithCommas(round(kilometersToMiles(distance), 1))} mi.</span>
   );
 };

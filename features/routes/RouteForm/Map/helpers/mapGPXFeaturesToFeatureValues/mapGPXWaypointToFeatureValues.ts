@@ -7,7 +7,7 @@ import {
 } from '@/data/routes';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { GPXWaypoint, MapFeature } from '@/types/maps';
-import { createAlphaNumericId, roundToDecimalCount } from '@/utils';
+import { createAlphaNumericId, round } from '@/utils';
 import {
   FeatureValues,
   mapMapboxFeatureToFeatureValues,
@@ -19,14 +19,7 @@ export const mapGPXWaypointToFeatureValues = async (
   wpt: GPXWaypoint
 ): Promise<FeatureValues> => {
   try {
-    const coordinates = [
-      roundToDecimalCount(wpt.lon, {
-        decimalCount: 6,
-      }),
-      roundToDecimalCount(wpt.lat, {
-        decimalCount: 6,
-      }),
-    ];
+    const coordinates = [round(wpt.lon, 6), round(wpt.lat, 6)];
 
     if (
       typeof wpt.ele === 'number' &&
@@ -34,11 +27,7 @@ export const mapGPXWaypointToFeatureValues = async (
       wpt.ele !== 0
     ) {
       // TODO: wpt.ele should be meters, but could be feet
-      coordinates.push(
-        roundToDecimalCount(wpt.ele, {
-          decimalCount: 3,
-        })
-      );
+      coordinates.push(round(wpt.ele, 3));
     }
 
     if (coordinates.length === 2) {

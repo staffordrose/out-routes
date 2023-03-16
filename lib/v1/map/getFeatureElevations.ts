@@ -8,7 +8,7 @@ import queryString from 'query-string';
 import { nanoid } from 'nanoid';
 
 import { MapFeature } from '@/types/maps';
-import { roundToDecimalCount, StatusError } from '@/utils';
+import { round, StatusError } from '@/utils';
 import { GeometryTypeNames } from '@/data/routes';
 
 const mapboxGlAccessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN;
@@ -131,9 +131,7 @@ export const getFeatureElevations = async (
         return 0;
       }
 
-      return roundToDecimalCount(ele, {
-        decimalCount: 1,
-      });
+      return round(ele, 1);
     });
 
     return elevations;
