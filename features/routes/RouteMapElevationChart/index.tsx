@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react';
 import { Text } from '@/components/atoms';
 import { styled } from '@/styles';
 import { MapLayer } from '@/types/maps';
-import { numberWithCommas } from '@/utils';
+import { metersToFeet, numberWithCommas } from '@/utils';
 import { Distances } from './Distances';
 import { getAggregatedStatsFromMapLayers, getSVGPaths } from './helpers';
 
@@ -62,11 +62,13 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
       </svg>
       {eleMax > 0 && (
         <div className='max-ele'>
-          <Text>{numberWithCommas(Math.round(eleMax))} ft.</Text>
+          <Text>{numberWithCommas(Math.round(metersToFeet(eleMax)))} ft.</Text>
         </div>
       )}
       <div className='min-ele'>
-        <Text>{numberWithCommas(Math.round(eleMin || 0))} ft.</Text>
+        <Text>
+          {numberWithCommas(Math.round(metersToFeet(eleMin || 0)))} ft.
+        </Text>
       </div>
       <Distances totalKm={totalKm} />
     </StyledElevationsChart>

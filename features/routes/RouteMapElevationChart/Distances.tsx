@@ -77,13 +77,18 @@ const DistanceLabel: FC<DistanceLabelProps> = ({
     [windowWidth]
   );
 
+  // element width as a percent of containing div
   const relativeWidth = width / containerWidth;
 
-  const test = (distance / distancesMax) * relativeWidth;
+  // distance as a percent of total distance
+  const relativeDistance = distance / distancesMax;
 
-  const distancePer = distance / distancesMax;
-
-  const distancePerNew = distancePer - test;
+  /**
+   * offset starting point of distance label to even
+   * out space between labels
+   */
+  const relativeDistanceAdjusted =
+    relativeDistance - relativeDistance * relativeWidth;
 
   return (
     <>
@@ -92,9 +97,9 @@ const DistanceLabel: FC<DistanceLabelProps> = ({
         style={{
           left:
             index < count - 1
-              ? distancePer === 0
+              ? relativeDistance === 0
                 ? 1
-                : `${distancePer * 100}%`
+                : `${relativeDistance * 100}%`
               : 'auto',
           right: index === count - 1 ? 1 : 'auto',
         }}
@@ -103,7 +108,8 @@ const DistanceLabel: FC<DistanceLabelProps> = ({
         ref={ref}
         className='distance'
         style={{
-          left: index < count - 1 ? `${distancePerNew * 100}%` : 'auto',
+          left:
+            index < count - 1 ? `${relativeDistanceAdjusted * 100}%` : 'auto',
           right: index === count - 1 ? 0 : 'auto',
         }}
       >
