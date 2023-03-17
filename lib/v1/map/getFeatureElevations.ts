@@ -12,6 +12,9 @@ import { MapFeature } from '@/types/maps';
 import { round, StatusError } from '@/utils';
 import { GeometryTypeNames } from '@/data/routes';
 
+const ENV = process.env.NODE_ENV;
+const TMP_DIR = 'tmp';
+
 const mapboxGlAccessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN;
 
 const BASE_URL = 'https://api.mapbox.com/v4';
@@ -44,26 +47,25 @@ export const getFeatureElevations = async (
       max_zoom: 14,
     });
 
+    // create tmp directory
+    if (ENV === 'development') {
+      if (!fs.existsSync(TMP_DIR)) {
+        fs.mkdirSync(TMP_DIR);
+      }
+    } else {
+      if (!fs.existsSync(path.join(process.cwd(), TMP_DIR))) {
+        fs.mkdirSync(path.join(process.cwd(), TMP_DIR));
+      }
+    }
+
     const tilesPromiseArray = tilesToFetch.map(async ([x, y, zoom]) => {
       try {
-        const fileId = nanoid();
-        const fileName = `${fileId}.png`;
-
-        let filePath = '';
-
-        if (process.env.NODE_ENV === 'development') {
-          filePath = path.join('public', 'files', fileName);
-
-          if (!fs.existsSync(path.join('public', 'files'))) {
-            fs.mkdirSync(path.join('public', 'files'));
-          }
-        } else {
-          filePath = path.join(process.cwd(), 'files', fileName);
-
-          if (!fs.existsSync(path.join(process.cwd(), 'files'))) {
-            fs.mkdirSync(path.join(process.cwd(), 'files'));
-          }
-        }
+        const tmpDir = 'tmp';
+        const fileName = `${nanoid()}.png`;
+        const filePath =
+          ENV === 'development'
+            ? path.join(tmpDir, fileName)
+            : path.join(process.cwd(), tmpDir, fileName);
 
         const res = await fetch(
           `${BASE_URL}/${TILESET_ID}/${zoom}/${x}/${y}.${FORMAT}?${OPTIONS}`
@@ -104,6 +106,17 @@ export const getFeatureElevations = async (
     const tiles: (Tile | undefined)[] = await Promise.all(
       tilesPromiseArray.map((promise) => promise.then((result) => result))
     );
+
+    // remove tmp directory
+    if (ENV === 'development') {
+      if (fs.existsSync(TMP_DIR)) {
+        fs.rmdirSync(TMP_DIR);
+      }
+    } else {
+      if (fs.existsSync(path.join(process.cwd(), TMP_DIR))) {
+        fs.rmdirSync(path.join(process.cwd(), TMP_DIR));
+      }
+    }
 
     // used to determine which point belongs to which tile
     const allZooms: number[] = tiles
