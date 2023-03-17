@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import util from 'util';
 import tileCover from '@mapbox/tile-cover';
 import tilebelt from '@mapbox/tilebelt';
@@ -48,6 +49,22 @@ export const getFeatureElevations = async (
         const fileId = nanoid();
         const fileName = `${fileId}.png`;
 
+        let filePath = '';
+
+        if (process.env.NODE_ENV === 'development') {
+          filePath = path.join('public', 'files', fileName);
+
+          if (!fs.existsSync(path.join('public', 'files'))) {
+            fs.mkdirSync(path.join('public', 'files'));
+          }
+        } else {
+          filePath = path.join(process.cwd(), 'files', fileName);
+
+          if (!fs.existsSync(path.join(process.cwd(), 'files'))) {
+            fs.mkdirSync(path.join(process.cwd(), 'files'));
+          }
+        }
+
         const res = await fetch(
           `${BASE_URL}/${TILESET_ID}/${zoom}/${x}/${y}.${FORMAT}?${OPTIONS}`
         );
@@ -60,12 +77,12 @@ export const getFeatureElevations = async (
         }
 
         // write terrain image to filesystem
-        await writeToFile(fileName, res);
+        await writeToFile(filePath, res);
 
-        const pixels = await getImagePixels(fileName);
+        const pixels = await getImagePixels(filePath);
 
         // remove terrain image from filesystem
-        fs.unlink(fileName, (error) => {
+        fs.unlink(filePath, (error) => {
           if (error instanceof Error) {
             throw new StatusError(400, error.message);
           }
@@ -147,12 +164,12 @@ export const getFeatureElevations = async (
   }
 };
 
-const writeToFile = async (filename: string, res: Response): Promise<void> => {
+const writeToFile = async (filePath: string, res: Response): Promise<void> => {
   const data = await res.arrayBuffer();
   const buffer = Buffer.from(data);
 
   return new Promise((resolve, reject) => {
-    const stream = fs.createWriteStream(filename, { flags: 'a' });
+    const stream = fs.createWriteStream(filePath, { flags: 'a' });
     stream.write(buffer, (err) => {
       if (err) {
         reject(err);
