@@ -3,6 +3,8 @@ import { FC, useMemo } from 'react';
 import { Text } from '@/components/atoms';
 import { styled } from '@/styles';
 import { MapLayer } from '@/types/maps';
+import { numberWithCommas } from '@/utils';
+import { Distances } from './Distances';
 import { getAggregatedStatsFromMapLayers, getSVGPaths } from './helpers';
 
 type RouteMapElevationChartProps = {
@@ -12,13 +14,15 @@ type RouteMapElevationChartProps = {
 export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
   mapLayers,
 }) => {
-  const { features, totalKm, eleMax, eleMin } = useMemo(() => {
-    return getAggregatedStatsFromMapLayers(mapLayers);
-  }, [mapLayers]);
+  const { features, totalKm, eleMax, eleMin } = useMemo(
+    () => getAggregatedStatsFromMapLayers(mapLayers),
+    [mapLayers]
+  );
 
-  const { featureSeparators, featurePaths } = useMemo(() => {
-    return getSVGPaths(features, totalKm, eleMax, eleMin || 0);
-  }, [features, totalKm, eleMax, eleMin]);
+  const { featureSeparators, featurePaths } = useMemo(
+    () => getSVGPaths(features, totalKm, eleMax, eleMin || 0),
+    [features, totalKm, eleMax, eleMin]
+  );
 
   return (
     <StyledElevationsChart>
@@ -31,15 +35,12 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
         preserveAspectRatio='none'
       >
         <g className='quadrants'>
-          {[25, 50, 75].map((percent) => {
+          {[0.5, 25, 50, 75, 99.5].map((percent) => {
             return (
               <path
                 key={percent}
                 d={`M0.1,${percent} H99.9`}
-                strokeWidth={1}
-                strokeLinecap='round'
-                vectorEffect='non-scaling-stroke'
-                fill='none'
+                strokeDasharray={[25, 50, 75].includes(percent) ? 2 : 0}
               />
             );
           })}
@@ -48,41 +49,26 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
           {Array.isArray(featureSeparators) &&
             featureSeparators.length > 0 &&
             featureSeparators.map(({ d }, index) => {
-              return (
-                <path
-                  key={index}
-                  d={d}
-                  strokeWidth={2}
-                  vectorEffect='non-scaling-stroke'
-                  fill='none'
-                />
-              );
+              return <path key={index} d={d} />;
             })}
         </g>
-        <g>
+        <g className='features'>
           {Array.isArray(featurePaths) &&
             featurePaths.length > 0 &&
             featurePaths.map(({ d, color }, index) => {
-              return (
-                <path
-                  key={index}
-                  d={d}
-                  stroke={color}
-                  strokeWidth={2}
-                  strokeLinecap='round'
-                  vectorEffect='non-scaling-stroke'
-                  fill='none'
-                />
-              );
+              return <path key={index} d={d} stroke={color} />;
             })}
         </g>
       </svg>
-      <div className='max-ele'>
-        <Text fontSize='xs'>{Math.round(eleMax)} ft.</Text>
-      </div>
+      {eleMax > 0 && (
+        <div className='max-ele'>
+          <Text>{numberWithCommas(Math.round(eleMax))} ft.</Text>
+        </div>
+      )}
       <div className='min-ele'>
-        <Text fontSize='xs'>{Math.round(eleMin || 0)} ft.</Text>
+        <Text>{numberWithCommas(Math.round(eleMin || 0))} ft.</Text>
       </div>
+      <Distances totalKm={totalKm} />
     </StyledElevationsChart>
   );
 };
@@ -91,13 +77,33 @@ const StyledElevationsChart = styled('div', {
   position: 'relative',
   width: '$full',
   padding: '$1',
+  paddingBottom: 'calc($4_5 + $px)',
   backgroundColor: '$slate-50',
   '& > svg': {
-    '& > g.quadrants > path': {
-      stroke: '$slate-200',
+    '& > g.quadrants': {
+      '& > path': {
+        stroke: '$slate-200',
+        strokeWidth: 1,
+        strokeLinecap: 'round',
+        vectorEffect: 'non-scaling-stroke',
+        fill: 'none',
+      },
+      '& > path:first-child, & > path:last-child': {
+        stroke: '$slate-300',
+      },
     },
     '& > g.separators > path': {
       stroke: '$slate-300',
+      strokeWidth: 1,
+      strokeDasharray: 2,
+      vectorEffect: 'non-scaling-stroke',
+      fill: 'none',
+    },
+    '& > g.features > path': {
+      strokeWidth: 2,
+      strokeLinecap: 'round',
+      vectorEffect: 'non-scaling-stroke',
+      fill: 'none',
     },
   },
   '& > div.max-ele, & > div.min-ele': {
@@ -113,18 +119,19 @@ const StyledElevationsChart = styled('div', {
       left: 0,
       width: '$full',
       height: '$full',
-      backgroundColor: '$slate-300',
-      opacity: 0.75,
+      backgroundColor: '$white',
+      opacity: 0.85,
     },
     '& > p': {
       position: 'relative',
       zIndex: 10,
+      fontSize: '0.625rem',
     },
   },
   '& > div.max-ele': {
-    top: '$1',
+    top: 'calc($1 + $px)',
   },
   '& > div.min-ele': {
-    bottom: '$1',
+    bottom: 'calc($5 + $px)',
   },
 });
