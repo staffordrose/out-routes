@@ -3,7 +3,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { Text } from '@/components/atoms';
 import { useWindowSize } from '@/hooks';
 import { styled } from '@/styles';
-import { getDistances } from './helpers';
+import { getDistances } from '../helpers';
 
 type DistancesProps = {
   totalKm: number;
