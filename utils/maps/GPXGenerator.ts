@@ -65,170 +65,171 @@ export class GPXGenerator {
   }
 
   private addMetadata(): void {
+    const { name, desc, author, copyright, link, time, keywords, bounds } =
+      this.metadata;
+
     this.xml += this.indent() + `<metadata>` + '\n';
 
-    // name
-    if (this.metadata.name) {
-      this.xml += this.addName(this.metadata.name);
+    if (name) {
+      this.xml += this.addName(name) + '\n';
     }
-    // description
-    if (this.metadata.desc) {
-      this.xml += this.addDescription(this.metadata.desc);
+    if (desc) {
+      this.xml += this.addDescription(desc) + '\n';
     }
-    // author
-    if (this.metadata.author?.name) {
-      this.xml += this.addAuthor(this.metadata.author);
+    if (author?.name) {
+      this.xml += this.addAuthor(author) + '\n';
     }
-    // copyright
-    if (this.metadata.copyright?.author) {
-      this.xml += this.addCopyright(this.metadata.copyright);
+    if (copyright?.author) {
+      this.xml += this.addCopyright(copyright) + '\n';
     }
-    // link
-    if (this.metadata.link?.href && this.metadata.link.text) {
-      this.xml += this.addLink(this.metadata.link);
+    if (link?.href && link.text) {
+      this.xml += this.addLink(link) + '\n';
     }
-    // time
-    if (this.metadata.time) {
-      this.xml += this.addTime(this.metadata.time);
+    if (time) {
+      this.xml += this.addTime(time) + '\n';
     }
-    // keywords
-    if (
-      Array.isArray(this.metadata.keywords) &&
-      this.metadata.keywords.length
-    ) {
-      this.xml += this.addKeywords(this.metadata.keywords);
+    if (Array.isArray(keywords) && keywords.length) {
+      this.xml += this.addKeywords(keywords) + '\n';
     }
-    // bounds
-    if (Array.isArray(this.metadata.bounds) && this.metadata.bounds.length) {
-      this.xml += this.addBounds(this.metadata.bounds);
+    if (Array.isArray(bounds) && bounds.length) {
+      this.xml += this.addBounds(bounds) + '\n';
     }
 
     this.xml += this.indent() + `</metadata>` + '\n';
   }
 
-  private addName(name: string): string {
-    return this.indent(2) + `<name>${name}</name>` + '\n';
+  private addName(name: string, baseIndent = 2): string {
+    return this.indent(baseIndent) + `<name>${name}</name>`;
   }
 
-  private addDescription(desc: string): string {
-    return this.indent(2) + `<desc>${desc}</desc>` + '\n';
+  private addDescription(desc: string, baseIndent = 2): string {
+    return this.indent(baseIndent) + `<desc>${desc}</desc>`;
   }
 
-  private addAuthor({ name, email, link }: GPXAuthor): string {
+  private addAuthor({ name, email, link }: GPXAuthor, baseIndent = 2): string {
     const author = [
-      this.indent(2) + `<author>`,
-      this.indent(3) + `<name>${name}</name>`,
+      this.indent(baseIndent) + `<author>`,
+      this.indent(baseIndent + 1) + `<name>${name}</name>`,
     ];
     if (email?.id && email.domain) {
       author.push(
-        this.indent(3) + `<email id="${email.id}" domain="${email.domain}" />`
+        this.indent(baseIndent + 1) +
+          `<email id="${email.id}" domain="${email.domain}" />`
       );
     }
     if (link?.href) {
-      const linkArr = [
-        this.indent(3) + `<link href="${link.href}">`,
-        this.indent(4) + `<text>${link.text}</text>`,
-        this.indent(4) + `<type>${link.type}</type>`,
-        this.indent(3) + `</link>`,
-      ];
-      author.push(linkArr.join('\n'));
+      author.push(this.addLink(link, baseIndent + 1));
     }
-    author.push(this.indent(2) + `</author>`);
+    author.push(this.indent(baseIndent) + `</author>`);
 
-    return author.join('\n') + '\n';
+    return author.join('\n');
   }
 
-  private addCopyright({ author, year, license }: GPXCopyright): string {
-    const copyright = [this.indent(2) + `<copyright author="${author}">`];
+  private addCopyright(
+    { author, year, license }: GPXCopyright,
+    baseIndent = 2
+  ): string {
+    const copyright = [
+      this.indent(baseIndent) + `<copyright author="${author}">`,
+    ];
     if (year) {
-      copyright.push(this.indent(3) + `<year>${year}</year>`);
+      copyright.push(this.indent(baseIndent + 1) + `<year>${year}</year>`);
     }
     if (license) {
-      copyright.push(this.indent(3) + `<license>${license}</license>`);
+      copyright.push(
+        this.indent(baseIndent + 1) + `<license>${license}</license>`
+      );
     }
-    copyright.push(this.indent(2) + `</copyright>`);
+    copyright.push(this.indent(baseIndent) + `</copyright>`);
 
-    return copyright.join('\n') + '\n';
+    return copyright.join('\n');
   }
 
-  private addLink({ href, text, type }: GPXLink): string {
+  private addLink({ href, text, type }: GPXLink, baseIndent = 2): string {
     const link = [
-      this.indent(2) + `<link href="${href}">`,
-      this.indent(3) + `<text>${text}</text>`,
+      this.indent(baseIndent) + `<link href="${href}">`,
+      this.indent(baseIndent + 1) + `<text>${text}</text>`,
     ];
     if (type) {
-      link.push(this.indent(3) + `<type>${type}</type>`);
+      link.push(this.indent(baseIndent + 1) + `<type>${type}</type>`);
     }
-    link.push(this.indent(2) + `</link>`);
+    link.push(this.indent(baseIndent) + `</link>`);
 
-    return link.join('\n') + '\n';
+    return link.join('\n');
   }
 
-  private addTime(time: Date): string {
-    return this.indent(2) + `<time>${time.toISOString()}</time>` + '\n';
+  private addTime(time: Date, baseIndent = 2): string {
+    return this.indent(baseIndent) + `<time>${time.toISOString()}</time>`;
   }
 
-  private addKeywords(keywords: string[]): string {
+  private addKeywords(keywords: string[], baseIndent = 2): string {
     return (
-      this.indent(2) + `<keywords>${keywords.join(', ')}</keywords>` + '\n'
+      this.indent(baseIndent) + `<keywords>${keywords.join(', ')}</keywords>`
     );
   }
 
-  private addBounds([[minlon, minlat], [maxlon, maxlat]]: LngLat[]): string {
+  private addBounds(
+    [[minlon, minlat], [maxlon, maxlat]]: LngLat[],
+    baseIndent = 2
+  ): string {
     return (
-      this.indent(2) +
-      `<bounds minlat="${minlat}" minlon="${minlon}" maxlat="${maxlat}" maxlon="${maxlon}" />` +
-      '\n'
+      this.indent(baseIndent) +
+      `<bounds minlat="${minlat}" minlon="${minlon}" maxlat="${maxlat}" maxlon="${maxlon}" />`
     );
   }
 
-  private addWaypoint({
-    geometry: { coordinates },
-    properties,
-  }: MapFeature): void {
+  private addWaypoint(
+    { geometry: { coordinates }, properties }: MapFeature,
+    baseIndent = 1
+  ): void {
     const wpt = [
-      this.indent() +
+      this.indent(baseIndent) +
         `<wpt lat="${(coordinates as Position)[1]}" lon="${
           (coordinates as Position)[0]
         }">`,
-      this.indent(2) +
+      this.indent(baseIndent + 1) +
         `<ele>${round((coordinates as Position)[2] || 0, 3).toFixed(4)}</ele>`,
-      this.indent(2) + `<name>${properties.title || ''}</name>`,
+      this.indent(baseIndent + 1) + `<name>${properties.title || ''}</name>`,
     ];
     if (properties.description) {
-      wpt.push(this.indent(2) + `<desc>${properties.description}</desc>`);
+      wpt.push(
+        this.indent(baseIndent + 1) + `<desc>${properties.description}</desc>`
+      );
     }
     if (properties.symbol && symbolLabels[properties.symbol as SymbolCodes]) {
       wpt.push(
-        this.indent(2) +
+        this.indent(baseIndent + 1) +
           `<sym>${symbolLabels[properties.symbol as SymbolCodes]}</sym>`
       );
     }
-    wpt.push(this.indent() + `</wpt>`);
+    wpt.push(this.indent(baseIndent) + `</wpt>`);
 
     this.xml += wpt.join('\n') + '\n';
   }
 
-  private addRoute({
-    geometry: { coordinates },
-    properties,
-  }: MapFeature): void {
+  private addRoute(
+    { geometry: { coordinates }, properties }: MapFeature,
+    baseIndent = 1
+  ): void {
     const rte = [
-      this.indent() + `<rte>`,
-      this.indent(2) + `<name>${properties.title || ''}</name>`,
+      this.indent(baseIndent) + `<rte>`,
+      this.indent(baseIndent + 1) + `<name>${properties.title || ''}</name>`,
     ];
     if (properties.description) {
-      rte.push(this.indent(2) + `<desc>${properties.description}</desc>`);
+      rte.push(
+        this.indent(baseIndent + 1) + `<desc>${properties.description}</desc>`
+      );
     }
     (coordinates as Position[]).forEach((position) => {
       const rtept = [
-        this.indent(2) + `<rtept lat="${position[1]}" lon="${position[0]}">`,
-        this.indent(3) + `<ele>${position[2] || 0}</ele>`,
-        this.indent(2) + `</rtept>`,
+        this.indent(baseIndent + 1) +
+          `<rtept lat="${position[1]}" lon="${position[0]}">`,
+        this.indent(baseIndent + 2) + `<ele>${position[2] || 0}</ele>`,
+        this.indent(baseIndent + 1) + `</rtept>`,
       ];
       rte.push(rtept.join('\n'));
     });
-    rte.push(this.indent() + `</rte>`);
+    rte.push(this.indent(baseIndent) + `</rte>`);
 
     this.xml += rte.join('\n') + '\n';
   }
