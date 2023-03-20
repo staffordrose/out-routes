@@ -1,6 +1,6 @@
 import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
-import { calculateLineStringDistance } from './calculateLineStringDistance';
+import { getMapFeatureDistances } from '@/utils';
 import { calculatePolygonArea } from './calculatePolygonArea';
 import { truncateGeometryCoordinates } from './truncateGeometryCoordinates';
 
@@ -27,7 +27,7 @@ export const handleFeatureOnDraw = (feature: MapFeature): MapFeature => {
       },
     };
   } else if (truncated.geometry.type === GeometryTypeNames.LineString) {
-    const distance = calculateLineStringDistance(truncated);
+    const { totalDistance: distance } = getMapFeatureDistances(truncated);
 
     return {
       ...truncated,

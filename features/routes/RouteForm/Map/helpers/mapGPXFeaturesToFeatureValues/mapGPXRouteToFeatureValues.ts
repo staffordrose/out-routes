@@ -1,12 +1,12 @@
 import { GeometryTypeNames } from '@/data/routes';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { GPXRoute, MapFeature } from '@/types/maps';
-import { createAlphaNumericId, round } from '@/utils';
+import { createAlphaNumericId, getMapFeatureDistances, round } from '@/utils';
 import {
   FeatureValues,
   mapMapboxFeatureToFeatureValues,
 } from '../../../helpers';
-import { calculateLineStringDistance, truncateGeometryCoordinates } from '..';
+import { truncateGeometryCoordinates } from '..';
 
 export const mapGPXRouteToFeatureValues = async (
   layerId: MapFeature['properties']['layer'],
@@ -60,11 +60,13 @@ export const mapGPXRouteToFeatureValues = async (
     };
 
     if (typeof mapFeature.properties.distance !== 'number') {
+      const { totalDistance: distance } = getMapFeatureDistances(mapFeature);
+
       mapFeature = {
         ...mapFeature,
         properties: {
           ...mapFeature.properties,
-          distance: calculateLineStringDistance(mapFeature),
+          distance,
         },
       };
     }
