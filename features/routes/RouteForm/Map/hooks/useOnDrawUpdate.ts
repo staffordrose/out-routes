@@ -4,7 +4,7 @@ import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { MapFeature, MapLayer, PopupState } from '@/types/maps';
-import { getFeatureCenter } from '@/utils';
+import { getMapFeatureCenter } from '@/utils';
 import { RouteFormValues } from '../../helpers';
 import {
   addElevationToMapFeature,
@@ -71,7 +71,7 @@ export const useOnDrawUpdate = ({
           popupFeatureId === features[0].id
         ) {
           openPopup({
-            center: getFeatureCenter(features[0]),
+            center: getMapFeatureCenter(features[0]),
             feature: features[0],
           });
         }

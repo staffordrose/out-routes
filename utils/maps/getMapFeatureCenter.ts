@@ -6,7 +6,7 @@ import { GeometryTypeNames } from '@/data/routes';
 import { LngLat, MapFeature } from '@/types/maps';
 import { average, isEven, round } from '../arithmetic';
 
-export const getFeatureCenter = (feature: MapFeature): LngLat => {
+export const getMapFeatureCenter = (feature: MapFeature): LngLat => {
   let coordinates: LngLat = [0, 0];
 
   if (feature.geometry.type === GeometryTypeNames.Polygon) {

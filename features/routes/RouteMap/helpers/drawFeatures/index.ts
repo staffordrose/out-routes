@@ -6,7 +6,7 @@ import { GeometryTypeNames } from '@/data/routes';
 import { MapLayer, PopupState } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import {
-  getFeatureCenter,
+  getMapFeatureCenter,
   mapLayerAndFeatureRecordsToMapboxLayer,
 } from '@/utils';
 import { drawLineString } from './drawLineString';
@@ -76,7 +76,7 @@ export const drawFeatures = ({
         // create popup for click events
         mapRef.on('click', feature.id, () => {
           openPopup({
-            center: getFeatureCenter(feature),
+            center: getMapFeatureCenter(feature),
             feature,
           });
         });
@@ -84,7 +84,7 @@ export const drawFeatures = ({
         // create popup for touch events
         mapRef.on('touchend', feature.id, () => {
           openPopup({
-            center: getFeatureCenter(feature),
+            center: getMapFeatureCenter(feature),
             feature,
           });
         });

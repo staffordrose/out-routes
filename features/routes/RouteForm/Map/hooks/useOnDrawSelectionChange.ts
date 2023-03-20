@@ -3,7 +3,7 @@ import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { MapFeature, MapLayer, PopupState } from '@/types/maps';
-import { getFeatureCenter } from '@/utils';
+import { getMapFeatureCenter } from '@/utils';
 import { LayerValues, RouteFormValues } from '../../helpers';
 import { MapStateActions } from './useMapState';
 
@@ -51,7 +51,7 @@ export const useOnDrawSelectionChange = ({
 
       if (features.length === 1) {
         openPopup({
-          center: getFeatureCenter(feature as MapFeature),
+          center: getMapFeatureCenter(feature as MapFeature),
           feature: feature as MapFeature,
         });
       }

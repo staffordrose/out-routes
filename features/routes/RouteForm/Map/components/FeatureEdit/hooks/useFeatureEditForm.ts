@@ -6,7 +6,7 @@ import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature, PopupState } from '@/types/maps';
 import {
   feetToMeters,
-  getFeatureCenter,
+  getMapFeatureCenter,
   isValidLngLat,
   metersToFeet,
   trimFeatureSymbolCode,
@@ -223,7 +223,7 @@ export const UseFeatureEditForm = ({
       closeFeatureEditDialog();
 
       openPopup({
-        center: getFeatureCenter(mapFeature),
+        center: getMapFeatureCenter(mapFeature),
         feature: mapFeature,
       });
     } catch (error) {
