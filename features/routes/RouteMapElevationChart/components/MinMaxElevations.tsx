@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { Text } from '@/components/atoms';
 import { styled } from '@/styles';
@@ -9,7 +9,7 @@ type MinMaxElevationsProps = {
   eleMin: number | null;
 };
 
-export const MinMaxElevations: FC<MinMaxElevationsProps> = ({
+const MinMaxElevationsComp: FC<MinMaxElevationsProps> = ({
   eleMax,
   eleMin,
 }) => {
@@ -29,10 +29,12 @@ export const MinMaxElevations: FC<MinMaxElevationsProps> = ({
   );
 };
 
+export const MinMaxElevations = memo(MinMaxElevationsComp);
+
 const StyledMinMaxElevations = styled('div', {
   '& > div': {
     position: 'absolute',
-    right: '$1',
+    right: 0,
     overflow: 'hidden',
     paddingX: '$0_5',
     borderRadius: '$sm',
@@ -44,6 +46,7 @@ const StyledMinMaxElevations = styled('div', {
       width: '$full',
       height: '$full',
       backgroundColor: '$white',
+
       opacity: 0.85,
     },
     '& > p': {
@@ -53,9 +56,9 @@ const StyledMinMaxElevations = styled('div', {
     },
   },
   '& > :not(div:last-child)': {
-    top: 'calc($1 + $px)',
+    top: '$0_5',
   },
   '& > div:last-child': {
-    bottom: 'calc($5 + $px)',
+    bottom: '$0_5',
   },
 });

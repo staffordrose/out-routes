@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 
 import { styled } from '@/styles';
 import { MapFeature } from '@/types/maps';
@@ -6,20 +6,15 @@ import { getSVGPaths } from '../helpers';
 
 type ChartProps = {
   features: MapFeature[];
-  totalKm: number;
+  kmTotal: number;
   eleMax: number;
   eleMin: number | null;
 };
 
-export const Chart: FC<ChartProps> = ({
-  features,
-  totalKm,
-  eleMax,
-  eleMin,
-}) => {
+const ChartComp: FC<ChartProps> = ({ features, kmTotal, eleMax, eleMin }) => {
   const { featureSeparators, featurePaths } = useMemo(
-    () => getSVGPaths(features, totalKm, eleMax, eleMin || 0),
-    [features, totalKm, eleMax, eleMin]
+    () => getSVGPaths(features, kmTotal, eleMax, eleMin || 0),
+    [features, kmTotal, eleMax, eleMin]
   );
 
   return (
@@ -28,15 +23,15 @@ export const Chart: FC<ChartProps> = ({
       version='1.1'
       width='100%'
       height='100%'
-      viewBox='0 0 100 100'
+      viewBox='-0.01 -2 100.02 104'
       preserveAspectRatio='none'
     >
       <g className='quadrants'>
-        {[0.5, 25, 50, 75, 99.5].map((percent) => {
+        {[-1.5, 25, 50, 75, 101.5].map((percent) => {
           return (
             <path
               key={percent}
-              d={`M0.1,${percent} H99.9`}
+              d={`M0,${percent} H100`}
               strokeDasharray={[25, 50, 75].includes(percent) ? 2 : 0}
             />
           );
@@ -60,12 +55,14 @@ export const Chart: FC<ChartProps> = ({
   );
 };
 
+export const Chart = memo(ChartComp);
+
 const StyledChart = styled('svg', {
   '& > g.quadrants': {
     '& > path': {
       stroke: '$slate-200',
       strokeWidth: 1,
-      strokeLinecap: 'round',
+      strokeLinecap: 'butt',
       vectorEffect: 'non-scaling-stroke',
       fill: 'none',
     },
@@ -76,13 +73,14 @@ const StyledChart = styled('svg', {
   '& > g.separators > path': {
     stroke: '$slate-300',
     strokeWidth: 1,
+    strokeLinecap: 'butt',
     strokeDasharray: 2,
     vectorEffect: 'non-scaling-stroke',
     fill: 'none',
   },
   '& > g.features > path': {
     strokeWidth: 2,
-    strokeLinecap: 'round',
+    strokeLinecap: 'butt',
     vectorEffect: 'non-scaling-stroke',
     fill: 'none',
   },

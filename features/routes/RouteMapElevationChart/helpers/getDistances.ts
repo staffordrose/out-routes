@@ -2,20 +2,20 @@ import { kilometersToMiles, round } from '@/utils';
 
 export const getDistances = (
   containerWidth: number,
-  totalKm: number
+  kmTotal: number
 ): number[] => {
   let distances = [];
 
-  if (totalKm < 1) {
-    distances = getDistancesByMultiple(containerWidth, totalKm, 0.1);
-  } else if (totalKm < 3) {
-    distances = getDistancesByMultiple(containerWidth, totalKm, 0.5);
-  } else if (totalKm < 7.5) {
-    distances = getDistancesByMultiple(containerWidth, totalKm, 1);
-  } else if (totalKm < 15) {
-    distances = getDistancesByMultiple(containerWidth, totalKm, 2.5);
+  if (kmTotal < 1) {
+    distances = getDistancesByMultiple(containerWidth, kmTotal, 0.1);
+  } else if (kmTotal < 3) {
+    distances = getDistancesByMultiple(containerWidth, kmTotal, 0.5);
+  } else if (kmTotal < 7.5) {
+    distances = getDistancesByMultiple(containerWidth, kmTotal, 1);
+  } else if (kmTotal < 15) {
+    distances = getDistancesByMultiple(containerWidth, kmTotal, 2.5);
   } else {
-    distances = getDistancesByMultiple(containerWidth, totalKm, 5);
+    distances = getDistancesByMultiple(containerWidth, kmTotal, 5);
   }
 
   return distances;
@@ -23,10 +23,10 @@ export const getDistances = (
 
 const getDistancesByMultiple = (
   containerWidth: number,
-  totalKm: number,
+  kmTotal: number,
   multiple: number
 ) => {
-  const totalMi = kilometersToMiles(totalKm);
+  const totalMi = kilometersToMiles(kmTotal);
 
   // number of labels to show - zero is added later
   const countLessZero = 3;
@@ -44,7 +44,7 @@ const getDistancesByMultiple = (
   // float value of how many distances to show
   const distancesCount = totalMi / increment;
   const distancesCountInt = Math.floor(distancesCount);
-  const distancesCountRemainder = round(distancesCount % 1, 2);
+  const distancesCountRemainder = distancesCount % 1;
 
   // width in pixels of last distance label - set manually for now
   const lastLabelWidth = 45;

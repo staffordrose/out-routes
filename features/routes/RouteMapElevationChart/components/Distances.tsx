@@ -1,41 +1,32 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { Text } from '@/components/atoms';
-import { useWindowSize } from '@/hooks';
 import { styled } from '@/styles';
 import { getDistances } from '../helpers';
 
 type DistancesProps = {
-  totalKm: number;
+  windowWidth?: number;
+  containerWidth: number;
+  kmTotal: number;
 };
 
-export const Distances: FC<DistancesProps> = ({ totalKm }) => {
-  const windowSize = useWindowSize();
-
-  const [containerWidth, setContainerWidth] = useState<number>(0);
-
-  const ref = useCallback(
-    (el: HTMLDivElement | null) => {
-      if (windowSize.width && el) {
-        const rect = el.getBoundingClientRect();
-        setContainerWidth(rect.width);
-      }
-    },
-    [windowSize.width]
-  );
-
+const DistancesComp: FC<DistancesProps> = ({
+  windowWidth,
+  containerWidth,
+  kmTotal,
+}) => {
   const distances = useMemo(
-    () => getDistances(containerWidth, totalKm),
-    [containerWidth, totalKm]
+    () => getDistances(containerWidth, kmTotal),
+    [containerWidth, kmTotal]
   );
 
   return (
-    <StyledDistances ref={ref}>
+    <StyledDistances>
       {distances.map((distance, distanceIndex) => {
         return (
           <DistanceLabel
             key={distance}
-            windowWidth={windowSize.width}
+            windowWidth={windowWidth}
             containerWidth={containerWidth}
             distancesMax={distances[distances.length - 1]}
             distancesCount={distances.length}
@@ -47,6 +38,8 @@ export const Distances: FC<DistancesProps> = ({ totalKm }) => {
     </StyledDistances>
   );
 };
+
+export const Distances = memo(DistancesComp);
 
 type DistanceLabelProps = {
   windowWidth: number | undefined;
@@ -95,13 +88,8 @@ const DistanceLabel: FC<DistanceLabelProps> = ({
       <div
         className='distance-line'
         style={{
-          left:
-            index < count - 1
-              ? relativeDistance === 0
-                ? 1
-                : `${relativeDistance * 100}%`
-              : 'auto',
-          right: index === count - 1 ? 1 : 'auto',
+          left: index < count - 1 ? `${relativeDistance * 100}%` : 'auto',
+          right: index === count - 1 ? '0%' : 'auto',
         }}
       />
       <div

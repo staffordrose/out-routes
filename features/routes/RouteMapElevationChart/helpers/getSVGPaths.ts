@@ -1,11 +1,11 @@
 import { Position } from 'geojson';
 
 import { MapFeature } from '@/types/maps';
-import { getLineStringSegmentDistances, round } from '@/utils';
+import { getMapFeatureDistances, round } from '@/utils';
 
 export const getSVGPaths = (
   features: MapFeature[],
-  totalKm: number,
+  kmTotal: number,
   eleMax: number,
   eleMin: number
 ) => {
@@ -14,95 +14,73 @@ export const getSVGPaths = (
 
   let featureStartDist = 0;
 
-  features.forEach(
-    (
-      { geometry: { coordinates }, properties: { layerColor, color } },
-      featureIndex
-    ) => {
-      const distances = getLineStringSegmentDistances(
-        coordinates as Position[]
-      );
+  features.forEach((feature, featureIndex) => {
+    const {
+      geometry: { coordinates },
+      properties: { layerColor, color },
+    } = feature;
 
-      const relativeDistances = distances.map((d, i) => {
-        const r = d / totalKm;
+    const { distances } = getMapFeatureDistances(feature);
 
-        if (i === 0 || i === distances.length - 1) {
-          // shorten first and last distance
-          return r - 0.001;
-        } else {
-          return r;
-        }
-      });
+    const relativeDistances = distances.map((d) => d / kmTotal);
 
-      const featureDistance = relativeDistances.reduce(
-        (sum, curr) => ((sum += curr), sum),
-        0
-      );
+    const featureDistance = relativeDistances.reduce(
+      (sum, curr) => ((sum += curr), sum),
+      0
+    );
 
-      const relativeElevations = (coordinates as Position[]).map((position) => {
-        if (
-          typeof eleMin !== 'number' ||
-          Number.isNaN(eleMin) ||
-          eleMin === eleMax
-        ) {
-          // prevent relative elevation from reaching 0
-          return 0.0125;
-        }
-
-        let ele = (position[2] - eleMin) / (eleMax - eleMin);
-
-        // prevent relative elevation from reaching 0 or 100
-        ele = Math.min(0.9875, ele);
-        ele = Math.max(0.0125, ele);
-
-        return ele;
-      });
-
-      let d = '';
-      let prevEle = null;
-
-      for (const index in coordinates as Position[]) {
-        let dist = 0;
-
-        if (Number(index) > 0) {
-          dist += relativeDistances[Number(index) - 1];
-        }
-
-        const ele = relativeElevations[index];
-
-        const eleDiff = (prevEle || 0) - ele;
-
-        prevEle = ele;
-
-        let segment = '';
-
-        if (Number(index) === 0) {
-          const x = round(100 * (featureStartDist + 0.002), 3);
-          const y = round(100 * (1 - ele), 3);
-          segment = `M${x},${y} `;
-        } else if (Number(index) === coordinates.length - 1) {
-          const x = round(100 * (dist - 0.002), 3);
-          const y = round(100 * eleDiff, 3);
-          segment = `l${x},${y} `;
-        } else {
-          const x = round(100 * dist, 3);
-          const y = round(100 * eleDiff, 3);
-          segment = `l${x},${y} `;
-        }
-
-        d = d.concat(segment);
+    const relativeElevations = (coordinates as Position[]).map((position) => {
+      if (
+        typeof eleMin !== 'number' ||
+        Number.isNaN(eleMin) ||
+        eleMin === eleMax
+      ) {
+        return 0;
       }
 
-      if (featureIndex > 0) {
+      return (position[2] - eleMin) / (eleMax - eleMin);
+    });
+
+    let d = '';
+    let prevEle = null;
+
+    for (const index in coordinates as Position[]) {
+      let dist = 0;
+
+      if (Number(index) > 0) {
+        dist += relativeDistances[Number(index) - 1];
+      }
+
+      const ele = relativeElevations[index];
+
+      const eleDiff = (prevEle || 0) - ele;
+
+      prevEle = ele;
+
+      let segment = '';
+
+      if (Number(index) === 0) {
         const x = round(100 * featureStartDist, 3);
-        featureSeparators.push({ d: `M${x},0 V100` });
+        const y = round(100 * (1 - ele), 3);
+        segment = `M${x},${y} `;
+      } else {
+        const x = round(100 * dist, 3);
+        const y = round(100 * eleDiff, 3);
+        segment = `l${x},${y} `;
       }
 
-      featureStartDist += featureDistance + 0.002;
-
-      featurePaths.push({ d, color: color || layerColor });
+      d = d.concat(segment);
     }
-  );
+
+    if (featureIndex > 0) {
+      const x = round(100 * featureStartDist, 3);
+      featureSeparators.push({ d: `M${x},0 V100` });
+    }
+
+    featureStartDist += featureDistance;
+
+    featurePaths.push({ d, color: color || layerColor });
+  });
 
   return { featureSeparators, featurePaths };
 };
