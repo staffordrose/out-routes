@@ -66,7 +66,10 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
 
           const { width, x } = currentTarget.getBoundingClientRect();
 
-          const nextCursorPx = clientX + 1 - x;
+          let nextCursorPx = clientX + 1 - x;
+
+          // round to integer for mobile browser compatibility
+          nextCursorPx = Math.round(nextCursorPx);
 
           if (
             typeof nextCursorPx === 'number' &&
