@@ -6,11 +6,11 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
-import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
+import { LngLatBounds, Map, Marker, Popup } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { mapboxgl } from '@/lib/client';
-import { MapFeature, MapLayer, PopupState } from '@/types/maps';
+import { LngLat, MapFeature, MapLayer, PopupState } from '@/types/maps';
 import { Route } from '@/types/routes';
 import { RouteMapPopup } from '../../../RouteMapPopup';
 import { LayerValues, RouteFormValues } from '../../helpers';
@@ -58,10 +58,11 @@ export const useMap = ({
     [setValue]
   );
 
-  const mapContainerEl = useRef<HTMLDivElement | null>(null);
-  const popupEl = useRef<PopupT | null>(null);
+  const mapContainerEl = useRef<HTMLDivElement>(null);
   const map = useRef<Map>();
   const draw = useRef<MapboxDraw>();
+  const popupEl = useRef<Popup | null>(null);
+  const trackMarkerEl = useRef<Marker | null>(null);
 
   // initialize map & draw, set controls & load icons
   useSetupMap({
@@ -83,20 +84,14 @@ export const useMap = ({
     layers,
   });
 
-  const closePopup = useCallback(() => {
-    // close existing popup
-    if (popupEl.current) {
-      popupEl.current.remove();
-    }
-
-    setPopupFeatureId(null);
-  }, [setPopupFeatureId]);
-
   const openPopup = useCallback(
     ({ center, feature }: PopupState): void => {
       if (!map.current) return;
 
-      closePopup();
+      // close existing popup
+      if (popupEl.current) {
+        popupEl.current.remove();
+      }
 
       setPopupFeatureId(feature.id);
 
@@ -129,8 +124,38 @@ export const useMap = ({
         .setDOMContent(popupNode)
         .addTo(map.current);
     },
-    [layers, setPopupFeatureId, closePopup, openFeatureEditDialog]
+    [layers, setPopupFeatureId, openFeatureEditDialog]
   );
+
+  const closePopup = useCallback(() => {
+    if (popupEl.current) {
+      popupEl.current.remove();
+    }
+
+    setPopupFeatureId(null);
+  }, [setPopupFeatureId]);
+
+  const setTrackMarker = useCallback((lngLat: LngLat) => {
+    if (!map.current) return;
+
+    // hide track marker
+    if (trackMarkerEl.current) {
+      trackMarkerEl.current.remove();
+    }
+
+    const markerNode = document.createElement('div');
+    markerNode.className = 'mapboxgl-track-marker';
+
+    trackMarkerEl.current = new mapboxgl.Marker(markerNode)
+      .setLngLat(lngLat)
+      .addTo(map.current);
+  }, []);
+
+  const hideTrackMarker = useCallback(() => {
+    if (trackMarkerEl.current) {
+      trackMarkerEl.current.remove();
+    }
+  }, []);
 
   useOnDrawCreate({
     append,
@@ -173,6 +198,8 @@ export const useMap = ({
     draw,
     openPopup,
     closePopup,
+    setTrackMarker,
+    hideTrackMarker,
     setActiveLayerId,
   };
 };

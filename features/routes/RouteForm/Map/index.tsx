@@ -60,14 +60,22 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
     name: 'layers',
   });
 
-  const { mapContainerEl, map, draw, openPopup, closePopup, setActiveLayerId } =
-    useMap({
-      append,
-      update,
-      routeId,
-      routeMapBounds,
-      openFeatureEditDialog,
-    });
+  const {
+    mapContainerEl,
+    map,
+    draw,
+    openPopup,
+    closePopup,
+    setTrackMarker,
+    hideTrackMarker,
+    setActiveLayerId,
+  } = useMap({
+    append,
+    update,
+    routeId,
+    routeMapBounds,
+    openFeatureEditDialog,
+  });
 
   return (
     <>
@@ -95,7 +103,10 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
             setActiveLayerId={setActiveLayerId}
           />
           <div id='map-container' ref={mapContainerEl} />
-          <ElevationChart />
+          <ElevationChart
+            hideTrackMarker={hideTrackMarker}
+            setTrackMarker={setTrackMarker}
+          />
         </div>
         <MapLayersFeatures
           fields={fields}

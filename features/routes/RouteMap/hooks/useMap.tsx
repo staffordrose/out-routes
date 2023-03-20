@@ -1,9 +1,9 @@
 import { useCallback, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { LngLatBounds, Map, Popup as PopupT } from 'mapbox-gl';
+import { LngLatBounds, Map, Marker, Popup } from 'mapbox-gl';
 
 import { mapboxgl } from '@/lib/client';
-import { PopupState } from '@/types/maps';
+import { LngLat, PopupState } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import { RouteMapPopup } from '../../RouteMapPopup';
 import { useMapState, useSetupMap } from '.';
@@ -17,24 +17,19 @@ export type UseMapProps = {
 export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
   const { state, setPopupFeatureId } = useMapState();
 
-  const mapContainerEl = useRef<HTMLDivElement | null>(null);
-  const popupEl = useRef<PopupT | null>(null);
+  const mapContainerEl = useRef<HTMLDivElement>(null);
   const map = useRef<Map>();
-
-  const closePopup = useCallback(() => {
-    // close existing popup
-    if (popupEl.current) {
-      popupEl.current.remove();
-    }
-
-    setPopupFeatureId(null);
-  }, [setPopupFeatureId]);
+  const popupEl = useRef<Popup | null>(null);
+  const trackMarkerEl = useRef<Marker | null>(null);
 
   const openPopup = useCallback(
     ({ center, feature }: PopupState) => {
       if (!map.current) return;
 
-      closePopup();
+      // close existing popup
+      if (popupEl.current) {
+        popupEl.current.remove();
+      }
 
       setPopupFeatureId(feature.id);
 
@@ -56,8 +51,38 @@ export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
         .setDOMContent(popupNode)
         .addTo(map.current);
     },
-    [setPopupFeatureId, closePopup]
+    [setPopupFeatureId]
   );
+
+  const closePopup = useCallback(() => {
+    if (popupEl.current) {
+      popupEl.current.remove();
+    }
+
+    setPopupFeatureId(null);
+  }, [setPopupFeatureId]);
+
+  const setTrackMarker = useCallback((lngLat: LngLat) => {
+    if (!map.current) return;
+
+    // hide track marker
+    if (trackMarkerEl.current) {
+      trackMarkerEl.current.remove();
+    }
+
+    const markerNode = document.createElement('div');
+    markerNode.className = 'mapboxgl-track-marker';
+
+    trackMarkerEl.current = new mapboxgl.Marker(markerNode)
+      .setLngLat(lngLat)
+      .addTo(map.current);
+  }, []);
+
+  const hideTrackMarker = useCallback(() => {
+    if (trackMarkerEl.current) {
+      trackMarkerEl.current.remove();
+    }
+  }, []);
 
   // initialize map, set controls & load icons
   useSetupMap({
@@ -74,5 +99,8 @@ export const useMap = ({ mapBounds, layers, features }: UseMapProps) => {
     mapContainerEl,
     map,
     openPopup,
+    closePopup,
+    setTrackMarker,
+    hideTrackMarker,
   };
 };

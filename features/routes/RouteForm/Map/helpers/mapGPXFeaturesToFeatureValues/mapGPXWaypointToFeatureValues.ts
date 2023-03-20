@@ -26,7 +26,6 @@ export const mapGPXWaypointToFeatureValues = async (
       !Number.isNaN(wpt.ele) &&
       wpt.ele !== 0
     ) {
-      // TODO: wpt.ele should be meters, but could be feet
       coordinates.push(round(wpt.ele, 3));
     }
 

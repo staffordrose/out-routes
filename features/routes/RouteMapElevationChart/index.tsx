@@ -2,16 +2,23 @@ import { FC, useCallback, useMemo, useState } from 'react';
 
 import { useWindowSize } from '@/hooks';
 import { styled } from '@/styles';
-import { MapLayer } from '@/types/maps';
+import { LngLat, MapLayer } from '@/types/maps';
 import { Chart, Distances, HoverCard, MinMaxElevations } from './components';
-import { getAggregatedStatsFromMapLayers } from './helpers';
+import {
+  getAggregatedStatsFromMapLayers,
+  getLngLatAtCursorPx,
+} from './helpers';
 
 type RouteMapElevationChartProps = {
   mapLayers: MapLayer[];
+  hideTrackMarker?: () => void;
+  setTrackMarker?: (lngLat: LngLat) => void;
 };
 
 export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
   mapLayers,
+  hideTrackMarker,
+  setTrackMarker,
 }) => {
   const { features, kmTotal, eleMax, eleMin } = useMemo(
     () => getAggregatedStatsFromMapLayers(mapLayers),
@@ -47,19 +54,33 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
 
           const { width, x } = currentTarget.getBoundingClientRect();
 
-          const cursorPx = clientX + 1 - x;
+          const nextCursorPx = clientX + 1 - x;
 
           if (
-            typeof cursorPx === 'number' &&
-            !Number.isNaN(cursorPx) &&
-            cursorPx >= 0 &&
-            cursorPx <= width
+            typeof nextCursorPx === 'number' &&
+            !Number.isNaN(nextCursorPx) &&
+            nextCursorPx >= 0 &&
+            nextCursorPx <= width
           ) {
-            setCursorPx(clientX + 1 - x);
+            setCursorPx(nextCursorPx);
+
+            if (typeof setTrackMarker === 'function') {
+              const lngLat = getLngLatAtCursorPx(
+                containerWidth,
+                nextCursorPx,
+                features
+              );
+
+              if (lngLat) setTrackMarker(lngLat);
+            }
           }
         }}
         onMouseLeave={() => {
           setHovering(false);
+
+          if (typeof hideTrackMarker === 'function') {
+            hideTrackMarker();
+          }
         }}
       >
         <Chart

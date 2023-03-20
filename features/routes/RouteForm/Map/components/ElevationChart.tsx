@@ -1,10 +1,19 @@
+import { LngLat } from '@/types/maps';
 import { FC, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { RouteMapElevationChart } from '../../../RouteMapElevationChart';
 import { mapLayerValuesToMapboxLayer, RouteFormValues } from '../../helpers';
 
-export const ElevationChart: FC = () => {
+type ElevationChartProps = {
+  hideTrackMarker: () => void;
+  setTrackMarker: (lngLat: LngLat) => void;
+};
+
+export const ElevationChart: FC<ElevationChartProps> = ({
+  hideTrackMarker,
+  setTrackMarker,
+}) => {
   const { control } = useFormContext<RouteFormValues>();
 
   const layers = useWatch({
@@ -18,5 +27,11 @@ export const ElevationChart: FC = () => {
     );
   }, [layers]);
 
-  return <RouteMapElevationChart mapLayers={mapLayers} />;
+  return (
+    <RouteMapElevationChart
+      mapLayers={mapLayers}
+      hideTrackMarker={hideTrackMarker}
+      setTrackMarker={setTrackMarker}
+    />
+  );
 };

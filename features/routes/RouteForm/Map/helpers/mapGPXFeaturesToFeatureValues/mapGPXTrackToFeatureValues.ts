@@ -17,7 +17,7 @@ export const mapGPXTrackToFeatureValues = async (
     let coordinates = trk.points.map(({ lat, lon, ele }) => {
       const position = [round(lon, 6), round(lat, 6)];
       if (typeof ele === 'number' && !Number.isNaN(ele) && ele !== 0) {
-        position.push(ele);
+        position.push(round(ele, 3));
       }
       return position;
     });

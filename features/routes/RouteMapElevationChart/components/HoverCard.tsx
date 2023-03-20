@@ -61,8 +61,8 @@ const HoverCardComp: FC<HoverCardProps> = ({
       const { start, distance } = distances[index];
 
       if (
-        kmProgress > start &&
-        (kmProgress <= start + distance ||
+        kmProgress >= start &&
+        (kmProgress < start + distance ||
           Number(index) === distances.length - 1)
       ) {
         featureIndex = Number(index);
@@ -79,7 +79,7 @@ const HoverCardComp: FC<HoverCardProps> = ({
     };
   }, [containerWidth, cursorPx, distances, kmTotal, elevations]);
 
-  const title = features[featureIndex || 0].properties.title;
+  const title = features[featureIndex || 0]?.properties?.title;
 
   if (isHovering) {
     return (

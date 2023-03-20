@@ -17,13 +17,14 @@ type RouteMapProps = {
 };
 
 export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
-  const { mapContainerEl, map, openPopup } = useMap({
-    mapBounds: route.map_bounding_box
-      ? parseMapBounds(route.map_bounding_box)
-      : null,
-    layers,
-    features,
-  });
+  const { mapContainerEl, map, openPopup, setTrackMarker, hideTrackMarker } =
+    useMap({
+      mapBounds: route.map_bounding_box
+        ? parseMapBounds(route.map_bounding_box)
+        : null,
+      layers,
+      features,
+    });
 
   const mapLayers = useMemo(() => {
     return layers.map((layer) =>
@@ -38,7 +39,11 @@ export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
     <StyledMap>
       <div>
         <div id='map-container' ref={mapContainerEl} />
-        <RouteMapElevationChart mapLayers={mapLayers} />
+        <RouteMapElevationChart
+          mapLayers={mapLayers}
+          hideTrackMarker={hideTrackMarker}
+          setTrackMarker={setTrackMarker}
+        />
       </div>
       <MapLayersFeatures
         map={map}
