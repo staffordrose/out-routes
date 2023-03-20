@@ -51,25 +51,15 @@ export const mapGPXTrackToFeatureValues = async (
         layer: layerId,
         order: featureIndex,
         title: trk.name || '',
-        distance:
-          typeof trk.distance.total === 'number'
-            ? round(trk.distance.total / 1000, 3)
-            : undefined,
+        distance: undefined,
         description: trk.desc || trk.cmt || '',
       },
     };
 
-    if (typeof mapFeature.properties.distance !== 'number') {
-      const { totalDistance: distance } = getMapFeatureDistances(mapFeature);
+    const { totalDistance: distance } = getMapFeatureDistances(mapFeature);
 
-      mapFeature = {
-        ...mapFeature,
-        properties: {
-          ...mapFeature.properties,
-          distance,
-        },
-      };
-    }
+    // add feature distance to properties
+    mapFeature.properties.distance = distance;
 
     // truncate coordinates
     mapFeature = truncateGeometryCoordinates(mapFeature);

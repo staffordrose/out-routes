@@ -1,3 +1,4 @@
+import { GeometryTypeNames } from '@/data/routes';
 import { Route } from '@/types/routes';
 import {
   getAllCoordinatesFromMapLayers,
@@ -52,6 +53,20 @@ export const mapRouteValuesToRouteRecordWithFiles = (
     ele: mapEndEle,
   } = getMapEndLngLatEle(mapLayers);
 
+  let mapDistance: number = 0;
+
+  mapLayers.forEach((layer) => {
+    (layer.data.features || [])
+      .filter(
+        (feature) => feature.geometry.type === GeometryTypeNames.LineString
+      )
+      .forEach((feature) => {
+        if (typeof feature.properties.distance === 'number') {
+          mapDistance += feature.properties.distance;
+        }
+      });
+  });
+
   const route = {
     files,
     id: id as Route['id'],
@@ -75,7 +90,7 @@ export const mapRouteValuesToRouteRecordWithFiles = (
     map_end_lng: mapEndLng || null,
     map_end_lat: mapEndLat || null,
     map_end_ele: Number(mapEndEle) || 0,
-    map_distance: 0, // TODO: Add functionality to calculate route distance
+    map_distance: mapDistance,
     image_id,
     image_full,
     image_og,
