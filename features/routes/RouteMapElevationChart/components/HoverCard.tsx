@@ -2,7 +2,7 @@ import { FC, memo, useMemo } from 'react';
 
 import { MapFeature } from '@/types/maps';
 import { styled } from '@/styles';
-import { Text, TruncatedText } from '@/components/atoms';
+import { TruncatedText } from '@/components/atoms';
 import {
   kilometersToMiles,
   metersToFeet,
@@ -94,11 +94,13 @@ const HoverCardComp: FC<HoverCardProps> = ({
           }}
         >
           <div>
-            <TruncatedText lineClamp={1} fontSize='xs' fontWeight='medium'>
+            <TruncatedText lineClamp={1} fontWeight='medium'>
               {title || '[Untitled feature]'}
             </TruncatedText>
-            <Text fontSize='xs'>{elevation} ft.</Text>
-            <Text fontSize='xs'>{mileProgress} mi.</Text>
+            <div>
+              <p>{elevation} ft.</p>
+              <p>{mileProgress} mi.</p>
+            </div>
           </div>
         </StyledHoverCard>
       </>
@@ -133,5 +135,23 @@ const StyledHoverCard = styled('div', {
     borderColor: '$slate-300',
     borderRadius: '$md',
     backgroundColor: '$white',
+    '& > div': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    '& p': {
+      fontSize: '0.625rem',
+    },
+  },
+  '@md': {
+    '& > div': {
+      '& > div': {
+        display: 'block',
+      },
+      '& p': {
+        fontSize: '$xs',
+      },
+    },
   },
 });

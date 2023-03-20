@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useWindowSize } from '@/hooks';
 import { styled } from '@/styles';
@@ -42,6 +42,14 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
   const [isHovering, setHovering] = useState(false);
   const [cursorPx, setCursorPx] = useState<number>(0);
 
+  useEffect(() => {
+    setHovering(false);
+
+    if (typeof hideTrackMarker === 'function') {
+      hideTrackMarker();
+    }
+  }, [windowSize.width, windowSize.height, hideTrackMarker]);
+
   return (
     <StyledRouteMapElevationChart>
       <div
@@ -50,6 +58,10 @@ export const RouteMapElevationChart: FC<RouteMapElevationChartProps> = ({
           setHovering(true);
         }}
         onMouseMove={(e) => {
+          if (!isHovering) {
+            setHovering(true);
+          }
+
           const { clientX, currentTarget } = e;
 
           const { width, x } = currentTarget.getBoundingClientRect();
