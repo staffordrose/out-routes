@@ -34,7 +34,24 @@ export enum ActivityTypeLabels {
   SKIING = 'Skiing',
 }
 
-export const activityTypes: Record<ActivityTypes, ActivityTypeLabels> = {
+export const activityTypes: Record<ActivityTypeLabels, ActivityTypes> = {
+  [ActivityTypeLabels.BACKPACKING]: ActivityTypes.BACKPACKING,
+  [ActivityTypeLabels.BIKEPACKING]: ActivityTypes.BIKEPACKING,
+  [ActivityTypeLabels.CANYONEERING]: ActivityTypes.CANYONEERING,
+  [ActivityTypeLabels.CANOEING]: ActivityTypes.CANOEING,
+  [ActivityTypeLabels.CLIMBING]: ActivityTypes.CLIMBING,
+  [ActivityTypeLabels.CYCLING]: ActivityTypes.CYCLING,
+  [ActivityTypeLabels.FISHING]: ActivityTypes.FISHING,
+  [ActivityTypeLabels.HIKING]: ActivityTypes.HIKING,
+  [ActivityTypeLabels.HUNTING]: ActivityTypes.HUNTING,
+  [ActivityTypeLabels.KAYAKING]: ActivityTypes.KAYAKING,
+  [ActivityTypeLabels.OVERLANDING]: ActivityTypes.OVERLANDING,
+  [ActivityTypeLabels.PACKRAFTING]: ActivityTypes.PACKRAFTING,
+  [ActivityTypeLabels.SAILING]: ActivityTypes.SAILING,
+  [ActivityTypeLabels.SKIING]: ActivityTypes.SKIING,
+};
+
+export const activityTypeLabels: Record<ActivityTypes, ActivityTypeLabels> = {
   [ActivityTypes.BACKPACKING]: ActivityTypeLabels.BACKPACKING,
   [ActivityTypes.BIKEPACKING]: ActivityTypeLabels.BIKEPACKING,
   [ActivityTypes.CANYONEERING]: ActivityTypeLabels.CANYONEERING,
@@ -55,7 +72,9 @@ export const activityTypeSelectOptions: Array<{
   value: ActivityTypes;
   label: ActivityTypeLabels;
 }> = (
-  Object.entries(activityTypes) as Array<[ActivityTypes, ActivityTypeLabels]>
+  Object.entries(activityTypeLabels) as Array<
+    [ActivityTypes, ActivityTypeLabels]
+  >
 ).map((a) => ({
   value: a[0],
   label: a[1],

@@ -1,4 +1,5 @@
-import { geometryTypeNames, GeometryTypes } from '@/data/routes';
+import { colorCodes, ColorNames, StandardColorCodes } from '@/data/general';
+import { geometryTypeNames, GeometryTypes, SymbolCodes } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import { isJsonString } from '../../data-structures';
@@ -22,11 +23,15 @@ export const mapFeatureRecordToMapboxFeature = (
     },
     properties: {
       layer: layer.id,
-      layerColor: layer.color || undefined,
-      layerSymbol: layer.symbol || undefined,
+      layerColor: layer.color
+        ? colorCodes[layer.color as ColorNames]
+        : StandardColorCodes.Red,
+      layerSymbol: layer.symbol || SymbolCodes.Marker,
       order: feature.order,
       title: feature.title || undefined,
-      color: feature.color || undefined,
+      color: feature.color
+        ? colorCodes[feature.color as ColorNames]
+        : undefined,
       symbol: feature.symbol || undefined,
       description: feature.description || undefined,
       distance: feature.distance || undefined,

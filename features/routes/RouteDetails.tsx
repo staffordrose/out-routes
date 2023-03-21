@@ -28,7 +28,7 @@ import {
 } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { countries, CountryCodes } from '@/data/general';
-import { ActivityTypes, activityTypes } from '@/data/routes';
+import { activityTypeLabels, ActivityTypes } from '@/data/routes';
 import { styled } from '@/styles';
 import { Route } from '@/types/routes';
 import { User } from '@/types/users';
@@ -74,7 +74,7 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
           )}
           <Detail icon={BiBody}>
             {activity_type
-              ? activityTypes[activity_type as ActivityTypes]
+              ? activityTypeLabels[activity_type as ActivityTypes]
               : null}
           </Detail>
           <Detail icon={BiCurrentLocation}>{region}</Detail>

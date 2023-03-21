@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { ActivityTypes, activityTypes } from '@/data/routes';
+import { activityTypeLabels, ActivityTypes } from '@/data/routes';
 
 type ActivityTypeProps = {
   activity_type?: string | null;
@@ -8,5 +8,5 @@ type ActivityTypeProps = {
 
 export const ActivityType: FC<ActivityTypeProps> = ({ activity_type }) => {
   if (!activity_type) return null;
-  return <span>{activityTypes[activity_type as ActivityTypes]}</span>;
+  return <span>{activityTypeLabels[activity_type as ActivityTypes]}</span>;
 };

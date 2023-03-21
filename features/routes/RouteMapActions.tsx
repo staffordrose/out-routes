@@ -58,6 +58,7 @@ export const RouteMapActions: FC<RouteMapActionsProps> = ({
         time: new Date(),
         bounds: mapBounds,
       },
+      route.activity_type,
       mapLayers,
       {
         fileName: route.title || '',

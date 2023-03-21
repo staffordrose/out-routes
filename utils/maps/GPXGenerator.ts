@@ -1,6 +1,12 @@
 import { Position } from 'geojson';
 
-import { GeometryTypeNames, SymbolCodes, symbolLabels } from '@/data/routes';
+import {
+  activityTypeLabels,
+  ActivityTypes,
+  GeometryTypeNames,
+  SymbolCodes,
+  symbolLabels,
+} from '@/data/routes';
 import {
   GPXAuthor,
   GPXCopyright,
@@ -12,15 +18,19 @@ import {
   MapLayer,
 } from '@/types/maps';
 import { round } from '../arithmetic';
+import { StandardColorCodes, standardColorNames } from '@/data/general';
+import { Route } from '@/types/routes';
 
 export class GPXGenerator {
   metadata: GPXMetadata;
+  activityType: Route['activity_type'];
   mapLayers: MapLayer[];
   options: GPXOptions;
   xml: string = '';
 
   constructor(
     metadata: Partial<GPXMetadata>,
+    activityType: Route['activity_type'],
     mapLayers: MapLayer[],
     options?: Partial<GPXOptions>
   ) {
@@ -34,6 +44,7 @@ export class GPXGenerator {
       keywords: metadata.keywords || null,
       bounds: metadata.bounds || null,
     };
+    this.activityType = activityType;
     this.mapLayers = mapLayers;
     this.options = {
       fileName: `${options?.fileName || 'untitled'}.gpx`,
@@ -45,18 +56,42 @@ export class GPXGenerator {
   private generate(): void {
     this.xml = `<?xml version="1.0" encoding="UTF-8"?>` + '\n';
 
-    this.xml +=
-      `<gpx creator="OutRoutes https://outroutes.staffordrose.com" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">` +
-      '\n';
+    const schemaLocation = [
+      `http://www.topografix.com/GPX/1/1`,
+      `http://www.topografix.com/GPX/1/1/gpx.xsd`,
+      // Section extension
+      `https://outroutes.staffordrose.com/xmlschemas/GpxExtensions/v1`,
+      `https://outroutes.staffordrose.com/xmlschemas/GpxExtensionsv1.xsd`,
+      // DisplayColor extension
+      `http://www.garmin.com/xmlschemas/GpxExtensions/v3`,
+      `http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd`,
+      // TransportationMode extension
+      `http://www.garmin.com/xmlschemas/TripExtensions/v1`,
+      `http://www.garmin.com/xmlschemas/TripExtensionsv1.xsd`,
+    ];
+
+    const gpxAttributes = [
+      `creator="OutRoutes https://outroutes.staffordrose.com"`,
+      `version="1.1"`,
+      `xmlns="http://www.topografix.com/GPX/1/1"`,
+      `xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"`,
+      `xmlns:gpxout="https://outroutes.staffordrose.com/xmlschemas/GpxExtensions/v1"`,
+      `xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"`,
+      `xmlns:gpxtrx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"`,
+      `xmlns:trp="http://www.garmin.com/xmlschemas/TripExtensions/v1"`,
+      `xsi:schemaLocation="${schemaLocation.join(' ')}"`,
+    ];
+
+    this.xml += `<gpx ${gpxAttributes.join(' ')}>` + '\n';
 
     this.addMetadata();
 
-    this.mapLayers.forEach(({ data }) => {
+    this.mapLayers.forEach(({ title, data }) => {
       (data.features || []).forEach((feature) => {
         if (feature.geometry.type === GeometryTypeNames.Point) {
-          this.addWaypoint(feature);
+          this.addWaypoint({ title }, feature);
         } else if (feature.geometry.type === GeometryTypeNames.LineString) {
-          this.addRoute(feature);
+          this.addRoute({ title }, feature);
         }
       });
     });
@@ -179,6 +214,7 @@ export class GPXGenerator {
   }
 
   private addWaypoint(
+    { title }: Partial<MapLayer>,
     { geometry: { coordinates }, properties }: MapFeature,
     baseIndent = 1
   ): void {
@@ -191,23 +227,44 @@ export class GPXGenerator {
         `<ele>${round((coordinates as Position)[2] || 0, 3).toFixed(4)}</ele>`,
       this.indent(baseIndent + 1) + `<name>${properties.title || ''}</name>`,
     ];
+    // description
     if (properties.description) {
       wpt.push(
         this.indent(baseIndent + 1) + `<desc>${properties.description}</desc>`
       );
     }
+    // symbol
     if (properties.symbol && symbolLabels[properties.symbol as SymbolCodes]) {
       wpt.push(
         this.indent(baseIndent + 1) +
           `<sym>${symbolLabels[properties.symbol as SymbolCodes]}</sym>`
       );
     }
+    // extensions
+    wpt.push(this.indent(baseIndent + 1) + `<extensions>`);
+    // section
+    wpt.push(this.addSectionExtension('Waypoint', title, baseIndent + 2));
+    // display color
+    if (
+      (properties.color &&
+        standardColorNames[properties.color as StandardColorCodes]) ||
+      (properties.layerColor &&
+        standardColorNames[properties.layerColor as StandardColorCodes])
+    ) {
+      wpt.push(
+        this.addDisplayColorExtension('Waypoint', properties, baseIndent + 2)
+      );
+    }
+    // extensions closing tag
+    wpt.push(this.indent(baseIndent + 1) + `</extensions>`);
+    // waypoint closing tag
     wpt.push(this.indent(baseIndent) + `</wpt>`);
 
     this.xml += wpt.join('\n') + '\n';
   }
 
   private addRoute(
+    { title }: Partial<MapLayer>,
     { geometry: { coordinates }, properties }: MapFeature,
     baseIndent = 1
   ): void {
@@ -215,11 +272,36 @@ export class GPXGenerator {
       this.indent(baseIndent) + `<rte>`,
       this.indent(baseIndent + 1) + `<name>${properties.title || ''}</name>`,
     ];
+    // description
     if (properties.description) {
       rte.push(
         this.indent(baseIndent + 1) + `<desc>${properties.description}</desc>`
       );
     }
+    // extensions
+    rte.push(this.indent(baseIndent + 1) + `<extensions>`);
+    // section
+    rte.push(this.addSectionExtension('Route', title, baseIndent + 2));
+    // display color
+    if (
+      (properties.color &&
+        standardColorNames[properties.color as StandardColorCodes]) ||
+      (properties.layerColor &&
+        standardColorNames[properties.layerColor as StandardColorCodes])
+    ) {
+      rte.push(
+        this.addDisplayColorExtension('Route', properties, baseIndent + 2)
+      );
+    }
+    // transportation mode
+    if (this.activityType) {
+      rte.push(
+        this.addTransportationModeExtension(this.activityType, baseIndent + 2)
+      );
+    }
+    // extensions closing tag
+    rte.push(this.indent(baseIndent + 1) + `</extensions>`);
+    // routepoints
     (coordinates as Position[]).forEach((position) => {
       const rtept = [
         this.indent(baseIndent + 1) +
@@ -229,9 +311,60 @@ export class GPXGenerator {
       ];
       rte.push(rtept.join('\n'));
     });
+    // route closing tag
     rte.push(this.indent(baseIndent) + `</rte>`);
 
     this.xml += rte.join('\n') + '\n';
+  }
+
+  private addSectionExtension(
+    featType: 'Waypoint' | 'Route' | 'Track',
+    title: string | null | undefined,
+    baseIndent = 1
+  ): string {
+    const section = [
+      this.indent(baseIndent) + `<gpxout:${featType}Extension>`,
+      this.indent(baseIndent + 1) +
+        `<gpxout:Section>${title || '[Untitled section]'}</gpxout:Section>`,
+      this.indent(baseIndent) + `</gpxout:${featType}Extension>`,
+    ];
+
+    return section.join('\n');
+  }
+
+  private addDisplayColorExtension(
+    featType: 'Waypoint' | 'Route' | 'Track',
+    { color, layerColor }: Partial<MapFeature['properties']>,
+    baseIndent = 1
+  ): string {
+    const displayColor = [
+      this.indent(baseIndent) + `<gpxx:${featType}Extension>`,
+      this.indent(baseIndent + 1) +
+        `<gpxx:DisplayColor>${
+          color
+            ? standardColorNames[color as StandardColorCodes]
+            : standardColorNames[layerColor as StandardColorCodes]
+        }</gpxx:DisplayColor>`,
+      this.indent(baseIndent) + `</gpxx:${featType}Extension>`,
+    ];
+
+    return displayColor.join('\n');
+  }
+
+  private addTransportationModeExtension(
+    activityType: Route['activity_type'],
+    baseIndent = 1
+  ): string {
+    const transportationMode = [
+      this.indent(baseIndent) + `<trp:Trip>`,
+      this.indent(baseIndent + 1) +
+        `<trp:TransportationMode>${
+          activityTypeLabels[activityType as ActivityTypes]
+        }</trp:TransportationMode>`,
+      this.indent(baseIndent) + `</trp:Trip>`,
+    ];
+
+    return transportationMode.join('\n');
   }
 
   private indent(count: number | undefined = 1): string {
