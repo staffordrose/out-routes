@@ -10,7 +10,9 @@
       <xsd:documentation>This type contains data fields available in waypoints that cannot be represented in waypoints in GPX 1.1 instances.</xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="Section" type="Section_t" minOccurs="0" />
+      <xsd:element name="SectionName" type="SectionName_t" minOccurs="0" />
+      <xsd:element name="SectionSym" type="SectionSym_t" minOccurs="0" />
+      <xsd:element name="SectionDisplayColor" type="SectionDisplayColor_t" minOccurs="0" />
       <xsd:element name="Extensions" type="Extensions_t" minOccurs="0" />
     </xsd:sequence>
   </xsd:complexType>
@@ -19,7 +21,9 @@
       <xsd:documentation>This type contains data fields available in routes that cannot be represented in routes in GPX 1.1 instances.</xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="Section" type="Section_t" minOccurs="0" />
+      <xsd:element name="SectionName" type="SectionName_t" minOccurs="0" />
+      <xsd:element name="SectionSym" type="SectionSym_t" minOccurs="0" />
+      <xsd:element name="SectionDisplayColor" type="SectionDisplayColor_t" minOccurs="0" />
       <xsd:element name="Extensions" type="Extensions_t" minOccurs="0" />
     </xsd:sequence>
   </xsd:complexType>
@@ -28,15 +32,43 @@
       <xsd:documentation>This type contains data fields available in tracks that cannot be represented in routes in GPX 1.1 instances.</xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="Section" type="Section_t" minOccurs="0" />
+      <xsd:element name="SectionName" type="SectionName_t" minOccurs="0" />
+      <xsd:element name="SectionSym" type="SectionSym_t" minOccurs="0" />
+      <xsd:element name="SectionDisplayColor" type="SectionDisplayColor_t" minOccurs="0" />
       <xsd:element name="Extensions" type="Extensions_t" minOccurs="0" />
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:element name="Section_t" type="xsd:string">
+  <xsd:element name="SectionName_t" type="xsd:string">
     <xsd:annotation>
       <xsd:documentation>This type contains the name of the section that a map feature belongs to.</xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="SectionSym_t" type="xsd:string">
+    <xsd:annotation>
+      <xsd:documentation>Text of GPS symbol name. For interchange with other programs, use the exact spelling of the symbol as displayed on the GPS. If the GPS abbreviates words, spell them out.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="SectionDisplayColor_t">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Black"/>
+      <xsd:enumeration value="DarkRed"/>
+      <xsd:enumeration value="DarkGreen"/>
+      <xsd:enumeration value="DarkYellow"/>
+      <xsd:enumeration value="DarkBlue"/>
+      <xsd:enumeration value="DarkMagenta"/>
+      <xsd:enumeration value="DarkCyan"/>
+      <xsd:enumeration value="LightGray"/>
+      <xsd:enumeration value="DarkGray"/>
+      <xsd:enumeration value="Red"/>
+      <xsd:enumeration value="Green"/>
+      <xsd:enumeration value="Yellow"/>
+      <xsd:enumeration value="Blue"/>
+      <xsd:enumeration value="Magenta"/>
+      <xsd:enumeration value="Cyan"/>
+      <xsd:enumeration value="White"/>
+      <xsd:enumeration value="Transparent"/>
+    </xsd:restriction>
+  </xsd:simpleType>
   <xsd:complexType name="Extensions_t">
     <xsd:annotation>
       <xsd:documentation>This type provides the ability to extend any data type that includes it.</xsd:documentation>
