@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Flex } from '@/components/atoms';
-import { ColorCodes, colorLabels } from '@/data/general';
+import { ColorNames, colorLabels, colorCodes } from '@/data/general';
 import { styled } from '@/styles';
 
 type ColorProps = {
@@ -14,10 +14,10 @@ export const Color: FC<ColorProps> = ({ color }) => {
     <Flex alignItems='center'>
       <ColorBox
         style={{
-          backgroundColor: color,
+          backgroundColor: colorCodes[color as ColorNames],
         }}
       />
-      <span>{colorLabels[color as ColorCodes]}</span>
+      <span>{colorLabels[color as ColorNames]}</span>
     </Flex>
   );
 };

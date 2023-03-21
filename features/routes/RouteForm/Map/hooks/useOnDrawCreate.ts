@@ -3,7 +3,7 @@ import { UseFieldArrayAppend, UseFieldArrayUpdate } from 'react-hook-form';
 import { Map } from 'mapbox-gl';
 import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 
-import { ColorCodes } from '@/data/general';
+import { StandardColorNames } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { MapFeature, MapLayer } from '@/types/maps';
 import { createAlphaNumericId } from '@/utils';
@@ -75,7 +75,7 @@ export const useOnDrawCreate = ({
           append({
             databaseId: newLayerId,
             title: '',
-            color: ColorCodes.Red,
+            color: StandardColorNames.Red,
             symbol: SymbolCodes.Marker,
             features: features.map((feature) =>
               mapMapboxFeatureToFeatureValues(feature)

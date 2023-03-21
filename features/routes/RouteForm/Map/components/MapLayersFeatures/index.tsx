@@ -19,7 +19,7 @@ import {
   Text,
 } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
-import { ColorCodes } from '@/data/general';
+import { StandardColorNames } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapFeature, MapLayer, PopupState } from '@/types/maps';
@@ -114,7 +114,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
             append({
               databaseId: newLayerId,
               title: '',
-              color: ColorCodes.Red,
+              color: StandardColorNames.Red,
               symbol: SymbolCodes.Marker,
             });
 
@@ -162,7 +162,7 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
                       append({
                         databaseId: newLayerId,
                         title: '',
-                        color: ColorCodes.Red,
+                        color: StandardColorNames.Red,
                         symbol: SymbolCodes.Marker,
                         features,
                       });

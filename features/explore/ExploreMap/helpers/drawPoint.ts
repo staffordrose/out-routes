@@ -1,4 +1,4 @@
-import { ColorCodes } from '@/data/general';
+import { StandardColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
 import { Route } from '@/types/routes';
@@ -16,7 +16,7 @@ export const drawPoint = (route: Route): mapboxgl.AnyLayer => {
       'icon-allow-overlap': true,
     },
     paint: {
-      'icon-color': ColorCodes.Red,
+      'icon-color': StandardColorCodes.Red,
       'icon-halo-blur': 3,
       'icon-halo-color': 'rgba(0,0,0,0.25)',
       'icon-halo-width': 3,

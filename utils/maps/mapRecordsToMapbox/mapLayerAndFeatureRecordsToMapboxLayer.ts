@@ -1,4 +1,4 @@
-import { ColorCodes } from '@/data/general';
+import { colorCodes, ColorNames, StandardColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { MapLayer } from '@/types/maps';
 import { RouteFeature, RouteLayer } from '@/types/routes';
@@ -20,7 +20,9 @@ export const mapLayerAndFeatureRecordsToMapboxLayer = (
     id: layer.id,
     order: layer.order,
     title: layer.title || null,
-    color: layer.color || ColorCodes.Red,
+    color: layer.color
+      ? colorCodes[layer.color as ColorNames]
+      : StandardColorCodes.Red,
     symbol: layer.symbol || SymbolCodes.Marker,
     data: geojson,
   };

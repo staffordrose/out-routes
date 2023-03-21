@@ -1,4 +1,4 @@
-import { ColorCodes } from '@/data/general';
+import { StandardColorCodes } from '@/data/general';
 import { mapboxgl } from '@/lib/client';
 import { MapFeature, MapLayer } from '@/types/maps';
 
@@ -6,7 +6,8 @@ export const drawLineString = (
   layer: MapLayer,
   feature: MapFeature
 ): mapboxgl.AnyLayer => {
-  const color = feature.properties.color || layer.color || ColorCodes.Red;
+  const color =
+    feature.properties.color || layer.color || StandardColorCodes.Red;
 
   return {
     id: feature.id,

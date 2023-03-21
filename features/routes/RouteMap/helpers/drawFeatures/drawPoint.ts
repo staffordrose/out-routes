@@ -1,4 +1,4 @@
-import { ColorCodes } from '@/data/general';
+import { StandardColorCodes } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { mapboxgl } from '@/lib/client';
 import { MapFeature, MapLayer } from '@/types/maps';
@@ -7,7 +7,8 @@ export const drawPoint = (
   layer: MapLayer,
   feature: MapFeature
 ): mapboxgl.AnyLayer => {
-  const color = feature.properties.color || layer.color || ColorCodes.Red;
+  const color =
+    feature.properties.color || layer.color || StandardColorCodes.Red;
 
   const symbol =
     feature.properties.symbol || layer.symbol || SymbolCodes.Marker;

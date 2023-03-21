@@ -4,6 +4,7 @@ import flatten from 'lodash.flatten';
 import { GeometryTypeNames, geometryTypes, GeometryTypes } from '@/data/routes';
 import { MapFeature } from '@/types/maps';
 import { FeatureValues } from '../types';
+import { ColorCodes, colorNames } from '@/data/general';
 
 export const mapMapboxFeatureToFeatureValues = (
   feature: MapFeature
@@ -39,7 +40,9 @@ export const mapMapboxFeatureToFeatureValues = (
         : [{ lat: '', lng: '', ele: '' }],
     title: feature.properties.title || '',
     // color select field requires undefined to show placeholder
-    color: feature.properties.color || undefined,
+    color: feature.properties.color
+      ? colorNames[feature.properties.color as ColorCodes]
+      : undefined,
     // symbol select field requires undefined to show placeholder
     symbol: feature.properties.symbol || undefined,
     description: feature.properties.description || '',

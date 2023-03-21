@@ -17,7 +17,7 @@ import type MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Position } from 'geojson';
 
 import { Input } from '@/components/atoms';
-import { ColorCodes } from '@/data/general';
+import { StandardColorNames } from '@/data/general';
 import { GeometryTypeNames, SymbolCodes } from '@/data/routes';
 import { useDebounce } from '@/hooks';
 import { getFeatureElevations } from '@/lib/v1/api/map';
@@ -75,7 +75,7 @@ export const Search: FC<SearchProps> = ({
       const cb = ({ databaseId }: LayerValues) => databaseId === activeLayerId;
       const layerColor =
         (activeLayerId && layers?.some(cb) && layers.find(cb)?.color) ||
-        ColorCodes.Red;
+        StandardColorNames.Red;
       const layerSymbol =
         (activeLayerId &&
           layers?.some(cb) &&
@@ -116,7 +116,7 @@ export const Search: FC<SearchProps> = ({
         append({
           databaseId: newLayerId,
           title: '',
-          color: ColorCodes.Red,
+          color: StandardColorNames.Red,
           symbol: SymbolCodes.Marker,
           features: [mapMapboxFeatureToFeatureValues(f)],
         });

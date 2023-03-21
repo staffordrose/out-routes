@@ -24,6 +24,7 @@ import {
   IconButton,
   TruncatedText,
 } from '@/components/atoms';
+import { colorCodes, ColorNames } from '@/data/general';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapLayer } from '@/types/maps';
@@ -115,7 +116,9 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
         <div>
           <SymbolIcon
             style={{
-              fill: layer.color || undefined,
+              fill: layer.color
+                ? colorCodes[layer.color as ColorNames]
+                : undefined,
             }}
           />
           <TruncatedText as='h4' lineClamp={1}>

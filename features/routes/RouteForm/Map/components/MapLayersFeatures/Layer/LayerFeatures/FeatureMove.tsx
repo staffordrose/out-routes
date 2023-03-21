@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { UseFieldArrayUpdate, useFormContext, useWatch } from 'react-hook-form';
 
 import { Button, TruncatedText } from '@/components/atoms';
+import { colorCodes, ColorNames } from '@/data/general';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
 import { RouteFormValues } from '../../../../../helpers';
@@ -76,7 +77,9 @@ export const FeatureMove: FC<FeatureMoveProps> = ({
             >
               <SymbolIcon
                 style={{
-                  fill: nextLayer.color || undefined,
+                  fill: nextLayer.color
+                    ? colorCodes[nextLayer.color as ColorNames]
+                    : undefined,
                 }}
               />
               <TruncatedText as='span'>

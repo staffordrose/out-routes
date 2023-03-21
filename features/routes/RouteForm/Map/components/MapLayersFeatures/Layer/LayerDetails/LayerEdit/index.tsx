@@ -4,7 +4,11 @@ import { UseFieldArrayUpdate } from 'react-hook-form';
 
 import { Button, Flex, Text, TruncatedText } from '@/components/atoms';
 import { SelectField, TextField } from '@/components/molecules';
-import { colorSelectOptions } from '@/data/general';
+import {
+  colorCodes,
+  nonStandardColorSelectOptions,
+  standardColorSelectOptions,
+} from '@/data/general';
 import { symbolSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
 import { LayerValues, RouteFormValues } from '../../../../../../helpers';
@@ -73,21 +77,40 @@ export const LayerEdit: FC<LayerEditProps> = ({
           error={errors.color?.message}
           groups={[
             {
-              id: 'colors',
-              label: 'Colors',
-              options: colorSelectOptions.map(({ value, label }) => ({
+              id: 'standard-colors',
+              label: 'Standard Colors',
+              options: standardColorSelectOptions.map(({ value, label }) => ({
                 value,
                 label: (
                   <ColorLabel>
                     <span
                       style={{
-                        backgroundColor: value,
+                        backgroundColor: colorCodes[value],
                       }}
                     />
                     <TruncatedText>{label}</TruncatedText>
                   </ColorLabel>
                 ),
               })),
+            },
+            {
+              id: 'non-standard-colors',
+              label: 'Additional Colors',
+              options: nonStandardColorSelectOptions.map(
+                ({ value, label }) => ({
+                  value,
+                  label: (
+                    <ColorLabel>
+                      <span
+                        style={{
+                          backgroundColor: colorCodes[value],
+                        }}
+                      />
+                      <TruncatedText>{label}</TruncatedText>
+                    </ColorLabel>
+                  ),
+                })
+              ),
             },
           ]}
         />

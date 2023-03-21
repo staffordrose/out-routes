@@ -21,6 +21,7 @@ import { gsap } from 'gsap';
 import Draggable from 'gsap/dist/Draggable';
 
 import { Button, Dialog, DropdownMenu, IconButton } from '@/components/atoms';
+import { colorCodes, ColorNames } from '@/data/general';
 import {
   GeometryTypeNames,
   GeometryTypes,
@@ -230,7 +231,11 @@ export const Feature: FC<FeatureProps> = ({
         >
           <SymbolIcon
             style={{
-              fill: color || layer.color || undefined,
+              fill: color
+                ? colorCodes[color as ColorNames]
+                : layer.color
+                ? colorCodes[layer.color as ColorNames]
+                : undefined,
             }}
           />
           <span>{title || '[Untitled feature]'}</span>

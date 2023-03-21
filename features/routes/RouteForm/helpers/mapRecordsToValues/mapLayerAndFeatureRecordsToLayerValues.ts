@@ -1,4 +1,4 @@
-import { ColorCodes } from '@/data/general';
+import { StandardColorNames } from '@/data/general';
 import { SymbolCodes } from '@/data/routes';
 import { RouteFeature, RouteLayer } from '@/types/routes';
 import { mapFeatureRecordToFeatureValues } from './mapFeatureRecordToFeatureValues';
@@ -11,7 +11,7 @@ export const mapLayerAndFeatureRecordsToLayerValues = (
   return {
     databaseId: layer.id,
     title: layer.title || '',
-    color: layer.color || ColorCodes.Red,
+    color: layer.color || StandardColorNames.Red,
     symbol: layer.symbol || SymbolCodes.Marker,
     features: Array.isArray(features)
       ? features

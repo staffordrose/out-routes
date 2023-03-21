@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { UseFieldArrayUpdate } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { ColorCodes, colorCodes, colorNames, ColorNames } from '@/data/general';
 import { GeometryTypeNames } from '@/data/routes';
 import { MapFeature, PopupState } from '@/types/maps';
 import {
@@ -98,7 +99,9 @@ export const UseFeatureEditForm = ({
         ? metersToFeet(feature.geometry.coordinates[2]).toString()
         : undefined,
     title: feature.properties?.title || '',
-    color: feature.properties?.color || undefined,
+    color: feature.properties?.color
+      ? colorNames[feature.properties.color as ColorCodes]
+      : undefined,
     symbol: feature.properties?.symbol
       ? trimFeatureSymbolCode(feature.properties.symbol)
       : undefined,
@@ -212,7 +215,7 @@ export const UseFeatureEditForm = ({
         properties: {
           ...feature.properties,
           title: values.title,
-          color: values.color,
+          color: colorCodes[values.color as ColorNames],
           symbol: values.symbol,
           description: values.description,
         },

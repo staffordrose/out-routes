@@ -1,3 +1,4 @@
+import { colorCodes, ColorNames } from '@/data/general';
 import {
   GeometryTypeNames,
   geometryTypeNames,
@@ -47,7 +48,9 @@ export const mapFeatureValuesToMapboxFeature = (
       layerSymbol: layer.symbol ? `maki-${layer.symbol}` : undefined,
       order: featureOrder,
       title: feature.title || undefined,
-      color: feature.color || undefined,
+      color: feature.color
+        ? colorCodes[feature.color as ColorNames]
+        : undefined,
       // Prepend symbol with 'maki-' to support mapboxDrawStyles
       symbol: feature.symbol ? `maki-${feature.symbol}` : undefined,
       description: feature.description || undefined,

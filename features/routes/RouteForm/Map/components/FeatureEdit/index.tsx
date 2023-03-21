@@ -5,7 +5,11 @@ import { nanoid } from 'nanoid';
 
 import { Button, Flex, Text, TruncatedText } from '@/components/atoms';
 import { SelectField, TextareaField, TextField } from '@/components/molecules';
-import { colorSelectOptions } from '@/data/general';
+import {
+  colorCodes,
+  nonStandardColorSelectOptions,
+  standardColorSelectOptions,
+} from '@/data/general';
 import { GeometryTypeNames, symbolSelectOptions } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapFeature, PopupState } from '@/types/maps';
@@ -153,25 +157,59 @@ export const FeatureEdit: FC<FeatureEditProps> = ({
             error={errors.color?.message}
             groups={[
               {
-                id: 'colors',
-                label: 'Colors',
+                id: 'no-selection',
+                label: '',
                 options: [
-                  { value: 'none', label: <span>No selection</span> },
-                  ...colorSelectOptions,
-                ].map(({ value, label }) => ({
+                  {
+                    value: 'none',
+                    label: (
+                      <ColorLabel>
+                        <span
+                          style={{
+                            backgroundColor: 'transparent',
+                          }}
+                        />
+                        <TruncatedText>No Selection</TruncatedText>
+                      </ColorLabel>
+                    ),
+                  },
+                ],
+              },
+              {
+                id: 'standard-colors',
+                label: 'Standard Colors',
+                options: standardColorSelectOptions.map(({ value, label }) => ({
                   value,
                   label: (
                     <ColorLabel>
                       <span
                         style={{
-                          backgroundColor:
-                            value !== 'none' ? value : 'transparent',
+                          backgroundColor: colorCodes[value],
                         }}
                       />
                       <TruncatedText>{label}</TruncatedText>
                     </ColorLabel>
                   ),
                 })),
+              },
+              {
+                id: 'non-standard-colors',
+                label: 'Additional Colors',
+                options: nonStandardColorSelectOptions.map(
+                  ({ value, label }) => ({
+                    value,
+                    label: (
+                      <ColorLabel>
+                        <span
+                          style={{
+                            backgroundColor: colorCodes[value],
+                          }}
+                        />
+                        <TruncatedText>{label}</TruncatedText>
+                      </ColorLabel>
+                    ),
+                  })
+                ),
               },
             ]}
           />
