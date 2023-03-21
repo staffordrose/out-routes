@@ -4,6 +4,7 @@ import { BiShapePolygon, BiShareAlt } from 'react-icons/bi';
 
 import { Button } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
+import { colorCodes, ColorNames } from '@/data/general';
 import {
   GeometryTypeNames,
   GeometryTypes,
@@ -119,7 +120,11 @@ const FeatureButton: FC<FeatureButtonProps> = ({
     <Button variant='ghost' size='xs' onClick={onClick}>
       <SymbolIcon
         style={{
-          fill: color || layer.color || undefined,
+          fill: color
+            ? colorCodes[color as ColorNames]
+            : layer.color
+            ? colorCodes[layer.color as ColorNames]
+            : undefined,
         }}
       />
       <span>{title || '[Untitled feature]'}</span>

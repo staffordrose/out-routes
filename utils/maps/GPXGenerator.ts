@@ -1,5 +1,6 @@
 import { Position } from 'geojson';
 
+import { StandardColorCodes, standardColorNames } from '@/data/general';
 import {
   activityTypeLabels,
   ActivityTypes,
@@ -17,9 +18,8 @@ import {
   MapFeature,
   MapLayer,
 } from '@/types/maps';
-import { round } from '../arithmetic';
-import { StandardColorCodes, standardColorNames } from '@/data/general';
 import { Route } from '@/types/routes';
+import { round } from '../arithmetic';
 
 export class GPXGenerator {
   metadata: GPXMetadata;

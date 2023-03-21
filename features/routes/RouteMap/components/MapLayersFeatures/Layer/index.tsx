@@ -2,6 +2,7 @@ import { FC, MutableRefObject } from 'react';
 import type { Map } from 'mapbox-gl';
 
 import { TruncatedText } from '@/components/atoms';
+import { colorCodes, ColorNames } from '@/data/general';
 import { SymbolCodes, symbolIcons } from '@/data/routes';
 import { styled } from '@/styles';
 import { PopupState } from '@/types/maps';
@@ -25,7 +26,7 @@ export const Layer: FC<LayerProps> = ({ map, layer, features, openPopup }) => {
       <StyledLayerDetails>
         <SymbolIcon
           style={{
-            fill: color || undefined,
+            fill: color ? colorCodes[color as ColorNames] : undefined,
           }}
         />
         <TruncatedText as='h4' lineClamp={1}>

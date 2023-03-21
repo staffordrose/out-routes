@@ -29,6 +29,7 @@ export class GPXParser {
     keywords: null,
     bounds: null,
   };
+  sections: string[] = [];
   features: GPXFeature[] = [];
   waypoints: GPXWaypoint[] = [];
   routes: GPXRoute[] = [];
@@ -188,6 +189,38 @@ export class GPXParser {
     res.desc = this.getElementValue(waypoint, 'desc');
     // time
     res.time = this.getTimeValue(waypoint);
+    // extensions
+    const extensionsEl = waypoint.querySelector('extensions');
+    if (extensionsEl) {
+      // section
+      const [gpxoutEl] = this.getXmlElementByTagName(
+        extensionsEl,
+        'gpxout',
+        'WaypointExtension'
+      );
+      if (gpxoutEl) {
+        res.section = this.getXmlElementValue(gpxoutEl, 'gpxout', 'Section');
+      }
+      // display color
+      const [gpxxEl] = this.getXmlElementByTagName(
+        extensionsEl,
+        'gpxx',
+        'WaypointExtension'
+      );
+      if (gpxxEl) {
+        res.displayColor = this.getXmlElementValue(
+          gpxxEl,
+          'gpxx',
+          'DisplayColor'
+        );
+      }
+    }
+
+    if (res.section && !this.sections.includes(res.section)) {
+      this.sections.push(res.section);
+    } else if (!res.section && !this.sections.includes('')) {
+      this.sections.push('');
+    }
 
     this.features.push({ type: GPXFeatures.WPT, feature: res });
     this.waypoints.push(res);
@@ -249,6 +282,47 @@ export class GPXParser {
     res.slopes = this.calcSlope(routepoints, res.distance.cumul);
     // points
     res.points = routepoints;
+    // extensions
+    const extensionsEl = route.querySelector('extensions');
+    if (extensionsEl) {
+      // section
+      const [gpxoutEl] = this.getXmlElementByTagName(
+        extensionsEl,
+        'gpxout',
+        'RouteExtension'
+      );
+      if (gpxoutEl) {
+        res.section = this.getXmlElementValue(gpxoutEl, 'gpxout', 'Section');
+      }
+      // display color
+      const [gpxxEl] = this.getXmlElementByTagName(
+        extensionsEl,
+        'gpxx',
+        'RouteExtension'
+      );
+      if (gpxxEl) {
+        res.displayColor = this.getXmlElementValue(
+          gpxxEl,
+          'gpxx',
+          'DisplayColor'
+        );
+      }
+      // transportation mode
+      const [trpEl] = this.getXmlElementByTagName(extensionsEl, 'trp', 'Trip');
+      if (trpEl) {
+        res.transportationMode = this.getXmlElementValue(
+          trpEl,
+          'trp',
+          'TransportationMode'
+        );
+      }
+    }
+
+    if (res.section && !this.sections.includes(res.section)) {
+      this.sections.push(res.section);
+    } else if (!res.section && !this.sections.includes('')) {
+      this.sections.push('');
+    }
 
     this.features.push({ type: GPXFeatures.RTE, feature: res });
     this.routes.push(res);
@@ -310,6 +384,47 @@ export class GPXParser {
     res.slopes = this.calcSlope(trackpoints, res.distance.cumul);
     // points
     res.points = trackpoints;
+    // extensions
+    const extensionsEl = track.querySelector('extensions');
+    if (extensionsEl) {
+      // section
+      const [gpxoutEl] = this.getXmlElementByTagName(
+        extensionsEl,
+        'gpxout',
+        'TrackExtension'
+      );
+      if (gpxoutEl) {
+        res.section = this.getXmlElementValue(gpxoutEl, 'gpxout', 'Section');
+      }
+      // display color
+      const [gpxxEl] = this.getXmlElementByTagName(
+        extensionsEl,
+        'gpxx',
+        'TrackExtension'
+      );
+      if (gpxxEl) {
+        res.displayColor = this.getXmlElementValue(
+          gpxxEl,
+          'gpxx',
+          'DisplayColor'
+        );
+      }
+      // transportation mode
+      const [trpEl] = this.getXmlElementByTagName(extensionsEl, 'trp', 'Trip');
+      if (trpEl) {
+        res.transportationMode = this.getXmlElementValue(
+          trpEl,
+          'trp',
+          'TransportationMode'
+        );
+      }
+    }
+
+    if (res.section && !this.sections.includes(res.section)) {
+      this.sections.push(res.section);
+    } else if (!res.section && !this.sections.includes('')) {
+      this.sections.push('');
+    }
 
     this.features.push({ type: GPXFeatures.TRK, feature: res });
     this.tracks.push(res);
@@ -325,6 +440,54 @@ export class GPXParser {
 
   private getElementValue(parent: Element, property: string): string | null {
     const el = parent.querySelector(property);
+
+    if (!el) return null;
+
+    const getElementValueRecursive = (el: Element) => {
+      let content: string = '';
+
+      if (el.innerHTML !== undefined) {
+        content = el.innerHTML;
+      } else {
+        const childNodeArr = Array.from(el.childNodes);
+
+        for (const childNode of childNodeArr) {
+          if (childNode instanceof Element) {
+            const result = getElementValueRecursive(childNode);
+            if (result) {
+              content = result;
+              break;
+            }
+          }
+        }
+      }
+
+      content = this.trimCDATA(content);
+
+      return content;
+    };
+
+    return getElementValueRecursive(el);
+  }
+
+  private getXmlElementByTagName(
+    el: Element | null,
+    ns: 'gpxout' | 'gpxx' | 'trp',
+    prefix: string
+  ): Element[] {
+    return [].slice.call(
+      el?.getElementsByTagName(`${ns}:${prefix}`) ||
+        el?.getElementsByTagName(prefix) ||
+        []
+    );
+  }
+
+  private getXmlElementValue(
+    parent: Element,
+    ns: 'gpxout' | 'gpxx' | 'trp',
+    prefix: string
+  ): string | null {
+    const [el] = this.getXmlElementByTagName(parent, ns, prefix);
 
     if (!el) return null;
 

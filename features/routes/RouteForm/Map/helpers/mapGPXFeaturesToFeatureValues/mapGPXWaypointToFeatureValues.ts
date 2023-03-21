@@ -1,3 +1,4 @@
+import { colorCodes, ColorNames } from '@/data/general';
 import {
   GeometryTypeNames,
   SymbolCodes,
@@ -54,6 +55,9 @@ export const mapGPXWaypointToFeatureValues = async (
         layer: layerId,
         order: featureIndex,
         title: wpt.name || '',
+        color: wpt.displayColor
+          ? colorCodes[wpt.displayColor as ColorNames]
+          : undefined,
         symbol: wpt.sym
           ? symbolCodes[wpt.sym as SymbolCodes] ||
             symbolLabelsToCodes[wpt.sym as SymbolLabels] ||

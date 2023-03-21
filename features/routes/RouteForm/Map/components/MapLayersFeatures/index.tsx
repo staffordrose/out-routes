@@ -152,22 +152,32 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
                         throw new Error(gpx.error.message);
                       }
 
-                      const newLayerId = createAlphaNumericId(24);
+                      const promiseArray = gpx.sections.map(async (section) => {
+                        const newLayerId = createAlphaNumericId(24);
 
-                      const features = await mapGPXFeaturesToFeatureValues(
-                        newLayerId,
-                        gpx.features
-                      );
+                        const features = await mapGPXFeaturesToFeatureValues(
+                          newLayerId,
+                          gpx.features.filter(({ feature }) => {
+                            if (section === '') {
+                              return !feature.section;
+                            } else {
+                              return feature.section === section;
+                            }
+                          })
+                        );
 
-                      append({
-                        databaseId: newLayerId,
-                        title: '',
-                        color: StandardColorNames.Red,
-                        symbol: SymbolCodes.Marker,
-                        features,
+                        append({
+                          databaseId: newLayerId,
+                          title: section,
+                          color: StandardColorNames.Red, // TODO: Add GPX support for layer color
+                          symbol: SymbolCodes.Marker, // TODO: Add GPX support for layer symbol
+                          features,
+                        });
+
+                        setActiveLayerId(newLayerId);
                       });
 
-                      setActiveLayerId(newLayerId);
+                      await Promise.all(promiseArray);
 
                       setDialogOpen(false);
                     } catch (error) {

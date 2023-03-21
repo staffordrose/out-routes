@@ -1,3 +1,4 @@
+import { colorCodes, ColorNames } from '@/data/general';
 import { GeometryTypeNames } from '@/data/routes';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { GPXTrack, MapFeature } from '@/types/maps';
@@ -51,6 +52,9 @@ export const mapGPXTrackToFeatureValues = async (
         layer: layerId,
         order: featureIndex,
         title: trk.name || '',
+        color: trk.displayColor
+          ? colorCodes[trk.displayColor as ColorNames]
+          : undefined,
         distance: undefined,
         description: trk.desc || trk.cmt || '',
       },

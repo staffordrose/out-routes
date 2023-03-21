@@ -46,7 +46,9 @@ export type GPXPoint = {
 };
 
 export type GPXWaypoint = GPXPoint & {
+  section: string | null;
   name: string | null;
+  displayColor: string | null;
   sym: string | null;
   cmt: string | null;
   desc: string | null;
@@ -66,7 +68,9 @@ export type GPXElevation = {
 };
 
 export type GPXRoute = {
+  section: string | null;
   name: string | null;
+  displayColor: string | null;
   cmt: string | null;
   desc: string | null;
   src: string | null;
@@ -77,6 +81,7 @@ export type GPXRoute = {
   elevation: GPXElevation;
   slopes: number[];
   points: GPXPoint[];
+  transportationMode: string | null;
 };
 
 export type GPXTrack = GPXRoute;

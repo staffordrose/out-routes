@@ -1,3 +1,4 @@
+import { colorCodes, ColorNames } from '@/data/general';
 import { GeometryTypeNames } from '@/data/routes';
 import { getFeatureElevations } from '@/lib/v1/api/map';
 import { GPXRoute, MapFeature } from '@/types/maps';
@@ -51,6 +52,9 @@ export const mapGPXRouteToFeatureValues = async (
         layer: layerId,
         order: featureIndex,
         title: rte.name || '',
+        color: rte.displayColor
+          ? colorCodes[rte.displayColor as ColorNames]
+          : undefined,
         distance: undefined,
         description: rte.desc || rte.cmt || '',
       },
