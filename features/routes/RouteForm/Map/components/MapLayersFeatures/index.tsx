@@ -19,8 +19,8 @@ import {
   Text,
 } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
-import { StandardColorNames } from '@/data/general';
-import { SymbolCodes } from '@/data/routes';
+import { standardColorCodes, StandardColorNames } from '@/data/general';
+import { symbolCodes, SymbolCodes } from '@/data/routes';
 import { styled } from '@/styles';
 import { MapFeature, MapLayer, PopupState } from '@/types/maps';
 import { createAlphaNumericId, GPXParser, readFile } from '@/utils';
@@ -158,19 +158,31 @@ export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
                         const features = await mapGPXFeaturesToFeatureValues(
                           newLayerId,
                           gpx.features.filter(({ feature }) => {
-                            if (section === '') {
-                              return !feature.section;
+                            if (section.name === null) {
+                              return !feature.sectionName;
                             } else {
-                              return feature.section === section;
+                              return feature.sectionName === section.name;
                             }
                           })
                         );
 
                         append({
                           databaseId: newLayerId,
-                          title: section,
-                          color: StandardColorNames.Red, // TODO: Add GPX support for layer color
-                          symbol: SymbolCodes.Marker, // TODO: Add GPX support for layer symbol
+                          title: section.name || '',
+                          color:
+                            section.displayColor &&
+                            // make sure display color is standard color
+                            standardColorCodes[
+                              section.displayColor as StandardColorNames
+                            ]
+                              ? section.displayColor
+                              : StandardColorNames.Red,
+                          symbol:
+                            section.sym &&
+                            // make sure sym is an existing symbol
+                            symbolCodes[section.sym as SymbolCodes]
+                              ? section.sym
+                              : SymbolCodes.Marker,
                           features,
                         });
 

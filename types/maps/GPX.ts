@@ -46,10 +46,12 @@ export type GPXPoint = {
 };
 
 export type GPXWaypoint = GPXPoint & {
-  section: string | null;
+  sectionName: string | null;
+  sectionSym: string | null;
+  sectionDisplayColor: string | null;
   name: string | null;
-  displayColor: string | null;
   sym: string | null;
+  displayColor: string | null;
   cmt: string | null;
   desc: string | null;
 };
@@ -68,7 +70,9 @@ export type GPXElevation = {
 };
 
 export type GPXRoute = {
-  section: string | null;
+  sectionName: string | null;
+  sectionSym: string | null;
+  sectionDisplayColor: string | null;
   name: string | null;
   displayColor: string | null;
   cmt: string | null;
@@ -85,6 +89,12 @@ export type GPXRoute = {
 };
 
 export type GPXTrack = GPXRoute;
+
+export type GPXSection = {
+  name: string | null;
+  sym: string | null;
+  displayColor: string | null;
+};
 
 export enum GPXFeatures {
   RTE = 'rte',

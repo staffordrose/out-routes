@@ -10,6 +10,7 @@ import {
   LngLat,
   GPXPoint,
   GPXRoute,
+  GPXSection,
   GPXTrack,
   GPXWaypoint,
   GPXFeature,
@@ -29,7 +30,7 @@ export class GPXParser {
     keywords: null,
     bounds: null,
   };
-  sections: string[] = [];
+  sections: GPXSection[] = [];
   features: GPXFeature[] = [];
   waypoints: GPXWaypoint[] = [];
   routes: GPXRoute[] = [];
@@ -161,6 +162,32 @@ export class GPXParser {
     ];
   }
 
+  private updateSections({
+    sectionName,
+    sectionSym,
+    sectionDisplayColor,
+  }: GPXWaypoint | GPXRoute | GPXTrack) {
+    if (
+      sectionName &&
+      !this.sections.some(({ name }) => name === sectionName)
+    ) {
+      this.sections.push({
+        name: sectionName,
+        sym: sectionSym || null,
+        displayColor: sectionDisplayColor || null,
+      });
+    } else if (
+      !sectionName &&
+      !this.sections.some(({ name }) => name === null)
+    ) {
+      this.sections.push({
+        name: null,
+        sym: sectionSym || null,
+        displayColor: sectionDisplayColor || null,
+      });
+    }
+  }
+
   private getWaypoint(waypoint: Element): void {
     const res = {} as GPXWaypoint;
 
@@ -192,14 +219,23 @@ export class GPXParser {
     // extensions
     const extensionsEl = waypoint.querySelector('extensions');
     if (extensionsEl) {
-      // section
+      // section name, symbol, color
       const [gpxoutEl] = this.getXmlElementByTagName(
         extensionsEl,
         'gpxout',
         'WaypointExtension'
       );
       if (gpxoutEl) {
-        res.section = this.getXmlElementValue(gpxoutEl, 'gpxout', 'Section');
+        res.sectionName = this.getXmlElementValue(
+          gpxoutEl,
+          'gpxout',
+          'SectionName'
+        );
+        res.sectionSym =
+          this.getXmlElementValue(gpxoutEl, 'gpxout', 'SectionSym') || null;
+        res.sectionDisplayColor =
+          this.getXmlElementValue(gpxoutEl, 'gpxout', 'SectionDisplayColor') ||
+          null;
       }
       // display color
       const [gpxxEl] = this.getXmlElementByTagName(
@@ -216,11 +252,26 @@ export class GPXParser {
       }
     }
 
-    if (res.section && !this.sections.includes(res.section)) {
-      this.sections.push(res.section);
-    } else if (!res.section && !this.sections.includes('')) {
-      this.sections.push('');
-    }
+    // if (
+    //   res.sectionName &&
+    //   !this.sections.some(({ name }) => name === res.sectionName)
+    // ) {
+    //   this.sections.push({
+    //     name: res.sectionName,
+    //     sym: res.sectionSym || null,
+    //     displayColor: res.sectionDisplayColor || null,
+    //   });
+    // } else if (
+    //   !res.sectionName &&
+    //   !this.sections.some(({ name }) => name === null)
+    // ) {
+    //   this.sections.push({
+    //     name: null,
+    //     sym: res.sectionSym || null,
+    //     displayColor: res.sectionDisplayColor || null,
+    //   });
+    // }
+    this.updateSections(res);
 
     this.features.push({ type: GPXFeatures.WPT, feature: res });
     this.waypoints.push(res);
@@ -285,14 +336,23 @@ export class GPXParser {
     // extensions
     const extensionsEl = route.querySelector('extensions');
     if (extensionsEl) {
-      // section
+      // section name, symbol, color
       const [gpxoutEl] = this.getXmlElementByTagName(
         extensionsEl,
         'gpxout',
         'RouteExtension'
       );
       if (gpxoutEl) {
-        res.section = this.getXmlElementValue(gpxoutEl, 'gpxout', 'Section');
+        res.sectionName = this.getXmlElementValue(
+          gpxoutEl,
+          'gpxout',
+          'SectionName'
+        );
+        res.sectionSym =
+          this.getXmlElementValue(gpxoutEl, 'gpxout', 'SectionSym') || null;
+        res.sectionDisplayColor =
+          this.getXmlElementValue(gpxoutEl, 'gpxout', 'SectionDisplayColor') ||
+          null;
       }
       // display color
       const [gpxxEl] = this.getXmlElementByTagName(
@@ -318,11 +378,7 @@ export class GPXParser {
       }
     }
 
-    if (res.section && !this.sections.includes(res.section)) {
-      this.sections.push(res.section);
-    } else if (!res.section && !this.sections.includes('')) {
-      this.sections.push('');
-    }
+    this.updateSections(res);
 
     this.features.push({ type: GPXFeatures.RTE, feature: res });
     this.routes.push(res);
@@ -387,14 +443,23 @@ export class GPXParser {
     // extensions
     const extensionsEl = track.querySelector('extensions');
     if (extensionsEl) {
-      // section
+      // section name, symbol, color
       const [gpxoutEl] = this.getXmlElementByTagName(
         extensionsEl,
         'gpxout',
-        'TrackExtension'
+        'WaypointExtension'
       );
       if (gpxoutEl) {
-        res.section = this.getXmlElementValue(gpxoutEl, 'gpxout', 'Section');
+        res.sectionName = this.getXmlElementValue(
+          gpxoutEl,
+          'gpxout',
+          'SectionName'
+        );
+        res.sectionSym =
+          this.getXmlElementValue(gpxoutEl, 'gpxout', 'SectionSym') || null;
+        res.sectionDisplayColor =
+          this.getXmlElementValue(gpxoutEl, 'gpxout', 'SectionDisplayColor') ||
+          null;
       }
       // display color
       const [gpxxEl] = this.getXmlElementByTagName(
@@ -420,11 +485,7 @@ export class GPXParser {
       }
     }
 
-    if (res.section && !this.sections.includes(res.section)) {
-      this.sections.push(res.section);
-    } else if (!res.section && !this.sections.includes('')) {
-      this.sections.push('');
-    }
+    this.updateSections(res);
 
     this.features.push({ type: GPXFeatures.TRK, feature: res });
     this.tracks.push(res);

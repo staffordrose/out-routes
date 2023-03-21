@@ -59,7 +59,7 @@ export class GPXGenerator {
     const schemaLocation = [
       `http://www.topografix.com/GPX/1/1`,
       `http://www.topografix.com/GPX/1/1/gpx.xsd`,
-      // Section extension
+      // SectionName, SectionSym, SectionDisplayColor extensions
       `https://outroutes.staffordrose.com/xmlschemas/GpxExtensions/v1`,
       `https://outroutes.staffordrose.com/xmlschemas/GpxExtensionsv1.xsd`,
       // DisplayColor extension
@@ -86,12 +86,12 @@ export class GPXGenerator {
 
     this.addMetadata();
 
-    this.mapLayers.forEach(({ title, data }) => {
+    this.mapLayers.forEach(({ data, ...layer }) => {
       (data.features || []).forEach((feature) => {
         if (feature.geometry.type === GeometryTypeNames.Point) {
-          this.addWaypoint({ title }, feature);
+          this.addWaypoint(layer, feature);
         } else if (feature.geometry.type === GeometryTypeNames.LineString) {
-          this.addRoute({ title }, feature);
+          this.addRoute(layer, feature);
         }
       });
     });
@@ -214,7 +214,7 @@ export class GPXGenerator {
   }
 
   private addWaypoint(
-    { title }: Partial<MapLayer>,
+    layer: Partial<MapLayer>,
     { geometry: { coordinates }, properties }: MapFeature,
     baseIndent = 1
   ): void {
@@ -242,18 +242,14 @@ export class GPXGenerator {
     }
     // extensions
     wpt.push(this.indent(baseIndent + 1) + `<extensions>`);
-    // section
-    wpt.push(this.addSectionExtension('Waypoint', title, baseIndent + 2));
+    // section name, symbol and display color
+    wpt.push(this.addGpxoutExtensions('Waypoint', layer, baseIndent + 2));
     // display color
     if (
-      (properties.color &&
-        standardColorNames[properties.color as StandardColorCodes]) ||
-      (properties.layerColor &&
-        standardColorNames[properties.layerColor as StandardColorCodes])
+      properties.color &&
+      standardColorNames[properties.color as StandardColorCodes]
     ) {
-      wpt.push(
-        this.addDisplayColorExtension('Waypoint', properties, baseIndent + 2)
-      );
+      wpt.push(this.addGpxxExtensions('Waypoint', properties, baseIndent + 2));
     }
     // extensions closing tag
     wpt.push(this.indent(baseIndent + 1) + `</extensions>`);
@@ -264,7 +260,7 @@ export class GPXGenerator {
   }
 
   private addRoute(
-    { title }: Partial<MapLayer>,
+    layer: Partial<MapLayer>,
     { geometry: { coordinates }, properties }: MapFeature,
     baseIndent = 1
   ): void {
@@ -280,23 +276,22 @@ export class GPXGenerator {
     }
     // extensions
     rte.push(this.indent(baseIndent + 1) + `<extensions>`);
-    // section
-    rte.push(this.addSectionExtension('Route', title, baseIndent + 2));
+    // section name, symbol and display color
+    rte.push(this.addGpxoutExtensions('Route', layer, baseIndent + 2));
     // display color
     if (
-      (properties.color &&
-        standardColorNames[properties.color as StandardColorCodes]) ||
-      (properties.layerColor &&
-        standardColorNames[properties.layerColor as StandardColorCodes])
+      properties.color &&
+      standardColorNames[properties.color as StandardColorCodes]
     ) {
-      rte.push(
-        this.addDisplayColorExtension('Route', properties, baseIndent + 2)
-      );
+      rte.push(this.addGpxxExtensions('Route', properties, baseIndent + 2));
     }
     // transportation mode
     if (this.activityType) {
       rte.push(
-        this.addTransportationModeExtension(this.activityType, baseIndent + 2)
+        this.addTrpExtensions(
+          { activityType: this.activityType },
+          baseIndent + 2
+        )
       );
     }
     // extensions closing tag
@@ -317,45 +312,63 @@ export class GPXGenerator {
     this.xml += rte.join('\n') + '\n';
   }
 
-  private addSectionExtension(
+  private addGpxoutExtensions(
     featType: 'Waypoint' | 'Route' | 'Track',
-    title: string | null | undefined,
+    layer: Partial<MapLayer>,
     baseIndent = 1
   ): string {
-    const section = [
-      this.indent(baseIndent) + `<gpxout:${featType}Extension>`,
+    const gpxout = [this.indent(baseIndent) + `<gpxout:${featType}Extension>`];
+    // name
+    gpxout.push(
       this.indent(baseIndent + 1) +
-        `<gpxout:Section>${title || '[Untitled section]'}</gpxout:Section>`,
-      this.indent(baseIndent) + `</gpxout:${featType}Extension>`,
-    ];
+        `<gpxout:SectionName>${
+          layer.title || '[Untitled section]'
+        }</gpxout:SectionName>`
+    );
+    // symbol
+    if (layer.symbol) {
+      gpxout.push(
+        this.indent(baseIndent + 1) +
+          `<gpxout:SectionSym>${layer.symbol}</gpxout:SectionSym>`
+      );
+    }
+    // display color
+    if (layer.color && standardColorNames[layer.color as StandardColorCodes]) {
+      gpxout.push(
+        this.indent(baseIndent + 1) +
+          `<gpxout:SectionDisplayColor>${
+            standardColorNames[layer.color as StandardColorCodes]
+          }</gpxout:SectionDisplayColor>`
+      );
+    }
+    // gpxout closing tag
+    gpxout.push(this.indent(baseIndent) + `</gpxout:${featType}Extension>`);
 
-    return section.join('\n');
+    return gpxout.join('\n');
   }
 
-  private addDisplayColorExtension(
+  private addGpxxExtensions(
     featType: 'Waypoint' | 'Route' | 'Track',
-    { color, layerColor }: Partial<MapFeature['properties']>,
+    { color }: Pick<MapFeature['properties'], 'color'>,
     baseIndent = 1
   ): string {
-    const displayColor = [
+    const gpxx = [
       this.indent(baseIndent) + `<gpxx:${featType}Extension>`,
       this.indent(baseIndent + 1) +
         `<gpxx:DisplayColor>${
-          color
-            ? standardColorNames[color as StandardColorCodes]
-            : standardColorNames[layerColor as StandardColorCodes]
+          standardColorNames[color as StandardColorCodes]
         }</gpxx:DisplayColor>`,
       this.indent(baseIndent) + `</gpxx:${featType}Extension>`,
     ];
 
-    return displayColor.join('\n');
+    return gpxx.join('\n');
   }
 
-  private addTransportationModeExtension(
-    activityType: Route['activity_type'],
+  private addTrpExtensions(
+    { activityType }: { activityType: Route['activity_type'] },
     baseIndent = 1
   ): string {
-    const transportationMode = [
+    const trp = [
       this.indent(baseIndent) + `<trp:Trip>`,
       this.indent(baseIndent + 1) +
         `<trp:TransportationMode>${
@@ -364,7 +377,7 @@ export class GPXGenerator {
       this.indent(baseIndent) + `</trp:Trip>`,
     ];
 
-    return transportationMode.join('\n');
+    return trp.join('\n');
   }
 
   private indent(count: number | undefined = 1): string {
