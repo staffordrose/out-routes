@@ -121,7 +121,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                 : undefined,
             }}
           />
-          <TruncatedText as='h4' lineClamp={1}>
+          <TruncatedText as='h4'>
             {layer.title || '[Untitled section]'}
           </TruncatedText>
         </div>

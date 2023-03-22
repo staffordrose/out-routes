@@ -64,7 +64,6 @@ export const CommitCard: FC<CommitCardProps> = ({
                 image={user.image_thumb_120}
                 name={user.name}
                 username={user.username}
-                bio={user.bio}
                 stats_followers={user.stats_followers}
               />
             }

@@ -94,7 +94,7 @@ const HoverCardComp: FC<HoverCardProps> = ({
           }}
         >
           <div>
-            <TruncatedText lineClamp={1} fontWeight='medium'>
+            <TruncatedText fontWeight='medium'>
               {title || '[Untitled feature]'}
             </TruncatedText>
             <div>

@@ -169,29 +169,19 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
         <List as='ul' direction='column' gap='lg' width='full'>
           {users
             .filter((user) => user.username !== authUsername)
-            .map(
-              ({
-                id,
-                username,
-                name,
-                bio,
-                image_thumb_120,
-                stats_followers,
-              }) => {
-                return (
-                  <li key={id}>
-                    <UserCard
-                      orientation='vertical'
-                      image={image_thumb_120}
-                      name={name}
-                      username={username}
-                      bio={bio}
-                      stats_followers={stats_followers}
-                    />
-                  </li>
-                );
-              }
-            )}
+            .map(({ id, username, name, image_thumb_120, stats_followers }) => {
+              return (
+                <li key={id}>
+                  <UserCard
+                    orientation='vertical'
+                    image={image_thumb_120}
+                    name={name}
+                    username={username}
+                    stats_followers={stats_followers}
+                  />
+                </li>
+              );
+            })}
         </List>
       );
     }

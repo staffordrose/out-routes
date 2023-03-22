@@ -57,7 +57,6 @@ export const ContributorsList: FC<ContributorsListProps> = ({
                         id,
                         username,
                         name,
-                        bio,
                         image_thumb_120,
                         stats_followers,
                       } = user;
@@ -74,7 +73,6 @@ export const ContributorsList: FC<ContributorsListProps> = ({
                           image={image_thumb_120}
                           username={username}
                           name={name}
-                          bio={bio}
                           stats_followers={stats_followers}
                           showFollowBtn={isAuthenticated && !authIsUser}
                           isFollowing={isFollowing}

@@ -93,7 +93,6 @@ export const SearchDialog: FC<SearchDialogProps> = ({
                       id,
                       username,
                       name,
-                      bio,
                       image_thumb_64,
                       stats_followers,
                     } = userRecord;
@@ -105,7 +104,6 @@ export const SearchDialog: FC<SearchDialogProps> = ({
                         image={image_thumb_64}
                         name={name}
                         username={username}
-                        bio={bio}
                         stats_followers={stats_followers}
                         onNavigate={() => {
                           setDialogOpen(false);

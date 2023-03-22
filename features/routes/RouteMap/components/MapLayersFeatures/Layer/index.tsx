@@ -29,9 +29,7 @@ export const Layer: FC<LayerProps> = ({ map, layer, features, openPopup }) => {
             fill: color ? colorCodes[color as ColorNames] : undefined,
           }}
         />
-        <TruncatedText as='h4' lineClamp={1}>
-          {title || '[Untitled section]'}
-        </TruncatedText>
+        <TruncatedText as='h4'>{title || '[Untitled section]'}</TruncatedText>
       </StyledLayerDetails>
       <LayerFeatures
         map={map}

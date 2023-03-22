@@ -23,7 +23,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
 
   switch (action) {
     case ActivityActions.FOLLOW_USER: {
-      const { username, name, bio, image_thumb_120, stats_followers } =
+      const { username, name, image_thumb_120, stats_followers } =
         data.followed;
 
       return (
@@ -40,7 +40,6 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
             image={image_thumb_120}
             name={name}
             username={username}
-            bio={bio}
             stats_followers={stats_followers}
           />
         </StyledActivityCard>

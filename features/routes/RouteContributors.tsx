@@ -60,7 +60,6 @@ export const RouteContributors: FC<RouteContributorsProps> = ({
                 id,
                 username,
                 name,
-                bio,
                 image_thumb_120,
                 image_thumb_32,
                 stats_followers,
@@ -75,7 +74,6 @@ export const RouteContributors: FC<RouteContributorsProps> = ({
                       image={image_thumb_120}
                       name={name}
                       username={username}
-                      bio={bio}
                       stats_followers={stats_followers}
                     />
                   }

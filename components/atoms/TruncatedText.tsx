@@ -33,6 +33,7 @@ const StyledTruncatedText = styled('p', {
   textOverflow: 'ellipsis',
   display: '-webkit-box',
   WebkitBoxOrient: 'vertical',
+  boxOrient: 'vertical',
   variants: {
     fontFamily: {
       heading: { fontFamily: '$heading' },

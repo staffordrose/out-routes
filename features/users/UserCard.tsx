@@ -18,7 +18,6 @@ import { User } from '@/types/users';
 export type UserCardProps = {
   name: User['name'];
   username: User['username'];
-  bio?: User['bio'];
   stats_followers?: User['stats_followers'];
   showFollowBtn?: boolean;
   isFollowing?: boolean;
@@ -41,7 +40,6 @@ export const UserCard: FC<UserCardProps> = ({
   image,
   name,
   username,
-  bio,
   stats_followers,
   showFollowBtn,
   isFollowing,
@@ -97,9 +95,6 @@ export const UserCard: FC<UserCardProps> = ({
               </Link>
               <span>@{username}</span>
             </div>
-            {orientation === 'vertical' && (
-              <TruncatedText lineClamp={2}>{bio}</TruncatedText>
-            )}
             {children}
           </Flex>
           <Flex gap='sm'>

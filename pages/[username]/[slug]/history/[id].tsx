@@ -145,7 +145,6 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
                   image={user.image_thumb_64}
                   username={user.username}
                   name={user.name}
-                  bio={user.bio}
                   stats_followers={user.stats_followers}
                   showFollowBtn={false}
                 />
