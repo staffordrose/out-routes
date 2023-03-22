@@ -42,6 +42,14 @@ export const useSetupMap = ({
       zoom: state.viewport.zoom,
     });
 
+    if (mapBounds) {
+      // set bounds
+      map.current.fitBounds(mapBounds, {
+        padding: 48,
+        duration: 0,
+      });
+    }
+
     /**
      * map controls
      */
@@ -85,7 +93,6 @@ export const useSetupMap = ({
         layers,
         features,
         openPopup,
-        mapBounds,
       });
     });
   });

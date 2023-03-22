@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react';
-import { LngLatBounds, Map } from 'mapbox-gl';
+import { Map } from 'mapbox-gl';
 import type { FeatureCollection } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
@@ -18,7 +18,6 @@ type DrawFeatures = {
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
-  mapBounds?: LngLatBounds | null;
 };
 
 export const drawFeatures = ({
@@ -26,7 +25,6 @@ export const drawFeatures = ({
   layers,
   features,
   openPopup,
-  mapBounds,
 }: DrawFeatures) => {
   if (!map.current) return;
 
@@ -90,13 +88,5 @@ export const drawFeatures = ({
         });
       });
     });
-
-    if (mapBounds) {
-      // set bounds
-      mapRef.fitBounds(mapBounds, {
-        padding: 48,
-        duration: 0,
-      });
-    }
   }
 };
