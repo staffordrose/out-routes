@@ -36,6 +36,7 @@ export type GPXMetadata = {
 
 export type GPXOptions = {
   fileName: string;
+  format: 'route' | 'track';
 };
 
 export type GPXPoint = {

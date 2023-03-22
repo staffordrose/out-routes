@@ -48,6 +48,7 @@ export class GPXGenerator {
     this.mapLayers = mapLayers;
     this.options = {
       fileName: `${options?.fileName || 'untitled'}.gpx`,
+      format: options?.format || 'route',
     };
 
     this.generate();
@@ -91,7 +92,11 @@ export class GPXGenerator {
         if (feature.geometry.type === GeometryTypeNames.Point) {
           this.addWaypoint(layer, feature);
         } else if (feature.geometry.type === GeometryTypeNames.LineString) {
-          this.addRoute(layer, feature);
+          if (this.options.format === 'track') {
+            this.addTrack(layer, feature);
+          } else {
+            this.addRoute(layer, feature);
+          }
         }
       });
     });
@@ -310,6 +315,63 @@ export class GPXGenerator {
     rte.push(this.indent(baseIndent) + `</rte>`);
 
     this.xml += rte.join('\n') + '\n';
+  }
+
+  private addTrack(
+    layer: Partial<MapLayer>,
+    { geometry: { coordinates }, properties }: MapFeature,
+    baseIndent = 1
+  ): void {
+    const trk = [
+      this.indent(baseIndent) + `<trk>`,
+      this.indent(baseIndent + 1) + `<name>${properties.title || ''}</name>`,
+    ];
+    // description
+    if (properties.description) {
+      trk.push(
+        this.indent(baseIndent + 1) + `<desc>${properties.description}</desc>`
+      );
+    }
+    // extensions
+    trk.push(this.indent(baseIndent + 1) + `<extensions>`);
+    // section name, symbol and display color
+    trk.push(this.addGpxoutExtensions('Route', layer, baseIndent + 2));
+    // display color
+    if (
+      properties.color &&
+      standardColorNames[properties.color as StandardColorCodes]
+    ) {
+      trk.push(this.addGpxxExtensions('Route', properties, baseIndent + 2));
+    }
+    // transportation mode
+    if (this.activityType) {
+      trk.push(
+        this.addTrpExtensions(
+          { activityType: this.activityType },
+          baseIndent + 2
+        )
+      );
+    }
+    // extensions closing tag
+    trk.push(this.indent(baseIndent + 1) + `</extensions>`);
+    // track segment
+    trk.push(this.indent(baseIndent + 1) + `<trkseg>`);
+    // trackpoints
+    (coordinates as Position[]).forEach((position) => {
+      const trkpt = [
+        this.indent(baseIndent + 2) +
+          `<trkpt lat="${position[1]}" lon="${position[0]}">`,
+        this.indent(baseIndent + 3) + `<ele>${position[2] || 0}</ele>`,
+        this.indent(baseIndent + 2) + `</trkpt>`,
+      ];
+      trk.push(trkpt.join('\n'));
+    });
+    // track segment closing tag
+    trk.push(this.indent(baseIndent + 1) + `</trkseg>`);
+    // track closing tag
+    trk.push(this.indent(baseIndent) + `</trk>`);
+
+    this.xml += trk.join('\n') + '\n';
   }
 
   private addGpxoutExtensions(

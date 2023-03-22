@@ -252,25 +252,6 @@ export class GPXParser {
       }
     }
 
-    // if (
-    //   res.sectionName &&
-    //   !this.sections.some(({ name }) => name === res.sectionName)
-    // ) {
-    //   this.sections.push({
-    //     name: res.sectionName,
-    //     sym: res.sectionSym || null,
-    //     displayColor: res.sectionDisplayColor || null,
-    //   });
-    // } else if (
-    //   !res.sectionName &&
-    //   !this.sections.some(({ name }) => name === null)
-    // ) {
-    //   this.sections.push({
-    //     name: null,
-    //     sym: res.sectionSym || null,
-    //     displayColor: res.sectionDisplayColor || null,
-    //   });
-    // }
     this.updateSections(res);
 
     this.features.push({ type: GPXFeatures.WPT, feature: res });

@@ -49,9 +49,7 @@ type HeaderProps = {
 
 export const Header: FC<HeaderProps> = ({ route, layers, features }) => {
   const [isExportDialogOpen, setExportDialogOpen] = useState<boolean>(false);
-  const [exportFileFormat, setExportFileFormat] = useState<ExportFileFormats>(
-    ExportFileFormats.GPX_ROUTES
-  );
+  const [exportFileFormat, setExportFileFormat] = useState<ExportFileFormats>();
 
   const hasNonStandardGpxColor = useMemo(() => {
     return (
@@ -66,49 +64,56 @@ export const Header: FC<HeaderProps> = ({ route, layers, features }) => {
     );
   }, [layers, features]);
 
-  const downloadGpx = useCallback(() => {
-    const mapLayers = layers.map((layer) =>
-      mapLayerAndFeatureRecordsToMapboxLayer(
-        layer,
-        features.filter((feature) => layer.id === feature.layer?.id)
-      )
-    );
+  const downloadGpx = useCallback(
+    (exportFileFormat?: ExportFileFormats) => {
+      const mapLayers = layers.map((layer) =>
+        mapLayerAndFeatureRecordsToMapboxLayer(
+          layer,
+          features.filter((feature) => layer.id === feature.layer?.id)
+        )
+      );
 
-    let mapBounds: LngLat[] | null = route.map_bounding_box
-      ? JSON.parse(route.map_bounding_box)
-      : null;
+      let mapBounds: LngLat[] | null = route.map_bounding_box
+        ? JSON.parse(route.map_bounding_box)
+        : null;
 
-    // get map bounds from coordinates
-    if (
-      !Array.isArray(mapBounds) ||
-      mapBounds.length !== 2 ||
-      !mapBounds.every(
-        (lngLat) =>
-          typeof lngLat[0] === 'number' && typeof lngLat[1] === 'number'
-      )
-    ) {
-      const coordinates = getAllCoordinatesFromMapLayers(mapLayers);
-      mapBounds = getMapBoundsFromCoordinates(coordinates) as LngLat[] | null;
-    }
-
-    if (!Array.isArray(mapBounds) || mapBounds.length !== 2) {
-      return;
-    }
-
-    const result = new GPXGenerator(
-      {
-        name: route.title,
-        time: new Date(),
-        bounds: mapBounds,
-      },
-      route.activity_type,
-      mapLayers,
-      {
-        fileName: route.title || '',
+      // get map bounds from coordinates
+      if (
+        !Array.isArray(mapBounds) ||
+        mapBounds.length !== 2 ||
+        !mapBounds.every(
+          (lngLat) =>
+            typeof lngLat[0] === 'number' && typeof lngLat[1] === 'number'
+        )
+      ) {
+        const coordinates = getAllCoordinatesFromMapLayers(mapLayers);
+        mapBounds = getMapBoundsFromCoordinates(coordinates) as LngLat[] | null;
       }
-    );
-    return result.download();
-  }, [route, layers, features]);
+
+      if (!Array.isArray(mapBounds) || mapBounds.length !== 2) {
+        return;
+      }
+
+      const result = new GPXGenerator(
+        {
+          name: route.title,
+          time: new Date(),
+          bounds: mapBounds,
+        },
+        route.activity_type,
+        mapLayers,
+        {
+          fileName: route.title || '',
+          format:
+            exportFileFormat === ExportFileFormats.GPX_TRACKS
+              ? 'track'
+              : 'route',
+        }
+      );
+      return result.download();
+    },
+    [route, layers, features]
+  );
 
   return (
     <StyledHeader>
@@ -153,6 +158,10 @@ export const Header: FC<HeaderProps> = ({ route, layers, features }) => {
                       value: ExportFileFormats.GPX_ROUTES,
                       label: ExportFileFormatLabels.GPX_ROUTES,
                     },
+                    {
+                      value: ExportFileFormats.GPX_TRACKS,
+                      label: ExportFileFormatLabels.GPX_TRACKS,
+                    },
                   ],
                 },
               ]}
@@ -164,8 +173,13 @@ export const Header: FC<HeaderProps> = ({ route, layers, features }) => {
                 size='lg'
                 disabled={!exportFileFormat}
                 onClick={() => {
-                  if (exportFileFormat === ExportFileFormats.GPX_ROUTES) {
-                    downloadGpx();
+                  if (
+                    [
+                      ExportFileFormats.GPX_ROUTES,
+                      ExportFileFormats.GPX_TRACKS,
+                    ].includes(exportFileFormat as ExportFileFormats)
+                  ) {
+                    downloadGpx(exportFileFormat);
                   }
 
                   setExportDialogOpen(false);
