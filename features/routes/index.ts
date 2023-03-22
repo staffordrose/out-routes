@@ -8,6 +8,5 @@ export * from './RouteDetailBanner';
 export * from './RouteDetails';
 export * from './RouteForm';
 export * from './RouteMap';
-export * from './RouteMapActions';
 export * from './RouteMapElevationChart';
 export * from './RouteMapPopup';

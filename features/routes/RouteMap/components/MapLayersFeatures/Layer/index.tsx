@@ -49,7 +49,7 @@ const StyledLayer = styled('li', {
 const StyledLayerDetails = styled('div', {
   position: 'sticky',
   zIndex: 10,
-  top: 0,
+  top: '$12',
   display: 'flex',
   gap: '$1',
   alignItems: 'center',

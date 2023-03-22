@@ -4,11 +4,13 @@ import type { Map } from 'mapbox-gl';
 import { List } from '@/components/atoms';
 import { styled } from '@/styles';
 import { PopupState } from '@/types/maps';
-import { RouteFeature, RouteLayer } from '@/types/routes';
+import { Route, RouteFeature, RouteLayer } from '@/types/routes';
+import { Header } from './Header';
 import { Layer } from './Layer';
 
 type MapLayersFeaturesProps = {
   map: MutableRefObject<Map | undefined>;
+  route: Route;
   layers: RouteLayer[];
   features: RouteFeature[];
   openPopup: (popupState: PopupState) => void;
@@ -16,12 +18,14 @@ type MapLayersFeaturesProps = {
 
 export const MapLayersFeatures: FC<MapLayersFeaturesProps> = ({
   map,
+  route,
   layers,
   features,
   openPopup,
 }) => {
   return (
     <StyledMapLayersFeatures>
+      <Header route={route} layers={layers} features={features} />
       <List as='ul' direction='column' width='full'>
         {Array.isArray(layers) &&
           layers.length > 0 &&
@@ -54,6 +58,14 @@ const StyledMapLayersFeatures = styled('div', {
   borderTopStyle: 'solid',
   borderTopColor: '$slate-300',
   backgroundColor: '$white',
+  '& > ul > li:not(:last-child) > div': {
+    borderBottomWidth: '$1',
+    borderBottomStyle: 'solid',
+    borderBottomColor: '$slate-300',
+  },
+  '& > ul': {
+    paddingBottom: '$12',
+  },
   '@md': {
     borderTop: 'none',
   },

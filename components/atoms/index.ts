@@ -3,6 +3,7 @@ export * from './Avatar';
 export * from './Box';
 export * from './Button';
 export * from './ButtonLink';
+export * from './Callout';
 export * from './Center';
 export * from './Chip';
 export * from './Dialog';

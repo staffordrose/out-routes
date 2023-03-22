@@ -47,6 +47,7 @@ export const RouteMap: FC<RouteMapProps> = ({ route, layers, features }) => {
       </div>
       <MapLayersFeatures
         map={map}
+        route={route}
         layers={layers}
         features={features}
         openPopup={openPopup}

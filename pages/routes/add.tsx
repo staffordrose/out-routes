@@ -99,6 +99,7 @@ const AddRoute = () => {
                 type: 'submit',
                 form: 'route-form',
                 variant: 'solid',
+                colorScheme: 'orange',
                 size: 'md',
                 disabled: addRouteMutation.isLoading,
                 children: (
