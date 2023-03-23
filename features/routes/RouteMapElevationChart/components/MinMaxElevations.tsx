@@ -32,12 +32,20 @@ const MinMaxElevationsComp: FC<MinMaxElevationsProps> = ({
 export const MinMaxElevations = memo(MinMaxElevationsComp);
 
 const StyledMinMaxElevations = styled('div', {
+  userSelect: 'none',
   '& > div': {
     position: 'absolute',
     right: 0,
+    display: 'flex',
+    placeItems: 'center',
     overflow: 'hidden',
+    minHeight: '$3_5',
     paddingX: '$0_5',
+    borderWidth: '$1',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
     borderRadius: '$sm',
+    lineHeight: '$sm',
     '&::after': {
       content: '""',
       position: 'absolute',
@@ -45,9 +53,8 @@ const StyledMinMaxElevations = styled('div', {
       left: 0,
       width: '$full',
       height: '$full',
-      backgroundColor: '$white',
-
-      opacity: 0.85,
+      backgroundColor: '$slate-50',
+      opacity: 0.625,
     },
     '& > p': {
       position: 'relative',

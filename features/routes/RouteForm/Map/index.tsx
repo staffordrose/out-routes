@@ -133,7 +133,7 @@ const StyledMap = styled('div', {
     position: 'sticky',
     top: '$14',
     width: '$full',
-    height: 'calc(100vh - $14 - $8 - $14 - $12 - $24)',
+    height: 'calc(100vh - $14 - $8 - $14 - $12 - $24 - 2px)',
     '& > div#map-container': {
       width: '$full',
       height: 'calc($full - $18)',
@@ -153,7 +153,7 @@ const StyledMap = styled('div', {
   '@md': {
     display: 'grid',
     gridTemplateColumns: '1fr $64',
-    height: 'calc(100vh - $14 - $8 - $14 - $12)',
+    height: 'calc(100vh - $14 - $8 - $14 - $12 - 2px)',
     '& > div:first-child': {
       height: '$full',
       borderLeftWidth: '$1',

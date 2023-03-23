@@ -110,11 +110,18 @@ const DistanceLabel: FC<DistanceLabelProps> = ({
 const StyledDistances = styled('div', {
   position: 'relative',
   width: '$full',
+  userSelect: 'none',
   '& > div.distance': {
     position: 'absolute',
     top: '$0_5',
+    display: 'flex',
+    placeItems: 'center',
     overflow: 'hidden',
+    minHeight: '$3_5',
     paddingX: '$0_5',
+    borderWidth: '$1',
+    borderStyle: 'solid',
+    borderColor: '$slate-300',
     borderRadius: '$sm',
     '&::after': {
       content: '""',
@@ -123,12 +130,13 @@ const StyledDistances = styled('div', {
       left: 0,
       width: '$full',
       height: '$full',
-      backgroundColor: '$orange-200',
+      backgroundColor: '$slate-100',
     },
     '& > p': {
       position: 'relative',
       zIndex: 10,
       fontSize: '0.625rem',
+      lineHeight: '$xs',
     },
   },
   '& > div.distance-line': {
@@ -136,6 +144,6 @@ const StyledDistances = styled('div', {
     top: 0,
     width: '$px',
     height: '$1',
-    backgroundColor: '$orange-500',
+    backgroundColor: '$slate-300',
   },
 });

@@ -126,6 +126,7 @@ const StyledHoverCard = styled('div', {
   width: '$24',
   height: '$full',
   paddingY: '$1',
+  userSelect: 'none',
   '& > div': {
     width: '$full',
     height: '$full',
