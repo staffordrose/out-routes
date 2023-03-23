@@ -83,58 +83,38 @@ export const FeatureEdit: FC<FeatureEditProps> = ({
         />
         <FieldsGrid>
           {feature.geometry.type === GeometryTypeNames.Point && (
-            <>
-              <CoordinatesFieldsGrid>
-                <TextField
-                  type='number'
-                  name='lat'
-                  placeholder='Latitude'
-                  value={values.lat}
-                  onChange={(e) => {
-                    updateValues('lat', e.target.value);
-                  }}
-                  onBlur={() => {
-                    updateTouched('lat', true);
-                    validate();
-                  }}
-                  isTouched={touched.lat}
-                  error={errors.lat?.message}
-                />
-                <TextField
-                  type='number'
-                  name='lng'
-                  placeholder='Longitude'
-                  value={values.lng}
-                  onChange={(e) => {
-                    updateValues('lng', e.target.value);
-                  }}
-                  onBlur={() => {
-                    updateTouched('lng', true);
-                    validate();
-                  }}
-                  isTouched={touched.lng}
-                  error={errors.lng?.message}
-                />
-              </CoordinatesFieldsGrid>
-              <ElevationField>
-                <TextField
-                  type='number'
-                  name='ele'
-                  placeholder='Elevation'
-                  value={values.ele}
-                  onChange={(e) => {
-                    updateValues('ele', e.target.value);
-                  }}
-                  onBlur={() => {
-                    updateTouched('ele', true);
-                    validate();
-                  }}
-                  isTouched={touched.ele}
-                  error={errors.ele?.message}
-                />
-                <Text>Feet</Text>
-              </ElevationField>
-            </>
+            <CoordinatesFieldsGrid>
+              <TextField
+                type='number'
+                name='lat'
+                placeholder='Latitude'
+                value={values.lat}
+                onChange={(e) => {
+                  updateValues('lat', e.target.value);
+                }}
+                onBlur={() => {
+                  updateTouched('lat', true);
+                  validate();
+                }}
+                isTouched={touched.lat}
+                error={errors.lat?.message}
+              />
+              <TextField
+                type='number'
+                name='lng'
+                placeholder='Longitude'
+                value={values.lng}
+                onChange={(e) => {
+                  updateValues('lng', e.target.value);
+                }}
+                onBlur={() => {
+                  updateTouched('lng', true);
+                  validate();
+                }}
+                isTouched={touched.lng}
+                error={errors.lng?.message}
+              />
+            </CoordinatesFieldsGrid>
           )}
           <SelectField
             key={colorKey}
@@ -235,25 +215,33 @@ export const FeatureEdit: FC<FeatureEditProps> = ({
               error={errors.symbol?.message}
               groups={[
                 {
+                  id: 'no-selection',
+                  label: '',
+                  options: [
+                    {
+                      value: 'none',
+                      label: (
+                        <SymbolLabel>
+                          <NoneSymbol />
+                          <TruncatedText>No Selection</TruncatedText>
+                        </SymbolLabel>
+                      ),
+                    },
+                  ],
+                },
+                {
                   id: 'symbols',
                   label: 'Symbols',
-                  options: [
-                    { value: 'none', label: <span>No selection</span> },
-                    ...symbolSelectOptions,
-                  ].map(({ value, label }) => ({
+                  options: symbolSelectOptions.map(({ value, label }) => ({
                     value,
                     label: (
                       <SymbolLabel>
-                        {value !== 'none' ? (
-                          <NextImage
-                            src={`/symbols/${value}.svg`}
-                            height={16}
-                            width={16}
-                            alt={`${label} Icon`}
-                          />
-                        ) : (
-                          <NoneSymbol />
-                        )}
+                        <NextImage
+                          src={`/symbols/${value}.svg`}
+                          height={16}
+                          width={16}
+                          alt={`${label} Icon`}
+                        />
                         <TruncatedText>{label}</TruncatedText>
                       </SymbolLabel>
                     ),
@@ -317,14 +305,6 @@ const CoordinatesFieldsGrid = styled('div', {
   gridTemplateColumns: 'repeat(2, 1fr)',
   gap: '$1',
   alignItems: 'start',
-  width: '$full',
-});
-
-const ElevationField = styled('div', {
-  display: 'grid',
-  gridTemplateColumns: '1fr auto',
-  gap: '$2',
-  alignItems: 'center',
   width: '$full',
 });
 

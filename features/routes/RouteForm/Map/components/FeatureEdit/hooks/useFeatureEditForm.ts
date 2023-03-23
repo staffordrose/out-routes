@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { UseFieldArrayUpdate } from 'react-hook-form';
 import * as yup from 'yup';
+import { Position } from 'geojson';
 
 import { ColorCodes, colorCodes, colorNames, ColorNames } from '@/data/general';
 import { GeometryTypeNames } from '@/data/routes';
+import { getFeatureElevations } from '@/lib/v1/api/map';
 import { MapFeature, PopupState } from '@/types/maps';
 import {
-  feetToMeters,
   getMapFeatureCenter,
   isValidLngLat,
-  metersToFeet,
   trimFeatureSymbolCode,
 } from '@/utils';
 import { LayerValues, RouteFormValues } from '../../../../helpers';
@@ -47,7 +47,6 @@ const yupSchema = yup.object({
       .required('Longitude is required'),
     otherwise: yup.string().nullable(),
   }),
-  ele: yup.string().nullable(),
   title: yup.string().max(60, `Can't be longer than 60 characters`),
   color: yup.string().nullable(),
   symbol: yup.string().nullable(),
@@ -58,7 +57,6 @@ type Key =
   | 'type'
   | 'lat'
   | 'lng'
-  | 'ele'
   | 'title'
   | 'color'
   | 'symbol'
@@ -93,11 +91,6 @@ export const UseFeatureEditForm = ({
       feature.geometry?.type === GeometryTypeNames.Point
         ? feature.geometry.coordinates[0].toString()
         : undefined,
-    ele:
-      feature.geometry?.type === GeometryTypeNames.Point &&
-      feature.geometry.coordinates[2]
-        ? metersToFeet(feature.geometry.coordinates[2]).toString()
-        : undefined,
     title: feature.properties?.title || '',
     color: feature.properties?.color
       ? colorNames[feature.properties.color as ColorCodes]
@@ -112,7 +105,6 @@ export const UseFeatureEditForm = ({
     type: false,
     lat: false,
     lng: false,
-    ele: false,
     title: false,
     color: false,
     symbol: false,
@@ -124,7 +116,6 @@ export const UseFeatureEditForm = ({
       type: null,
       lat: null,
       lng: null,
-      ele: null,
       title: null,
       color: null,
       symbol: null,
@@ -137,7 +128,6 @@ export const UseFeatureEditForm = ({
     value:
       | typeof values.lat
       | typeof values.lng
-      | typeof values.ele
       | typeof values.title
       | typeof values.color
       | typeof values.symbol
@@ -189,18 +179,39 @@ export const UseFeatureEditForm = ({
         return;
       }
 
-      const latFloat = parseFloat(values.lat || '');
-      const lngFloat = parseFloat(values.lng || '');
+      let coordinates: Position = [];
 
-      const coordinates = isValidLngLat([lngFloat, latFloat])
-        ? [lngFloat, latFloat]
-        : [feature.geometry.coordinates[0], feature.geometry.coordinates[1]];
+      if (feature.geometry.type === GeometryTypeNames.Point) {
+        const latFloat = parseFloat(values.lat || '');
+        const lngFloat = parseFloat(values.lng || '');
 
-      let eleFloat = parseFloat(values.ele || '');
+        coordinates = isValidLngLat([lngFloat, latFloat])
+          ? [lngFloat, latFloat]
+          : [feature.geometry.coordinates[0], feature.geometry.coordinates[1]];
 
-      if (!Number.isNaN(eleFloat)) {
-        eleFloat = feetToMeters(eleFloat);
-        coordinates.push(eleFloat);
+        if (
+          lngFloat !== feature.geometry.coordinates[0] ||
+          latFloat !== feature.geometry.coordinates[1]
+        ) {
+          // get elevation for updated [lng, lat]
+          const elevations = await getFeatureElevations({
+            type: feature.geometry.type,
+            coordinates,
+          });
+
+          if (
+            Array.isArray(elevations) &&
+            typeof elevations[0] === 'number' &&
+            !Number.isNaN(elevations[0])
+          ) {
+            coordinates.push(elevations[0]);
+          } else {
+            coordinates.push(0);
+          }
+        } else {
+          // use existing elevation
+          coordinates.push(feature.geometry.coordinates[2] || 0);
+        }
       }
 
       const mapFeature = {
