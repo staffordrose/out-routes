@@ -107,7 +107,7 @@ const SignIn: NextPage<SignInProps> = ({ providers, csrfToken }) => {
 const MainContentBody = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: 'lg',
+  gap: '$4',
   justifyContent: 'center',
   width: 'full',
   maxWidth: 640,

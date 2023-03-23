@@ -54,9 +54,8 @@ const Error = () => {
 const MainContentBody = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: 'md',
-  justifyContent: 'center',
-  alignItems: 'center',
+  gap: '$2',
+  placeItems: 'center',
   width: 'full',
   maxWidth: 640,
   minHeight: '$64',

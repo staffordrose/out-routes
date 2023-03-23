@@ -27,7 +27,7 @@ const VerifyRequest = () => {
 const MainContentBody = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: 'md',
+  gap: '$2',
   justifyContent: 'center',
   alignItems: 'center',
   width: 'full',
