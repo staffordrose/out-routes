@@ -195,7 +195,7 @@ const Detail: FC<DetailProps> = ({ separator, icon, children }) => {
           {children}
         </Text>
       </Flex>
-      {separator && <Separator width='full' height='xs' colorScale={200} />}
+      {separator && <Separator width='full' height='xs' colorScale={100} />}
     </Box>
   );
 };
@@ -223,7 +223,7 @@ const DetailLink: FC<DetailLinkProps> = ({
           </Text>
         </Link>
       </Flex>
-      {separator && <Separator width='full' height='xs' colorScale={200} />}
+      {separator && <Separator width='full' height='xs' colorScale={100} />}
     </Box>
   );
 };

@@ -73,7 +73,7 @@ const TabsList = styled(RadixTabs.List, {
   display: 'flex',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-300',
+  borderBottomColor: '$slate-200',
   whiteSpace: 'nowrap',
   MsOverflowStyle: 'none' /* Internet Explorer 10+ */,
   scrollbarWidth: 'none' /* Firefox */,

@@ -22,19 +22,30 @@ const DistancesComp: FC<DistancesProps> = ({
 
   return (
     <StyledDistances>
-      {distances.map((distance, distanceIndex) => {
-        return (
-          <DistanceLabel
-            key={distance}
-            windowWidth={windowWidth}
-            containerWidth={containerWidth}
-            distancesMax={distances[distances.length - 1]}
-            distancesCount={distances.length}
-            distanceIndex={distanceIndex}
-            distance={distance}
-          />
-        );
-      })}
+      {Array.isArray(distances) && distances.length ? (
+        distances.map((distance, distanceIndex) => {
+          return (
+            <DistanceLabel
+              key={distance}
+              windowWidth={windowWidth}
+              containerWidth={containerWidth}
+              distancesMax={distances[distances.length - 1]}
+              distancesCount={distances.length}
+              distanceIndex={distanceIndex}
+              distance={distance}
+            />
+          );
+        })
+      ) : (
+        <DistanceLabel
+          windowWidth={windowWidth}
+          containerWidth={containerWidth}
+          distancesMax={1}
+          distancesCount={2}
+          distanceIndex={0}
+          distance={0}
+        />
+      )}
     </StyledDistances>
   );
 };

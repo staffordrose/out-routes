@@ -32,7 +32,7 @@ const StyledFooter = styled('footer', {
   width: '$full',
   borderTopWidth: '$1',
   borderTopStyle: 'solid',
-  borderTopColor: '$slate-300',
+  borderTopColor: '$slate-200',
   '& > div': {
     width: '$full',
     maxWidth: '$container_3xl',

@@ -257,7 +257,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
                 paddingY: '$2',
                 borderBottomWidth: '$1',
                 borderBottomStyle: 'solid',
-                borderBottomColor: '$slate-300',
+                borderBottomColor: '$slate-200',
               },
             }}
           >

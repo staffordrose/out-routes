@@ -6,7 +6,7 @@ import { QueryClient, dehydrate, useQueries } from '@tanstack/react-query';
 import queryString from 'query-string';
 import { BiUser } from 'react-icons/bi';
 
-import { Box, ButtonLink } from '@/components/atoms';
+import { ButtonLink } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { CommitItemsList } from '@/features/routes';
@@ -25,6 +25,7 @@ import {
   getUserOrThrow as getUserOrThrowGSSP,
   isAuthRouteMember as isAuthRouteMemberGSSP,
 } from '@/lib/v1/user';
+import { styled } from '@/styles';
 import { CommitWithItems, CompareCommitItem } from '@/types/commits';
 import { RouteLayersFeatures } from '@/types/routes';
 import { displayDate, getQueryParam } from '@/utils';
@@ -127,16 +128,7 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
           </PageHeading>
           <DefaultLayout.MainContent>
             <h2>Summary</h2>
-            <Box
-              marginBottom='xl'
-              css={{
-                padding: '$2',
-                borderWidth: '$1',
-                borderStyle: 'solid',
-                borderColor: '$slate-300',
-                borderRadius: '$md',
-              }}
-            >
+            <Author>
               <h3>Author</h3>
               {!!user?.id && (
                 <UserCard
@@ -149,9 +141,11 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
                   showFollowBtn={false}
                 />
               )}
+            </Author>
+            <Date>
               <h3>Date</h3>
               <p>{displayDate(commit.created_at || '')}</p>
-            </Box>
+            </Date>
             <div>
               {!Array.isArray(items) || !items.length ? (
                 <Feedback
@@ -185,6 +179,14 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
   }
   return null;
 };
+
+const Author = styled('div', {
+  marginBottom: '$4',
+});
+
+const Date = styled('div', {
+  marginBottom: '$4',
+});
 
 RouteHistoryEntry.getLayout = (page: ReactNode) => {
   return <DefaultLayout footerGap='sm'>{page}</DefaultLayout>;

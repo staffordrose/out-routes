@@ -6,7 +6,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import queryString from 'query-string';
 
-import { Button, Flex, Toast, useToast } from '@/components/atoms';
+import { Button, Toast, useToast } from '@/components/atoms';
 import { Feedback, NewUserLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { sitename } from '@/data/site';
@@ -15,6 +15,7 @@ import { useQueryParam } from '@/hooks';
 import { getUser } from '@/lib/v1/api/user';
 import { useSetUsernameMutation } from '@/lib/v1/hooks/user';
 import { getUserPropertiesOrThrow as getUserPropertiesOrThrowGSSP } from '@/lib/v1/user';
+import { styled } from '@/styles';
 import { authOptions } from '../../api/auth/[...nextauth]';
 
 const NewUserUsername = () => {
@@ -90,36 +91,7 @@ const NewUserUsername = () => {
         <NewUserLayout>
           <NewUserLayout.Main>
             <NewUserLayout.MainContent>
-              <Flex
-                direction='column'
-                gap='md'
-                justifyContent='center'
-                alignItems='center'
-                width='full'
-                css={{
-                  maxWidth: 640,
-                  minHeight: '$96',
-                  marginX: '$auto',
-                  marginY: 'calc(50vh - $14 - $48)',
-                  padding: '$4',
-                  borderWidth: '$1',
-                  borderStyle: 'solid',
-                  borderColor: '$slate-300',
-                  borderRadius: '$xl',
-                  textAlign: 'center',
-                  '& > div': {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '$4',
-                    width: '$full',
-                    maxWidth: '$64',
-                    textAlign: 'left',
-                    '& > button': {
-                      alignSelf: 'flex-start',
-                    },
-                  },
-                }}
-              >
+              <MainContentBody>
                 <h1>Welcome to {sitename}!</h1>
                 <h2>Select your username</h2>
                 <p>(Will be publicly visible)</p>
@@ -134,7 +106,7 @@ const NewUserUsername = () => {
                     Submit
                   </Button>
                 </div>
-              </Flex>
+              </MainContentBody>
             </NewUserLayout.MainContent>
           </NewUserLayout.Main>
         </NewUserLayout>
@@ -151,6 +123,35 @@ const NewUserUsername = () => {
     </>
   );
 };
+
+const MainContentBody = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 'md',
+  placeItems: 'center',
+  width: 'full',
+  maxWidth: 640,
+  minHeight: '$96',
+  marginX: '$auto',
+  marginY: 'calc(50vh - $14 - $48)',
+  padding: '$4',
+  borderWidth: '$1',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
+  borderRadius: '$xl',
+  textAlign: 'center',
+  '& > div': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$4',
+    width: '$full',
+    maxWidth: '$64',
+    textAlign: 'left',
+    '& > button': {
+      alignSelf: 'flex-start',
+    },
+  },
+});
 
 export default NewUserUsername;
 

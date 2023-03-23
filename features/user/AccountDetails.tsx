@@ -8,6 +8,7 @@ import {
   Flex,
   Link,
   List,
+  Separator,
   ToastContents,
 } from '@/components/atoms';
 import { styled } from '@/styles';
@@ -27,60 +28,54 @@ export const AccountDetails: FC<AccountDetails> = ({ user, openToast }) => {
 
   return (
     <StyledAccountDetails>
-      <BorderBox
-        css={{
-          '& > h2': {
-            marginBottom: '$2',
-          },
-        }}
-      >
-        <h2>Actions</h2>
-        <List as='ul' direction='column' gap='sm'>
-          <li>
-            <Link href='/account/edit'>Edit your profile</Link>
-          </li>
-          <li>
-            <Link href='/account/username'>Change your username</Link>
-          </li>
-          <li>
-            <Dialog
-              isOpen={isDialogOpen}
-              setOpen={setDialogOpen}
-              title='Delete your account?'
-              body={
-                <Flex direction='column' gap='md'>
-                  <p>
-                    Are you sure you want to delete your account? This action
-                    cannot be undone.
-                  </p>
-                  <Flex justifyContent='end'>
-                    <Button
-                      variant='solid'
-                      colorScheme='red'
-                      size='lg'
-                      onClick={() => {
-                        try {
-                          deleteAccount();
-                          signOut();
-                          router.push('/');
-                        } catch (error) {}
-                      }}
-                    >
-                      Yes, Delete Account
-                    </Button>
-                  </Flex>
+      <BorderBox>
+        <div>
+          <h2>Actions</h2>
+          <List as='ul' direction='column' gap='sm'>
+            <li>
+              <Link href='/account/edit'>Edit your profile</Link>
+            </li>
+            <li>
+              <Link href='/account/username'>Change your username</Link>
+            </li>
+          </List>
+        </div>
+        <Separator width='full' height='xs' colorScale={300} />
+        <div>
+          <Dialog
+            isOpen={isDialogOpen}
+            setOpen={setDialogOpen}
+            title='Delete your account?'
+            body={
+              <Flex direction='column' gap='md'>
+                <p>
+                  Are you sure you want to delete your account? This action
+                  cannot be undone.
+                </p>
+                <Flex justifyContent='end'>
+                  <Button
+                    variant='solid'
+                    colorScheme='red'
+                    size='lg'
+                    onClick={() => {
+                      try {
+                        deleteAccount();
+                        signOut();
+                        router.push('/');
+                      } catch (error) {}
+                    }}
+                  >
+                    Yes, Delete Account
+                  </Button>
                 </Flex>
-              }
-            >
-              <Button
-                colorScheme='red'
-                aria-label='Open modal to delete account'
-              >
-                Delete your account
-              </Button>
-            </Dialog>
-          </li>
-        </List>
+              </Flex>
+            }
+          >
+            <Button colorScheme='red' aria-label='Open modal to delete account'>
+              Delete your account
+            </Button>
+          </Dialog>
+        </div>
       </BorderBox>
       <div>
         <ProfileImageUploader user={user} openToast={openToast} />
@@ -103,10 +98,18 @@ const StyledAccountDetails = styled('div', {
 });
 
 const BorderBox = styled('div', {
-  paddingX: '$4',
-  paddingY: '$3_5',
   borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-300',
   borderRadius: '$xl',
+  '& > div:first-child': {
+    padding: '$4',
+    paddingTop: '$3_5',
+    '& > h2': {
+      marginBottom: '$2',
+    },
+  },
+  '& > div:last-child': {
+    padding: '$4',
+  },
 });

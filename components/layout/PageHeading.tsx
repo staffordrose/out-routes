@@ -95,7 +95,7 @@ const StyledPageHeading = styled('div', {
   width: '$full',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-300',
+  borderBottomColor: '$slate-200',
   '& > *:last-child': {
     display: 'flex',
     justifyContent: 'space-between',

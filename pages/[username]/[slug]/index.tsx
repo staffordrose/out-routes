@@ -213,7 +213,7 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
           </PageHeading>
           <DefaultLayout.MainContent maxWidth='2xl'>
             <RouteDetails username={username} route={route} />
-            <Separator width='full' height='xs' marginY='lg' />
+            <Separator width='full' height='xs' marginY='lg' colorScale={100} />
             <RouteMap route={route} layers={layers} features={features} />
           </DefaultLayout.MainContent>
         </DefaultLayout.Main>

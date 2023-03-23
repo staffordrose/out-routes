@@ -6,7 +6,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useQueryClient } from '@tanstack/react-query';
 import queryString from 'query-string';
 
-import { Flex, Toast, useToast } from '@/components/atoms';
+import { Toast, useToast } from '@/components/atoms';
 import { Feedback, NewUserLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
 import { sitename } from '@/data/site';
@@ -15,6 +15,7 @@ import { useQueryParam } from '@/hooks';
 import { useSetNameMutation } from '@/lib/v1/hooks/user';
 import { getUserPropertiesOrThrow as getUserPropertiesOrThrowGSSP } from '@/lib/v1/user';
 import { authOptions } from '../../api/auth/[...nextauth]';
+import { styled } from '@/styles';
 
 const NewUserName = () => {
   const router = useRouter();
@@ -69,30 +70,7 @@ const NewUserName = () => {
       <NewUserLayout>
         <NewUserLayout.Main>
           <NewUserLayout.MainContent>
-            <Flex
-              direction='column'
-              gap='md'
-              justifyContent='center'
-              alignItems='center'
-              width='full'
-              css={{
-                maxWidth: 640,
-                minHeight: '$96',
-                marginX: '$auto',
-                marginY: 'calc(50vh - $14 - $48)',
-                padding: '$4',
-                borderWidth: '$1',
-                borderStyle: 'solid',
-                borderColor: '$slate-300',
-                borderRadius: '$xl',
-                textAlign: 'center',
-                '& > div': {
-                  width: '$full',
-                  maxWidth: '$64',
-                  textAlign: 'left',
-                },
-              }}
-            >
+            <MainContentBody>
               <h1>Complete your registration</h1>
               <h2>Enter your name</h2>
               <p>(Will be publicly visible)</p>
@@ -104,7 +82,7 @@ const NewUserName = () => {
                   onSubmit={onSubmit}
                 />
               </div>
-            </Flex>
+            </MainContentBody>
           </NewUserLayout.MainContent>
         </NewUserLayout.Main>
       </NewUserLayout>
@@ -119,6 +97,29 @@ const NewUserName = () => {
     </>
   );
 };
+
+const MainContentBody = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 'md',
+  placeItems: 'center',
+  width: 'full',
+  maxWidth: 640,
+  minHeight: '$96',
+  marginX: '$auto',
+  marginY: 'calc(50vh - $14 - $48)',
+  padding: '$4',
+  borderWidth: '$1',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
+  borderRadius: '$xl',
+  textAlign: 'center',
+  '& > div': {
+    width: '$full',
+    maxWidth: '$64',
+    textAlign: 'left',
+  },
+});
 
 export default NewUserName;
 

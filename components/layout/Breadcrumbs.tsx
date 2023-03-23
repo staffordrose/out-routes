@@ -59,7 +59,7 @@ const StyledBreadcrumbs = styled('nav', {
   height: '$8',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-300',
+  borderBottomColor: '$slate-200',
   userSelect: 'none',
   '& > ul': {
     listStyle: 'none',
@@ -93,7 +93,7 @@ const SeparatorRoot = styled(Separator.Root, {
   width: '$px',
   height: '$8',
   marginX: '$0',
-  backgroundColor: '$slate-300',
+  backgroundColor: '$slate-200',
   '-webkit-transform-origin': '100% 100%',
   '-ms-transform-origin': '100% 100%',
   'transform-origin': '100% 100%',

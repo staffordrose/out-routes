@@ -57,6 +57,7 @@ const Account = () => {
                 id: 'sign-out',
                 actionType: 'responsive-button',
                 variant: 'solid',
+                colorScheme: 'orange',
                 size: 'md',
                 onClick: () => signOut(),
                 children: (

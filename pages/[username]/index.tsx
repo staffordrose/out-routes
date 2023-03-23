@@ -15,7 +15,6 @@ import { RxDotFilled } from 'react-icons/rx';
 
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   Grid,
@@ -63,6 +62,7 @@ import {
   getUserByUsername as getUserByUsernameGSSP,
   getRoutesByUsername as getRoutesByUsernameGSSP,
 } from '@/lib/v1/users';
+import { styled } from '@/styles';
 import { PaginatedFavorites } from '@/types/favorites';
 import { PaginatedRoutes, UsernameAndSlug } from '@/types/routes';
 import {
@@ -252,66 +252,9 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
             {name}
           </PageHeading>
           <DefaultLayout.MainContent paddingY='none'>
-            <Grid
-              css={{
-                position: 'relative',
-                alignItems: 'start',
-                '@md': {
-                  gridTemplateColumns: '$48 auto 1fr',
-                  gap: '$4',
-                },
-                '@lg': {
-                  gridTemplateColumns: '$64 auto 1fr',
-                },
-              }}
-            >
-              <Flex
-                direction='column'
-                gap='xl'
-                css={{
-                  paddingTop: '$4',
-                  '@md': {
-                    position: 'sticky',
-                    top: '$14',
-                  },
-                }}
-              >
-                <Box
-                  css={{
-                    width: '$24',
-                    '@md': {
-                      width: '$full',
-                    },
-                    '& > *:nth-child(1)': {
-                      display: 'block',
-                      visibility: 'visible',
-                      '@md': {
-                        display: 'none',
-                        visibility: 'hidden',
-                      },
-                    },
-                    '& > *:nth-child(2)': {
-                      display: 'none',
-                      visibility: 'hidden',
-                      '@md': {
-                        display: 'block',
-                        visibility: 'visible',
-                      },
-                      '@lg': {
-                        display: 'none',
-                        visibility: 'hidden',
-                      },
-                    },
-                    '& > *:nth-child(3)': {
-                      display: 'none',
-                      visibility: 'hidden',
-                      '@lg': {
-                        display: 'block',
-                        visibility: 'visible',
-                      },
-                    },
-                  }}
-                >
+            <MainContentBody>
+              <div>
+                <ResponsiveAvatar>
                   <Avatar
                     size='xl'
                     priority
@@ -333,7 +276,7 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
                     firstName={firstName}
                     lastName={lastName}
                   />
-                </Box>
+                </ResponsiveAvatar>
                 <Flex direction='column' gap='sm' alignItems='flex-start'>
                   <p>@{username}</p>
                   {!!bio && <p>{bio}</p>}
@@ -367,11 +310,11 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
                     <p>Joined {dayjs(created_at).format('MMMM YYYY')}</p>
                   )}
                 </Flex>
-              </Flex>
-              <Separator width='xs' height='full' />
+              </div>
+              <Separator width='xs' height='full' colorScale={100} />
               <Tabs
                 ariaLabel='Select profile tab'
-                contentMinHeight='calc(100vh - 160px)'
+                contentMinHeight='calc(100vh - 222px)'
                 tabs={[
                   {
                     value: 'routes',
@@ -432,7 +375,7 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
                   paddingTop: '$4',
                 }}
               />
-            </Grid>
+            </MainContentBody>
           </DefaultLayout.MainContent>
         </DefaultLayout.Main>
       </>
@@ -440,6 +383,66 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
   }
   return null;
 };
+
+const MainContentBody = styled('div', {
+  position: 'relative',
+  display: 'grid',
+  alignItems: 'start',
+  '& > div:first-child': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$4',
+    paddingTop: '$4',
+  },
+  '@md': {
+    gridTemplateColumns: '$48 auto 1fr',
+    gap: '$4',
+    '& > div:first-child': {
+      position: 'sticky',
+      top: '$14',
+    },
+  },
+  '@lg': {
+    gridTemplateColumns: '$64 auto 1fr',
+  },
+});
+
+const ResponsiveAvatar = styled('div', {
+  width: '$24',
+  '& > *:nth-child(1)': {
+    display: 'block',
+    visibility: 'visible',
+  },
+  '& > *:nth-child(2)': {
+    display: 'none',
+    visibility: 'hidden',
+  },
+  '& > *:nth-child(3)': {
+    display: 'none',
+    visibility: 'hidden',
+  },
+  '@md': {
+    width: '$full',
+    '& > *:nth-child(1)': {
+      display: 'none',
+      visibility: 'hidden',
+    },
+    '& > *:nth-child(2)': {
+      display: 'block',
+      visibility: 'visible',
+    },
+  },
+  '@lg': {
+    '& > *:nth-child(2)': {
+      display: 'none',
+      visibility: 'hidden',
+    },
+    '& > *:nth-child(3)': {
+      display: 'block',
+      visibility: 'visible',
+    },
+  },
+});
 
 Profile.getLayout = (page: ReactNode) => {
   return <DefaultLayout>{page}</DefaultLayout>;
@@ -634,8 +637,8 @@ const RoutesTab: FC<RoutesTabProps> = ({
   };
 
   return (
-    <Flex direction='column' gap='md'>
-      <Flex gap='md' alignItems='baseline'>
+    <ProfileTab>
+      <div>
         <h2>Routes</h2>
         <Link
           aria-label={`View all @${username}'s routes`}
@@ -643,9 +646,9 @@ const RoutesTab: FC<RoutesTabProps> = ({
         >
           View All
         </Link>
-      </Flex>
+      </div>
       {renderResult()}
-    </Flex>
+    </ProfileTab>
   );
 };
 
@@ -738,8 +741,8 @@ const FollowersTab: FC<FollowersTabProps> = ({
   };
 
   return (
-    <Flex direction='column' gap='md'>
-      <Flex gap='md' alignItems='baseline'>
+    <ProfileTab>
+      <div>
         <h2>Followers</h2>
         <Link
           aria-label={`View all @${username}'s followers`}
@@ -747,9 +750,9 @@ const FollowersTab: FC<FollowersTabProps> = ({
         >
           View All
         </Link>
-      </Flex>
+      </div>
       {renderResult()}
-    </Flex>
+    </ProfileTab>
   );
 };
 
@@ -836,8 +839,8 @@ const FollowingTab: FC<FollowingTabProps> = ({
   };
 
   return (
-    <Flex direction='column' gap='md'>
-      <Flex gap='md' alignItems='baseline'>
+    <ProfileTab>
+      <div>
         <h2>Following</h2>
         <Link
           aria-label={`View all users @${username}'s follows`}
@@ -845,9 +848,9 @@ const FollowingTab: FC<FollowingTabProps> = ({
         >
           View All
         </Link>
-      </Flex>
+      </div>
       {renderResult()}
-    </Flex>
+    </ProfileTab>
   );
 };
 
@@ -927,8 +930,8 @@ const FavoritesTab: FC<FavoritesTabProps> = ({
   };
 
   return (
-    <Flex direction='column' gap='md'>
-      <Flex gap='md' alignItems='baseline'>
+    <ProfileTab>
+      <div>
         <h2>Favorites</h2>
         <Link
           aria-label={`View all @${username}'s starred routes`}
@@ -936,8 +939,20 @@ const FavoritesTab: FC<FavoritesTabProps> = ({
         >
           View All
         </Link>
-      </Flex>
+      </div>
       {renderResult()}
-    </Flex>
+    </ProfileTab>
   );
 };
+
+const ProfileTab = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$3',
+  marginY: '$3',
+  '& > div:first-child': {
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '$3',
+  },
+});

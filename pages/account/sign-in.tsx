@@ -13,7 +13,6 @@ import { BsGithub, BsGoogle } from 'react-icons/bs';
 import {
   Button,
   Center,
-  Flex,
   Grid,
   Heading,
   Input,
@@ -21,6 +20,7 @@ import {
 } from '@/components/atoms';
 import { UnauthenticatedLayout } from '@/components/layout';
 import { SEO } from '@/components/utility';
+import { styled } from '@/styles';
 
 const providerOrder = ['google', 'github'];
 
@@ -40,24 +40,7 @@ const SignIn: NextPage<SignInProps> = ({ providers, csrfToken }) => {
       <UnauthenticatedLayout>
         <UnauthenticatedLayout.Main>
           <UnauthenticatedLayout.MainContent>
-            <Flex
-              direction='column'
-              gap='lg'
-              justifyContent='center'
-              width='full'
-              css={{
-                maxWidth: 640,
-                minHeight: '$96',
-                marginX: '$auto',
-                marginY: 'calc(50vh - $14 - $48)',
-                padding: '$4',
-                borderWidth: '$1',
-                borderStyle: 'solid',
-                borderColor: '$slate-300',
-                borderRadius: '$xl',
-                textAlign: 'center',
-              }}
-            >
+            <MainContentBody>
               <Heading as='h1' lineHeight='xs'>
                 Sign {isSignUp ? 'up' : 'in'}
               </Heading>
@@ -101,12 +84,11 @@ const SignIn: NextPage<SignInProps> = ({ providers, csrfToken }) => {
                   defaultValue={csrfToken}
                 />
                 <Grid columns={5} gap='sm' alignItems='center'>
-                  <Input
+                  <FullWidthInput
                     type='email'
                     id='email'
                     name='email'
                     placeholder='johndoe@gmail.com'
-                    css={{ width: '$full' }}
                   />
                   <Button size='md' type='submit'>
                     <BiMailSend />
@@ -114,13 +96,35 @@ const SignIn: NextPage<SignInProps> = ({ providers, csrfToken }) => {
                   </Button>
                 </Grid>
               </form>
-            </Flex>
+            </MainContentBody>
           </UnauthenticatedLayout.MainContent>
         </UnauthenticatedLayout.Main>
       </UnauthenticatedLayout>
     </>
   );
 };
+
+const MainContentBody = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 'lg',
+  justifyContent: 'center',
+  width: 'full',
+  maxWidth: 640,
+  minHeight: '$96',
+  marginX: '$auto',
+  marginY: 'calc(50vh - $14 - $48)',
+  padding: '$4',
+  borderWidth: '$1',
+  borderStyle: 'solid',
+  borderColor: '$slate-300',
+  borderRadius: '$xl',
+  textAlign: 'center',
+});
+
+const FullWidthInput = styled(Input, {
+  width: '$full',
+});
 
 export default SignIn;
 

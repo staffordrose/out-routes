@@ -27,7 +27,7 @@ const StyledRouteDetailBanner = styled('div', {
   width: '$full',
   borderBottomWidth: '$1',
   borderBottomStyle: 'solid',
-  borderBottomColor: '$slate-300',
+  borderBottomColor: '$slate-200',
   backgroundColor: '$slate-50',
   '& > div': {
     width: '$full',

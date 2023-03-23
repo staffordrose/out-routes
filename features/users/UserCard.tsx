@@ -13,6 +13,7 @@ import {
   TruncatedText,
 } from '@/components/atoms';
 import { Card } from '@/components/molecules';
+import { styled } from '@/styles';
 import { User } from '@/types/users';
 
 export type UserCardProps = {
@@ -97,7 +98,7 @@ export const UserCard: FC<UserCardProps> = ({
             </div>
             {children}
           </Flex>
-          <Flex gap='sm'>
+          <ActionContainer>
             {showFollowBtn && typeof handleFollow === 'function' ? (
               <Button
                 variant={isFollowing ? 'outline' : 'solid'}
@@ -143,9 +144,15 @@ export const UserCard: FC<UserCardProps> = ({
                 )}
               </Flex>
             )}
-          </Flex>
+          </ActionContainer>
         </Flex>
       </Card.Body>
     </Card>
   );
 };
+
+const ActionContainer = styled('div', {
+  flexShrink: 0,
+  display: 'flex',
+  gap: '$2',
+});

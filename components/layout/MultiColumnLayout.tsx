@@ -66,7 +66,7 @@ const StyledAside = styled('aside', {
   height: 'calc(100vh - $14)',
   borderRightWidth: '$1',
   borderRightStyle: 'solid',
-  borderRightColor: '$slate-300',
+  borderRightColor: '$slate-200',
   '@md': {
     display: 'block',
     visibility: 'visible',
@@ -119,7 +119,7 @@ const StyledMainAside = styled('aside', {
   height: 'calc(100vh - $14)',
   borderLeftWidth: '$1',
   borderLeftStyle: 'solid',
-  borderLeftColor: '$slate-300',
+  borderLeftColor: '$slate-200',
   '@lg': {
     display: 'block',
     visibility: 'visible',
