@@ -23,6 +23,7 @@ export const drawPoint = (
       'icon-offset': [0, 4],
       'icon-anchor': 'bottom',
       'icon-allow-overlap': true,
+      'symbol-sort-key': 2,
     },
     paint: {
       'icon-color': color,

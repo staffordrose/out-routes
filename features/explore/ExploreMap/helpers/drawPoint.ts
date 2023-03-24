@@ -14,6 +14,7 @@ export const drawPoint = (route: Route): mapboxgl.AnyLayer => {
       'icon-offset': [0, 4],
       'icon-anchor': 'bottom',
       'icon-allow-overlap': true,
+      'symbol-sort-key': 2,
     },
     paint: {
       'icon-color': StandardColorCodes.Red,

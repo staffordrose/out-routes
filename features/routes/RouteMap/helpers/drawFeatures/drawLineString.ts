@@ -16,6 +16,7 @@ export const drawLineString = (
     layout: {
       'line-cap': 'round',
       'line-join': 'round',
+      'line-sort-key': 1,
     },
     paint: {
       'line-color': color,

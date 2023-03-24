@@ -13,6 +13,9 @@ export const drawPolygon = (
     id: feature.id, // use feature id for popup
     source: feature.id,
     type: 'fill',
+    layout: {
+      'fill-sort-key': 0,
+    },
     paint: {
       'fill-color': color,
       'fill-opacity': 0.25,
@@ -34,6 +37,7 @@ export const drawPolygonOutline = (
     layout: {
       'line-cap': 'round',
       'line-join': 'round',
+      'line-sort-key': 1,
     },
     paint: {
       'line-color': color,

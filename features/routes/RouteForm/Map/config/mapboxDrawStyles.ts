@@ -11,6 +11,7 @@ const pointLayout = {
   'icon-offset': [0, 4],
   'icon-anchor': 'bottom',
   'icon-allow-overlap': true,
+  'symbol-sort-key': 2,
 };
 
 const pointPaint = {
@@ -28,6 +29,7 @@ const pointPaint = {
 const lineLayout = {
   'line-cap': 'round',
   'line-join': 'round',
+  'line-sort-key': 1,
 };
 
 const linePaint = {
@@ -38,6 +40,10 @@ const linePaint = {
     'null',
   ],
   'line-width': 4,
+};
+
+const polygonLayout = {
+  'fill-sort-key': 0,
 };
 
 const polygonPaint = {
@@ -183,6 +189,7 @@ export const mapboxDrawStyles = [
       ['==', '$type', GeometryTypeNames.Polygon],
       ['==', 'active', 'false'],
     ],
+    layout: polygonLayout,
     paint: polygonPaint,
   },
   // polygon outline halo - active
@@ -218,6 +225,7 @@ export const mapboxDrawStyles = [
       ['==', '$type', GeometryTypeNames.Polygon],
       ['==', 'active', 'true'],
     ],
+    layout: polygonLayout,
     paint: polygonPaint,
   },
   /**
