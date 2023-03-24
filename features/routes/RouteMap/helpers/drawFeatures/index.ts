@@ -71,6 +71,16 @@ export const drawFeatures = ({
           mapRef.addLayer(drawPoint(mapLayer, feature));
         }
 
+        // change cursor on hover
+        mapRef.on('mouseenter', feature.id, () => {
+          mapRef.getCanvas().style.cursor = 'pointer';
+        });
+
+        // remove pointer cursor
+        mapRef.on('mouseleave', feature.id, () => {
+          mapRef.getCanvas().style.cursor = '';
+        });
+
         // create popup for click events
         mapRef.on('click', feature.id, () => {
           openPopup({
