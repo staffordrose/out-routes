@@ -81,7 +81,7 @@ const HoverCardComp: FC<HoverCardProps> = ({
 
   const title = features[featureIndex || 0]?.properties?.title;
 
-  if (isHovering) {
+  if (isHovering && kmTotal > 0) {
     return (
       <>
         <VerticalIndicator style={{ left: cursorPx - 0.5 }} />
