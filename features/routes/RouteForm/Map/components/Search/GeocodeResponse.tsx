@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, KeyboardEvent, MutableRefObject, RefObject } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { BiSearch } from 'react-icons/bi';
 
@@ -9,11 +9,19 @@ import { geocodeQuery } from '@/lib/v1/api/map';
 import { LngLat } from '@/types/maps';
 
 type GeocodeResponseProps = {
+  inputEl: RefObject<HTMLInputElement>;
+  geocodeResponseEls: MutableRefObject<HTMLButtonElement[]>;
+  geocodeResponseElActiveIndex: number | null;
+  setGeocodeResponseElActiveIndex: (activeBtn: number | null) => void;
   query: string;
   handleFeatureClick: (lngLat: LngLat, properties?: { title?: string }) => void;
 };
 
 export const GeocodeResponse: FC<GeocodeResponseProps> = ({
+  inputEl,
+  geocodeResponseEls,
+  geocodeResponseElActiveIndex,
+  setGeocodeResponseElActiveIndex,
   query,
   handleFeatureClick,
 }) => {
@@ -46,7 +54,7 @@ export const GeocodeResponse: FC<GeocodeResponseProps> = ({
     }
     return (
       <>
-        {features.map((feature) => {
+        {features.map((feature, featureIndex) => {
           const { id, center, place_name, place_type, text } = feature;
 
           const Icon =
@@ -54,11 +62,47 @@ export const GeocodeResponse: FC<GeocodeResponseProps> = ({
 
           return (
             <Button
+              ref={(el) =>
+                el ? (geocodeResponseEls.current[featureIndex] = el) : null
+              }
               key={id}
               type='button'
               variant='ghost'
               size='xs'
               onClick={() => handleFeatureClick(center, { title: text })}
+              onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
+                if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+
+                  if (typeof geocodeResponseElActiveIndex === 'number') {
+                    if (geocodeResponseElActiveIndex > 0) {
+                      const nextIndex = geocodeResponseElActiveIndex - 1;
+
+                      if (geocodeResponseEls.current[nextIndex]) {
+                        setGeocodeResponseElActiveIndex(nextIndex);
+                        geocodeResponseEls.current[nextIndex].focus();
+                      }
+                    } else if (inputEl.current) {
+                      setGeocodeResponseElActiveIndex(null);
+                      inputEl.current.focus();
+                    }
+                  }
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+
+                  if (
+                    typeof geocodeResponseElActiveIndex === 'number' &&
+                    geocodeResponseElActiveIndex < features.length - 1
+                  ) {
+                    const nextIndex = geocodeResponseElActiveIndex + 1;
+
+                    if (geocodeResponseEls.current[nextIndex]) {
+                      setGeocodeResponseElActiveIndex(nextIndex);
+                      geocodeResponseEls.current[nextIndex].focus();
+                    }
+                  }
+                }
+              }}
             >
               <Icon />
               <span>{place_name}</span>

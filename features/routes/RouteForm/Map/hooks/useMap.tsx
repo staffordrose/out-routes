@@ -85,7 +85,11 @@ export const useMap = ({
   });
 
   const openPopup = useCallback(
-    ({ center, feature }: PopupState): void => {
+    ({
+      center,
+      layerValues,
+      feature,
+    }: PopupState & { layerValues?: LayerValues | void }): void => {
       if (!map.current) return;
 
       // close existing popup
@@ -95,9 +99,11 @@ export const useMap = ({
 
       setPopupFeatureId(feature.id);
 
-      const layer = getLayerValuesById(layers, feature.properties.layer);
+      if (!layerValues) {
+        layerValues = getLayerValuesById(layers, feature.properties.layer);
+      }
 
-      if (!layer) return;
+      if (!layerValues) return;
 
       // create popup root
       const popupNode = document.createElement('div');
@@ -108,7 +114,7 @@ export const useMap = ({
             layerIndex={layers.findIndex(
               (layer) => layer.databaseId === feature.properties.layer
             )}
-            layer={layer}
+            layer={layerValues}
             feature={feature}
             openFeatureEditDialog={openFeatureEditDialog}
           />

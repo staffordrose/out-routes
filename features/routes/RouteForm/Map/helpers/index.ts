@@ -3,6 +3,7 @@ export * from './addLayerFeature';
 export * from './calculatePolygonArea';
 export * from './deleteLayerFeature';
 export * from './getLayerValuesById';
+export * from './getLngLatFromSearchQuery';
 export * from './handleFeatureOnDraw';
 export * from './mapGPXFeaturesToFeatureValues';
 export * from './truncateGeometryCoordinates';

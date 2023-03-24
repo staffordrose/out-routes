@@ -100,6 +100,7 @@ export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
             update={update}
             map={map}
             draw={draw}
+            openPopup={openPopup}
             setActiveLayerId={setActiveLayerId}
           />
           <div id='map-container' ref={mapContainerEl} />
