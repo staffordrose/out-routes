@@ -31,6 +31,8 @@ export const SelectField = forwardRef(
     }: SelectFieldProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
+    const isError = isTouched && !!error;
+
     return (
       <StyledSelectField>
         {ReactIs.isValidElementType(label) && (
@@ -45,8 +47,13 @@ export const SelectField = forwardRef(
               onBlur();
             }
           }}
+          isError={isError}
         />
-        {isTouched && !!error && <Text color='red-700'>{error}</Text>}
+        {isError && (
+          <Text fontSize='sm' color='red-700'>
+            {error}
+          </Text>
+        )}
       </StyledSelectField>
     );
   }
@@ -58,6 +65,7 @@ const StyledSelectField = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   flexWrap: 'wrap',
+  gap: '$1',
   justifyContent: 'center',
   width: '$full',
 });

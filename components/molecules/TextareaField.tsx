@@ -21,6 +21,8 @@ export const TextareaField = forwardRef(
     { label, isTouched, error, ...textareaProps }: TextareaFieldProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
+    const isError = isTouched && !!error;
+
     return (
       <StyledTextareaField>
         {ReactIs.isValidElementType(label) && (
@@ -28,8 +30,12 @@ export const TextareaField = forwardRef(
             {label}
           </Label>
         )}
-        <Textarea ref={ref} {...textareaProps} />
-        {isTouched && !!error && <Text color='red-700'>{error}</Text>}
+        <Textarea ref={ref} {...textareaProps} isError={isError} />
+        {isError && (
+          <Text fontSize='sm' color='red-700'>
+            {error}
+          </Text>
+        )}
       </StyledTextareaField>
     );
   }
@@ -41,6 +47,7 @@ const StyledTextareaField = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   flexWrap: 'wrap',
+  gap: '$1',
   justifyContent: 'center',
   width: '$full',
 });

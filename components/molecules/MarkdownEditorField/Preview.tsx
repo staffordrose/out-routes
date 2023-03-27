@@ -19,7 +19,6 @@ export const Preview: FC<PreviewProps> = ({ value }) => {
 };
 
 const StyledPreview = styled('div', {
-  minHeight: '360px',
   borderWidth: '$1',
   borderStyle: 'solid',
   borderColor: '$slate-200',
@@ -36,5 +35,6 @@ const StyledPreview = styled('div', {
   },
   '& > div:last-child': {
     padding: '$2',
+    minHeight: '360px',
   },
 });

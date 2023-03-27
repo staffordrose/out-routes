@@ -12,6 +12,7 @@ export type TextareaProps = ComponentPropsWithoutRef<typeof StyledTextarea> & {
   as?: ElementType;
   css?: Stitches.CSS;
   rows?: number;
+  isError?: boolean;
 };
 
 export const Textarea = forwardRef(
@@ -54,5 +55,24 @@ const StyledTextarea = styled('textarea', {
   '&:disabled': {
     opacity: 0.5,
     cursor: 'not-allowed',
+  },
+  variants: {
+    isError: {
+      true: {
+        borderColor: '$red-700',
+        backgroundColor: '$red-50',
+        '&:hover:enabled': {
+          borderColor: '$red-700',
+          backgroundColor: '$white',
+        },
+        '&:focus:enabled': {
+          borderColor: '$red-700',
+          outlineWidth: '$1',
+          outlineStyle: 'solid',
+          outlineColor: '$red-300',
+          backgroundColor: '$white',
+        },
+      },
+    },
   },
 });

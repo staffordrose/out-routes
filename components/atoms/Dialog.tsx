@@ -9,7 +9,14 @@ export type DialogProps = {
   title: string;
   description?: string;
   body: ReactNode;
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  maxWidth?:
+    | 'xs'
+    | 'sm'
+    | 'md'
+    | 'lg'
+    | 'xl'
+    | 'container_xl'
+    | 'container_2xl';
 } & (
   | {
       isOpen: boolean;
@@ -31,24 +38,28 @@ export const Dialog = ({
   body,
   maxWidth,
   children,
-}: DialogProps) => (
-  <RadixDialog.Root open={isOpen} onOpenChange={setOpen}>
-    <RadixDialog.Trigger asChild>{children}</RadixDialog.Trigger>
-    <RadixDialog.Portal>
-      <DialogOverlay />
-      <DialogContent maxWidth={maxWidth}>
-        <DialogTitle>{title}</DialogTitle>
-        {!!description && <DialogDescription>{description}</DialogDescription>}
-        {body}
-        <DialogClose asChild>
-          <IconButton variant='ghost' size='md' aria-label='Close'>
-            <BiX />
-          </IconButton>
-        </DialogClose>
-      </DialogContent>
-    </RadixDialog.Portal>
-  </RadixDialog.Root>
-);
+}: DialogProps) => {
+  return (
+    <RadixDialog.Root open={isOpen} onOpenChange={setOpen}>
+      <RadixDialog.Trigger asChild>{children}</RadixDialog.Trigger>
+      <RadixDialog.Portal>
+        <DialogOverlay />
+        <DialogContent maxWidth={maxWidth}>
+          <DialogTitle>{title}</DialogTitle>
+          {!!description && (
+            <DialogDescription>{description}</DialogDescription>
+          )}
+          {body}
+          <DialogClose asChild>
+            <IconButton variant='ghost' size='md' aria-label='Close dialog'>
+              <BiX />
+            </IconButton>
+          </DialogClose>
+        </DialogContent>
+      </RadixDialog.Portal>
+    </RadixDialog.Root>
+  );
+};
 
 const overlayShow = keyframes({
   '0%': { opacity: 0 },
@@ -93,6 +104,8 @@ const DialogContent = styled(RadixDialog.Content, {
       md: { maxWidth: 480 },
       lg: { maxWidth: 540 },
       xl: { maxWidth: 720 },
+      container_xl: { maxWidth: '$container_xl' },
+      container_2xl: { maxWidth: '$container_2xl' },
     },
   },
   defaultVariants: {

@@ -31,6 +31,7 @@ export type SelectProps = ComponentPropsWithoutRef<typeof StyledSelect> & {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   contentWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   placeholder?: string;
+  isError?: boolean;
   groups: SelectGroup[];
 };
 
@@ -40,6 +41,7 @@ export const Select = forwardRef(
       size,
       contentWidth,
       placeholder = '',
+      isError,
       value,
       groups,
       ...selectProps
@@ -48,7 +50,12 @@ export const Select = forwardRef(
   ) => {
     return (
       <StyledSelect {...selectProps} value={value}>
-        <SelectTrigger ref={ref} aria-label={value} size={size}>
+        <SelectTrigger
+          ref={ref}
+          aria-label={value}
+          size={size}
+          isError={isError}
+        >
           <RadixSelect.Value placeholder={placeholder} />
           <SelectIcon>
             <BiChevronDown />
@@ -152,6 +159,23 @@ const SelectTrigger = styled(RadixSelect.SelectTrigger, {
       xl: {
         height: '$14',
         fontSize: '$2xl',
+      },
+    },
+    isError: {
+      true: {
+        borderColor: '$red-700',
+        backgroundColor: '$red-50',
+        '&:hover:enabled': {
+          borderColor: '$red-700',
+          backgroundColor: '$white',
+        },
+        '&:focus:enabled': {
+          borderColor: '$red-700',
+          outlineWidth: '$1',
+          outlineStyle: 'solid',
+          outlineColor: '$red-300',
+          backgroundColor: '$white',
+        },
       },
     },
   },

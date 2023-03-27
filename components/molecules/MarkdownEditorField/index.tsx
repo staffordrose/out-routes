@@ -46,6 +46,8 @@ export const MarkdownEditorField = forwardRef(
       fullLine: '',
     });
 
+    const isError = isTouched && !!error;
+
     return (
       <StyledMarkdownEditorField>
         {ReactIs.isValidElementType(label) && (
@@ -59,6 +61,7 @@ export const MarkdownEditorField = forwardRef(
             valueHistoryIndex={index}
             value={value}
             setValue={setValue}
+            isError={isError}
             goBack={goBack}
             goForward={goForward}
             selection={selection}
@@ -66,7 +69,11 @@ export const MarkdownEditorField = forwardRef(
           />
           <Preview value={value} />
         </div>
-        {isTouched && !!error && <Text color='red-700'>{error}</Text>}
+        {isError && (
+          <Text fontSize='sm' color='red-700'>
+            {error}
+          </Text>
+        )}
       </StyledMarkdownEditorField>
     );
   }
@@ -75,6 +82,9 @@ export const MarkdownEditorField = forwardRef(
 MarkdownEditorField.displayName = 'MarkdownEditorField';
 
 const StyledMarkdownEditorField = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$1',
   width: '$full',
   '& > div': {
     display: 'grid',

@@ -20,13 +20,19 @@ export const NumberField = forwardRef(
     { label, isTouched, error, ...inputProps }: NumberFieldProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
+    const isError = isTouched && !!error;
+
     return (
       <StyledNumberField>
         {ReactIs.isValidElementType(label) && (
           <Label htmlFor={inputProps.id || inputProps.name}>{label}</Label>
         )}
-        <Input ref={ref} type='number' {...inputProps} />
-        {isTouched && !!error && <Text color='red-700'>{error}</Text>}
+        <Input ref={ref} type='number' {...inputProps} isError={isError} />
+        {isError && (
+          <Text fontSize='sm' color='red-700'>
+            {error}
+          </Text>
+        )}
       </StyledNumberField>
     );
   }
@@ -38,6 +44,7 @@ const StyledNumberField = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   flexWrap: 'wrap',
+  gap: '$1',
   justifyContent: 'center',
   width: '$full',
 });

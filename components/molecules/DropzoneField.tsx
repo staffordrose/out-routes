@@ -26,8 +26,10 @@ export const DropzoneField = forwardRef(
     { label, onChange, isTouched, error, ...dropzoneProps }: DropzoneFieldProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
+    const isError = isTouched && !!error;
+
     return (
-      <StyledDropzonField>
+      <StyledDropzoneField>
         {ReactIs.isValidElementType(label) && (
           <Label htmlFor={dropzoneProps.id || dropzoneProps.name}>
             {label}
@@ -37,17 +39,23 @@ export const DropzoneField = forwardRef(
           ref={ref}
           {...dropzoneProps}
           onFileDrop={onChange as DropzoneProps['onFileDrop']}
+          isError={isError}
         />
-        {isTouched && !!error && <Text color='red-700'>{error}</Text>}
-      </StyledDropzonField>
+        {isError && (
+          <Text fontSize='sm' color='red-700'>
+            {error}
+          </Text>
+        )}
+      </StyledDropzoneField>
     );
   }
 );
 
 DropzoneField.displayName = 'DropzoneField';
 
-const StyledDropzonField = styled('div', {
+const StyledDropzoneField = styled('div', {
   display: 'flex',
   flexDirection: 'column',
+  gap: '$1',
   width: '$full',
 });

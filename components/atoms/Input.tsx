@@ -12,6 +12,7 @@ export type InputProps = ComponentPropsWithoutRef<typeof StyledInput> & {
   as?: ElementType;
   css?: Stitches.CSS;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  isError?: boolean;
 };
 
 export const Input = forwardRef(
@@ -44,10 +45,10 @@ const StyledInput = styled('input', {
   },
   '&:focus:enabled': {
     borderColor: '$slate-700',
-    backgroundColor: '$slate-50',
     outlineWidth: '$1',
     outlineStyle: 'solid',
     outlineColor: '$blue-300',
+    backgroundColor: '$slate-50',
   },
   '&:disabled': {
     opacity: 0.5,
@@ -74,6 +75,23 @@ const StyledInput = styled('input', {
       xl: {
         height: '$14',
         fontSize: '$2xl',
+      },
+    },
+    isError: {
+      true: {
+        borderColor: '$red-700',
+        backgroundColor: '$red-50',
+        '&:hover:enabled': {
+          borderColor: '$red-700',
+          backgroundColor: '$white',
+        },
+        '&:focus:enabled': {
+          borderColor: '$red-700',
+          outlineWidth: '$1',
+          outlineStyle: 'solid',
+          outlineColor: '$red-300',
+          backgroundColor: '$white',
+        },
       },
     },
   },

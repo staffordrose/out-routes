@@ -313,7 +313,7 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
               </div>
               <Separator width='xs' height='full' colorScale={100} />
               <Tabs
-                ariaLabel='Select profile tab'
+                aria-label='Select profile tab'
                 contentMinHeight='calc(100vh - 222px)'
                 tabs={[
                   {

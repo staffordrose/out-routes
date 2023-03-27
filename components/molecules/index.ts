@@ -5,5 +5,6 @@ export * from './HoverCard';
 export * from './MarkdownEditorField';
 export * from './NumberField';
 export * from './SelectField';
+export * from './SwitchField';
 export * from './TextField';
 export * from './TextareaField';

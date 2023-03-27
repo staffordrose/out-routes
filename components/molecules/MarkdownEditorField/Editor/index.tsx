@@ -21,6 +21,7 @@ export type EditorProps = ComponentPropsWithoutRef<typeof Textarea> & {
   valueHistoryIndex: number;
   value: string;
   setValue: (value: string) => void;
+  isError?: boolean;
   goBack: () => string;
   goForward: () => string;
   selection: Selection;
@@ -34,6 +35,7 @@ export const Editor = forwardRef(
       valueHistoryIndex,
       value,
       setValue,
+      isError,
       goBack,
       goForward,
       selection,
@@ -98,7 +100,7 @@ export const Editor = forwardRef(
     };
 
     return (
-      <StyledEditor>
+      <StyledEditor isError={isError}>
         <EditorActions
           textarea={textarea}
           selectionStart={selectionStart}
@@ -146,6 +148,25 @@ const StyledEditor = styled('div', {
   '&:has(> textarea:disabled)': {
     opacity: 0.5,
     cursor: 'not-allowed',
+  },
+  variants: {
+    isError: {
+      true: {
+        borderColor: '$red-700',
+        backgroundColor: '$red-50',
+        '&:has(> textarea:enabled):hover': {
+          borderColor: '$red-700',
+          backgroundColor: '$white',
+        },
+        '&:has(> textarea:enabled):focus-within': {
+          borderColor: '$red-700',
+          outlineWidth: '$1',
+          outlineStyle: 'solid',
+          outlineColor: '$red-300',
+          backgroundColor: '$white',
+        },
+      },
+    },
   },
 });
 

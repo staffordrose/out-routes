@@ -12,7 +12,8 @@ import { styled } from '@/styles';
 
 export type Tab = {
   value: string;
-  label: string;
+  label: ReactNode;
+  [`aria-label`]?: string;
   children: ReactNode;
 };
 
@@ -23,22 +24,26 @@ export type TabsProps = ComponentPropsWithoutRef<typeof TabsRoot> & {
   tabs: Tab[];
   defaultValue?: string;
   value?: string;
-  ariaLabel: string;
+  [`aria-label`]: string;
   contentMinHeight?: string | number;
   onValueChange?: (value: string) => void;
 };
 
 export const Tabs = forwardRef(
   (
-    { justify, tabs, value, ariaLabel, contentMinHeight, ...props }: TabsProps,
+    { justify, tabs, value, contentMinHeight, ...props }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     return (
       <TabsRoot {...props} ref={ref} value={value}>
-        <TabsList justify={justify} aria-label={ariaLabel}>
-          {tabs.map(({ value, label }) => {
+        <TabsList justify={justify} aria-label={props['aria-label']}>
+          {tabs.map(({ value, label, ...props }) => {
             return (
-              <TabsTrigger key={value} value={value}>
+              <TabsTrigger
+                key={value}
+                value={value}
+                aria-label={props['aria-label']}
+              >
                 {label}
               </TabsTrigger>
             );
@@ -113,7 +118,7 @@ const TabsTrigger = styled(RadixTabs.Trigger, {
   justifyContent: 'center',
   alignItems: 'center',
   minHeight: '$12',
-  padding: '0 $3',
+  paddingX: '$3',
   border: 'none',
   borderTopWidth: '$4',
   borderTopStyle: 'solid',
@@ -130,6 +135,10 @@ const TabsTrigger = styled(RadixTabs.Trigger, {
   backgroundColor: 'transparent',
   userSelect: 'none',
   cursor: 'pointer',
+  '& > svg': {
+    width: '$6_5',
+    height: '$6_5',
+  },
   '&:hover': {
     backgroundColor: '$slate-100',
   },
@@ -143,10 +152,6 @@ const TabsTrigger = styled(RadixTabs.Trigger, {
     backgroundColor: 'transparent',
     opacity: 0.5,
     cursor: 'not-allowed',
-  },
-  '& > svg': {
-    width: '$8',
-    height: '$8',
   },
 });
 

@@ -18,6 +18,7 @@ export type DropzoneProps = ComponentPropsWithoutRef<typeof StyledDropzone> & {
   accept?: Accept;
   multiple?: boolean;
   disabled?: boolean;
+  isError?: boolean;
   onFileDrop: (files: File[]) => void;
 };
 
@@ -28,6 +29,7 @@ export const Dropzone = forwardRef(
       accept,
       multiple = false,
       disabled = false,
+      isError,
       onFileDrop,
       ...dropzoneProps
     }: DropzoneProps,
@@ -66,7 +68,12 @@ export const Dropzone = forwardRef(
     });
 
     return (
-      <StyledDropzone {...dropzoneProps} {...getRootProps()} ref={ref}>
+      <StyledDropzone
+        {...dropzoneProps}
+        {...getRootProps()}
+        ref={ref}
+        isError={isError || !!error}
+      >
         <StyledInput {...getInputProps()} disabled={disabled} />
         <RadixAspectRatio.Root ratio={aspectRatio}>
           <Content>
@@ -117,6 +124,23 @@ const StyledDropzone = styled('div', {
     borderRadius: {
       default: { borderRadius: '$md' },
       full: { borderRadius: '$full' },
+    },
+    isError: {
+      true: {
+        borderColor: '$red-700',
+        backgroundColor: '$red-50',
+        '&:has(> input:enabled):hover': {
+          borderColor: '$red-700',
+          backgroundColor: '$white',
+        },
+        '&:has(> input:enabled):focus-within': {
+          borderColor: '$red-700',
+          outlineWidth: '$1',
+          outlineStyle: 'solid',
+          outlineColor: '$red-300',
+          backgroundColor: '$white',
+        },
+      },
     },
   },
   defaultVariants: {

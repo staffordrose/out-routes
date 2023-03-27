@@ -42,7 +42,7 @@ export const RouteForm: FC<RouteFormProps> = ({
       <form id='route-form' onSubmit={onSubmit}>
         <Tabs
           justify='center'
-          ariaLabel='Select form section'
+          aria-label='Select form section'
           tabs={[
             {
               value: 'details',
