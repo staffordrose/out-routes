@@ -114,6 +114,7 @@ const useUserForm = ({
   const defaultValues = useMemo(() => mapPropsToValues(user), [user]);
 
   const { control, handleSubmit, reset } = useForm<UserFormValues>({
+    mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(validationSchema),
   });

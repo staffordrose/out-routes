@@ -174,7 +174,7 @@ const Routes = ({ isAuthenticated }: RoutesProps) => {
                       actionType: 'responsive-link',
                       size: 'md',
                       [`aria-label`]: 'Add a new route',
-                      href: '/routes/add',
+                      href: '/routes/add/settings',
                       children: (
                         <>
                           <BiPlus />

@@ -83,6 +83,7 @@ const useUserUsernameForm = ({
 
   const { control, handleSubmit, trigger, reset } =
     useForm<UserUsernameFormValues>({
+      mode: 'onBlur',
       defaultValues,
       resolver: yupResolver(validationSchema),
     });

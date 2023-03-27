@@ -239,7 +239,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
               <h2>Your Routes</h2>
               <IconButtonLink
                 variant='ghost'
-                href='/routes/add'
+                href='/routes/add/settings'
                 aria-label='Add a route'
               >
                 <BiPlus />

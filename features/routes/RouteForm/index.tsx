@@ -1,10 +1,12 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { BiDetail, BiImage, BiMapAlt, BiSliderAlt } from 'react-icons/bi';
 
+import { Tabs } from '@/components/atoms';
 import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import { createAlphaNumericId, parseMapBounds } from '@/utils';
-import { DetailsFields } from './DetailsFields';
+import { BannerImageTab } from './BannerImageTab';
 import {
   mapRecordsToValues,
   mapValuesToRecords,
@@ -12,8 +14,11 @@ import {
   RouteFormValues,
   yupSchema,
 } from './helpers';
-import { Map } from './Map';
-import { Tabs } from '@/components/atoms';
+import { MapTab } from './MapTab';
+import { SettingsTab } from './SettingsTab';
+import { SummaryTab } from './SummaryTab';
+
+type FormTab = 'map' | 'summary' | 'banner-image' | 'settings';
 
 export type RouteFormProps = {
   route: Route;
@@ -35,7 +40,7 @@ export const RouteForm: FC<RouteFormProps> = ({
     onSubmit: onSubmitHandler,
   });
 
-  const [tab, setTab] = useState<'details' | 'map'>('details');
+  const [tab, setTab] = useState<FormTab>('map');
 
   return (
     <FormProvider {...methods}>
@@ -45,25 +50,38 @@ export const RouteForm: FC<RouteFormProps> = ({
           aria-label='Select form section'
           tabs={[
             {
-              value: 'details',
-              label: 'Details',
-              children: <DetailsFields />,
-            },
-            {
               value: 'map',
-              label: 'Map',
+              label: <BiMapAlt />,
+              'aria-label': 'Route Map tab',
               children: (
-                <Map
+                <MapTab
                   routeId={route?.id || createAlphaNumericId(24)}
                   routeMapBounds={parseMapBounds(route.map_bounding_box)}
                 />
               ),
             },
+            {
+              value: 'summary',
+              label: <BiDetail />,
+              'aria-label': 'Route Summary tab',
+              children: <SummaryTab />,
+            },
+            {
+              value: 'banner-image',
+              label: <BiImage />,
+              'aria-label': 'Route Banner Image tab',
+              children: <BannerImageTab />,
+            },
+            {
+              value: 'settings',
+              label: <BiSliderAlt />,
+              'aria-label': 'Route Settings tab',
+              children: <SettingsTab />,
+            },
           ]}
-          defaultValue='details'
           value={tab}
           onValueChange={(value: string) => {
-            setTab(value as 'details' | 'map');
+            setTab(value as FormTab);
           }}
         />
       </form>
@@ -90,6 +108,7 @@ const useRouteForm = ({
   );
 
   const methods = useForm<RouteFormValues>({
+    mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(validationSchema),
   });

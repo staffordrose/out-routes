@@ -71,7 +71,7 @@ type UseFeatureEditFormProps = {
   closeFeatureEditDialog: () => void;
 };
 
-export const UseFeatureEditForm = ({
+export const useFeatureEditForm = ({
   update,
   layerIndex,
   layer,

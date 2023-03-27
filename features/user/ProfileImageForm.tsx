@@ -114,6 +114,7 @@ const useProfileImageForm = ({
 
   const { control, formState, handleSubmit, reset } =
     useForm<ProfileImageFormValues>({
+      mode: 'onBlur',
       defaultValues: { files: [] },
       resolver: yupResolver(validationSchema),
     });

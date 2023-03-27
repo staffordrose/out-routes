@@ -311,7 +311,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
           key='add-route'
           size='md'
           onSelect={() => {
-            router.push(`/routes/add`);
+            router.push(`/routes/add/settings`);
           }}
         >
           Add route

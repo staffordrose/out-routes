@@ -5,9 +5,9 @@ import { BiTrash } from 'react-icons/bi';
 import { AspectRatio, Box, IconButton, Image, Label } from '@/components/atoms';
 import { DropzoneField } from '@/components/molecules';
 import { styled } from '@/styles';
-import { RouteFormValues } from '../helpers';
+import { RouteFormValues } from './helpers';
 
-export const ImageField: FC = () => {
+export const BannerImageTab: FC = () => {
   const { control, formState, setValue } = useFormContext<RouteFormValues>();
 
   const existingImage = useWatch({
@@ -18,7 +18,7 @@ export const ImageField: FC = () => {
   const [imageSrc, setImageSrc] = useState<string | undefined>();
 
   return (
-    <StyledImageField>
+    <StyledBannerImageTab>
       <Label htmlFor='route.files'>Image</Label>
       <div>
         {existingImage || !!imageSrc ? (
@@ -103,21 +103,28 @@ export const ImageField: FC = () => {
           </Box>
         )}
       </div>
-    </StyledImageField>
+    </StyledBannerImageTab>
   );
 };
 
-const StyledImageField = styled('div', {
-  marginBottom: '$2_5',
+const StyledBannerImageTab = styled('div', {
+  width: '$full',
+  maxWidth: '$container_lg',
+  marginX: '$auto',
+  marginY: '$2_5',
   paddingX: '$4',
+  '& > label': {
+    display: 'inline-block',
+    marginBottom: '$1',
+  },
   '@sm': {
-    marginBottom: '$3',
+    marginY: '$3',
   },
   '@md': {
-    marginBottom: '$3_5',
+    marginY: '$3_5',
   },
   '@lg': {
-    marginBottom: '$4',
+    marginY: '$4',
   },
 });
 

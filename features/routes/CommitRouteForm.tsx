@@ -91,6 +91,7 @@ const useCommitRouteForm = ({
 
   const { control, formState, handleSubmit, reset } =
     useForm<CommitRouteFormValues>({
+      mode: 'onBlur',
       defaultValues: {
         title: '',
       },

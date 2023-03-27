@@ -24,7 +24,7 @@ import {
   useOnDrawUpdate,
   useSetInitialViewport,
   useSetupMap,
-} from '../hooks';
+} from '.';
 
 export type UseMapProps = {
   append: UseFieldArrayAppend<RouteFormValues, 'layers'>;

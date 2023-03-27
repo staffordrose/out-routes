@@ -20,7 +20,7 @@ import { getUser } from '@/lib/v1/api/user';
 import { useAddRouteMutation } from '@/lib/v1/hooks/routes';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
 import { Route } from '@/types/routes';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from '../../api/auth/[...nextauth]';
 
 const AddRoute = () => {
   const router = useRouter();
@@ -115,7 +115,7 @@ const AddRoute = () => {
           </PageHeading>
           <DefaultLayout.MainContent paddingX='none' paddingY='none'>
             <RouteForm
-              route={{} as Route}
+              route={router.query as unknown as Route}
               layers={[]}
               features={[]}
               onSubmit={onSubmit}
@@ -153,7 +153,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
       redirect: {
         destination: `/account/sign-in?${queryString.stringify({
-          callbackUrl: `/routes/add`,
+          callbackUrl: `/routes/add/settings`,
         })}`,
         permanent: false,
       },

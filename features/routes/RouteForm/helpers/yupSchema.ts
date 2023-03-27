@@ -53,7 +53,7 @@ export const yupRouteSchema = yup.object({
         text: yup
           .string()
           .max(60, `Can't be longer than 60 characters`)
-          .required(),
+          .required(`Name is required`),
       })
     )
     .max(3, 'Only three alternate names are allowed'),

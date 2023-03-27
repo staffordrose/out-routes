@@ -10,3 +10,4 @@ export * from './RouteForm';
 export * from './RouteMap';
 export * from './RouteMapElevationChart';
 export * from './RouteMapPopup';
+export * from './RouteSettingsForm';

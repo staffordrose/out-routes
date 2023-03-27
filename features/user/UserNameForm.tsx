@@ -72,6 +72,7 @@ const useUserNameForm = ({
   const defaultValues = useMemo(() => mapPropsToValues(user), [user]);
 
   const { control, handleSubmit, reset } = useForm<UserNameFormValues>({
+    mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(validationSchema),
   });

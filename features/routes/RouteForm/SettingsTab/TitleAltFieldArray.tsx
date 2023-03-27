@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form';
 import { BiMinusCircle } from 'react-icons/bi';
 
 import { Button, Flex, IconButton, Label, List } from '@/components/atoms';
@@ -7,9 +7,13 @@ import { TextField } from '@/components/molecules';
 import { styled } from '@/styles';
 import { RouteFormValues } from '../helpers';
 
-export const TitleAltFieldArray: FC = () => {
-  const { control } = useFormContext<RouteFormValues>();
+type TitleAltFieldArrayProps = {
+  control: UseFormReturn<RouteFormValues>['control'];
+};
 
+export const TitleAltFieldArray: FC<TitleAltFieldArrayProps> = ({
+  control,
+}) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'route.title_alt',
@@ -28,7 +32,22 @@ export const TitleAltFieldArray: FC = () => {
         >
           {fields.map((item, index) => {
             return (
-              <Flex key={item.id} as='li' gap='sm' width='full'>
+              <Flex
+                key={item.id}
+                as='li'
+                gap='sm'
+                width='full'
+                css={{
+                  '& > button:last-child': {
+                    flexShrink: 0,
+                  },
+                  '@md': {
+                    '& input': {
+                      maxWidth: '164px',
+                    },
+                  },
+                }}
+              >
                 <Controller
                   name={`route.title_alt.${index}.text` as const}
                   control={control}
@@ -45,7 +64,6 @@ export const TitleAltFieldArray: FC = () => {
                   type='button'
                   variant='ghost'
                   onClick={() => remove(index)}
-                  css={{ flexShrink: 0 }}
                 >
                   <BiMinusCircle />
                 </IconButton>
@@ -69,4 +87,8 @@ export const TitleAltFieldArray: FC = () => {
 
 const StyledTitleAltFieldArray = styled('div', {
   width: '$full',
+  '& > label': {
+    display: 'inline-block',
+    marginBottom: '$1',
+  },
 });

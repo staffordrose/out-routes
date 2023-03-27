@@ -21,12 +21,12 @@ const initialFeatureEditProps = {
   feature: {} as MapFeature,
 };
 
-type MapProps = {
+type MapTabProps = {
   routeId: Route['id'];
   routeMapBounds?: LngLatBounds | null;
 };
 
-export const Map: FC<MapProps> = ({ routeId, routeMapBounds }) => {
+export const MapTab: FC<MapTabProps> = ({ routeId, routeMapBounds }) => {
   const { control } = useFormContext<RouteFormValues>();
 
   const [featureEditProps, setFeatureEditProps] = useState<{
