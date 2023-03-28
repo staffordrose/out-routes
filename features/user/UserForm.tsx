@@ -34,10 +34,11 @@ export const UserForm: FC<UserFormProps> = ({
         <Controller
           name='name'
           control={control}
-          rules={{ maxLength: 60 }}
+          rules={{ required: true, maxLength: 60 }}
           render={({ field, fieldState: { isTouched, error } }) => (
             <TextField
               {...field}
+              isRequired
               label='Name'
               placeholder='John Doe'
               isTouched={isTouched}
@@ -103,7 +104,7 @@ const useUserForm = ({
         name: yup
           .string()
           .max(60, `Can't be longer than 60 characters`)
-          .required(`Name is required`),
+          .required(`Please enter your name`),
         bio: yup.string().max(256, `Can't be longer than 256 characters`),
         company: yup.string().max(120, `Can't be longer than 120 characters`),
         location: yup.string().max(120, `Can't be longer than 120 characters`),
@@ -143,6 +144,7 @@ const ResponsiveGrid = styled('div', {
   display: 'grid',
   gridTemplateColumns: '1fr',
   gap: '$2_5',
+  alignItems: 'start',
   marginBottom: '$2_5',
   '@sm': {
     gridTemplateColumns: 'repeat(2, 1fr)',

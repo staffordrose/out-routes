@@ -44,7 +44,9 @@ export const LayerEdit: FC<LayerEditProps> = ({
     <StyledLayerEdit>
       {!!status && (
         <StatusWrapper>
-          <Text color='red-700'>{status}</Text>
+          <Text colorScheme='red' colorScale={700}>
+            {status}
+          </Text>
         </StatusWrapper>
       )}
       <FieldsGrid>

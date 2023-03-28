@@ -25,6 +25,7 @@ export const SettingsTab: FC = () => {
             render={({ field, fieldState: { isTouched, error } }) => (
               <TextField
                 {...field}
+                isRequired
                 label='Title'
                 placeholder='The Narrows'
                 isTouched={isTouched}
@@ -39,6 +40,7 @@ export const SettingsTab: FC = () => {
             render={({ field, fieldState: { isTouched, error } }) => (
               <SelectField
                 {...field}
+                isRequired
                 contentWidth='sm'
                 label='Activity Type'
                 placeholder='Select activity'
@@ -85,6 +87,7 @@ export const SettingsTab: FC = () => {
             render={({ field, fieldState: { isTouched, error } }) => (
               <SelectField
                 {...field}
+                isRequired
                 contentWidth='xl'
                 label='Country'
                 placeholder='Select country'

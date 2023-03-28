@@ -57,7 +57,7 @@ export const SwitchField = forwardRef(
           ) : null}
         </Flex>
         {isError && (
-          <Text fontSize='sm' color='red-700'>
+          <Text fontSize='sm' colorScheme='red' colorScale={700}>
             {error}
           </Text>
         )}

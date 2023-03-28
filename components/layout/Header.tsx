@@ -356,12 +356,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ router, email, user }) => {
         </DropdownMenuComp.Item>,
       ]}
     >
-      <IconButton
-        variant='ghost'
-        size='md'
-        borderRadius='full'
-        aria-label='Open menu'
-      >
+      <IconButton variant='ghost' size='md' aria-label='Open menu'>
         <BiDotsVerticalRounded />
       </IconButton>
     </DropdownMenuComp>

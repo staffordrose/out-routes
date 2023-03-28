@@ -10,6 +10,7 @@ import { styled } from '@/styles';
 import { Input, Label, Text } from '../atoms';
 
 export type NumberFieldProps = ComponentPropsWithoutRef<typeof Input> & {
+  isRequired?: boolean;
   label?: ReactNode;
   isTouched?: boolean;
   error?: string;
@@ -17,7 +18,7 @@ export type NumberFieldProps = ComponentPropsWithoutRef<typeof Input> & {
 
 export const NumberField = forwardRef(
   (
-    { label, isTouched, error, ...inputProps }: NumberFieldProps,
+    { isRequired, label, isTouched, error, ...inputProps }: NumberFieldProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const isError = isTouched && !!error;
@@ -25,11 +26,25 @@ export const NumberField = forwardRef(
     return (
       <StyledNumberField>
         {ReactIs.isValidElementType(label) && (
-          <Label htmlFor={inputProps.id || inputProps.name}>{label}</Label>
+          <Label htmlFor={inputProps.id || inputProps.name}>
+            {label}
+            {!isRequired ? (
+              <Text
+                as='span'
+                fontSize='sm'
+                fontStyle='italic'
+                colorScheme='slate'
+                colorScale={500}
+              >
+                {' - '}
+                <span>Optional</span>
+              </Text>
+            ) : null}
+          </Label>
         )}
         <Input ref={ref} type='number' {...inputProps} isError={isError} />
         {isError && (
-          <Text fontSize='sm' color='red-700'>
+          <Text fontSize='sm' colorScheme='red' colorScale={700}>
             {error}
           </Text>
         )}

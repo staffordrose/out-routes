@@ -36,10 +36,11 @@ export const UserUsernameForm: FC<UserUsernameFormProps> = ({
         <Controller
           name='username'
           control={control}
-          rules={{ minLength: 8, maxLength: 20 }}
+          rules={{ required: true, minLength: 8, maxLength: 20 }}
           render={({ field, fieldState: { isTouched, error } }) => (
             <TextField
               {...field}
+              isRequired
               label='Username'
               placeholder='johndoe'
               isTouched={isTouched}
@@ -63,7 +64,7 @@ const useUserUsernameForm = ({
           .string()
           .min(8, `Must be at least 8 characters`)
           .max(20, `Must be less than 20 characters`)
-          .required(`Username is required`)
+          .required(`Please enter a username`)
           .test(`Unique Username`, `Username is already in use`, (value) => {
             return new Promise((resolve) => {
               checkIfUsernameExists(value)

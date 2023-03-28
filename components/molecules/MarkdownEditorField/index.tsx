@@ -16,6 +16,7 @@ import { Preview } from './Preview';
 export type MarkdownEditorFieldProps = ComponentPropsWithoutRef<
   typeof Textarea
 > & {
+  isRequired?: boolean;
   label?: ReactNode;
   isTouched?: boolean;
   error?: string;
@@ -23,7 +24,7 @@ export type MarkdownEditorFieldProps = ComponentPropsWithoutRef<
 
 export const MarkdownEditorField = forwardRef(
   (
-    { label, isTouched, error, ...props }: MarkdownEditorFieldProps,
+    { isRequired, label, isTouched, error, ...props }: MarkdownEditorFieldProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
     const {
@@ -51,7 +52,21 @@ export const MarkdownEditorField = forwardRef(
     return (
       <StyledMarkdownEditorField>
         {ReactIs.isValidElementType(label) && (
-          <Label htmlFor={props.id || props.name}>{label}</Label>
+          <Label htmlFor={props.id || props.name}>
+            {label}
+            {!isRequired ? (
+              <Text
+                as='span'
+                fontSize='sm'
+                fontStyle='italic'
+                colorScheme='slate'
+                colorScale={500}
+              >
+                {' - '}
+                <span>Optional</span>
+              </Text>
+            ) : null}
+          </Label>
         )}
         <div>
           <Editor
@@ -70,7 +85,7 @@ export const MarkdownEditorField = forwardRef(
           <Preview value={value} />
         </div>
         {isError && (
-          <Text fontSize='sm' color='red-700'>
+          <Text fontSize='sm' colorScheme='red' colorScale={700}>
             {error}
           </Text>
         )}

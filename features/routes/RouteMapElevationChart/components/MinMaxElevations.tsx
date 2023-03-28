@@ -1,6 +1,5 @@
 import { FC, memo } from 'react';
 
-import { Text } from '@/components/atoms';
 import { styled } from '@/styles';
 import { metersToFeet, numberWithCommas } from '@/utils';
 
@@ -17,13 +16,11 @@ const MinMaxElevationsComp: FC<MinMaxElevationsProps> = ({
     <StyledMinMaxElevations>
       {eleMax > 0 && (
         <div>
-          <Text>{numberWithCommas(Math.round(metersToFeet(eleMax)))} ft.</Text>
+          <p>{numberWithCommas(Math.round(metersToFeet(eleMax)))} ft.</p>
         </div>
       )}
       <div>
-        <Text>
-          {numberWithCommas(Math.round(metersToFeet(eleMin || 0)))} ft.
-        </Text>
+        <p>{numberWithCommas(Math.round(metersToFeet(eleMin || 0)))} ft.</p>
       </div>
     </StyledMinMaxElevations>
   );

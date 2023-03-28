@@ -1,6 +1,5 @@
 import { FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { Text } from '@/components/atoms';
 import { styled } from '@/styles';
 import { getDistances } from '../helpers';
 
@@ -112,7 +111,7 @@ const DistanceLabel: FC<DistanceLabelProps> = ({
           right: index === count - 1 ? 0 : 'auto',
         }}
       >
-        <Text>{distance} mi.</Text>
+        <p>{distance} mi.</p>
       </div>
     </>
   );

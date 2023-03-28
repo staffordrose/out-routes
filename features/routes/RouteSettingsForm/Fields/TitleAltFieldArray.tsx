@@ -2,7 +2,14 @@ import { FC } from 'react';
 import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form';
 import { BiMinusCircle } from 'react-icons/bi';
 
-import { Button, Flex, IconButton, Label, List } from '@/components/atoms';
+import {
+  Button,
+  Flex,
+  IconButton,
+  Label,
+  List,
+  Text,
+} from '@/components/atoms';
 import { TextField } from '@/components/molecules';
 import { styled } from '@/styles';
 import { RouteSettingsFormValues } from '../helpers';
@@ -21,7 +28,19 @@ export const TitleAltFieldArray: FC<TitleAltFieldArrayProps> = ({
 
   return (
     <StyledTitleAltFieldArray>
-      <Label htmlFor='title_alt'>Alternate Names</Label>
+      <Label htmlFor='title_alt'>
+        <span>Alternate Names</span>
+        <Text
+          as='span'
+          fontSize='sm'
+          fontStyle='italic'
+          colorScheme='slate'
+          colorScale={500}
+        >
+          {' - '}
+          <span>Optional</span>
+        </Text>
+      </Label>
       {Array.isArray(fields) && fields.length > 0 && (
         <List
           as='ul'

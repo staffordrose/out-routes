@@ -2,7 +2,14 @@ import { FC, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { BiTrash } from 'react-icons/bi';
 
-import { AspectRatio, Box, IconButton, Image, Label } from '@/components/atoms';
+import {
+  AspectRatio,
+  Box,
+  IconButton,
+  Image,
+  Label,
+  Text,
+} from '@/components/atoms';
 import { DropzoneField } from '@/components/molecules';
 import { styled } from '@/styles';
 import { RouteFormValues } from './helpers';
@@ -19,7 +26,19 @@ export const BannerImageTab: FC = () => {
 
   return (
     <StyledBannerImageTab>
-      <Label htmlFor='route.files'>Image</Label>
+      <Label htmlFor='route.files'>
+        <span>Image</span>
+        <Text
+          as='span'
+          fontSize='sm'
+          fontStyle='italic'
+          colorScheme='slate'
+          colorScale={500}
+        >
+          {' - '}
+          <span>Optional</span>
+        </Text>
+      </Label>
       <div>
         {existingImage || !!imageSrc ? (
           <Preview>

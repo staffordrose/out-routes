@@ -11,6 +11,7 @@ import { Label, Select, Text } from '../atoms';
 
 export type SelectFieldProps = ComponentPropsWithoutRef<typeof Select> & {
   id?: string;
+  isRequired?: boolean;
   label?: ReactNode;
   placeholder?: string;
   onChange: (value: string) => void;
@@ -22,6 +23,7 @@ export type SelectFieldProps = ComponentPropsWithoutRef<typeof Select> & {
 export const SelectField = forwardRef(
   (
     {
+      isRequired,
       label,
       onChange,
       onBlur,
@@ -36,7 +38,21 @@ export const SelectField = forwardRef(
     return (
       <StyledSelectField>
         {ReactIs.isValidElementType(label) && (
-          <Label htmlFor={selectProps.id || selectProps.name}>{label}</Label>
+          <Label htmlFor={selectProps.id || selectProps.name}>
+            {label}
+            {!isRequired ? (
+              <Text
+                as='span'
+                fontSize='sm'
+                fontStyle='italic'
+                colorScheme='slate'
+                colorScale={500}
+              >
+                {' - '}
+                <span>Optional</span>
+              </Text>
+            ) : null}
+          </Label>
         )}
         <Select
           ref={ref}
@@ -50,7 +66,7 @@ export const SelectField = forwardRef(
           isError={isError}
         />
         {isError && (
-          <Text fontSize='sm' color='red-700'>
+          <Text fontSize='sm' colorScheme='red' colorScale={700}>
             {error}
           </Text>
         )}

@@ -35,10 +35,11 @@ export const UserNameForm: FC<UserNameFormProps> = ({
         <Controller
           name='name'
           control={control}
-          rules={{ maxLength: 60 }}
+          rules={{ required: true, maxLength: 60 }}
           render={({ field, fieldState: { isTouched, error } }) => (
             <TextField
               {...field}
+              isRequired
               label='Name'
               placeholder='John Doe'
               isTouched={isTouched}
@@ -64,7 +65,7 @@ const useUserNameForm = ({
         name: yup
           .string()
           .max(60, `Can't be longer than 60 characters`)
-          .required(`Name is required`),
+          .required(`Please enter your name`),
       }),
     []
   );

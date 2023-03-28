@@ -10,6 +10,7 @@ import { styled } from '@/styles';
 import { Input, Label, Text } from '../atoms';
 
 export type TextFieldProps = ComponentPropsWithoutRef<typeof Input> & {
+  isRequired?: boolean;
   label?: ReactNode;
   isTouched?: boolean;
   error?: string;
@@ -17,7 +18,7 @@ export type TextFieldProps = ComponentPropsWithoutRef<typeof Input> & {
 
 export const TextField = forwardRef(
   (
-    { label, isTouched, error, ...inputProps }: TextFieldProps,
+    { isRequired, label, isTouched, error, ...inputProps }: TextFieldProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const isError = isTouched && !!error;
@@ -25,11 +26,25 @@ export const TextField = forwardRef(
     return (
       <StyledTextField>
         {ReactIs.isValidElementType(label) && (
-          <Label htmlFor={inputProps.id || inputProps.name}>{label}</Label>
+          <Label htmlFor={inputProps.id || inputProps.name}>
+            {label}
+            {!isRequired ? (
+              <Text
+                as='span'
+                fontSize='sm'
+                fontStyle='italic'
+                colorScheme='slate'
+                colorScale={500}
+              >
+                {' - '}
+                <span>Optional</span>
+              </Text>
+            ) : null}
+          </Label>
         )}
         <Input ref={ref} type='text' {...inputProps} isError={isError} />
         {isError && (
-          <Text fontSize='sm' color='red-700'>
+          <Text fontSize='sm' colorScheme='red' colorScale={700}>
             {error}
           </Text>
         )}

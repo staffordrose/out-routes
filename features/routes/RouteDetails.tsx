@@ -62,11 +62,7 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
         <List as='ul' direction='column' width='full' marginBottom='md'>
           {Array.isArray(title_alt) && title_alt.length > 0 && (
             <Detail icon={BiInfoSquare}>
-              <Text
-                as='span'
-                fontWeight='medium'
-                style={{ fontStyle: 'italic' }}
-              >
+              <Text as='span' fontWeight='medium' fontStyle='italic'>
                 AKA:
               </Text>{' '}
               <span>{title_alt.join(', ')}</span>

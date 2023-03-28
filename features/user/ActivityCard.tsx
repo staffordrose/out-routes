@@ -30,7 +30,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
         <StyledActivityCard>
           <Flex gap='xs' alignItems='center'>
             <BiTime />
-            <Text fontSize='sm' color='slate-700'>
+            <Text fontSize='sm' colorScheme='slate' colorScale={700}>
               {displayRelativeTime(created_at || '')}
             </Text>
           </Flex>
@@ -53,7 +53,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
         <StyledActivityCard>
           <Flex gap='xs' alignItems='center'>
             <BiTime />
-            <Text fontSize='sm' color='slate-700'>
+            <Text fontSize='sm' colorScheme='slate' colorScale={700}>
               {displayRelativeTime(created_at || '')}
             </Text>
           </Flex>
@@ -81,7 +81,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
         <StyledActivityCard>
           <Flex gap='xs' alignItems='center'>
             <BiTime />
-            <Text fontSize='sm' color='slate-700'>
+            <Text fontSize='sm' colorScheme='slate' colorScale={700}>
               {displayRelativeTime(created_at || '')}
             </Text>
           </Flex>

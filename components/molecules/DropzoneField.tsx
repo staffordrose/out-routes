@@ -15,6 +15,7 @@ export type DropzoneFieldProps = Omit<
 > & {
   id?: string;
   name?: string;
+  isRequired?: boolean;
   label?: ReactNode;
   onChange: (files: File[]) => void;
   isTouched?: boolean;
@@ -23,7 +24,14 @@ export type DropzoneFieldProps = Omit<
 
 export const DropzoneField = forwardRef(
   (
-    { label, onChange, isTouched, error, ...dropzoneProps }: DropzoneFieldProps,
+    {
+      isRequired,
+      label,
+      onChange,
+      isTouched,
+      error,
+      ...dropzoneProps
+    }: DropzoneFieldProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const isError = isTouched && !!error;
@@ -33,6 +41,18 @@ export const DropzoneField = forwardRef(
         {ReactIs.isValidElementType(label) && (
           <Label htmlFor={dropzoneProps.id || dropzoneProps.name}>
             {label}
+            {!isRequired ? (
+              <Text
+                as='span'
+                fontSize='sm'
+                fontStyle='italic'
+                colorScheme='slate'
+                colorScale={500}
+              >
+                {' - '}
+                <span>Optional</span>
+              </Text>
+            ) : null}
           </Label>
         )}
         <Dropzone
@@ -42,7 +62,7 @@ export const DropzoneField = forwardRef(
           isError={isError}
         />
         {isError && (
-          <Text fontSize='sm' color='red-700'>
+          <Text fontSize='sm' colorScheme='red' colorScale={700}>
             {error}
           </Text>
         )}
