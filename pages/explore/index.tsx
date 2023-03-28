@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 
@@ -18,6 +18,19 @@ const DEFAULT_BOUNDS = JSON.stringify([
 const Explore = () => {
   const router = useRouter();
 
+  /**
+   * when router.query `bounds` exist, router.isReady is `false` on the first render,
+   * wheras when no router.query `bounds` exist, router.isReady is `true` on the
+   * first render
+   *
+   * only showing the map after useEffect runs prevents a hydration mismatch
+   */
+  const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    setShowMap(router.isReady);
+  }, [router.isReady]);
+
   const bounds = useQueryParam(router.query, 'bounds');
 
   const mapRoutesQuery = useInfiniteQuery({
@@ -35,7 +48,7 @@ const Explore = () => {
   });
 
   const renderResult = () => {
-    if (!router.isReady) {
+    if (!showMap) {
       return <Feedback size='xl' type='loading' title='Loading map' />;
     }
     return (
