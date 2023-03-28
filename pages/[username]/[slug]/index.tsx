@@ -108,22 +108,27 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
   if (!isAuthorized) {
     return (
       <Feedback
-        size='xl'
+        size='full-header'
         type='error'
         title='You are not authorized to view this route'
       >
-        <ButtonLink variant='solid' size='lg' href={`/${username}`}>
+        <ButtonLink
+          variant='solid'
+          colorScheme='red'
+          size='lg'
+          href={`/${username}`}
+        >
           View User Profile
         </ButtonLink>
       </Feedback>
     );
   }
   if (routeQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading route' />;
+    return <Feedback size='full-header' type='loading' title='Loading route' />;
   }
   if (routeQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback size='full-header' type='error' title='Something went wrong'>
         {routeQuery.error instanceof Error ? routeQuery.error.message : null}
       </Feedback>
     );
@@ -221,7 +226,7 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
     );
   }
   return (
-    <Feedback size='lg' type='empty' title='Route does not exist'>
+    <Feedback size='full-header' type='empty' title='Route does not exist'>
       <p>
         Please check the URL you entered:{' '}
         <code style={{ backgroundColor: 'orange' }}>{router.asPath}</code>

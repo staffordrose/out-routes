@@ -50,12 +50,20 @@ const EditUsername = () => {
   const renderResult = () => {
     if (changeUsernameMutation.isLoading) {
       return (
-        <Feedback size='xl' type='loading' title='Updating your profile' />
+        <Feedback
+          size='full-header'
+          type='loading'
+          title='Updating your profile'
+        />
       );
     }
     if (changeUsernameMutation.isError) {
       return (
-        <Feedback size='xl' type='error' title='Oops! Something went wrong'>
+        <Feedback
+          size='full-header'
+          type='error'
+          title='Oops! Something went wrong'
+        >
           {changeUsernameMutation.error instanceof Error
             ? changeUsernameMutation.error.message
             : null}
@@ -64,17 +72,23 @@ const EditUsername = () => {
     }
     if (changeUsernameMutation.isSuccess) {
       return (
-        <Feedback size='xl' type='success' title='Success!'>
+        <Feedback size='full-header' type='success' title='Success!'>
           Redirecting you to your profile
         </Feedback>
       );
     }
     if (authUserQuery.isLoading) {
-      return <Feedback size='xl' type='loading' title='Loading your profile' />;
+      return (
+        <Feedback
+          size='full-header'
+          type='loading'
+          title='Loading your profile'
+        />
+      );
     }
     if (authUserQuery.isError) {
       return (
-        <Feedback size='xl' type='error' title='Something went wrong'>
+        <Feedback size='full-header' type='error' title='Something went wrong'>
           {authUserQuery.error instanceof Error
             ? authUserQuery.error.message
             : null}

@@ -95,11 +95,11 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
 
   const renderUserRoutesResult = () => {
     if (userRoutesQuery.isLoading) {
-      return <Feedback size='sm' type='loading' title='Loading routes' />;
+      return <Feedback type='loading' title='Loading routes' />;
     }
     if (userRoutesQuery.isError) {
       return (
-        <Feedback size='sm' type='error' title='Something went wrong'>
+        <Feedback type='error' title='Something went wrong'>
           {userRoutesQuery.error instanceof Error
             ? userRoutesQuery.error.message
             : null}
@@ -111,7 +111,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
 
       if (!Array.isArray(routes) || !routes.length) {
         return (
-          <Feedback size='sm' type='empty' icon={BiMap} title='No Routes'>
+          <Feedback type='empty' icon={BiMap} title='No Routes'>
             You haven&apos;t created a route.
           </Feedback>
         );
@@ -143,11 +143,11 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
 
   const renderNewUsersResult = () => {
     if (newUsersQuery.isLoading) {
-      return <Feedback size='sm' type='loading' title='Loading users' />;
+      return <Feedback type='loading' title='Loading users' />;
     }
     if (newUsersQuery.isError) {
       return (
-        <Feedback size='sm' type='error' title='Something went wrong'>
+        <Feedback type='error' title='Something went wrong'>
           {newUsersQuery.error instanceof Error
             ? newUsersQuery.error.message
             : null}
@@ -159,7 +159,7 @@ const Home = ({ isAuthenticated, authUsername }: HomeProps) => {
 
       if (!Array.isArray(users) || !users.length) {
         return (
-          <Feedback size='sm' type='empty' icon={BiMap} title='No Users'>
+          <Feedback type='empty' icon={BiMap} title='No Users'>
             There are no new users.
           </Feedback>
         );

@@ -174,11 +174,21 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
   };
 
   if (userQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading your profile' />;
+    return (
+      <Feedback
+        size='full-header-crumbs-title-tabs-subtitle'
+        type='loading'
+        title='Loading your profile'
+      />
+    );
   }
   if (userQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback
+        size='full-header-crumbs-title-tabs-subtitle'
+        type='error'
+        title='Something went wrong'
+      >
         {userQuery.error instanceof Error
           ? userQuery.error.message
           : isAuthFollowingUserQuery.error instanceof Error
@@ -565,11 +575,11 @@ const RoutesTab: FC<RoutesTabProps> = ({
 
   const renderResult = () => {
     if (routesQuery.isLoading) {
-      return <Feedback size='md' type='loading' title='Loading routes' />;
+      return <Feedback size='lg' type='loading' title='Loading routes' />;
     }
     if (routesQuery.isError) {
       return (
-        <Feedback size='md' type='error' title='Something went wrong'>
+        <Feedback size='lg' type='error' title='Something went wrong'>
           {routesQuery.error instanceof Error
             ? routesQuery.error.message
             : null}
@@ -581,7 +591,7 @@ const RoutesTab: FC<RoutesTabProps> = ({
 
       if (!Array.isArray(routes) || !routes.length) {
         return (
-          <Feedback size='md' type='empty' icon={BiMap} title='No Routes'>
+          <Feedback size='lg' type='empty' icon={BiMap} title='No Routes'>
             {authUser?.username && authUser.username === username
               ? `You haven't created a route.`
               : `@${username} hasn't created a public route.`}
@@ -688,11 +698,11 @@ const FollowersTab: FC<FollowersTabProps> = ({
 
   const renderResult = () => {
     if (followersQuery.isLoading) {
-      return <Feedback size='md' type='loading' title='Loading followers' />;
+      return <Feedback size='lg' type='loading' title='Loading followers' />;
     }
     if (followersQuery.isError) {
       return (
-        <Feedback size='md' type='error' title='Something went wrong'>
+        <Feedback size='lg' type='error' title='Something went wrong'>
           {followersQuery.error instanceof Error
             ? followersQuery.error.message
             : null}
@@ -706,7 +716,7 @@ const FollowersTab: FC<FollowersTabProps> = ({
 
       if (!Array.isArray(followers) || !followers.length) {
         return (
-          <Feedback size='md' type='empty' icon={BiUser} title='No Followers'>
+          <Feedback size='lg' type='empty' icon={BiUser} title='No Followers'>
             <p>
               {authUser?.username && authUser.username === username
                 ? `You don't have any followers.`
@@ -792,11 +802,11 @@ const FollowingTab: FC<FollowingTabProps> = ({
 
   const renderResult = () => {
     if (followingQuery.isLoading) {
-      return <Feedback size='md' type='loading' title='Loading following' />;
+      return <Feedback size='lg' type='loading' title='Loading following' />;
     }
     if (followingQuery.isError) {
       return (
-        <Feedback size='md' type='error' title='Something went wrong'>
+        <Feedback size='lg' type='error' title='Something went wrong'>
           {followingQuery.error instanceof Error
             ? followingQuery.error.message
             : null}
@@ -811,7 +821,7 @@ const FollowingTab: FC<FollowingTabProps> = ({
       if (!Array.isArray(following) || !following.length) {
         return (
           <Feedback
-            size='md'
+            size='xl'
             type='empty'
             icon={BiUser}
             title='Not Following Anyone'
@@ -888,11 +898,11 @@ const FavoritesTab: FC<FavoritesTabProps> = ({
 
   const renderResult = () => {
     if (favoritesQuery.isLoading) {
-      return <Feedback size='md' type='loading' title='Loading routes' />;
+      return <Feedback size='lg' type='loading' title='Loading routes' />;
     }
     if (favoritesQuery.isError) {
       return (
-        <Feedback size='md' type='error' title='Something went wrong'>
+        <Feedback size='lg' type='error' title='Something went wrong'>
           {favoritesQuery.error instanceof Error
             ? favoritesQuery.error.message
             : null}
@@ -906,7 +916,7 @@ const FavoritesTab: FC<FavoritesTabProps> = ({
 
       if (!Array.isArray(favorites) || !favorites.length) {
         return (
-          <Feedback size='md' type='empty' icon={BiStar} title='No Favorites'>
+          <Feedback size='lg' type='empty' icon={BiStar} title='No Favorites'>
             {authUser?.username && authUser.username === username
               ? `You haven't starred any routes.`
               : `@${username} hasn't starred any routes.`}

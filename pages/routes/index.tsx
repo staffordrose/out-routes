@@ -55,11 +55,21 @@ const Routes = ({ authUsername }: RoutesProps) => {
 
   const renderResult = () => {
     if (routesQuery.isLoading) {
-      return <Feedback size='xl' type='loading' title='Loading routes' />;
+      return (
+        <Feedback
+          size='full-header-title'
+          type='loading'
+          title='Loading routes'
+        />
+      );
     }
     if (routesQuery.isError) {
       return (
-        <Feedback size='xl' type='error' title='Something went wrong'>
+        <Feedback
+          size='full-header-title'
+          type='error'
+          title='Something went wrong'
+        >
           {routesQuery.error instanceof Error
             ? routesQuery.error.message
             : null}
@@ -74,7 +84,12 @@ const Routes = ({ authUsername }: RoutesProps) => {
 
       if (!Array.isArray(routes) || !routes.length) {
         return (
-          <Feedback size='lg' type='empty' icon={BiMap} title='No Routes'>
+          <Feedback
+            size='full-header-title'
+            type='empty'
+            icon={BiMap}
+            title='No Routes'
+          >
             You haven&apos;t created a route.
           </Feedback>
         );
@@ -84,7 +99,7 @@ const Routes = ({ authUsername }: RoutesProps) => {
       const hasMore = !!meta?.page?.more;
 
       return (
-        <>
+        <DefaultLayout.MainContent>
           <Grid columns={4} gap='lg' marginBottom='lg'>
             {routes.map(
               ({
@@ -148,7 +163,7 @@ const Routes = ({ authUsername }: RoutesProps) => {
               </Button>
             </Flex>
           )}
-        </>
+        </DefaultLayout.MainContent>
       );
     }
     return null;
@@ -183,7 +198,7 @@ const Routes = ({ authUsername }: RoutesProps) => {
         >
           Your Routes
         </PageHeading>
-        <DefaultLayout.MainContent>{renderResult()}</DefaultLayout.MainContent>
+        {renderResult()}
       </DefaultLayout.Main>
     </>
   );

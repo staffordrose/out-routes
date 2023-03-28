@@ -55,12 +55,20 @@ const NewUserUsername = () => {
   const renderResult = () => {
     if (setUsernameMutation.isLoading) {
       return (
-        <Feedback size='xl' type='loading' title='Updating your profile' />
+        <Feedback
+          size='full-header'
+          type='loading'
+          title='Updating your profile'
+        />
       );
     }
     if (setUsernameMutation.isError) {
       return (
-        <Feedback size='xl' type='error' title='Oops! Something went wrong'>
+        <Feedback
+          size='full-header'
+          type='error'
+          title='Oops! Something went wrong'
+        >
           {setUsernameMutation.error instanceof Error
             ? setUsernameMutation.error.message
             : null}
@@ -69,17 +77,23 @@ const NewUserUsername = () => {
     }
     if (setUsernameMutation.isSuccess) {
       return (
-        <Feedback size='xl' type='success' title='Success!'>
+        <Feedback size='full-header' type='success' title='Success!'>
           {hasName ? `Redirecting` : ``}
         </Feedback>
       );
     }
     if (authUserQuery.isLoading) {
-      return <Feedback size='xl' type='loading' title='Loading your profile' />;
+      return (
+        <Feedback
+          size='full-header'
+          type='loading'
+          title='Loading your profile'
+        />
+      );
     }
     if (authUserQuery.isError) {
       return (
-        <Feedback size='xl' type='error' title='Something went wrong'>
+        <Feedback size='full-header' type='error' title='Something went wrong'>
           {authUserQuery.error instanceof Error
             ? authUserQuery.error.message
             : null}

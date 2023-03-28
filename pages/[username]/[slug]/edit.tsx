@@ -131,22 +131,33 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
   if (!isAuthorized) {
     return (
       <Feedback
-        size='xl'
+        size='full-header'
         type='error'
         title='You are not authorized to edit this route'
       >
-        <ButtonLink variant='solid' size='lg' href={`/${username}`}>
+        <ButtonLink
+          variant='solid'
+          colorScheme='red'
+          size='lg'
+          href={`/${username}`}
+        >
           View User Profile
         </ButtonLink>
       </Feedback>
     );
   }
   if (deleteRouteMutation.isLoading) {
-    return <Feedback size='xl' type='loading' title='Deleting route' />;
+    return (
+      <Feedback size='full-header' type='loading' title='Deleting route' />
+    );
   }
   if (deleteRouteMutation.isError) {
     return (
-      <Feedback size='xl' type='error' title='Oops! Something went wrong'>
+      <Feedback
+        size='full-header'
+        type='error'
+        title='Oops! Something went wrong'
+      >
         {deleteRouteMutation.error instanceof Error
           ? deleteRouteMutation.error.message
           : null}
@@ -155,17 +166,23 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
   }
   if (deleteRouteMutation.isSuccess) {
     return (
-      <Feedback size='xl' type='success' title='Success!'>
+      <Feedback size='full-header' type='success' title='Success!'>
         Redirecting to your routes
       </Feedback>
     );
   }
   if (updateRouteMutation.isLoading) {
-    return <Feedback size='xl' type='loading' title='Updating route' />;
+    return (
+      <Feedback size='full-header' type='loading' title='Updating route' />
+    );
   }
   if (updateRouteMutation.isError) {
     return (
-      <Feedback size='xl' type='error' title='Oops! Something went wrong'>
+      <Feedback
+        size='full-header'
+        type='error'
+        title='Oops! Something went wrong'
+      >
         {updateRouteMutation.error instanceof Error
           ? updateRouteMutation.error.message
           : null}
@@ -174,17 +191,17 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
   }
   if (updateRouteMutation.isSuccess) {
     return (
-      <Feedback size='xl' type='success' title='Success!'>
+      <Feedback size='full-header' type='success' title='Success!'>
         Redirecting you to the route
       </Feedback>
     );
   }
   if (routeQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading route' />;
+    return <Feedback size='full-header' type='loading' title='Loading route' />;
   }
   if (routeQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback size='full-header' type='error' title='Something went wrong'>
         {routeQuery.error instanceof Error ? routeQuery.error.message : null}
       </Feedback>
     );

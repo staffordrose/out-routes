@@ -33,11 +33,11 @@ export const RouteContributors: FC<RouteContributorsProps> = ({
 
   const renderResult = () => {
     if (contributorsQuery.isLoading) {
-      return <Feedback type='loading' title='Loading contributors' />;
+      return <Feedback size='xs' type='loading' title='Loading contributors' />;
     }
     if (contributorsQuery.isError) {
       return (
-        <Feedback type='error' title='Something went wrong'>
+        <Feedback size='xs' type='error' title='Something went wrong'>
           {contributorsQuery.error instanceof Error
             ? contributorsQuery.error.message
             : null}
@@ -99,7 +99,7 @@ export const RouteContributors: FC<RouteContributorsProps> = ({
       );
     }
     return (
-      <Feedback type='empty' title='0 contributors'>
+      <Feedback size='xs' type='empty' title='0 contributors'>
         The route does not have contributors
       </Feedback>
     );

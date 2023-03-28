@@ -119,11 +119,13 @@ const Followers = ({ isAuthenticated }: FollowersProps) => {
   };
 
   if (userQuery.isLoading || followersQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading followers' />;
+    return (
+      <Feedback size='full-header' type='loading' title='Loading followers' />
+    );
   }
   if (userQuery.isError || followersQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback size='full-header' type='error' title='Something went wrong'>
         {userQuery.error instanceof Error
           ? userQuery.error.message
           : followersQuery.error instanceof Error
@@ -164,81 +166,79 @@ const Followers = ({ isAuthenticated }: FollowersProps) => {
           >
             Followers
           </PageHeading>
-          <DefaultLayout.MainContent>
-            {!Array.isArray(followers) || !followers.length ? (
-              <Feedback
-                size='lg'
-                type='empty'
-                icon={BiUser}
-                title='No Followers'
-              >
-                <p>
-                  {authUser?.username && authUser.username === username
-                    ? `You don't have any followers.`
-                    : `@${username} doesn't have any followers.`}
-                </p>
-                {authUser?.username && authUser.username !== username && (
+          {!Array.isArray(followers) || !followers.length ? (
+            <Feedback
+              size='full-header-crumbs-title'
+              type='empty'
+              icon={BiUser}
+              title='No Followers'
+            >
+              <p>
+                {authUser?.username && authUser.username === username
+                  ? `You don't have any followers.`
+                  : `@${username} doesn't have any followers.`}
+              </p>
+              {authUser?.username && authUser.username !== username && (
+                <Button
+                  onClick={() => {
+                    handleFollow({ username }, false);
+                  }}
+                >
+                  Follow Them
+                </Button>
+              )}
+            </Feedback>
+          ) : (
+            <DefaultLayout.MainContent>
+              <FollowersList
+                followers={followers}
+                authUser={authUser}
+                followingIds={followingIds}
+                handleFollow={handleFollow}
+                columns={4}
+                cardOrientation='vertical'
+              />
+              {(pageNum !== 1 || hasMore) && (
+                <Flex
+                  gap='lg'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  marginBottom='lg'
+                >
                   <Button
                     onClick={() => {
-                      handleFollow({ username }, false);
+                      shallowPush(
+                        router,
+                        `/${username}/followers${
+                          pageNum > 2
+                            ? `?${queryString.stringify({
+                                page: pageNum - 1,
+                              })}`
+                            : ``
+                        }`
+                      );
                     }}
+                    disabled={pageNum === 1}
                   >
-                    Follow Them
+                    Previous Page
                   </Button>
-                )}
-              </Feedback>
-            ) : (
-              <>
-                <FollowersList
-                  followers={followers}
-                  authUser={authUser}
-                  followingIds={followingIds}
-                  handleFollow={handleFollow}
-                  columns={4}
-                  cardOrientation='vertical'
-                />
-                {(pageNum !== 1 || hasMore) && (
-                  <Flex
-                    gap='lg'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    marginBottom='lg'
+                  <Button
+                    onClick={() => {
+                      shallowPush(
+                        router,
+                        `/${username}/followers?${queryString.stringify({
+                          page: hasMore ? pageNum + 1 : pageNum,
+                        })}`
+                      );
+                    }}
+                    disabled={isPreviousData || !hasMore}
                   >
-                    <Button
-                      onClick={() => {
-                        shallowPush(
-                          router,
-                          `/${username}/followers${
-                            pageNum > 2
-                              ? `?${queryString.stringify({
-                                  page: pageNum - 1,
-                                })}`
-                              : ``
-                          }`
-                        );
-                      }}
-                      disabled={pageNum === 1}
-                    >
-                      Previous Page
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        shallowPush(
-                          router,
-                          `/${username}/followers?${queryString.stringify({
-                            page: hasMore ? pageNum + 1 : pageNum,
-                          })}`
-                        );
-                      }}
-                      disabled={isPreviousData || !hasMore}
-                    >
-                      Next Page
-                    </Button>
-                  </Flex>
-                )}
-              </>
-            )}
-          </DefaultLayout.MainContent>
+                    Next Page
+                  </Button>
+                </Flex>
+              )}
+            </DefaultLayout.MainContent>
+          )}
         </DefaultLayout.Main>
       </>
     );

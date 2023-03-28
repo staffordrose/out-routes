@@ -44,12 +44,20 @@ const NewUserName = () => {
   const renderResult = () => {
     if (setNameMutation.isLoading) {
       return (
-        <Feedback size='xl' type='loading' title='Updating your profile' />
+        <Feedback
+          size='full-header'
+          type='loading'
+          title='Updating your profile'
+        />
       );
     }
     if (setNameMutation.isError) {
       return (
-        <Feedback size='xl' type='error' title='Oops! Something went wrong'>
+        <Feedback
+          size='full-header'
+          type='error'
+          title='Oops! Something went wrong'
+        >
           {setNameMutation.error instanceof Error
             ? setNameMutation.error.message
             : null}
@@ -58,13 +66,19 @@ const NewUserName = () => {
     }
     if (setNameMutation.isSuccess) {
       return (
-        <Feedback size='xl' type='success' title='Success!'>
+        <Feedback size='full-header' type='success' title='Success!'>
           Redirecting
         </Feedback>
       );
     }
     if (status === 'loading') {
-      return <Feedback size='xl' type='loading' title='Loading your profile' />;
+      return (
+        <Feedback
+          size='full-header'
+          type='loading'
+          title='Loading your profile'
+        />
+      );
     }
     return (
       <NewUserLayout>

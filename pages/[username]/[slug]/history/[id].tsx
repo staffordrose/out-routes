@@ -63,22 +63,33 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
   if (!isAuthorized) {
     return (
       <Feedback
-        size='xl'
+        size='full-header'
         type='error'
         title='You are not authorized to view this route or its history'
       >
-        <ButtonLink variant='solid' size='lg' href={`/${username}`}>
+        <ButtonLink
+          variant='solid'
+          colorScheme='red'
+          size='lg'
+          href={`/${username}`}
+        >
           View User Profile
         </ButtonLink>
       </Feedback>
     );
   }
   if (routeQuery.isLoading || commitQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading route history' />;
+    return (
+      <Feedback
+        size='full-header'
+        type='loading'
+        title='Loading route history'
+      />
+    );
   }
   if (routeQuery.isError || commitQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback size='full-header' type='error' title='Something went wrong'>
         {routeQuery.error instanceof Error
           ? routeQuery.error.message
           : commitQuery.error instanceof Error
@@ -149,7 +160,7 @@ const RouteHistoryEntry = ({ isAuthorized }: RouteHistoryEntryProps) => {
             <div>
               {!Array.isArray(items) || !items.length ? (
                 <Feedback
-                  size='lg'
+                  size='md'
                   type='empty'
                   icon={BiUser}
                   title='No History'
@@ -189,7 +200,7 @@ const Date = styled('div', {
 });
 
 RouteHistoryEntry.getLayout = (page: ReactNode) => {
-  return <DefaultLayout footerGap='sm'>{page}</DefaultLayout>;
+  return <DefaultLayout>{page}</DefaultLayout>;
 };
 
 export default RouteHistoryEntry;

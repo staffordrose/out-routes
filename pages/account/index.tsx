@@ -33,11 +33,13 @@ const Account = () => {
 
   const renderResult = () => {
     if (isLoading) {
-      return <Feedback size='xl' type='loading' title='Loading account' />;
+      return (
+        <Feedback size='full-header' type='loading' title='Loading account' />
+      );
     }
     if (isError) {
       return (
-        <Feedback size='xl' type='error' title='Something went wrong'>
+        <Feedback size='full-header' type='error' title='Something went wrong'>
           {error instanceof Error ? error.message : null}
         </Feedback>
       );

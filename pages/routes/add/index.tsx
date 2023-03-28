@@ -51,11 +51,17 @@ const AddRoute = () => {
 
   const renderResult = () => {
     if (addRouteMutation.isLoading) {
-      return <Feedback size='xl' type='loading' title='Adding route' />;
+      return (
+        <Feedback size='full-header' type='loading' title='Adding route' />
+      );
     }
     if (addRouteMutation.isError) {
       return (
-        <Feedback size='xl' type='error' title='Oops! Something went wrong'>
+        <Feedback
+          size='full-header'
+          type='error'
+          title='Oops! Something went wrong'
+        >
           {addRouteMutation.error instanceof Error
             ? addRouteMutation.error.message
             : null}
@@ -64,17 +70,17 @@ const AddRoute = () => {
     }
     if (addRouteMutation.isSuccess) {
       return (
-        <Feedback size='xl' type='success' title='Success!'>
+        <Feedback size='full-header' type='success' title='Success!'>
           Redirecting you to the route
         </Feedback>
       );
     }
     if (authUserQuery.isLoading) {
-      return <Feedback size='xl' type='loading' title='Loading' />;
+      return <Feedback size='full-header' type='loading' title='Loading' />;
     }
     if (authUserQuery.isError) {
       return (
-        <Feedback size='xl' type='error' title='Something went wrong'>
+        <Feedback size='full-header' type='error' title='Something went wrong'>
           {authUserQuery.error instanceof Error
             ? authUserQuery.error.message
             : null}

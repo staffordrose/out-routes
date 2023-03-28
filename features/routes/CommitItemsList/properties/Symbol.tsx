@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Flex } from '@/components/atoms';
+import { Flex, Icon } from '@/components/atoms';
 import { SymbolCodes, symbolIcons, symbolLabels } from '@/data/routes';
 
 type SymbolProps = {
@@ -14,7 +14,7 @@ export const Symbol: FC<SymbolProps> = ({ symbol }) => {
 
   return (
     <Flex alignItems='center'>
-      {SymbolIcon ? <SymbolIcon /> : ``}
+      {SymbolIcon ? <Icon as={SymbolIcon} size='xs' /> : ``}
       <span>{symbolLabels[symbol as SymbolCodes]}</span>
     </Flex>
   );

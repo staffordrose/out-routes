@@ -119,11 +119,13 @@ const Following = ({ isAuthenticated }: FollowingProps) => {
   };
 
   if (userQuery.isLoading || followingQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading following' />;
+    return (
+      <Feedback size='full-header' type='loading' title='Loading following' />
+    );
   }
   if (userQuery.isError || followingQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback size='full-header' type='error' title='Something went wrong'>
         {userQuery.error instanceof Error
           ? userQuery.error.message
           : followingQuery.error instanceof Error
@@ -164,70 +166,68 @@ const Following = ({ isAuthenticated }: FollowingProps) => {
           >
             Following
           </PageHeading>
-          <DefaultLayout.MainContent>
-            {!Array.isArray(following) || !following.length ? (
-              <Feedback
-                size='lg'
-                type='empty'
-                icon={BiUser}
-                title='Not Following Anyone'
-              >
-                {authUser?.username && authUser.username === username
-                  ? `You aren't following anyone.`
-                  : `@${username} isn't following anyone.`}
-              </Feedback>
-            ) : (
-              <>
-                <FollowingList
-                  following={following}
-                  authUser={authUser}
-                  followingIds={followingIds}
-                  handleFollow={handleFollow}
-                  columns={4}
-                  cardOrientation='vertical'
-                />
-                {(pageNum !== 1 || hasMore) && (
-                  <Flex
-                    gap='lg'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    marginBottom='lg'
+          {!Array.isArray(following) || !following.length ? (
+            <Feedback
+              size='full-header-crumbs-title'
+              type='empty'
+              icon={BiUser}
+              title='Not Following Anyone'
+            >
+              {authUser?.username && authUser.username === username
+                ? `You aren't following anyone.`
+                : `@${username} isn't following anyone.`}
+            </Feedback>
+          ) : (
+            <DefaultLayout.MainContent>
+              <FollowingList
+                following={following}
+                authUser={authUser}
+                followingIds={followingIds}
+                handleFollow={handleFollow}
+                columns={4}
+                cardOrientation='vertical'
+              />
+              {(pageNum !== 1 || hasMore) && (
+                <Flex
+                  gap='lg'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  marginBottom='lg'
+                >
+                  <Button
+                    onClick={() => {
+                      shallowPush(
+                        router,
+                        `/${username}/following${
+                          pageNum > 2
+                            ? `?${queryString.stringify({
+                                page: pageNum - 1,
+                              })}`
+                            : ``
+                        }`
+                      );
+                    }}
+                    disabled={pageNum === 1}
                   >
-                    <Button
-                      onClick={() => {
-                        shallowPush(
-                          router,
-                          `/${username}/following${
-                            pageNum > 2
-                              ? `?${queryString.stringify({
-                                  page: pageNum - 1,
-                                })}`
-                              : ``
-                          }`
-                        );
-                      }}
-                      disabled={pageNum === 1}
-                    >
-                      Previous Page
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        shallowPush(
-                          router,
-                          `/${username}/following?${queryString.stringify({
-                            page: hasMore ? pageNum + 1 : pageNum,
-                          })}`
-                        );
-                      }}
-                      disabled={isPreviousData || !hasMore}
-                    >
-                      Next Page
-                    </Button>
-                  </Flex>
-                )}
-              </>
-            )}
-          </DefaultLayout.MainContent>
+                    Previous Page
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      shallowPush(
+                        router,
+                        `/${username}/following?${queryString.stringify({
+                          page: hasMore ? pageNum + 1 : pageNum,
+                        })}`
+                      );
+                    }}
+                    disabled={isPreviousData || !hasMore}
+                  >
+                    Next Page
+                  </Button>
+                </Flex>
+              )}
+            </DefaultLayout.MainContent>
+          )}
         </DefaultLayout.Main>
       </>
     );

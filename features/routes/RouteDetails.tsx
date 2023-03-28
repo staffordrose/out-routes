@@ -82,14 +82,16 @@ export const RouteDetails: FC<RouteDetailsProps> = ({ username, route }) => {
             {country ? countries[country as CountryCodes] : null}
           </Detail>
         </List>
-        <h2>Summary</h2>
-        {summary ? (
-          <MarkdownPreview markdown={summary} />
-        ) : (
-          <Feedback size='sm' type='empty' icon={BiFile} title='No Summary'>
-            A route summary has not been added, yet.
-          </Feedback>
-        )}
+        <Summary>
+          <h2>Summary</h2>
+          {summary ? (
+            <MarkdownPreview markdown={summary} />
+          ) : (
+            <Feedback size='md' type='empty' icon={BiFile} title='No Summary'>
+              A route summary has not been added, yet.
+            </Feedback>
+          )}
+        </Summary>
       </div>
       <Flex direction='column' gap='lg' width='full'>
         <BorderBox>
@@ -169,6 +171,13 @@ const StyledRouteDetails = styled('div', {
   '@lg': {
     gridTemplateColumns: '1fr $64',
   },
+});
+
+const Summary = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$2',
+  width: '$full',
 });
 
 const BorderBox = styled('div', {

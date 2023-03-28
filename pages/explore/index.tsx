@@ -36,7 +36,7 @@ const Explore = () => {
 
   const renderResult = () => {
     if (!router.isReady) {
-      return <Feedback size='md' type='loading' title='Loading map' />;
+      return <Feedback size='xl' type='loading' title='Loading map' />;
     }
     return (
       <ExploreMap

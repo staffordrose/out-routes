@@ -132,22 +132,33 @@ const RouteContributors = ({
   if (!isAuthorized) {
     return (
       <Feedback
-        size='xl'
+        size='full-header'
         type='error'
         title='You are not authorized to view this route or its contributors'
       >
-        <ButtonLink variant='solid' size='lg' href={`/${username}`}>
+        <ButtonLink
+          variant='solid'
+          colorScheme='red'
+          size='lg'
+          href={`/${username}`}
+        >
           View User Profile
         </ButtonLink>
       </Feedback>
     );
   }
   if (routeQuery.isLoading || contributorsQuery.isLoading) {
-    return <Feedback size='xl' type='loading' title='Loading contributors' />;
+    return (
+      <Feedback
+        size='full-header'
+        type='loading'
+        title='Loading contributors'
+      />
+    );
   }
   if (routeQuery.isError || contributorsQuery.isError) {
     return (
-      <Feedback size='xl' type='error' title='Something went wrong'>
+      <Feedback size='full-header' type='error' title='Something went wrong'>
         {routeQuery.error instanceof Error
           ? routeQuery.error.message
           : contributorsQuery.error instanceof Error
@@ -195,70 +206,68 @@ const RouteContributors = ({
           >
             Contributors
           </PageHeading>
-          <DefaultLayout.MainContent>
-            {!Array.isArray(contributors) || !contributors.length ? (
-              <Feedback
-                size='lg'
-                type='empty'
-                icon={BiUser}
-                title='No Contributors'
-              >
-                {`@${username}/${slug} doesn't have any contributors.`}
-              </Feedback>
-            ) : (
-              <>
-                <ContributorsList
-                  contributors={contributors}
-                  authUser={authUser}
-                  followingIds={followingIds}
-                  handleFollow={handleFollow}
-                  columns={4}
-                  cardOrientation='vertical'
-                />
-                {(pageNum !== 1 || hasMore) && (
-                  <Flex
-                    gap='lg'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    marginBottom='lg'
+          {!Array.isArray(contributors) || !contributors.length ? (
+            <Feedback
+              size='full-header-crumbs-title'
+              type='empty'
+              icon={BiUser}
+              title='No Contributors'
+            >
+              {`@${username}/${slug} doesn't have any contributors.`}
+            </Feedback>
+          ) : (
+            <DefaultLayout.MainContent>
+              <ContributorsList
+                contributors={contributors}
+                authUser={authUser}
+                followingIds={followingIds}
+                handleFollow={handleFollow}
+                columns={4}
+                cardOrientation='vertical'
+              />
+              {(pageNum !== 1 || hasMore) && (
+                <Flex
+                  gap='lg'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  marginBottom='lg'
+                >
+                  <Button
+                    onClick={() => {
+                      shallowPush(
+                        router,
+                        `/${username}/${slug}/contributors${
+                          pageNum > 2
+                            ? `?${queryString.stringify({
+                                page: pageNum - 1,
+                              })}`
+                            : ``
+                        }`
+                      );
+                    }}
+                    disabled={pageNum === 1}
                   >
-                    <Button
-                      onClick={() => {
-                        shallowPush(
-                          router,
-                          `/${username}/${slug}/contributors${
-                            pageNum > 2
-                              ? `?${queryString.stringify({
-                                  page: pageNum - 1,
-                                })}`
-                              : ``
-                          }`
-                        );
-                      }}
-                      disabled={pageNum === 1}
-                    >
-                      Previous Page
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        shallowPush(
-                          router,
-                          `/${username}/${slug}/contributors?${queryString.stringify(
-                            {
-                              page: hasMore ? pageNum + 1 : pageNum,
-                            }
-                          )}`
-                        );
-                      }}
-                      disabled={isPreviousData || !hasMore}
-                    >
-                      Next Page
-                    </Button>
-                  </Flex>
-                )}
-              </>
-            )}
-          </DefaultLayout.MainContent>
+                    Previous Page
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      shallowPush(
+                        router,
+                        `/${username}/${slug}/contributors?${queryString.stringify(
+                          {
+                            page: hasMore ? pageNum + 1 : pageNum,
+                          }
+                        )}`
+                      );
+                    }}
+                    disabled={isPreviousData || !hasMore}
+                  >
+                    Next Page
+                  </Button>
+                </Flex>
+              )}
+            </DefaultLayout.MainContent>
+          )}
         </DefaultLayout.Main>
       </>
     );

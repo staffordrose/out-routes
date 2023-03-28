@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { BiCollection } from 'react-icons/bi';
 
 import { ButtonLink } from '@/components/atoms';
 import { Feedback } from '@/components/layout';
 import { styled } from '@/styles';
 import { PaginatedActivity } from '@/types/activity';
 import { ActivityCard } from '../user';
-import { BiCollection } from 'react-icons/bi';
 
 type ActivityFeedProps = {
   pages?: PaginatedActivity[];
@@ -29,7 +29,7 @@ export const ActivityFeed: FC<ActivityFeedProps> = ({
   ) {
     return (
       <Feedback
-        size='xl'
+        size='full-header-title'
         type='empty'
         icon={BiCollection}
         title='Your feed is empty'
@@ -80,7 +80,12 @@ type PagesProps = {
 const Pages: FC<PagesProps> = ({ pages, isLoading }) => {
   if (isLoading) {
     return (
-      <Feedback key='loading' size='xl' type='loading' title='Loading feed' />
+      <Feedback
+        key='loading'
+        size='full-header-title'
+        type='loading'
+        title='Loading feed'
+      />
     );
   }
 
