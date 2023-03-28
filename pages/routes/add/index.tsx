@@ -20,6 +20,7 @@ import { getUser } from '@/lib/v1/api/user';
 import { useAddRouteMutation } from '@/lib/v1/hooks/routes';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
 import { Route } from '@/types/routes';
+import { getQueryParam } from '@/utils';
 import { authOptions } from '../../api/auth/[...nextauth]';
 
 const AddRoute = () => {
@@ -88,6 +89,24 @@ const AddRoute = () => {
       );
     }
     if (authUserQuery.isSuccess) {
+      const is_private = getQueryParam(router.query, 'is_private');
+      const title = getQueryParam(router.query, 'title');
+      const activity_type = getQueryParam(router.query, 'activity_type');
+      const region = getQueryParam(router.query, 'region');
+      const country = getQueryParam(router.query, 'country');
+
+      const { title_alt } = router.query;
+
+      const partialRoute: Partial<Route> = {
+        is_private: is_private === 'true' ? true : false,
+        title: title || '',
+        title_alt:
+          Array.isArray(title_alt) && title_alt.length ? title_alt : [],
+        activity_type: activity_type || '',
+        region: region || '',
+        country: country || '',
+      };
+
       return (
         <>
           <PageHeading
@@ -121,7 +140,7 @@ const AddRoute = () => {
           </PageHeading>
           <DefaultLayout.MainContent paddingX='none' paddingY='none'>
             <RouteForm
-              route={router.query as unknown as Route}
+              route={partialRoute as Route}
               layers={[]}
               features={[]}
               onSubmit={onSubmit}
