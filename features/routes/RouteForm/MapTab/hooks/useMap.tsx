@@ -76,6 +76,7 @@ export const useMap = ({
     routeId,
     map,
     routeMapBounds,
+    layers,
   });
 
   useDrawFeatures({
