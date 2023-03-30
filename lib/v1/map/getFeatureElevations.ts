@@ -47,9 +47,6 @@ export const getFeatureElevations = async (
 
     const tilesPromiseArray = tilesToFetch.map(async ([x, y, zoom]) => {
       try {
-        const fileName = `${nanoid()}.png`;
-        const filePath = `${TMP_DIR}/${fileName}`;
-
         const res = await fetch(
           `${BASE_URL}/${TILESET_ID}/${zoom}/${x}/${y}.${FORMAT}?${OPTIONS}`
         );
@@ -60,6 +57,9 @@ export const getFeatureElevations = async (
             `Something went wrong attempting to get the feature elevations`
           );
         }
+
+        const fileName = `${nanoid()}.png`;
+        const filePath = `${TMP_DIR}/${fileName}`;
 
         // write terrain image to filesystem
         await writeToFile(filePath, res);
