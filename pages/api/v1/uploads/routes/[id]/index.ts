@@ -17,7 +17,7 @@ import {
   getQueryParam,
   StatusError,
 } from '@/utils';
-import { authOptions } from '../../../auth/[...nextauth]';
+import { authOptions } from '../../../../auth/[...nextauth]';
 
 const FORMIDABLE_CONFIG = {
   allowEmptyFiles: false,

@@ -3,10 +3,16 @@ import { QueryClient, useMutation } from '@tanstack/react-query';
 
 import { ToastContents } from '@/components/atoms';
 import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
+import { LngLat, MapFeature } from '@/types/maps';
 import { Route, RouteFeature, RouteLayer } from '@/types/routes';
 import { User } from '@/types/users';
+import {
+  mapLayerAndFeatureRecordsToMapboxLayer,
+  parseMapBounds,
+} from '@/utils';
+import { getStaticMapImages } from '../../api/map';
 import { addRoute, updateRoute } from '../../api/routes';
-import { uploadRouteImage } from '../../api/uploads';
+import { uploadRouteImage, uploadRouteStaticImages } from '../../api/uploads';
 
 export type UseAddRouteMutationProps = {
   router: NextRouter;
@@ -32,6 +38,44 @@ export const useAddRouteMutation = ({
 
       const route = await addRoute(routeWithoutFiles);
 
+      let routeStaticImageUrls = {};
+
+      if (
+        Array.isArray(features) &&
+        features.length &&
+        routeWithoutFiles.map_bounding_box
+      ) {
+        try {
+          const mapBounds = parseMapBounds(routeWithoutFiles.map_bounding_box);
+          const mapBoundsArr = mapBounds?.toArray() as [LngLat, LngLat];
+
+          const mapFeatures = (layers || []).reduce((accum, layer) => {
+            const mapLayer = mapLayerAndFeatureRecordsToMapboxLayer(
+              layer,
+              features.filter((feature) => feature.layer?.id === layer.id)
+            );
+
+            if (Array.isArray(mapLayer.data.features)) {
+              accum = accum.concat(mapLayer.data.features);
+            }
+
+            return accum;
+          }, [] as MapFeature[]);
+
+          const staticMapImages = await getStaticMapImages(
+            mapBoundsArr,
+            mapFeatures
+          );
+
+          routeStaticImageUrls = await uploadRouteStaticImages(
+            route.id,
+            staticMapImages
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       let routeImageIdUrls = {};
 
       if (Array.isArray(files) && files.length) {
@@ -54,6 +98,8 @@ export const useAddRouteMutation = ({
           slug: route.slug,
           // properties from the uploaded route image
           ...routeImageIdUrls,
+          // properties from the uploaded route static images
+          ...routeStaticImageUrls,
         },
         layers: (layers || []).map((layer) => ({
           ...layer,

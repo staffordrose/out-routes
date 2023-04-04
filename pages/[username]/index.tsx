@@ -612,6 +612,7 @@ const RoutesTab: FC<RoutesTabProps> = ({
               owner,
               is_private,
               image_thumb_120,
+              static_image_thumb_120,
               slug,
               title,
               stats_favorites,
@@ -622,7 +623,7 @@ const RoutesTab: FC<RoutesTabProps> = ({
                 <RouteCard
                   key={id}
                   orientation='horizontal'
-                  image={image_thumb_120}
+                  image={image_thumb_120 || static_image_thumb_120}
                   is_private={is_private}
                   username={owner?.username}
                   slug={slug}

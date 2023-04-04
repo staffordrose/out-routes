@@ -46,8 +46,15 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
       );
     }
     case ActivityActions.FAVORITE_ROUTE: {
-      const { owner, is_private, slug, title, image_og, stats_favorites } =
-        data.route;
+      const {
+        owner,
+        is_private,
+        slug,
+        title,
+        image_og,
+        static_image_og,
+        stats_favorites,
+      } = data.route;
 
       return (
         <StyledActivityCard>
@@ -60,7 +67,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
           <p>{creatorName} starred a route:</p>
           <RouteCard
             orientation='vertical'
-            image={image_og}
+            image={image_og || static_image_og}
             username={owner?.username}
             slug={slug}
             is_private={is_private}
@@ -74,8 +81,15 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
     case ActivityActions.ADD_ROUTE:
     case ActivityActions.FORK_ROUTE:
     case ActivityActions.UPDATE_ROUTE: {
-      const { owner, is_private, slug, title, image_og, stats_favorites } =
-        data;
+      const {
+        owner,
+        is_private,
+        slug,
+        title,
+        image_og,
+        static_image_og,
+        stats_favorites,
+      } = data;
 
       return (
         <StyledActivityCard>
@@ -96,7 +110,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({ activity }) => {
           </p>
           <RouteCard
             orientation='vertical'
-            image={image_og}
+            image={image_og || static_image_og}
             username={owner?.username}
             slug={slug}
             is_private={is_private}

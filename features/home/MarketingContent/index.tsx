@@ -122,6 +122,7 @@ export const MarketingContent: FC<MarketingContentProps> = ({ routes }) => {
                   slug,
                   title,
                   image_card_banner,
+                  static_image_card_banner,
                   stats_favorites,
                 } = route;
 
@@ -129,7 +130,7 @@ export const MarketingContent: FC<MarketingContentProps> = ({ routes }) => {
                   <HorizontalList.ListItem key={id}>
                     <RouteCard
                       orientation='vertical'
-                      image={image_card_banner}
+                      image={image_card_banner || static_image_card_banner}
                       username={owner?.username}
                       slug={slug}
                       is_private={is_private}

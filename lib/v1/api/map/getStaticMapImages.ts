@@ -1,15 +1,8 @@
 import { LngLat, MapFeature } from '@/types/maps';
+import { StaticImage, StaticImageNames } from '@/types/routes';
 import { StatusError } from '@/utils';
 
-type StaticImage = {
-  contentType: string | null;
-  name: string;
-  width: number;
-  height: number;
-  blob: Blob;
-};
-
-const fallbackError = `Something went wrong attempting to get the static map images`;
+const fallbackError = `Something went wrong attempting to get the route static images`;
 
 export const getStaticMapImages = async (
   boundingBox: [LngLat, LngLat],
@@ -25,7 +18,12 @@ export const getStaticMapImages = async (
     });
 
     if (!res.ok) {
-      throw new StatusError(res.status, res.statusText || fallbackError);
+      const { message } = await res.json();
+
+      throw new StatusError(
+        res.status,
+        message || res.statusText || fallbackError
+      );
     }
 
     const contentType = res.headers.get('content-type');
@@ -76,7 +74,7 @@ const parseMultipartResponse = async (
 
     const jsonObjMatch = part.match(/\{.*\}/s);
     const jsonObj: {
-      name: string;
+      name: StaticImageNames;
       width: number;
       height: number;
       content: string;
@@ -100,14 +98,15 @@ const parseMultipartResponse = async (
     );
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
-    const blob = new Blob([arrayBuffer], { type: 'image/png' });
+    const blob = new Blob([arrayBuffer], { type: contentType || 'image/png' });
+    const file = new File([blob], jsonObj.name || '');
 
     return {
-      contentType,
       name: jsonObj.name || '',
-      width: jsonObj?.width || 120,
-      height: jsonObj?.height || 120,
-      blob,
+      width: jsonObj.width || 120,
+      height: jsonObj.height || 120,
+      contentType,
+      content: file,
     };
   });
 

@@ -67,6 +67,7 @@ export const forkRoute = async (
     } = base.route;
 
     // TODO: Image fields are missing
+    // TODO: Static Image fields are missing
     // fork the route
     const route = await xata.db.routes.create({
       created_at: new Date(),

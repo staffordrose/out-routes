@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { BiImageAlt } from 'react-icons/bi';
 
 import { AspectRatio, Image } from '@/components/atoms';
 import { styled } from '@/styles';
@@ -10,14 +9,12 @@ export type RouteDetailBannerProps = {
 };
 
 export const RouteDetailBanner: FC<RouteDetailBannerProps> = ({ src, alt }) => {
+  if (!src) return null;
+
   return (
     <StyledRouteDetailBanner>
       <AspectRatio ratio={24 / 9}>
-        {src ? (
-          <Image fill priority src={src} alt={alt} objectFit='cover' />
-        ) : (
-          <BiImageAlt size='3rem' />
-        )}
+        <Image fill priority src={src} alt={alt} objectFit='cover' />
       </AspectRatio>
     </StyledRouteDetailBanner>
   );

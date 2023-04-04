@@ -1,7 +1,7 @@
 import { RouteFeature } from '@/types/routes';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { FEATURE_IMAGE_SIZES } from '../uploads';
+import { FEATURE_IMAGE_SIZES } from '.';
 
 export const removeFeatureImage = async (
   id: RouteFeature['id'],

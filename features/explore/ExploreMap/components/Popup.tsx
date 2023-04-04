@@ -24,8 +24,15 @@ type PopupProps = {
 };
 
 export const Popup: FC<PopupProps> = ({ route }) => {
-  const { owner, is_private, slug, title, image_card_banner, stats_favorites } =
-    route;
+  const {
+    owner,
+    is_private,
+    slug,
+    title,
+    image_card_banner,
+    static_image_card_banner,
+    stats_favorites,
+  } = route;
 
   const { username } = owner || {};
 
@@ -33,11 +40,11 @@ export const Popup: FC<PopupProps> = ({ route }) => {
     <>
       <Card.Image>
         <AspectRatio ratio={16 / 9}>
-          {image_card_banner ? (
+          {image_card_banner || static_image_card_banner ? (
             <Image
               fill
               sizes='360px'
-              src={image_card_banner}
+              src={image_card_banner || static_image_card_banner || ''}
               alt={title || ''}
             />
           ) : (

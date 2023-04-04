@@ -119,6 +119,7 @@ export const SearchDialog: FC<SearchDialogProps> = ({
                       slug,
                       title,
                       image_thumb_120,
+                      static_image_thumb_120,
                       stats_favorites,
                     } = routeRecord;
 
@@ -127,7 +128,7 @@ export const SearchDialog: FC<SearchDialogProps> = ({
                         key={`${table}-${id}`}
                         orientation='horizontal'
                         {...routeRecord}
-                        image={image_thumb_120}
+                        image={image_thumb_120 || static_image_thumb_120}
                         username={owner?.username}
                         slug={slug || ''}
                         title={title || ''}

@@ -24,8 +24,8 @@ const postHandler: NextApiHandler = async (req, res): Promise<PostResponse> => {
   try {
     const bufferImages = await getStaticMapImages(boundingBox, features);
 
-    const base64Images = bufferImages.map(({ buffer, ...rest }) => {
-      const imageBase64 = buffer.toString('base64');
+    const base64Images = bufferImages.map(({ content, ...rest }) => {
+      const imageBase64 = content.toString('base64');
 
       return {
         ...rest,
@@ -56,7 +56,7 @@ const postHandler: NextApiHandler = async (req, res): Promise<PostResponse> => {
     return catchApiResponse(
       res,
       error,
-      `Something went wrong attempting to get the static map images`
+      `Something went wrong attempting to get the route static images`
     );
   }
 };

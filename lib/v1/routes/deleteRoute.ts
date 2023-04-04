@@ -14,7 +14,11 @@ import { Route } from '@/types/routes';
 import { User } from '@/types/users';
 import { StatusError } from '@/utils';
 import { getXataClient } from '@/xata';
-import { deleteFeatureImage, deleteRouteImages } from '../uploads';
+import {
+  deleteFeatureImage,
+  deleteRouteImages,
+  deleteRouteStaticImages,
+} from '../uploads';
 import { deleteActivityRecords } from '../user';
 
 export const deleteRoute = async (
@@ -43,7 +47,13 @@ export const deleteRoute = async (
 
     const route = await xata.db.routes
       .filter({ 'owner.username': username, slug })
-      .select(['owner.id', 'fork_id', 'image_id', 'stats_favorites'])
+      .select([
+        'owner.id',
+        'fork_id',
+        'image_id',
+        'static_image_og',
+        'stats_favorites',
+      ])
       .getFirst();
 
     // route does not exist
@@ -72,7 +82,6 @@ export const deleteRoute = async (
      * route_pull_comments
      * route_threads
      * route_thread_comments
-     * route image
      * feature images
      */
 
@@ -341,6 +350,10 @@ export const deleteRoute = async (
         ...prevRouteImageIds,
         ...(route.image_id ? [route.image_id] : []),
       ]);
+    }
+
+    if (route.static_image_og) {
+      await deleteRouteStaticImages(route.id);
     }
 
     const rowsToDelete: {

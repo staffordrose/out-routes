@@ -278,6 +278,11 @@ export const updateRoute = async (
       image_thumb_360,
       image_thumb_240,
       image_thumb_120,
+      static_image_og,
+      static_image_card_banner,
+      static_image_thumb_360,
+      static_image_thumb_240,
+      static_image_thumb_120,
     } = values.route;
 
     // update route
@@ -309,6 +314,11 @@ export const updateRoute = async (
       image_thumb_360,
       image_thumb_240,
       image_thumb_120,
+      static_image_og,
+      static_image_card_banner,
+      static_image_thumb_360,
+      static_image_thumb_240,
+      static_image_thumb_120,
       stats_layers: Array.isArray(values.layers) ? values.layers.length : 0,
       stats_features: Array.isArray(values.features)
         ? values.features.length

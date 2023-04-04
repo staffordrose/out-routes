@@ -9,20 +9,20 @@ import flatten from 'lodash.flatten';
 
 import { GeometryTypeNames } from '@/data/routes';
 import { LngLat, MapFeature } from '@/types/maps';
+import { StaticImage, StaticImageNames } from '@/types/routes';
 import { StatusError } from '@/utils';
 
-type BaseImageName = 'og' | 'banner' | 'card_banner' | 'thumb_360';
+type BaseStaticImageName = Exclude<
+  StaticImageNames,
+  StaticImageNames.THUMB_240 | StaticImageNames.THUMB_120
+>;
 
-type AdditionalImageName = 'thumb_240' | 'thumb_120';
-
-type ImageName = BaseImageName | AdditionalImageName;
-
-type ImageBuffer = {
-  name: ImageName;
-  width: number;
-  height: number;
-  buffer: Buffer;
-};
+type AdditionalStaticImageName = Exclude<
+  StaticImageNames,
+  | StaticImageNames.OG
+  | StaticImageNames.CARD_BANNER
+  | StaticImageNames.THUMB_360
+>;
 
 type FeaturePart = {
   type: GeometryTypeNames;
@@ -44,23 +44,22 @@ const OPTIONS = queryString.stringify({
 });
 
 const BASE_IMAGE_SIZES: Array<{
-  name: BaseImageName;
+  name: BaseStaticImageName;
   width: number;
   height: number;
 }> = [
-  { name: 'og', width: 1200, height: 630 },
-  { name: 'banner', width: 1280, height: 480 },
-  { name: 'card_banner', width: 320, height: 180 },
-  { name: 'thumb_360', width: 360, height: 360 },
+  { name: StaticImageNames.OG, width: 1200, height: 630 },
+  { name: StaticImageNames.CARD_BANNER, width: 320, height: 180 },
+  { name: StaticImageNames.THUMB_360, width: 360, height: 360 },
 ];
 
 const ADDITIONAL_IMAGE_SIZES: Array<{
-  name: AdditionalImageName;
+  name: AdditionalStaticImageName;
   width: number;
   height: number;
 }> = [
-  { name: 'thumb_240', width: 240, height: 240 },
-  { name: 'thumb_120', width: 120, height: 120 },
+  { name: StaticImageNames.THUMB_240, width: 240, height: 240 },
+  { name: StaticImageNames.THUMB_120, width: 120, height: 120 },
 ];
 
 const geometryNameSort = [
@@ -72,7 +71,7 @@ const geometryNameSort = [
 export const getStaticMapImages = async (
   boundingBox: [LngLat, LngLat],
   features: MapFeature[]
-): Promise<ImageBuffer[]> => {
+): Promise<StaticImage[]> => {
   try {
     /**
      * polygon and linestring feature coordinates are simplified
@@ -117,9 +116,12 @@ export const getStaticMapImages = async (
         const res = await fetch(url);
 
         if (!res.ok) {
+          const { message } = await res.json();
+
           throw new StatusError(
             res.status,
-            `Something went wrong attempting to get the ${width}x${height} static map images`
+            message ||
+              `Something went wrong attempting to get the route ${width}x${height} static image`
           );
         }
 
@@ -130,7 +132,7 @@ export const getStaticMapImages = async (
         await writeToFile(filePath, res);
 
         // read file contents
-        const buffer = fs.readFileSync(filePath);
+        const content = fs.readFileSync(filePath);
 
         if (name === 'thumb_360') {
           // get thumb_240, thumb_120 from thumb_360 file
@@ -144,7 +146,7 @@ export const getStaticMapImages = async (
           });
 
           // return an array of `thumb_*` image buffers
-          return [{ name, width, height, buffer }, ...thumbImageBuffers];
+          return [{ name, width, height, content }, ...thumbImageBuffers];
         } else {
           // remove image from filesystem
           fs.unlink(filePath, (error) => {
@@ -153,16 +155,16 @@ export const getStaticMapImages = async (
             }
           });
 
-          return { name, width, height, buffer };
+          return { name, width, height, content };
         }
       }
     );
 
-    const result: (ImageBuffer | ImageBuffer[])[] = await Promise.all(
+    const result: (StaticImage | StaticImage[])[] = await Promise.all(
       promiseArray
     );
 
-    const imageBuffers: ImageBuffer[] = flatten(result);
+    const imageBuffers: StaticImage[] = flatten(result);
 
     return imageBuffers;
   } catch (error) {
@@ -171,7 +173,7 @@ export const getStaticMapImages = async (
     } else {
       throw new StatusError(
         400,
-        `Something went wrong attempting to get the static map images`
+        `Something went wrong attempting to get the route static images`
       );
     }
   }
@@ -195,7 +197,7 @@ const writeToFile = async (filePath: string, res: Response): Promise<void> => {
   });
 };
 
-const getSmallThumbs = async (filePath: string): Promise<ImageBuffer[]> => {
+const getSmallThumbs = async (filePath: string): Promise<StaticImage[]> => {
   const promiseArray = ADDITIONAL_IMAGE_SIZES.map(
     async ({ name, width, height }) => {
       const buffer = await sharp(filePath).resize(width).toBuffer();
@@ -204,35 +206,12 @@ const getSmallThumbs = async (filePath: string): Promise<ImageBuffer[]> => {
         name,
         width,
         height,
-        buffer,
+        content: buffer,
       };
     }
   );
 
   return await Promise.all(promiseArray);
-};
-
-const getPinsAndPaths = (
-  featureParts: FeaturePart[],
-  {
-    markerSize,
-    lineStroke,
-    fillOpacity,
-  }: {
-    markerSize: 's' | 'l';
-    lineStroke: number;
-    fillOpacity: number;
-  }
-): string[] => {
-  return featureParts.map(({ type, color, symbol, content }) => {
-    if (type === GeometryTypeNames.Polygon) {
-      return `path-${lineStroke}+${color}+${color}-${fillOpacity}(${content})`;
-    } else if (type === GeometryTypeNames.LineString) {
-      return `path-${lineStroke}+${color}(${content})`;
-    } else {
-      return `pin-${markerSize}${symbol}+${color}(${content})`;
-    }
-  });
 };
 
 const getFeatureParts = (
@@ -278,17 +257,19 @@ const getFeatureParts = (
       }
     } else {
       const { geometry, properties } = feature;
+      const { coordinates } = geometry;
+      const { symbol, layerSymbol } = properties;
 
       return {
         type: GeometryTypeNames.Point,
         color,
         symbol:
-          properties.symbol && properties.symbol !== 'maki-marker'
-            ? `-${properties.symbol.slice(5)}`
-            : properties.layerSymbol && properties.layerSymbol !== 'maki-marker'
-            ? `-${properties.layerSymbol.slice(5)}`
+          symbol && symbol !== 'marker'
+            ? symbol
+            : layerSymbol && layerSymbol !== 'marker'
+            ? layerSymbol
             : '',
-        content: `${geometry.coordinates[0]},${geometry.coordinates[1]}`,
+        content: `${coordinates[0]},${coordinates[1]}`,
       };
     }
   });
@@ -366,4 +347,29 @@ const encodePolyline = (geojsonCoordinates: Position[]): string => {
   const p = polyline.encode(coordinates);
 
   return encodeURIComponent(p);
+};
+
+const getPinsAndPaths = (
+  featureParts: FeaturePart[],
+  {
+    markerSize,
+    lineStroke,
+    fillOpacity,
+  }: {
+    markerSize: 's' | 'l';
+    lineStroke: number;
+    fillOpacity: number;
+  }
+): string[] => {
+  return featureParts.map(({ type, color, symbol, content }) => {
+    if (type === GeometryTypeNames.Polygon) {
+      return `path-${lineStroke}+${color}+${color}-${fillOpacity}(${content})`;
+    } else if (type === GeometryTypeNames.LineString) {
+      return `path-${lineStroke}+${color}(${content})`;
+    } else {
+      return `pin-${markerSize}${
+        symbol ? `-${symbol}` : ``
+      }+${color}(${content})`;
+    }
+  });
 };

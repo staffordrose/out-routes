@@ -60,6 +60,7 @@ export const FavoritesList: FC<FavoritesListProps> = ({
                         slug,
                         title,
                         image_card_banner,
+                        static_image_card_banner,
                         stats_favorites,
                       } = route;
 
@@ -73,7 +74,7 @@ export const FavoritesList: FC<FavoritesListProps> = ({
                         <RouteCard
                           key={id}
                           orientation={cardOrientation}
-                          image={image_card_banner}
+                          image={image_card_banner || static_image_card_banner}
                           username={owner?.username}
                           slug={slug}
                           is_private={is_private}
