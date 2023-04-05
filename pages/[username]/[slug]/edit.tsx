@@ -9,16 +9,9 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import queryString from 'query-string';
-import { BiGitCompare, BiTrash } from 'react-icons/bi';
+import { BiGitCompare } from 'react-icons/bi';
 
-import {
-  Button,
-  ButtonLink,
-  Dialog,
-  Flex,
-  Toast,
-  useToast,
-} from '@/components/atoms';
+import { ButtonLink, Dialog, Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
@@ -31,16 +24,11 @@ import {
 import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
 import { useQueryParam } from '@/hooks';
 import { getRouteByUsernameSlug } from '@/lib/v1/api/routes';
-import { getUser } from '@/lib/v1/api/user';
-import {
-  useDeleteRouteMutation,
-  useUpdateRouteMutation,
-} from '@/lib/v1/hooks/routes';
+import { useUpdateRouteMutation } from '@/lib/v1/hooks/routes';
 import { getRouteByUsernameSlug as getRouteByUsernameSlugGSSP } from '@/lib/v1/routes';
 import {
   getAuthRouteMemberRoleByUsernameSlug as getAuthRouteMemberRoleByUsernameSlugGSSP,
   getUserId as getUserIdGSSP,
-  getUserOrThrow as getUserOrThrowGSSP,
 } from '@/lib/v1/user';
 import {
   PartialRouteLayersFeatures,
@@ -59,7 +47,7 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
   const username = useQueryParam(router.query, 'username');
   const slug = useQueryParam(router.query, 'slug');
 
-  const [routeQuery, authUserQuery] = useQueries({
+  const [routeQuery] = useQueries({
     queries: [
       {
         queryKey: ['routes', username, slug],
@@ -67,27 +55,12 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
         staleTime: 300_000,
         enabled: isAuthorized && !!username && !!slug,
       },
-      {
-        queryKey: ['user'],
-        queryFn: () => getUser(),
-        staleTime: 300_000,
-        retry: false,
-      },
     ],
   });
-
-  const { data: authUser } = authUserQuery;
 
   const { openToast, ...toastProps } = useToast();
 
   const queryClient = useQueryClient();
-
-  // delete route
-  const deleteRouteMutation = useDeleteRouteMutation({
-    router,
-    queryClient,
-    openToast,
-  });
 
   // update route
   const updateRouteMutation = useUpdateRouteMutation({
@@ -146,31 +119,6 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
       </Feedback>
     );
   }
-  if (deleteRouteMutation.isLoading) {
-    return (
-      <Feedback size='full-header' type='loading' title='Deleting route' />
-    );
-  }
-  if (deleteRouteMutation.isError) {
-    return (
-      <Feedback
-        size='full-header'
-        type='error'
-        title='Oops! Something went wrong'
-      >
-        {deleteRouteMutation.error instanceof Error
-          ? deleteRouteMutation.error.message
-          : null}
-      </Feedback>
-    );
-  }
-  if (deleteRouteMutation.isSuccess) {
-    return (
-      <Feedback size='full-header' type='success' title='Success!'>
-        Redirecting to your routes
-      </Feedback>
-    );
-  }
   if (updateRouteMutation.isLoading) {
     return (
       <Feedback size='full-header' type='loading' title='Updating route' />
@@ -206,13 +154,10 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
       </Feedback>
     );
   }
-  if (routeQuery.isSuccess && authUserQuery.isSuccess) {
+  if (routeQuery.isSuccess) {
     const {
       data: { route, layers, features },
     } = routeQuery;
-
-    const isAuthenticated = !!authUser?.username;
-    const authIsOwner = isAuthenticated && authUser.username === username;
 
     return (
       <>
@@ -245,45 +190,16 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
               },
             ]}
             actions={
-              <>
-                {authIsOwner && (
-                  <Dialog
-                    aria-label='Open dialog to delete route'
-                    title='Delete route?'
-                    description='Are you sure you want to delete this route? This action is irreversible!'
-                    body={
-                      <Flex justifyContent='flex-end' width='full'>
-                        <Button
-                          variant='solid'
-                          colorScheme='red'
-                          size='lg'
-                          aria-label='Confirm route deletion'
-                          onClick={() => {
-                            deleteRouteMutation.mutate({ username, slug });
-                          }}
-                        >
-                          Yes, Delete It
-                        </Button>
-                      </Flex>
-                    }
-                  >
-                    <ResponsiveButton size='md' aria-label='Delete route'>
-                      <BiTrash />
-                      <span>Delete</span>
-                    </ResponsiveButton>
-                  </Dialog>
-                )}
-                <ResponsiveButton
-                  type='submit'
-                  form='route-form'
-                  variant='solid'
-                  colorScheme='orange'
-                  size='md'
-                >
-                  <BiGitCompare />
-                  <span>Review</span>
-                </ResponsiveButton>
-              </>
+              <ResponsiveButton
+                type='submit'
+                form='route-form'
+                variant='solid'
+                colorScheme='orange'
+                size='md'
+              >
+                <BiGitCompare />
+                <span>Review</span>
+              </ResponsiveButton>
             }
           >
             Edit Route
@@ -378,12 +294,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const queryClient = new QueryClient();
 
   queryClient.setQueryData(['routes', username, slug], data);
-
-  if (authUserId) {
-    await queryClient.prefetchQuery(['user'], () =>
-      getUserOrThrowGSSP(session)
-    );
-  }
 
   return {
     props: {

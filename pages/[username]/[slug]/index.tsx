@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import type { GetServerSideProps } from 'next/types';
 import { useRouter } from 'next/router';
 import { unstable_getServerSession } from 'next-auth';
@@ -9,9 +9,25 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import queryString from 'query-string';
-import { BiCheck, BiEdit, BiStar } from 'react-icons/bi';
+import {
+  BiCheck,
+  BiDotsVerticalRounded,
+  BiEdit,
+  BiStar,
+  BiTrash,
+} from 'react-icons/bi';
 
-import { ButtonLink, Separator, Toast, useToast } from '@/components/atoms';
+import {
+  Button,
+  ButtonLink,
+  Dialog,
+  DropdownMenu,
+  Flex,
+  IconButton,
+  Separator,
+  Toast,
+  useToast,
+} from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
 import { ResponsiveButton, ResponsiveButtonLink } from '@/components/molecules';
 import { SEO } from '@/components/utility';
@@ -19,6 +35,7 @@ import { RouteDetailBanner, RouteDetails, RouteMap } from '@/features/routes';
 import { useQueryParam } from '@/hooks';
 import { getRouteByUsernameSlug } from '@/lib/v1/api/routes';
 import { getUser, isAuthFavoritingRoute } from '@/lib/v1/api/user';
+import { useDeleteRouteMutation } from '@/lib/v1/hooks/routes';
 import {
   useFavoriteMutation,
   useUnfavoriteMutation,
@@ -106,6 +123,15 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
     }
   };
 
+  // delete route
+  const deleteRouteMutation = useDeleteRouteMutation({
+    router,
+    queryClient,
+    openToast,
+  });
+
+  const [isDeleteRouteDialogOpen, setDeleteRouteDialogOpen] = useState(false);
+
   if (!isAuthorized) {
     return (
       <Feedback
@@ -121,6 +147,31 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
         >
           View User Profile
         </ButtonLink>
+      </Feedback>
+    );
+  }
+  if (deleteRouteMutation.isLoading) {
+    return (
+      <Feedback size='full-header' type='loading' title='Deleting route' />
+    );
+  }
+  if (deleteRouteMutation.isError) {
+    return (
+      <Feedback
+        size='full-header'
+        type='error'
+        title='Oops! Something went wrong'
+      >
+        {deleteRouteMutation.error instanceof Error
+          ? deleteRouteMutation.error.message
+          : null}
+      </Feedback>
+    );
+  }
+  if (deleteRouteMutation.isSuccess) {
+    return (
+      <Feedback size='full-header' type='success' title='Success!'>
+        Redirecting to your routes
       </Feedback>
     );
   }
@@ -144,6 +195,8 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
     const isFavorited = !!isAuthFavoritingRouteQuery.data;
 
     const isAuthenticated = !!authUser?.username;
+
+    // TODO: Allow members to edit as well
     const authIsOwner = isAuthenticated && authUser.username === username;
 
     return (
@@ -153,6 +206,28 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
           description={`${title} route details and map.`}
         />
         <Toast {...toastProps} />
+        <Dialog
+          isOpen={isDeleteRouteDialogOpen}
+          setOpen={setDeleteRouteDialogOpen}
+          aria-label='Open dialog to delete route'
+          title='Delete route?'
+          description='Are you sure you want to delete this route? This action is irreversible!'
+          body={
+            <Flex justifyContent='flex-end' width='full'>
+              <Button
+                variant='solid'
+                colorScheme='red'
+                size='lg'
+                aria-label='Confirm route deletion'
+                onClick={() => {
+                  deleteRouteMutation.mutate({ username, slug });
+                }}
+              >
+                Yes, Delete It
+              </Button>
+            </Flex>
+          }
+        />
         <RouteDetailBanner src={image_banner || undefined} alt={title || ''} />
         <DefaultLayout.Main>
           <PageHeading
@@ -169,16 +244,41 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
             ]}
             actions={
               authIsOwner ? (
-                <ResponsiveButtonLink
-                  variant='solid'
-                  colorScheme='orange'
-                  size='md'
-                  aria-label='Edit route'
-                  href={`${router.asPath}/edit`}
-                >
-                  <BiEdit />
-                  <span>Edit</span>
-                </ResponsiveButtonLink>
+                <>
+                  <ResponsiveButtonLink
+                    variant='solid'
+                    colorScheme='orange'
+                    size='md'
+                    aria-label='Edit route'
+                    href={`${router.asPath}/edit`}
+                  >
+                    <BiEdit />
+                    <span>Edit</span>
+                  </ResponsiveButtonLink>
+                  <DropdownMenu
+                    items={[
+                      <DropdownMenu.Item
+                        key='delete-route'
+                        size='md'
+                        aria-label='Delete route'
+                        onSelect={() => {
+                          setDeleteRouteDialogOpen(true);
+                        }}
+                      >
+                        <BiTrash />
+                        <span>Delete route</span>
+                      </DropdownMenu.Item>,
+                    ]}
+                  >
+                    <IconButton
+                      variant='ghost'
+                      size='md'
+                      aria-label='Open route options menu'
+                    >
+                      <BiDotsVerticalRounded />
+                    </IconButton>
+                  </DropdownMenu>
+                </>
               ) : isAuthenticated &&
                 typeof is_private === 'boolean' &&
                 !is_private ? (
