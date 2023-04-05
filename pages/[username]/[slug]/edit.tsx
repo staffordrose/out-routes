@@ -1,5 +1,4 @@
 import { ReactNode, useMemo, useState } from 'react';
-
 import type { GetServerSideProps } from 'next/types';
 import { useRouter } from 'next/router';
 import { unstable_getServerSession } from 'next-auth';
@@ -21,6 +20,7 @@ import {
   useToast,
 } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { MemberRoles, memberRoles } from '@/data/routes';
 import {
@@ -245,88 +245,45 @@ const EditRoute = ({ isAuthorized }: EditRouteProps) => {
               },
             ]}
             actions={
-              authIsOwner
-                ? [
-                    {
-                      id: 'delete-route',
-                      actionType: 'dialog',
-                      [`aria-label`]: 'Open dialog to delete route',
-                      title: 'Delete route?',
-                      description: `Are you sure you want to delete this route? This action is irreversible!`,
-                      body: (
-                        <Flex justifyContent='flex-end' width='full'>
-                          <Button
-                            variant='solid'
-                            colorScheme='red'
-                            size='lg'
-                            aria-label='Confirm route deletion'
-                            onClick={() => {
-                              deleteRouteMutation.mutate({ username, slug });
-                            }}
-                          >
-                            Yes, Delete It
-                          </Button>
-                        </Flex>
-                      ),
-                      children: (
+              <>
+                {authIsOwner && (
+                  <Dialog
+                    aria-label='Open dialog to delete route'
+                    title='Delete route?'
+                    description='Are you sure you want to delete this route? This action is irreversible!'
+                    body={
+                      <Flex justifyContent='flex-end' width='full'>
                         <Button
-                          size='md'
-                          aria-label='Delete route'
-                          css={{
-                            width: '$10',
-                            paddingX: '$0',
-                            '@md': {
-                              width: '$auto',
-                              paddingX: '$2_5',
-                            },
-                            '& > span': {
-                              display: 'none',
-                              visibility: 'hidden',
-                              '@md': {
-                                display: 'inline',
-                                visibility: 'visible',
-                              },
-                            },
+                          variant='solid'
+                          colorScheme='red'
+                          size='lg'
+                          aria-label='Confirm route deletion'
+                          onClick={() => {
+                            deleteRouteMutation.mutate({ username, slug });
                           }}
                         >
-                          <BiTrash />
-                          <span>Delete</span>
+                          Yes, Delete It
                         </Button>
-                      ),
-                    },
-                    {
-                      id: 'review-edits',
-                      actionType: 'responsive-button',
-                      type: 'submit',
-                      form: 'route-form',
-                      variant: 'solid',
-                      colorScheme: 'orange',
-                      size: 'md',
-                      children: (
-                        <>
-                          <BiGitCompare />
-                          <span>Review</span>
-                        </>
-                      ),
-                    },
-                  ]
-                : [
-                    {
-                      id: 'review-edits',
-                      actionType: 'responsive-button',
-                      type: 'submit',
-                      form: 'route-form',
-                      variant: 'solid',
-                      colorScheme: 'orange',
-                      size: 'md',
-                      children: (
-                        <>
-                          <BiGitCompare />
-                          <span>Review</span>
-                        </>
-                      ),
-                    },
-                  ]
+                      </Flex>
+                    }
+                  >
+                    <ResponsiveButton size='md' aria-label='Delete route'>
+                      <BiTrash />
+                      <span>Delete</span>
+                    </ResponsiveButton>
+                  </Dialog>
+                )}
+                <ResponsiveButton
+                  type='submit'
+                  form='route-form'
+                  variant='solid'
+                  colorScheme='orange'
+                  size='md'
+                >
+                  <BiGitCompare />
+                  <span>Review</span>
+                </ResponsiveButton>
+              </>
             }
           >
             Edit Route

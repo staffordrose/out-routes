@@ -13,6 +13,7 @@ import { BiMap, BiPlus } from 'react-icons/bi';
 
 import { Button, Flex, Grid, Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButtonLink } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { RouteCard } from '@/features/routes';
 import { useQueryParam } from '@/hooks';
@@ -169,23 +170,16 @@ const Routes = ({ isAuthenticated }: RoutesProps) => {
               },
             ]}
             actions={
-              authIsOwner
-                ? [
-                    {
-                      id: 'add-route',
-                      actionType: 'responsive-link',
-                      size: 'md',
-                      [`aria-label`]: 'Add a new route',
-                      href: '/routes/add/settings',
-                      children: (
-                        <>
-                          <BiPlus />
-                          <span>Add a Route</span>
-                        </>
-                      ),
-                    },
-                  ]
-                : []
+              authIsOwner ? (
+                <ResponsiveButtonLink
+                  size='md'
+                  aria-label='Add a new route'
+                  href='/routes/add/settings'
+                >
+                  <BiPlus />
+                  <span>Add a Route</span>
+                </ResponsiveButtonLink>
+              ) : null
             }
           >
             Routes

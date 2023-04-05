@@ -13,6 +13,7 @@ import { BiCheck, BiEdit, BiStar } from 'react-icons/bi';
 
 import { ButtonLink, Separator, Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton, ResponsiveButtonLink } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { RouteDetailBanner, RouteDetails, RouteMap } from '@/features/routes';
 import { useQueryParam } from '@/hooks';
@@ -167,51 +168,39 @@ const RouteDetail = ({ isAuthenticated, isAuthorized }: RouteDetailProps) => {
               },
             ]}
             actions={
-              authIsOwner
-                ? [
-                    {
-                      id: 'edit-route',
-                      actionType: 'responsive-link',
-                      variant: 'solid',
-                      colorScheme: 'orange',
-                      size: 'md',
-                      [`aria-label`]: 'Edit route',
-                      href: `${router.asPath}/edit`,
-                      children: (
-                        <>
-                          <BiEdit />
-                          <span>Edit</span>
-                        </>
-                      ),
-                    },
-                  ]
-                : isAuthenticated &&
-                  typeof is_private === 'boolean' &&
-                  !is_private
-                ? [
-                    {
-                      id: 'favorite-unfavorite',
-                      actionType: 'responsive-button',
-                      variant: isFavorited ? 'outline' : 'solid',
-                      size: 'md',
-                      disabled:
-                        favoriteMutation.isLoading ||
-                        unfavoriteMutation.isLoading ||
-                        typeof isFavorited === null,
-                      onClick: () =>
-                        handleFavorite({ username, slug }, isFavorited),
-                      children: (
-                        <>
-                          {isFavorited ? <BiCheck /> : <BiStar />}
-                          <span>{Number(stats_favorites) || 0}</span>{' '}
-                          <span>
-                            Star{Number(stats_favorites) !== 1 ? `s` : ``}
-                          </span>
-                        </>
-                      ),
-                    },
-                  ]
-                : []
+              authIsOwner ? (
+                <ResponsiveButtonLink
+                  variant='solid'
+                  colorScheme='orange'
+                  size='md'
+                  aria-label='Edit route'
+                  href={`${router.asPath}/edit`}
+                >
+                  <BiEdit />
+                  <span>Edit</span>
+                </ResponsiveButtonLink>
+              ) : isAuthenticated &&
+                typeof is_private === 'boolean' &&
+                !is_private ? (
+                <>
+                  <ResponsiveButton
+                    variant={isFavorited ? 'outline' : 'solid'}
+                    size='md'
+                    disabled={
+                      favoriteMutation.isLoading ||
+                      unfavoriteMutation.isLoading ||
+                      typeof isFavorited === null
+                    }
+                    onClick={() =>
+                      handleFavorite({ username, slug }, isFavorited)
+                    }
+                  >
+                    {isFavorited ? <BiCheck /> : <BiStar />}
+                    <span>{Number(stats_favorites) || 0}</span>{' '}
+                    <span>Star{Number(stats_favorites) !== 1 ? `s` : ``}</span>
+                  </ResponsiveButton>
+                </>
+              ) : null
             }
           >
             {title || '[Untitled route]'}

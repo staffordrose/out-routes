@@ -4,6 +4,8 @@ export * from './DropzoneField';
 export * from './HoverCard';
 export * from './MarkdownEditorField';
 export * from './NumberField';
+export * from './ResponsiveButton';
+export * from './ResponsiveButtonLink';
 export * from './SelectField';
 export * from './SwitchField';
 export * from './TextField';

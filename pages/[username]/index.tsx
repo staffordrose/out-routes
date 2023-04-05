@@ -25,6 +25,7 @@ import {
   useToast,
 } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { RouteCard } from '@/features/routes';
 import { FavoritesList, FollowersList, FollowingList } from '@/features/users';
@@ -236,27 +237,21 @@ const Profile = ({ isAuthenticated }: ProfileProps) => {
               },
             ]}
             actions={
-              authIsNotUser
-                ? [
-                    {
-                      id: 'follow-unfollow',
-                      actionType: 'responsive-button',
-                      variant: isFollowing ? 'outline' : 'solid',
-                      size: 'md',
-                      disabled:
-                        followMutation.isLoading ||
-                        unfollowMutation.isLoading ||
-                        typeof isFollowing === null,
-                      onClick: () => handleFollow({ username }, isFollowing),
-                      children: (
-                        <>
-                          {isFollowing ? <BiCheck /> : <BiUser />}
-                          <span>{isFollowing ? `Following` : `Follow`}</span>
-                        </>
-                      ),
-                    },
-                  ]
-                : []
+              authIsNotUser ? (
+                <ResponsiveButton
+                  variant={isFollowing ? 'outline' : 'solid'}
+                  size='md'
+                  disabled={
+                    followMutation.isLoading ||
+                    unfollowMutation.isLoading ||
+                    typeof isFollowing === null
+                  }
+                  onClick={() => handleFollow({ username }, isFollowing)}
+                >
+                  {isFollowing ? <BiCheck /> : <BiUser />}
+                  <span>{isFollowing ? `Following` : `Follow`}</span>
+                </ResponsiveButton>
+              ) : null
             }
           >
             {name}

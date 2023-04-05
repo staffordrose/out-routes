@@ -7,6 +7,7 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { BiMapAlt } from 'react-icons/bi';
 
 import { DefaultLayout, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { RouteSettingsForm } from '@/features/routes';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
@@ -32,23 +33,18 @@ const AddRouteSettings = () => {
               children: 'routes',
             },
           ]}
-          actions={[
-            {
-              id: 'save-route-settings',
-              actionType: 'responsive-button',
-              type: 'submit',
-              form: 'route-settings-form',
-              variant: 'solid',
-              colorScheme: 'orange',
-              size: 'md',
-              children: (
-                <>
-                  <BiMapAlt />
-                  <span>Continue to Map</span>
-                </>
-              ),
-            },
-          ]}
+          actions={
+            <ResponsiveButton
+              type='submit'
+              form='route-settings-form'
+              variant='solid'
+              colorScheme='orange'
+              size='md'
+            >
+              <BiMapAlt />
+              <span>Continue to Map</span>
+            </ResponsiveButton>
+          }
         >
           Add Route
         </PageHeading>

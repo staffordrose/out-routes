@@ -13,6 +13,7 @@ import queryString from 'query-string';
 
 import { Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { UserForm, UserFormValues } from '@/features/user';
 import { getUser } from '@/lib/v1/api/user';
@@ -115,23 +116,18 @@ const EditProfile = () => {
                 children: 'profile',
               },
             ]}
-            actions={[
-              {
-                id: 'update-profile',
-                actionType: 'responsive-button',
-                type: 'submit',
-                form: 'user-form',
-                variant: 'solid',
-                colorScheme: 'orange',
-                size: 'md',
-                children: (
-                  <>
-                    <BiSave />
-                    <span>Save</span>
-                  </>
-                ),
-              },
-            ]}
+            actions={
+              <ResponsiveButton
+                type='submit'
+                form='user-form'
+                variant='solid'
+                colorScheme='orange'
+                size='md'
+              >
+                <BiSave />
+                <span>Save</span>
+              </ResponsiveButton>
+            }
           >
             Edit Profile
           </PageHeading>

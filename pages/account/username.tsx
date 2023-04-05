@@ -14,6 +14,7 @@ import { BiSave } from 'react-icons/bi';
 
 import { List, Text, Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { UserUsernameForm, UserUsernameFormValues } from '@/features/user';
 import { getUser } from '@/lib/v1/api/user';
@@ -112,23 +113,18 @@ const EditUsername = () => {
                 children: 'username',
               },
             ]}
-            actions={[
-              {
-                id: 'update-username',
-                actionType: 'responsive-button',
-                type: 'submit',
-                form: 'user-username-form',
-                variant: 'solid',
-                colorScheme: 'orange',
-                size: 'md',
-                children: (
-                  <>
-                    <BiSave />
-                    <span>Save</span>
-                  </>
-                ),
-              },
-            ]}
+            actions={
+              <ResponsiveButton
+                type='submit'
+                form='user-username-form'
+                variant='solid'
+                colorScheme='orange'
+                size='md'
+              >
+                <BiSave />
+                <span>Save</span>
+              </ResponsiveButton>
+            }
           >
             Change Username
           </PageHeading>

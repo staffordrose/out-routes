@@ -5,15 +5,16 @@ import { signOut } from 'next-auth/react';
 import { unstable_getServerSession } from 'next-auth/next';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import queryString from 'query-string';
+import { BiExit } from 'react-icons/bi';
 
 import { Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { AccountDetails } from '@/features/user';
 import { getUser } from '@/lib/v1/api/user';
 import { getUserOrThrow as getUserOrThrowGSSP } from '@/lib/v1/user';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { BiExit } from 'react-icons/bi';
 
 const Account = () => {
   const {
@@ -54,22 +55,17 @@ const Account = () => {
                 children: 'account',
               },
             ]}
-            actions={[
-              {
-                id: 'sign-out',
-                actionType: 'responsive-button',
-                variant: 'solid',
-                colorScheme: 'orange',
-                size: 'md',
-                onClick: () => signOut(),
-                children: (
-                  <>
-                    <BiExit />
-                    <span>Sign Out</span>
-                  </>
-                ),
-              },
-            ]}
+            actions={
+              <ResponsiveButton
+                variant='solid'
+                colorScheme='orange'
+                size='md'
+                onClick={() => signOut()}
+              >
+                <BiExit />
+                <span>Sign Out</span>
+              </ResponsiveButton>
+            }
           >
             Account
           </PageHeading>

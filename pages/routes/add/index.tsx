@@ -13,6 +13,7 @@ import { BiSave } from 'react-icons/bi';
 
 import { Toast, useToast } from '@/components/atoms';
 import { DefaultLayout, Feedback, PageHeading } from '@/components/layout';
+import { ResponsiveButton } from '@/components/molecules';
 import { SEO } from '@/components/utility';
 import { RouteForm } from '@/features/routes';
 import { RouteFormResult } from '@/features/routes/RouteForm/helpers';
@@ -117,24 +118,19 @@ const AddRoute = () => {
                 children: 'routes',
               },
             ]}
-            actions={[
-              {
-                id: 'save-route',
-                actionType: 'responsive-button',
-                type: 'submit',
-                form: 'route-form',
-                variant: 'solid',
-                colorScheme: 'orange',
-                size: 'md',
-                disabled: addRouteMutation.isLoading,
-                children: (
-                  <>
-                    <BiSave />
-                    <span>Save</span>
-                  </>
-                ),
-              },
-            ]}
+            actions={
+              <ResponsiveButton
+                type='submit'
+                form='route-form'
+                variant='solid'
+                colorScheme='orange'
+                size='md'
+                disabled={addRouteMutation.isLoading}
+              >
+                <BiSave />
+                <span>Save</span>
+              </ResponsiveButton>
+            }
           >
             Add Route
           </PageHeading>

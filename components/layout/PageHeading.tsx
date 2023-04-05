@@ -1,42 +1,12 @@
-import { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { styled } from '@/styles';
-import {
-  Button,
-  ButtonLink,
-  ButtonLinkProps,
-  ButtonProps,
-  Dialog,
-  DialogProps,
-  Heading,
-  IconButton,
-  IconButtonLink,
-} from '../atoms';
+import { Heading } from '../atoms';
 import { Breadcrumbs, Breadcrumb } from '../layout';
-
-export type Action = {
-  id: string;
-} & (
-  | ({
-      actionType: 'button';
-    } & ComponentPropsWithoutRef<typeof Button>)
-  | ({
-      actionType: 'responsive-button';
-    } & ComponentPropsWithoutRef<typeof IconButton>)
-  | ({
-      actionType: 'link';
-    } & ComponentPropsWithoutRef<typeof ButtonLink>)
-  | ({
-      actionType: 'responsive-link';
-    } & ComponentPropsWithoutRef<typeof IconButtonLink>)
-  | ({
-      actionType: 'dialog';
-    } & ComponentPropsWithoutRef<typeof Dialog>)
-);
 
 export type PageHeadingProps = {
   breadcrumbs?: Breadcrumb[];
-  actions?: Action[];
+  actions?: ReactNode;
   children?: ReactNode;
 };
 
@@ -52,40 +22,7 @@ export const PageHeading: FC<PageHeadingProps> = ({
       )}
       <div>
         <StyledHeading as='h1'>{children}</StyledHeading>
-        <StyledActions>
-          {Array.isArray(actions) &&
-            actions.length > 0 &&
-            actions.map(({ id, actionType, ...props }) => {
-              const buttonProps = props as ButtonProps;
-              const buttonLinkProps = props as ButtonLinkProps;
-              const dialogProps = props as DialogProps;
-
-              switch (actionType) {
-                case 'button':
-                  return <Button key={id} {...buttonProps} />;
-                case 'responsive-button':
-                  return (
-                    <StyledResponsiveButton key={id}>
-                      <IconButton {...buttonProps} />
-                      <Button {...buttonProps} />
-                    </StyledResponsiveButton>
-                  );
-                case 'link':
-                  return <ButtonLink key={id} {...buttonLinkProps} />;
-                case 'responsive-link':
-                  return (
-                    <StyledResponsiveLink key={id}>
-                      <IconButtonLink {...buttonLinkProps} />
-                      <ButtonLink {...buttonLinkProps} />
-                    </StyledResponsiveLink>
-                  );
-                case 'dialog':
-                  return <Dialog key={id} {...dialogProps} />;
-                default:
-                  return null;
-              }
-            })}
-        </StyledActions>
+        <StyledActions>{actions}</StyledActions>
       </div>
     </StyledPageHeading>
   );
@@ -122,50 +59,4 @@ const StyledActions = styled('div', {
   gap: '$2',
   alignItems: 'center',
   height: '$full',
-});
-
-const StyledResponsiveButton = styled('div', {
-  '& > button:first-child': {
-    display: 'inline-flex',
-    visibility: 'visible',
-    '@md': {
-      display: 'none',
-      visibility: 'hidden',
-    },
-    '& > span': {
-      display: 'none',
-      visibility: 'hidden',
-    },
-  },
-  '& > button:last-child': {
-    display: 'none',
-    visibility: 'hidden',
-    '@md': {
-      display: 'inline-flex',
-      visibility: 'visible',
-    },
-  },
-});
-
-const StyledResponsiveLink = styled('div', {
-  '& > a:first-child': {
-    display: 'inline-flex',
-    visibility: 'visible',
-    '@md': {
-      display: 'none',
-      visibility: 'hidden',
-    },
-    '& > span': {
-      display: 'none',
-      visibility: 'hidden',
-    },
-  },
-  '& > a:last-child': {
-    display: 'none',
-    visibility: 'hidden',
-    '@md': {
-      display: 'inline-flex',
-      visibility: 'visible',
-    },
-  },
 });
