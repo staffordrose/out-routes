@@ -39,7 +39,7 @@ export const useOnDrawCreate = ({
   const onDrawCreate = useCallback(
     async (e: MapboxDraw.DrawCreateEvent) => {
       try {
-        if (!draw.current) return;
+        if (!map.current || !draw.current) return;
 
         const drawRef = draw.current;
 
@@ -53,7 +53,7 @@ export const useOnDrawCreate = ({
           } as MapFeature;
 
           // add elevation for all positions
-          mapFeature = await addElevationToMapFeature(mapFeature);
+          mapFeature = addElevationToMapFeature(map, mapFeature);
 
           // remove feature with auto-generated id
           drawRef.delete((feature.id || '').toString());
@@ -95,7 +95,7 @@ export const useOnDrawCreate = ({
         }
       }
     },
-    [append, update, draw, layers, activeLayerId, setActiveLayerId]
+    [append, update, map, draw, layers, activeLayerId, setActiveLayerId]
   );
 
   useEffect(() => {

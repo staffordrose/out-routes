@@ -34,7 +34,7 @@ export const useOnDrawUpdate = ({
   const onDrawUpdate = useCallback(
     async (e: MapboxDraw.DrawUpdateEvent) => {
       try {
-        if (!activeLayerId) return;
+        if (!map.current || !activeLayerId) return;
 
         const activeLayer = getLayerValuesById(layers, activeLayerId);
 
@@ -46,16 +46,15 @@ export const useOnDrawUpdate = ({
 
         const filteredFeatures = e.features.filter((feature) => feature?.id);
 
-        const featuresPromiseArray = filteredFeatures.map(async (feature) => {
+        const featuresWithUpdatedEle = filteredFeatures.map((feature) => {
           // add elevation for all positions
-          const mapFeature = await addElevationToMapFeature(
+          const mapFeature = addElevationToMapFeature(
+            map,
             feature as MapFeature
           );
 
           return mapFeature;
         });
-
-        const featuresWithUpdatedEle = await Promise.all(featuresPromiseArray);
 
         const features = featuresWithUpdatedEle.map((feature) =>
           handleFeatureOnDraw(feature)
@@ -82,7 +81,7 @@ export const useOnDrawUpdate = ({
         }
       }
     },
-    [update, layers, activeLayerId, popupFeatureId, openPopup]
+    [update, map, layers, activeLayerId, popupFeatureId, openPopup]
   );
 
   useEffect(() => {

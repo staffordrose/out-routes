@@ -1,16 +1,19 @@
 import { Position } from 'geojson';
 
 import { GeometryTypeNames } from '@/data/routes';
-import { getFeatureElevations } from '@/lib/v1/api/map';
-import { MapFeature } from '@/types/maps';
+import { LngLat, MapFeature } from '@/types/maps';
+import { MutableRefObject } from 'react';
+import { Map } from 'mapbox-gl';
+import { round } from '@/utils';
 
-export const addElevationToMapFeature = async (
+export const addElevationToMapFeature = (
+  map: MutableRefObject<Map | undefined>,
   feature: MapFeature
-): Promise<MapFeature> => {
+): MapFeature => {
   try {
-    const getPositionsWithElevation = async (
+    const getPositionsWithElevation = (
       geometry: MapFeature['geometry']
-    ): Promise<Position[]> => {
+    ): Position[] => {
       let coordinates = Array.from(
         geometry.type === GeometryTypeNames.Polygon
           ? geometry.coordinates[0]
@@ -19,16 +22,19 @@ export const addElevationToMapFeature = async (
           : [geometry.coordinates]
       ) as Position[];
 
-      const elevations = await getFeatureElevations(geometry);
-
       // add elevations to coordinates
       for (let i = 0; i < coordinates.length; i++) {
-        const ele = elevations[i];
+        const coord: LngLat = [coordinates[i][0], coordinates[i][1]];
+
+        let ele = map.current?.queryTerrainElevation(coord);
+
         if (typeof ele === 'number' && !Number.isNaN(ele)) {
-          coordinates[i][2] = ele;
+          ele = round(ele, 3);
         } else {
-          coordinates[i][2] = 0;
+          ele = 0;
         }
+
+        coordinates[i] = [...coord, ele];
       }
 
       return coordinates;
@@ -36,7 +42,7 @@ export const addElevationToMapFeature = async (
 
     // add elevation for all positions
     if (feature.geometry.type === GeometryTypeNames.Polygon) {
-      const positions = await getPositionsWithElevation(feature.geometry);
+      const positions = getPositionsWithElevation(feature.geometry);
 
       const coordinates: Position[][] = [positions];
 
@@ -48,7 +54,7 @@ export const addElevationToMapFeature = async (
         },
       };
     } else if (feature.geometry.type === GeometryTypeNames.LineString) {
-      const coordinates = await getPositionsWithElevation(feature.geometry);
+      const coordinates = getPositionsWithElevation(feature.geometry);
 
       return {
         ...feature,
@@ -58,7 +64,7 @@ export const addElevationToMapFeature = async (
         },
       };
     } else {
-      const [coordinates] = await getPositionsWithElevation(feature.geometry);
+      const [coordinates] = getPositionsWithElevation(feature.geometry);
 
       return {
         ...feature,
