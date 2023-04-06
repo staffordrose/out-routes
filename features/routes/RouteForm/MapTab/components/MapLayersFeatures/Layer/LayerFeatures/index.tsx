@@ -12,6 +12,7 @@ import { Feature } from './Feature';
 type LayerFeaturesProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   map: MutableRefObject<Map | undefined>;
+  layersCount: number;
   layerIndex: number;
   openPopup: (popupState: PopupState) => void;
   closePopup: () => void;
@@ -21,16 +22,19 @@ type LayerFeaturesProps = {
     feature: MapFeature
   ) => void;
   isLayerFeaturesReordering: boolean;
+  toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
 
 export const LayerFeatures: FC<LayerFeaturesProps> = ({
   update,
   map,
+  layersCount,
   layerIndex,
   openPopup,
   closePopup,
   openFeatureEditDialog,
   isLayerFeaturesReordering,
+  toggleLayerFeaturesReordering,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeIndicatorRef = useRef<HTMLDivElement>(null);
@@ -79,6 +83,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
               key={feature.databaseId}
               update={update}
               map={map}
+              layersCount={layersCount}
               layerIndex={layerIndex}
               layer={layer}
               containerRef={containerRef}
@@ -91,6 +96,7 @@ export const LayerFeatures: FC<LayerFeaturesProps> = ({
               closePopup={closePopup}
               openFeatureEditDialog={openFeatureEditDialog}
               isLayerFeaturesReordering={isLayerFeaturesReordering}
+              toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}
             />
           );
         })}

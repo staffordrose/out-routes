@@ -33,14 +33,6 @@ export const FeatureMove: FC<FeatureMoveProps> = ({
       {Array.isArray(layers) &&
         layers.length > 0 &&
         layers.map((nextLayer, nextLayerIndex) => {
-          /**
-           * hide current layer, but keep it in map method
-           * so that nextLayerIndex is correct
-           */
-          if (layerIndex === nextLayerIndex) {
-            return null;
-          }
-
           const SymbolIcon =
             symbolIcons[
               (nextLayer.symbol || SymbolCodes.Marker) as SymbolCodes
@@ -50,6 +42,7 @@ export const FeatureMove: FC<FeatureMoveProps> = ({
             <Button
               key={nextLayer.databaseId}
               size='md'
+              disabled={layerIndex === nextLayerIndex}
               onClick={() => {
                 if (
                   !Array.isArray(layer.features) ||

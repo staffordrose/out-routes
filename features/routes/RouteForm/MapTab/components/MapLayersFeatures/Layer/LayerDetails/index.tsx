@@ -11,7 +11,6 @@ import {
   BiDotsVerticalRounded,
   BiDownArrowAlt,
   BiEditAlt,
-  BiSortAlt2,
   BiTrash,
   BiUpArrowAlt,
 } from 'react-icons/bi';
@@ -152,6 +151,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                   <BiEditAlt />
                   <span>Edit Section</span>
                 </DropdownMenu.Item>,
+                <DropdownMenu.Separator key='edit-separator' />,
                 <DropdownMenu.Item
                   key='move-layer-up'
                   size='sm'
@@ -161,7 +161,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                   }}
                 >
                   <BiUpArrowAlt />
-                  <span>Move Up</span>
+                  <span>Move Section Up</span>
                 </DropdownMenu.Item>,
                 <DropdownMenu.Item
                   key='move-layer-down'
@@ -172,20 +172,7 @@ export const LayerDetails: FC<LayerDetailsProps> = ({
                   }}
                 >
                   <BiDownArrowAlt />
-                  <span>Move Down</span>
-                </DropdownMenu.Item>,
-                <DropdownMenu.Item
-                  key='reorder-features'
-                  size='sm'
-                  disabled={
-                    !Array.isArray(layer.features) || !layer.features.length
-                  }
-                  onSelect={() => {
-                    toggleLayerFeaturesReordering(layer.databaseId);
-                  }}
-                >
-                  <BiSortAlt2 />
-                  <span>Reorder Features</span>
+                  <span>Move Section Down</span>
                 </DropdownMenu.Item>,
                 <DropdownMenu.Separator key='delete-separator' />,
                 <DropdownMenu.Item

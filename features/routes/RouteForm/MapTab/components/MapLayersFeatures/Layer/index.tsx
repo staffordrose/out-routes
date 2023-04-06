@@ -87,11 +87,13 @@ export const Layer: FC<LayerProps> = ({
       <LayerFeatures
         update={update}
         map={map}
+        layersCount={layersCount}
         layerIndex={layerIndex}
         openPopup={openPopup}
         closePopup={closePopup}
         openFeatureEditDialog={openFeatureEditDialog}
         isLayerFeaturesReordering={isLayerFeaturesReordering}
+        toggleLayerFeaturesReordering={toggleLayerFeaturesReordering}
       />
     </StyledLayer>
   );

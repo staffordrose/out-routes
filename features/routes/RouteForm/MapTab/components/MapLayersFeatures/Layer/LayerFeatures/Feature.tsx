@@ -14,6 +14,7 @@ import {
   BiLayer,
   BiShapePolygon,
   BiShareAlt,
+  BiSortAlt2,
   BiTrash,
 } from 'react-icons/bi';
 import { MdDragHandle } from 'react-icons/md';
@@ -47,6 +48,7 @@ if (typeof window !== 'undefined') {
 type FeatureProps = {
   update: UseFieldArrayUpdate<RouteFormValues, 'layers'>;
   map: MutableRefObject<Map | undefined>;
+  layersCount: number;
   layerIndex: number;
   layer: LayerValues;
   containerRef: MutableRefObject<HTMLDivElement | null>;
@@ -63,11 +65,13 @@ type FeatureProps = {
     feature: MapFeature
   ) => void;
   isLayerFeaturesReordering: boolean;
+  toggleLayerFeaturesReordering: (layerId: LayerValues['databaseId']) => void;
 };
 
 export const Feature: FC<FeatureProps> = ({
   update,
   map,
+  layersCount,
   layerIndex,
   layer,
   containerRef,
@@ -80,6 +84,7 @@ export const Feature: FC<FeatureProps> = ({
   closePopup,
   openFeatureEditDialog,
   isLayerFeaturesReordering,
+  toggleLayerFeaturesReordering,
 }) => {
   const [isFeatureMoveDialogOpen, setFeatureMoveDialogOpen] = useState(false);
 
@@ -257,17 +262,33 @@ export const Feature: FC<FeatureProps> = ({
                 <BiEditAlt />
                 <span>Edit Feature</span>
               </DropdownMenu.Item>,
+              <DropdownMenu.Separator key='edit-separator' />,
+              <DropdownMenu.Item
+                key='reorder-features'
+                size='xs'
+                aria-label='Reorder features'
+                disabled={
+                  !Array.isArray(layer.features) || layer.features.length < 2
+                }
+                onSelect={() => {
+                  toggleLayerFeaturesReordering(layer.databaseId);
+                }}
+              >
+                <BiSortAlt2 />
+                <span>Reorder Features</span>
+              </DropdownMenu.Item>,
               <DropdownMenu.Item
                 key='move-feature'
                 size='xs'
                 aria-label='Open modal to move the feature'
+                disabled={layersCount === 1}
                 onSelect={() => {
                   setFeatureMoveDialogOpen(true);
                   closePopup();
                 }}
               >
                 <BiLayer />
-                <span>Move to Section</span>
+                <span>Move Feature to Section</span>
               </DropdownMenu.Item>,
               <DropdownMenu.Separator key='delete-separator' />,
               <DropdownMenu.Item
