@@ -112,6 +112,7 @@ const StyledMap = styled('div', {
       },
     },
     '& > div:last-child': {
+      zIndex: 'auto',
       overflowY: 'auto',
       borderWidth: '$1',
       borderStyle: 'solid',

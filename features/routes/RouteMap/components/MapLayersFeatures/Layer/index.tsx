@@ -65,4 +65,7 @@ const StyledLayerDetails = styled('div', {
     width: '$7',
     height: '$7',
   },
+  '@md': {
+    zIndex: 'auto',
+  },
 });

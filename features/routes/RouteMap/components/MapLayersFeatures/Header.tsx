@@ -226,4 +226,7 @@ const StyledHeader = styled('div', {
   borderBottomStyle: 'solid',
   borderBottomColor: '$slate-300',
   backgroundColor: '$slate-50',
+  '@md': {
+    zIndex: 'auto',
+  },
 });
